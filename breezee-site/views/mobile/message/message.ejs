@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <% include ../common/meta.ejs %>
+    <title>消息中心</title>
+    <% include ../common/public.ejs %>
+</head>
+<body ontouchstart>
+<article>
+    <ul class="nr_list">
+        <% var date = null; %>
+        <% for(var i = 0; i < body.length; i++){ %>
+        <% date = new Date(body[i].date) %>
+        <li class="bh li_lb">
+            <div class="icon_img"><img src="/custom/wx_style/images/_icon_<%= body[i].type %>.png"></div>
+            <div class="text_check">
+                <div class="bh">
+                    <h2><a href="#"><%= body[i].title %> <%= body[i].restaurant==""?"":"-" %> <span><%= body[i].restaurant %></span></a></h2>
+                    <div class="time_lv"><%= global.myUtil.isToday(date)?global.myUtil.dateFormatter(date,'MM/dd hh:mm'):global.myUtil.dateFormatter(date,'yyyy/MM/dd') %></div>
+                </div>
+                <div><%= body[i].desc %></div>
+            </div>
+        </li>
+        <% } %>
+    </ul>
+</article>
+<% include ../common/footer.ejs %>
+</body>
+</html>

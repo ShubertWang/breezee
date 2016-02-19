@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <% include ../common/meta.ejs %>
+    <title>账户登录</title>
+    <% include ../common/public.ejs %>
+</head>
+<body ontouchstart>
+<div id="myAccount">
+    <div class="weui_cells weui_cells_access" style="margin-top:0;">
+
+        <a class="weui_cell" href="javascript:;">
+            <div class="weui_cell_hd img_tx"><img src="/custom/wx_style/images/icon_tx.png" alt="" style="width:60%;margin-right:5px;display:block"></div>
+            <div class="weui_cell_bd weui_cell_primary">
+                <p name="username"><%= body.username %></p>
+            </div>
+            <div class="weui_cell_ft"></div>
+        </a>
+
+    </div>
+    <div class="weui_cells weui_cells_access">
+
+        <a class="weui_cell" href="javascript:;">
+            <div class="weui_cell_hd"><img src="/custom/wx_style/images/icon_50_ygk.png" alt="" style="width:60%;margin-right:5px;display:block"></div>
+            <div class="weui_cell_bd weui_cell_primary">
+                <p>员工卡</p>
+            </div>
+            <div class="weui_cell_ft" name="cardNumber"><%= body.cardNumber %></div>
+        </a>
+        <a class="weui_cell" href="javascript:;">
+            <div class="weui_cell_hd"><img src="/custom/wx_style/images/icon_50_zd.png" alt="" style="width:60%;margin-right:5px;display:block"></div>
+            <div class="weui_cell_bd weui_cell_primary">
+                <p>我的余额</p>
+            </div>
+            <div class="weui_cell_ft"><span class="jg" name="balance"><%= body.balance %></span>元</div>
+        </a>
+    </div>
+    <div class="weui_cells weui_cells_access">
+
+        <a class="weui_cell" href="javascript:;">
+            <div class="weui_cell_hd"><img src="/custom/wx_style/images/icon_50_ph.png" alt="" style="width:60%;margin-right:5px;display:block"></div>
+            <div class="weui_cell_bd weui_cell_primary">
+                <p>手机号码</p>
+            </div>
+            <div class="weui_cell_ft" name="phone"><%= body.phone %></div>
+        </a>
+        <a class="weui_cell" href="javascript:;">
+            <div class="weui_cell_hd"><img src="/custom/wx_style/images/icon_50_dw.png" alt="" style="width:60%;margin-right:5px;display:block"></div>
+            <div class="weui_cell_bd weui_cell_primary">
+                <p>收货地址</p>
+            </div>
+            <div class="weui_cell_ft"><span name="address"><%= body.address %></span>个</div>
+        </a>
+    </div>
+    <div class="weui_cells weui_cells_access">
+
+        <a class="weui_cell" href="javascript:;">
+            <div class="weui_cell_hd"><img src="/custom/wx_style/images/icon_50_msg.png" alt="" style="width:60%;margin-right:5px;display:block"></div>
+            <div class="weui_cell_bd weui_cell_primary">
+                <p>我的消息</p>
+            </div>
+            <div class="weui_cell_ft"><span class="sz" name="message"><%= body.message %></span></div>
+        </a>
+    </div>
+    <div class="weui_cells weui_cells_access">
+
+        <a class="weui_cell" href="javascript:;">
+            <div class="weui_cell_hd"><img src="/custom/wx_style/images/icon_50_zx.png" alt="" style="width:60%;margin-right:5px;display:block"></div>
+            <div class="weui_cell_bd weui_cell_primary">
+                <p>在线客服</p>
+            </div>
+            <div class="weui_cell_ft"> </div>
+        </a>
+
+    </div>
+</div>
+<% include ../common/footer.ejs %>
+</body>
+</html>

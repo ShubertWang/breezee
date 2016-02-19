@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <% include ../common/meta.ejs %>
+    <title>有道小组学习工具</title>
+    <% include ../common/public.ejs %>
+    <style>
+        .panel-body{
+            height:550px;
+        }
+        .panel-body.panel-body-overflow{
+            overflow-x: hidden;
+            overflow-y: auto;
+        }
+        iframe {
+            width: 100%;
+            height : 100%;
+        }
+        .nav{
+            height: 34px;
+        }
+        .pagination{
+            margin: 0;
+        }
+    </style>
+</head>
+<body>
+<div class="container-fluid">
+    <div class="page-header">
+        <h1>有道小组学习工具</h1>
+    </div>
+    <div class="row">
+        <div class="col-md-7">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    有堂小组原页面
+                    <div class="nav">
+                        <ul class="pagination">
+                            <% for(var i = 1; i < 13; i++) {%>
+                            <li><a href="javascript:void(0)" onclick="goYouDaoPage(<%=i%>)"><%=i%></a></li>
+                            <% }%>
+                        </ul>
+                    </div>
+                </div>
+                <div class="panel-body" style="padding:0;">
+                    <iframe src="http://dg.youdao.com/index.php?app=group&ac=show&id=181&order=addTime&page=11" id="frame" name="frame"></iframe>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-5">
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    有堂小组翻译
+                    <div class="input-group">
+                        <input type="text" class="form-control" placeholder="原文粘贴至此处" id="resource">
+                          <span class="input-group-btn">
+                            <button class="btn btn-default" type="button" id="resourceButton">
+                                <span class="glyphicon glyphicon-ok"></span>
+                            </button>
+                          </span>
+                    </div>
+                </div>
+                <div class="panel-body panel-body-overflow" id="content">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<% include ../common/footer.ejs %>
+</body>
+</html>

@@ -1,0 +1,12 @@
+{
+  "success":true,
+  "msg":"",
+  "prop":{},
+
+  "total": 3,
+  "rows" : [
+    {"id":"1","inheritFlag":true, "attributeDefine" : {"id":"1","code":"productName", "name":"商品名称", "fieldType" : "string", "unitCode" : "kg", "arguments" : "{\"enumCode\":\"1\"}", "i18nAble" : "true", "searchAble" : "true", "writeBack":"", "remark":""}},
+    {"id":"2","inheritFlag":false, "attributeDefine" : {"id":"2","code":"color", "name":"颜色", "fieldType" : "string", "unitCode" : "kg", "subType" : "", "i18nAble" : "true", "searchAble" : "true", "writeBack":"", "remark":""}},
+    {"id":"3","inheritFlag":true, "attributeDefine" : {"id":"3","code":"size", "name":"尺寸", "fieldType" : "string", "unitCode" : "t", "subType" : "", "i18nAble" : "true", "searchAble" : "true", "writeBack":"", "remark":""}}
+  ]
+}

@@ -1,0 +1,28 @@
+{
+  "returnCode": "00",
+  "returnMsg": "OK",
+  "total": 2,
+  "success": true,
+  "prop": null,
+  "rows": [
+    {
+      "id": 1,
+      "code": "shanghai1",
+      "name": "上海一餐厅早餐堂吃",
+      "mealType" : "早餐",
+      "deliverType" : "堂吃",
+      "time" : ""
+    },
+    {
+      "id": 2,
+      "code": "shanghai2",
+      "name": "上海一餐厅午餐外卖",
+      "mealType" : "午餐",
+      "deliverType" : "外卖",
+      "time" : ""
+    }
+  ],
+  "value": null,
+  "start": 0,
+  "end": 0
+}

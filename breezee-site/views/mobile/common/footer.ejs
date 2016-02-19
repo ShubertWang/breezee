@@ -1,0 +1,20 @@
+<script>
+    var REQUEST_MAP = {
+        data : JSON.parse('<%=JSON.stringify(data)%>'.replace(/&#34;/g, '"') || "{}"),
+        body : JSON.parse('<%=JSON.stringify(body)%>'.replace(/&#34;/g, '"') || "{}")
+    };
+</script>
+
+<!--jquery-->
+<script src="//cdn.bootcss.com/jquery/2.2.0/jquery.js"></script>
+
+<!--rp-->
+<script src="/custom/wx_style/js/zepto.js"></script>
+<script src="/custom/wx_style/js/example.js"></script>
+
+<!--dolphin-->
+<script src="/dolphin/dolphin.core.js"></script>
+<script src="/custom/js/config.js"></script>
+
+<!--page script-->
+<script src="/page-script<%=path %>.js"></script>

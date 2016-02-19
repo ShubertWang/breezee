@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
+  <process id="orderProcess" name="Order process" isExecutable="true" activiti:candidateStarterUsers="root">
+    <startEvent id="start" name="Start"></startEvent>
+    <serviceTask id="fulfillment" name="Fulfillment" activiti:delegateExpression="aaa"></serviceTask>
+    <exclusiveGateway id="needPay" name="Need Pay" default="noneed"></exclusiveGateway>
+    <userTask id="payment" name="Payment" activiti:assignee="${creator}" activiti:candidateUsers="root" activiti:dueDate="PT45M"></userTask>
+    <subProcess id="orderHandle" name="Order Handle">
+      <multiInstanceLoopCharacteristics isSequential="false">
+        <loopCardinality>1</loopCardinality>
+        <completionCondition>1</completionCondition>
+      </multiInstanceLoopCharacteristics>
+      <startEvent id="startevent1" name="Start"></startEvent>
+      <userTask id="orderConfirm" name="Order Confirm" activiti:assignee="${storeName}" activiti:candidateUsers="root" activiti:dueDate="PT30M"></userTask>
+      <userTask id="orderPackage" name="Order Package" activiti:assignee="${storeName}" activiti:candidateUsers="root"></userTask>
+      <exclusiveGateway id="shipmethod" name="Exclusive Gateway" default="pickup"></exclusiveGateway>
+      <userTask id="orderDelivery" name="Order Delivery"></userTask>
+      <userTask id="orderPickup" name="Order Pickup" activiti:assignee="${storeName}" activiti:candidateUsers="root"></userTask>
+      <endEvent id="endevent1" name="End"></endEvent>
+      <sequenceFlow id="flow8" sourceRef="startevent1" targetRef="orderConfirm"></sequenceFlow>
+      <sequenceFlow id="flow9" sourceRef="orderConfirm" targetRef="orderPackage"></sequenceFlow>
+      <sequenceFlow id="flow10" sourceRef="orderPackage" targetRef="shipmethod"></sequenceFlow>
+      <sequenceFlow id="delivery" name="Need Delivery" sourceRef="shipmethod" targetRef="orderDelivery"></sequenceFlow>
+      <sequenceFlow id="pickup" name="Pickup" sourceRef="shipmethod" targetRef="orderPickup"></sequenceFlow>
+      <sequenceFlow id="flow13" sourceRef="orderDelivery" targetRef="endevent1"></sequenceFlow>
+      <sequenceFlow id="flow14" sourceRef="orderPickup" targetRef="endevent1"></sequenceFlow>
+      <sequenceFlow id="flow15" name="Reject" sourceRef="orderConfirm" targetRef="endevent1"></sequenceFlow>
+    </subProcess>
+    <serviceTask id="complete" name="Complete" activiti:delegateExpression="bbb"></serviceTask>
+    <endEvent id="endevent2" name="End"></endEvent>
+    <sequenceFlow id="flow1" sourceRef="start" targetRef="fulfillment"></sequenceFlow>
+    <sequenceFlow id="flow2" sourceRef="fulfillment" targetRef="needPay"></sequenceFlow>
+    <sequenceFlow id="noneed" name="No" sourceRef="needPay" targetRef="orderHandle"></sequenceFlow>
+    <sequenceFlow id="yesneed" name="Yes" sourceRef="needPay" targetRef="payment">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${needPay=='Y'}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="flow5" sourceRef="payment" targetRef="orderHandle"></sequenceFlow>
+    <sequenceFlow id="flow6" sourceRef="orderHandle" targetRef="complete"></sequenceFlow>
+    <sequenceFlow id="flow7" sourceRef="complete" targetRef="endevent2"></sequenceFlow>
+  </process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_orderProcess">
+    <bpmndi:BPMNPlane bpmnElement="orderProcess" id="BPMNPlane_orderProcess">
+      <bpmndi:BPMNShape bpmnElement="start" id="BPMNShape_start">
+        <omgdc:Bounds height="35.0" width="35.0" x="60.0" y="100.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="fulfillment" id="BPMNShape_fulfillment">
+        <omgdc:Bounds height="55.0" width="105.0" x="180.0" y="90.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="needPay" id="BPMNShape_needPay">
+        <omgdc:Bounds height="40.0" width="40.0" x="370.0" y="97.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="payment" id="BPMNShape_payment">
+        <omgdc:Bounds height="55.0" width="105.0" x="540.0" y="90.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="orderHandle" id="BPMNShape_orderHandle">
+        <omgdc:Bounds height="311.0" width="881.0" x="80.0" y="210.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
+        <omgdc:Bounds height="35.0" width="35.0" x="120.0" y="300.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="orderConfirm" id="BPMNShape_orderConfirm">
+        <omgdc:Bounds height="55.0" width="105.0" x="230.0" y="290.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="orderPackage" id="BPMNShape_orderPackage">
+        <omgdc:Bounds height="55.0" width="105.0" x="420.0" y="290.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="shipmethod" id="BPMNShape_shipmethod">
+        <omgdc:Bounds height="40.0" width="40.0" x="570.0" y="300.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="orderDelivery" id="BPMNShape_orderDelivery">
+        <omgdc:Bounds height="55.0" width="105.0" x="730.0" y="246.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="orderPickup" id="BPMNShape_orderPickup">
+        <omgdc:Bounds height="55.0" width="105.0" x="730.0" y="344.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="endevent1" id="BPMNShape_endevent1">
+        <omgdc:Bounds height="35.0" width="35.0" x="910.0" y="300.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="complete" id="BPMNShape_complete">
+        <omgdc:Bounds height="55.0" width="105.0" x="760.0" y="90.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="endevent2" id="BPMNShape_endevent2">
+        <omgdc:Bounds height="35.0" width="35.0" x="940.0" y="100.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge bpmnElement="flow8" id="BPMNEdge_flow8">
+        <omgdi:waypoint x="155.0" y="317.0"></omgdi:waypoint>
+        <omgdi:waypoint x="230.0" y="317.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow9" id="BPMNEdge_flow9">
+        <omgdi:waypoint x="335.0" y="317.0"></omgdi:waypoint>
+        <omgdi:waypoint x="420.0" y="317.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow10" id="BPMNEdge_flow10">
+        <omgdi:waypoint x="525.0" y="317.0"></omgdi:waypoint>
+        <omgdi:waypoint x="570.0" y="320.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="delivery" id="BPMNEdge_delivery">
+        <omgdi:waypoint x="610.0" y="320.0"></omgdi:waypoint>
+        <omgdi:waypoint x="782.0" y="301.0"></omgdi:waypoint>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="14.0" width="67.0" x="700.0" y="485.0"></omgdc:Bounds>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="pickup" id="BPMNEdge_pickup">
+        <omgdi:waypoint x="610.0" y="320.0"></omgdi:waypoint>
+        <omgdi:waypoint x="782.0" y="344.0"></omgdi:waypoint>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="14.0" width="31.0" x="700.0" y="531.0"></omgdc:Bounds>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow13" id="BPMNEdge_flow13">
+        <omgdi:waypoint x="835.0" y="273.0"></omgdi:waypoint>
+        <omgdi:waypoint x="927.0" y="300.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow14" id="BPMNEdge_flow14">
+        <omgdi:waypoint x="835.0" y="371.0"></omgdi:waypoint>
+        <omgdi:waypoint x="927.0" y="335.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow15" id="BPMNEdge_flow15">
+        <omgdi:waypoint x="282.0" y="345.0"></omgdi:waypoint>
+        <omgdi:waypoint x="282.0" y="421.0"></omgdi:waypoint>
+        <omgdi:waypoint x="927.0" y="421.0"></omgdi:waypoint>
+        <omgdi:waypoint x="927.0" y="335.0"></omgdi:waypoint>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="14.0" width="30.0" x="373.0" y="610.0"></omgdc:Bounds>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow1" id="BPMNEdge_flow1">
+        <omgdi:waypoint x="95.0" y="117.0"></omgdi:waypoint>
+        <omgdi:waypoint x="180.0" y="117.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow2" id="BPMNEdge_flow2">
+        <omgdi:waypoint x="285.0" y="117.0"></omgdi:waypoint>
+        <omgdi:waypoint x="370.0" y="117.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="noneed" id="BPMNEdge_noneed">
+        <omgdi:waypoint x="390.0" y="137.0"></omgdi:waypoint>
+        <omgdi:waypoint x="390.0" y="161.0"></omgdi:waypoint>
+        <omgdi:waypoint x="390.0" y="184.0"></omgdi:waypoint>
+        <omgdi:waypoint x="520.0" y="210.0"></omgdi:waypoint>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="14.0" width="13.0" x="370.0" y="159.0"></omgdc:Bounds>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="yesneed" id="BPMNEdge_yesneed">
+        <omgdi:waypoint x="410.0" y="117.0"></omgdi:waypoint>
+        <omgdi:waypoint x="540.0" y="117.0"></omgdi:waypoint>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="14.0" width="20.0" x="430.0" y="100.0"></omgdc:Bounds>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow5" id="BPMNEdge_flow5">
+        <omgdi:waypoint x="592.0" y="145.0"></omgdi:waypoint>
+        <omgdi:waypoint x="618.0" y="183.0"></omgdi:waypoint>
+        <omgdi:waypoint x="520.0" y="210.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow6" id="BPMNEdge_flow6">
+        <omgdi:waypoint x="520.0" y="210.0"></omgdi:waypoint>
+        <omgdi:waypoint x="812.0" y="186.0"></omgdi:waypoint>
+        <omgdi:waypoint x="812.0" y="145.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow7" id="BPMNEdge_flow7">
+        <omgdi:waypoint x="865.0" y="117.0"></omgdi:waypoint>
+        <omgdi:waypoint x="940.0" y="117.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</definitions>

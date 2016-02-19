@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <% include ../common/meta.ejs %>
+    <title>账户登录</title>
+    <% include ../common/public.ejs %>
+</head>
+<body ontouchstart class="bg_zi">
+<article>
+    <div class="div_cd">
+        <div class="weui_cells weui_cells_form">
+            <div class="weui_cell">
+
+                <div class="weui_cell_bd weui_cell_primary">
+                    <input class="weui_input" type="text" placeholder="您的姓名"/>
+                </div>
+            </div>
+            <div class="weui_cell">
+
+                <div class="weui_cell_bd weui_cell_primary">
+                    <input class="weui_input" type="text" placeholder="手机号码"/>
+                </div>
+            </div>
+        </div>
+
+        <div class="weui_cells weui_cells_form">
+            <div class="">
+                <div class="weui_cell weui_cell_select">
+                    <div class="weui_cell_bd weui_cell_primary">
+                        <select class="weui_select" name="select1">
+                            <option selected="" value="1">请选择公司</option>
+                            <option value="2">微软一号</option>
+                            <option value="3">微软一号</option>
+                        </select>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="weui_cells weui_cells_form">
+            <div class="weui_cell">
+
+                <div class="weui_cell_bd weui_cell_primary">
+                    <input class="weui_input" type="tel" placeholder="机构编码"/>
+                </div>
+            </div>
+            <div class="weui_cell">
+
+                <div class="weui_cell_bd weui_cell_primary">
+                    <input class="weui_input" type="tel" placeholder="工号"/>
+                </div>
+            </div>
+            <div class="weui_cell">
+
+                <div class="weui_cell_bd weui_cell_primary">
+                    <input class="weui_input" type="tel" placeholder="员工卡号"/>
+                </div>
+            </div>
+            <div class="weui_cell">
+
+                <div class="weui_cell_bd weui_cell_primary">
+                    <input class="weui_input" type="tel" placeholder="身份证后四位数字"/>
+                </div>
+            </div>
+        </div>
+    </div>
+</article>
+
+<footer>
+    <div class="footer_box"><a href="javascript:void(0);" class="weui_btn weui_btn_warn" id="submit">确定</a></div>
+</footer>
+</article>
+<% include ../common/footer.ejs %>
+</body>
+</html>

@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <% include ../common/meta.ejs %>
+    <title>账户登录</title>
+    <% include ../common/public.ejs %>
+</head>
+<body ontouchstart>
+<div>
+    <div class="weui_cells weui_cells_access">
+
+        <a class="weui_cell" href="javascript:;">
+            <div class="weui_cell_bd weui_cell_primary">
+                <p>个人账户</p>
+            </div>
+            <div><span class="jg"><%= body.personal %> </span>元</div>
+        </a>
+        <a class="weui_cell" href="javascript:;">
+
+            <div class="weui_cell_bd weui_cell_primary">
+                <p>补充账户</p>
+            </div>
+            <div><span class="jg"><%= body.complementary %> </span>元</div>
+        </a>
+    </div>
+
+    <div class="weui_cells weui_cells_access">
+
+        <a class="weui_cell" href="javascript:;">
+
+            <div class="weui_cell_bd weui_cell_primary">
+                <p>余额总计</p>
+            </div>
+            <div class="jgd"><span><%= body.total %></span> 元</div>
+        </a>
+
+    </div>
+    <div class="weui_cells weui_cells_access">
+
+        <a class="weui_cell" href="javascript:;">
+
+            <div class="weui_cell_bd weui_cell_primary">
+                <p>收支明细</p>
+            </div>
+            <div class="weui_cell_ft"> </div>
+        </a>
+
+    </div>
+</div>
+
+<footer>
+    <div class="footer_box"><a href="javascript:;" class="weui_btn weui_btn_warn">充值</a></div>
+</footer>
+<% include ../common/footer.ejs %>
+</body>
+</html>

@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <% include ../common/meta.ejs %>
+    <title>收货地址</title>
+    <% include ../common/public.ejs %>
+</head>
+<body ontouchstart>
+<article>
+    <div class="weui_cells weui_cells_form">
+        <div class="weui_cell">
+            <div class="weui_cell_hd"><label class="weui_label">联系人</label></div>
+            <div class="weui_cell_bd weui_cell_primary">
+                <input class="weui_input" type="text" placeholder="您的姓名"/>
+            </div>
+        </div>
+    </div>
+    <div class="weui_cells weui_cells_form">
+        <div class="weui_cell">
+            <div class="weui_cell_hd"><label class="weui_label">联系电话</label></div>
+            <div class="weui_cell_bd weui_cell_primary">
+                <input class="weui_input" type="tel" placeholder="您的手机号码"/>
+            </div>
+        </div>
+    </div>
+    <div class="weui_cells weui_cells_form">
+        <div class="weui_cell">
+            <div class="weui_cell_hd"><label class="weui_label">收货地址</label></div>
+            <div class="weui_cell_bd weui_cell_primary">
+                <input class="weui_input" type="text" placeholder="您的详细地址"/>
+            </div>
+        </div>
+    </div>
+</article>
+
+<footer>
+    <div class="footer_box"><a href="javascript:;" class="weui_btn weui_btn_warn">确定</a></div>
+</footer>
+
+<% include ../common/footer.ejs %>
+</body>
+</html>

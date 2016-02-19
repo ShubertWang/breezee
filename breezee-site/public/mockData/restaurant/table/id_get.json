@@ -1,0 +1,30 @@
+{
+  "returnCode": "00",
+  "returnMsg": "OK",
+  "total": 2,
+  "success": true,
+  "prop": null,
+  "rows": [
+    {
+      "id": 1,
+      "code": "table1",
+      "name": "大堂1号桌",
+      "number" : "4",
+      "location" : "靠窗",
+      "status" : "1",
+      "remark" : "测试数据"
+    },
+    {
+      "id": 2,
+      "code": "table2",
+      "name": "1号包厢",
+      "number" : "10",
+      "location" : "",
+      "status" : "1",
+      "remark" : "测试数据"
+    }
+  ],
+  "value": null,
+  "start": 0,
+  "end": 0
+}

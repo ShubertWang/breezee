@@ -1,0 +1,50 @@
+{
+  "returnCode": "00",
+  "returnMsg": "OK",
+  "total": 2,
+  "success": true,
+  "prop": null,
+  "rows": [
+    {
+      "id": 1,
+      "code": "shanghai1",
+      "name": "上海一餐厅",
+      "country" : "中国",
+      "city" : "上海",
+      "address" : "测试路223弄492号",
+      "officeName" : "Dolphin",
+      "telephone" : "15801678273",
+      "fax" : "",
+      "desc" : "测试数据",
+      "createTime": 1452073064000,
+      "creator": "ericw",
+      "org": "GROUP_IT",
+      "remark": null,
+      "updateTime": 1452073064000,
+      "updator": "ericw",
+      "parent": {
+        "id" : -1,
+        "name" : "无"
+      }
+    },
+    {
+      "id": 2,
+      "code": "shanghai2",
+      "name": "上海二餐厅",
+      "createTime": 1452073137000,
+      "creator": "ericw",
+      "directory" : true,
+      "org": "GROUP_IT",
+      "remark": null,
+      "updateTime": 1452073137000,
+      "updator": "ericw",
+      "parent": {
+        "id" : -1,
+        "name" : "无"
+      }
+    }
+  ],
+  "value": null,
+  "start": 0,
+  "end": 0
+}

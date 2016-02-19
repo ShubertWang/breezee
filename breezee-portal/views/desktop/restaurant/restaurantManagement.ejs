@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <% include ../common/meta.ejs %>
+    <title>管理平台</title>
+    <% include ../common/public.ejs %>
+</head>
+<body>
+<% include ../common/header.ejs %>
+
+<div class="container page-content">
+    <!--title-->
+    <div class="page-header">
+        <h1>菜品列表</h1>
+
+        <div class="operationButton" >
+            <div class="btn-group" role="group">
+                <button type="button" class="btn btn-success" id="insert">
+                    <span class="glyphicon glyphicon-plus"></span>
+                    添加
+                </button>
+                <button type="button" class="btn btn-primary" id="update">
+                    <span class="glyphicon glyphicon-pencil"></span>
+                    修改
+                </button>
+                <button type="button" class="btn btn-danger" id="delete">
+                    <span class="glyphicon glyphicon-trash"></span>
+                    删除
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div class="dolphin-row">
+        <div class="dolphin-col-6">
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <div class="panel-title">
+                        餐厅树
+                    </div>
+                </div>
+                <div class="panel-body" id="restaurantTreePanel">
+
+                </div>
+            </div>
+        </div>
+
+        <div class="dolphin-col-18" id="infoPanel">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <div class="panel-title">
+                        餐厅和服务线信息
+                    </div>
+                </div>
+                <div class="panel-body form-horizontal form-single">
+                    <div class="dolphin-row" id="baseInfoPanel">
+                        <div class="dolphin-col-12">
+                            <div class="form-group">
+                                <label class="col-sm-4 control-label">
+                                    餐厅编码
+                                </label>
+                                <div class="col-sm-8">
+                                    <p class="form-control-static" name="code"></p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="dolphin-col-12">
+                            <div class="form-group">
+                                <label class="col-sm-4 control-label">
+                                    餐厅名称
+                                </label>
+                                <div class="col-sm-8">
+                                    <p class="form-control-static" name="name"></p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="dolphin-col-12">
+                            <div class="form-group">
+                                <label class="col-sm-4 control-label">
+                                    国家
+                                </label>
+                                <div class="col-sm-8">
+                                    <p class="form-control-static" name="country"></p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="dolphin-col-12">
+                            <div class="form-group">
+                                <label class="col-sm-4 control-label">
+                                    城市
+                                </label>
+                                <div class="col-sm-8">
+                                    <p class="form-control-static" name="city"></p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="dolphin-col-12">
+                            <div class="form-group">
+                                <label class="col-sm-4 control-label">
+                                    地址
+                                </label>
+                                <div class="col-sm-8">
+                                    <p class="form-control-static" name="address"></p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="dolphin-col-12">
+                            <div class="form-group">
+                                <label class="col-sm-4 control-label">
+                                    办公室名称
+                                </label>
+                                <div class="col-sm-8">
+                                    <p class="form-control-static" name="officeName"></p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="dolphin-col-12">
+                            <div class="form-group">
+                                <label class="col-sm-4 control-label">
+                                    电话
+                                </label>
+                                <div class="col-sm-8">
+                                    <p class="form-control-static" name="telephone"></p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="dolphin-col-12">
+                            <div class="form-group">
+                                <label class="col-sm-4 control-label">
+                                    传真
+                                </label>
+                                <div class="col-sm-8">
+                                    <p class="form-control-static" name="fax"></p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="dolphin-col-12">
+                            <div class="form-group">
+                                <label class="col-sm-4 control-label">
+                                    描述
+                                </label>
+                                <div class="col-sm-8">
+                                    <p class="form-control-static" name="desc"></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <ul class="nav nav-pills">
+                        <li role="presentation" class="active"><a href="javascript:void(0)">服务线信息</a></li>
+                    </ul>
+                    <div id="serviceLinePanel"></div>
+
+
+                    <ul class="nav nav-pills" style="margin-top: 10px;">
+                        <li role="presentation" class="active"><a href="javascript:void(0)">餐桌信息</a></li>
+                    </ul>
+                    <div id="tablePanel"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!------------------------------------------------- modal win ------------------------------------------------------->
+<div id="restaurantModalWin" class="default-hidden">
+    <form class="form-horizontal" id="baseInfoForm">
+        <div class="dolphin-row">
+            <div class="dolphin-col-12">
+                <div class="form-group">
+                    <label class="col-sm-4 control-label">
+                        餐厅编码
+                    </label>
+                    <div class="col-sm-8">
+                        <input type="text" class="form-control" name="code" />
+                    </div>
+                </div>
+            </div>
+            <div class="dolphin-col-12">
+                <div class="form-group">
+                    <label class="col-sm-4 control-label">
+                        餐厅名称
+                    </label>
+                    <div class="col-sm-8">
+                        <input type="text" class="form-control" name="name" />
+                    </div>
+                </div>
+            </div>
+            <div class="dolphin-col-12">
+                <div class="form-group">
+                    <label class="col-sm-4 control-label">
+                        上级节点
+                    </label>
+                    <div class="col-sm-8">
+                        <input type="text" class="form-control" name="parent.id" />
+                    </div>
+                </div>
+            </div>
+            <div class="dolphin-col-12">
+                <div class="form-group">
+                    <label class="col-sm-4 control-label">
+                        国家
+                    </label>
+                    <div class="col-sm-8">
+                        <input type="text" class="form-control" name="country" />
+                    </div>
+                </div>
+            </div>
+            <div class="dolphin-col-12">
+                <div class="form-group">
+                    <label class="col-sm-4 control-label">
+                        城市
+                    </label>
+                    <div class="col-sm-8">
+                        <input type="text" class="form-control" name="city" />
+                    </div>
+                </div>
+            </div>
+            <div class="dolphin-col-12">
+                <div class="form-group">
+                    <label class="col-sm-4 control-label">
+                        地址
+                    </label>
+                    <div class="col-sm-8">
+                        <input type="text" class="form-control" name="address" />
+                    </div>
+                </div>
+            </div>
+            <div class="dolphin-col-12">
+                <div class="form-group">
+                    <label class="col-sm-4 control-label">
+                        办公室名称
+                    </label>
+                    <div class="col-sm-8">
+                        <input type="text" class="form-control" name="officeName" />
+                    </div>
+                </div>
+            </div>
+            <div class="dolphin-col-12">
+                <div class="form-group">
+                    <label class="col-sm-4 control-label">
+                        电话
+                    </label>
+                    <div class="col-sm-8">
+                        <input type="text" class="form-control" name="telephone" />
+                    </div>
+                </div>
+            </div>
+            <div class="dolphin-col-12">
+                <div class="form-group">
+                    <label class="col-sm-4 control-label">
+                        传真
+                    </label>
+                    <div class="col-sm-8">
+                        <input type="text" class="form-control" name="fax" />
+                    </div>
+                </div>
+            </div>
+            <div class="dolphin-col-12">
+                <div class="form-group">
+                    <label class="col-sm-4 control-label">
+                        描述
+                    </label>
+                    <div class="col-sm-8">
+                        <input type="text" class="form-control" name="desc" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+<div id="serviceLineModalWin" class="default-hidden">
+    <form class="form-horizontal" id="serviceLineForm">
+        <div class="dolphin-row">
+            <div class="dolphin-col-12">
+                <div class="form-group">
+                    <label class="col-sm-4 control-label">
+                        服务线名称
+                    </label>
+                    <div class="col-sm-8">
+                        <input type="text" class="form-control" name="name" />
+                    </div>
+                </div>
+            </div>
+            <div class="dolphin-col-12">
+                <div class="form-group">
+                    <label class="col-sm-4 control-label">
+                        餐次
+                    </label>
+                    <div class="col-sm-8">
+                        <input type="text" class="form-control" name="mealType" />
+                    </div>
+                </div>
+            </div>
+            <div class="dolphin-col-12">
+                <div class="form-group">
+                    <label class="col-sm-4 control-label">
+                        送餐方式
+                    </label>
+                    <div class="col-sm-8">
+                        <input type="text" class="form-control" name="deliverType" />
+                    </div>
+                </div>
+            </div>
+            <div class="dolphin-col-12">
+                <div class="form-group">
+                    <label class="col-sm-4 control-label">
+                        翻台时间
+                    </label>
+                    <div class="col-sm-8">
+                        <input type="text" class="form-control" name="time" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+<div id="tableModalWin" class="default-hidden">
+    <form class="form-horizontal" id="tableForm">
+        <div class="dolphin-row">
+            <div class="dolphin-col-12">
+                <div class="form-group">
+                    <label class="col-sm-4 control-label">
+                        餐桌编码
+                    </label>
+                    <div class="col-sm-8">
+                        <input type="text" class="form-control" name="code" />
+                    </div>
+                </div>
+            </div>
+            <div class="dolphin-col-12">
+                <div class="form-group">
+                    <label class="col-sm-4 control-label">
+                        餐桌名称
+                    </label>
+                    <div class="col-sm-8">
+                        <input type="text" class="form-control" name="name" />
+                    </div>
+                </div>
+            </div>
+            <div class="dolphin-col-12">
+                <div class="form-group">
+                    <label class="col-sm-4 control-label">
+                        标准座位数
+                    </label>
+                    <div class="col-sm-8">
+                        <input type="text" class="form-control" name="number" />
+                    </div>
+                </div>
+            </div>
+            <div class="dolphin-col-12">
+                <div class="form-group">
+                    <label class="col-sm-4 control-label">
+                        位置
+                    </label>
+                    <div class="col-sm-8">
+                        <input type="text" class="form-control" name="location" />
+                    </div>
+                </div>
+            </div>
+            <div class="dolphin-col-12">
+                <div class="form-group">
+                    <label class="col-sm-4 control-label">
+                        状态
+                    </label>
+                    <div class="col-sm-8">
+                        <input type="text" class="form-control" name="status" />
+                    </div>
+                </div>
+            </div>
+            <div class="dolphin-col-12">
+                <div class="form-group">
+                    <label class="col-sm-4 control-label">
+                        备注
+                    </label>
+                    <div class="col-sm-8">
+                        <input type="text" class="form-control" name="remark" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+<% include ../common/footer.ejs %>
+</body>
+</html>
