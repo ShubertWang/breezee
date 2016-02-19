@@ -2,10 +2,12 @@ var config = {
     service : {
         hostname: "http://127.0.0.1:18080",
         contextPath : "",
-        pcm:'http://127.0.0.1:6788/services',
-        sym:'http://127.0.0.1:6787/services',
-        sdx:'http://127.0.0.1:6881/services',
-        bpm:'http://127.0.0.1:6789/services'
+        pcm:'http://127.0.0.1:10246/services',
+        sym:'http://127.0.0.1:10245/services',
+        sdx:'http://127.0.0.1:10250/services',
+        bpm:'http://127.0.0.1:10249/services',
+        crm:'http://127.0.0.1:10248/services',
+        oms:'http://127.0.0.1:10247/services'
     },
     session : {
         secret: "12345",
