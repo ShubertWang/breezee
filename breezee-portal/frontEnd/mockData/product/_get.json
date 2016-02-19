@@ -1,0 +1,35 @@
+{
+  "success": true,
+  "msg": "",
+  "prop": {},
+  "total": 3,
+  "rows": [
+    {
+      "id": "1",
+      "code": "fishFlavoredPorkSlices",
+      "name": "鱼香肉丝",
+      "basePrice": "16",
+      "category" : {
+        "name" : "中餐"
+      }
+    },
+    {
+      "id": "2",
+      "code": "KungPaoChicken",
+      "name": "宫爆鸡丁",
+      "basePrice": "18",
+      "category" : {
+        "name" : "中餐"
+      }
+    },
+    {
+      "id": "3",
+      "code": "soybeanMilk",
+      "name": "豆浆",
+      "basePrice": "1",
+      "category" : {
+        "name" : "早餐"
+      }
+    }
+  ]
+}

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ Copyright (c) 2016.
+  ~ Breezee.com All Rights Reserved.
+  -->
+
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns="http://www.springframework.org/schema/beans" xmlns:dubbo="http://code.alibabatech.com/schema/dubbo"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd http://code.alibabatech.com/schema/dubbo http://code.alibabatech.com/schema/dubbo/dubbo.xsd">
+
+    <dubbo:service interface="com.breezee.prj.sodexo.service.IMesshallService"
+                   ref="messhallService" protocol="dubbo,rest" />
+    <dubbo:service interface="com.breezee.prj.sodexo.service.IFoodLineService"
+                   ref="foodLineService" protocol="dubbo,rest" />
+</beans>

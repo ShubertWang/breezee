@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <% include ../common/meta.ejs %>
+    <title>消息中心</title>
+    <% include ../common/public.ejs %>
+</head>
+<body ontouchstart>
+<article>
+    <ul class="list_djq">
+        <% for(var i = 0; i < body.length; i++){ %>
+        <li class="<%= (function(){
+            var className;
+            switch (body[i].status){
+                case "1" : className = "li_hb";break;
+                case "2" : className = "li_djq_ysy";break;
+                default : className = "li_djq_ygq";
+            }
+            return className;
+        })()%> bh">
+            <h1><%= body[i].title %></h1>
+            <h4>使用期限  <%= body[i].activeDate %>  至  <%= body[i].expireDate %></h4>
+            <div class="jg"><span>￥</span> <%= body[i].price %></div>
+            <% if(body[i].condition){%>
+            <h3><%= body[i].condition %></h3>
+            <% } %>
+        </li>
+        <% } %>
+    </ul>
+</article>
+<% include ../common/footer.ejs %>
+</body>
+</html>

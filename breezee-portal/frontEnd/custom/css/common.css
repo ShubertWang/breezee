@@ -1,0 +1,103 @@
+/*common*/
+body{
+    background: #eee;
+}
+body > nav{
+    margin: 0;
+}
+body .page-content{
+    padding: 20px;
+    background: #fff;
+    border-radius: 5px;
+}
+@media (min-width: 1200px){
+    .container{
+        width: 1240px;
+    }
+}
+
+/*title*/
+.page-header:first-child {
+    margin: 0 0 12px;
+    border-bottom: 1px dotted #e2e2e2;
+    position: relative;
+}
+
+.page-header:first-child h1 {
+    padding: 0;
+    margin: 0 8px;
+    font-size: 24px;
+    font-weight: lighter;
+    color: #2679b5;
+    text-align: left;
+}
+
+.page-header:first-child h1 small {
+    margin: 0 6px;
+    font-size: 14px;
+    font-weight: normal;
+    color: #8089a0;
+}
+
+
+/*panel*/
+.operationButton {
+    height: 35px;
+    margin-bottom : 5px;
+    text-align: right;
+}
+.operationButton.autoHeight {
+    height: auto;
+    margin-bottom : 5px;
+}
+
+.operationButton .btn-group.float-right {
+    margin-left: 10px;
+}
+.page-header .operationButton{
+    position: absolute;
+    right: 3px;
+    top: -4px;
+}
+
+
+/*form*/
+.form-buttons{
+    text-align: center;
+}
+
+.workspaceMenuPanel{
+    margin: 0;
+    padding: 15px;
+    border: 3px solid #fff;
+    border-radius: 5px;
+    box-shadow: 0 0 3px #c5cacb;
+    font-size: 12px;
+    word-wrap: break-word;
+}
+.workspaceMenuPanel > .menu-title{
+    font-family: 'Microsoft YaHei', Arial, sans-serif;
+    font-weight: 700;
+    font-size: 22px;
+    color: #565656;
+    margin:0 0 15px;;
+}
+.workspaceMenuPanel > ul{
+    list-style-image: url('../images/icon/bullet.png');
+    font-size: 15px;
+    font-family: "Microsoft YaHei", "Microsoft JhengHei", sans-serif;
+    padding-left: 20px;
+    margin:0;
+}
+.workspaceMenuPanel > ul > li{
+    line-height: 20px;
+}
+
+.workspaceMenuPanel > ul > li a{
+    color: #777;
+    text-decoration: none;
+}
+.workspaceMenuPanel > ul > li a:hover{
+    color: #777;
+    text-decoration: underline;
+}

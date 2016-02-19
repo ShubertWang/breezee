@@ -1,0 +1,19 @@
+{
+    "success":true,
+    "msg":"",
+    "prop":{},
+
+    "total": 10,
+    "rows" : [
+        {"id":"1","code":"productName", "name":"商品名称", "fieldType" : "string", "unitCode" : "kg", "arguments" : "{\"enumCode\":\"1\"}", "i18nAble" : "true", "searchAble" : "true", "writeBack":"", "remark":""},
+        {"id":"2","code":"color", "name":"颜色", "fieldType" : "string", "unitCode" : "kg", "subType" : "", "i18nAble" : "true", "searchAble" : "true", "writeBack":"", "remark":""},
+        {"id":"3","code":"size", "name":"尺寸", "fieldType" : "string", "unitCode" : "t", "subType" : "", "i18nAble" : "true", "searchAble" : "true", "writeBack":"", "remark":""},
+        {"id":"4","code":"brand", "name":"品牌", "fieldType" : "string", "unitCode" : "g", "subType" : "", "i18nAble" : "true", "searchAble" : "true", "writeBack":"", "remark":""},
+        {"id":"5","code":"image", "name":"图片", "fieldType" : "image", "unitCode" : "g", "subType" : "", "i18nAble" : "true", "searchAble" : "true", "writeBack":"", "remark":""},
+        {"id":"6","code":"test6", "name":"测试", "fieldType" : "image", "unitCode" : "g", "subType" : "", "i18nAble" : "true", "searchAble" : "true", "writeBack":"", "remark":""},
+        {"id":"7","code":"test7", "name":"测试", "fieldType" : "image", "unitCode" : "g", "subType" : "", "i18nAble" : "true", "searchAble" : "true", "writeBack":"", "remark":""},
+        {"id":"8","code":"test8", "name":"测试", "fieldType" : "image", "unitCode" : "g", "subType" : "", "i18nAble" : "true", "searchAble" : "true", "writeBack":"", "remark":""},
+        {"id":"9","code":"test9", "name":"测试", "fieldType" : "image", "unitCode" : "g", "subType" : "", "i18nAble" : "true", "searchAble" : "true", "writeBack":"", "remark":""},
+        {"id":"10","code":"test10", "name":"测试", "fieldType" : "image", "unitCode" : "g", "subType" : "", "i18nAble" : "true", "searchAble" : "true", "writeBack":"", "remark":""}
+    ]
+}

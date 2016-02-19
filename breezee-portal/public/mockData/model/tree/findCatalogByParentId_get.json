@@ -1,0 +1,37 @@
+{
+  "returnCode": "00",
+  "returnMsg": "OK",
+  "total": 2,
+  "success": true,
+  "prop": null,
+  "rows": [
+    {
+      "catalogId": 1,
+      "catalogCode": "officeEquipment",
+      "catalogName": "{\"code\":\"173222317\",\"zh\":\"办公设备\"}",
+      "createTime": 1452073064000,
+      "creator": "ericw",
+      "org": "GROUP_IT",
+      "remark": null,
+      "updateTime": 1452073064000,
+      "updator": "ericw",
+      "parentId": -1
+    },
+    {
+      "catalogId": 2,
+      "catalogCode": "OfficeConsumables",
+      "catalogName": "{\"code\":\"872040237\",\"zh\":\"办公耗材\"}",
+      "createTime": 1452073137000,
+      "creator": "ericw",
+      "directory" : true,
+      "org": "GROUP_IT",
+      "remark": null,
+      "updateTime": 1452073137000,
+      "updator": "ericw",
+      "parentId": -1
+    }
+  ],
+  "value": null,
+  "start": 0,
+  "end": 0
+}

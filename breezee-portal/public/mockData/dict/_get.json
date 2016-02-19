@@ -1,0 +1,109 @@
+{
+  "success": true,
+  "msg": "",
+  "prop": {},
+  "total": 10,
+  "rows": [
+    {
+      "id": "1",
+      "code": "field_type",
+      "name": "字段类型",
+      "remark": "",
+      "children": [
+        {
+          "code": "string",
+          "name": "字符串",
+          "orderNo": "1",
+          "remark": "TRUE",
+          "status": "1"
+        },
+        {
+          "code": "number",
+          "name": "数值",
+          "orderNo": "2",
+          "remark": "FALSE",
+          "status": "1"
+        },
+        {
+          "code": "date",
+          "name": "日期",
+          "orderNo": "3",
+          "remark": "FALSE",
+          "status": "1"
+        },
+        {
+          "code": "enum",
+          "name": "枚举",
+          "orderNo": "4",
+          "remark": "FALSE",
+          "status": "1"
+        },
+        {
+          "code": "image",
+          "name": "图片",
+          "orderNo": "5",
+          "remark": "FALSE",
+          "status": "1"
+        },
+        {
+          "code": "file",
+          "name": "文件",
+          "orderNo": "6",
+          "remark": "FALSE",
+          "status": "0"
+        }
+      ]
+    },
+    {
+      "id": "2",
+      "code": "color",
+      "name": "颜色",
+      "remark": "",
+      "children": [
+        {
+          "code": "red",
+          "name": "红色",
+          "orderNo": "1",
+          "remark": "TRUE",
+          "status": "1"
+        },
+        {
+          "code": "blue",
+          "name": "蓝色",
+          "orderNo": "2",
+          "remark": "FALSE",
+          "status": "1"
+        }
+      ]
+    },
+    {
+      "id": "3",
+      "code": "size",
+      "name": "尺寸",
+      "remark": "",
+      "children": [
+        {
+          "code": "L",
+          "name": "大",
+          "orderNo": "1",
+          "remark": "TRUE",
+          "status": "1"
+        },
+        {
+          "code": "M",
+          "name": "中",
+          "orderNo": "2",
+          "remark": "TRUE",
+          "status": "1"
+        },
+        {
+          "code": "S",
+          "name": "小",
+          "orderNo": "3",
+          "remark": "TRUE",
+          "status": "1"
+        }
+      ]
+    }
+  ]
+}

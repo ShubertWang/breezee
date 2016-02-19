@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <% include ../common/meta.ejs %>
+    <title>账户登录</title>
+    <% include ../common/public.ejs %>
+</head>
+<body ontouchstart>
+<div class="wdcd bh">
+    <ul>
+        <li class="bot_mx1 bot_choose"><a href="#" >全部</a></li>
+        <li class="bot_yfd"><a href="#">支出</a></li>
+        <li class="bot_sr"><a href="#">收入</a></li>
+    </ul>
+</div>
+<article>
+    <ul class="nr_list">
+        <% var date = null; %>
+        <% for(var i = 0; i < body.length; i++){ %>
+        <li class="bh li_lb">
+            <% date = new Date(body[i].date)%>
+            <div class="time"><%= date.getFullYear() %>/<%= date.getMonth()<9?"0"+(date.getMonth()+1):date.getMonth()+1 %><span><%= date.getDay()<10?"0"+date.getDay():date.getDay() %></span></div>
+            <div class="text_zh">
+                <div class="bh">
+                    <h2><a href="#"><%= body[i].type %><%= body[i].restaurant==""?"":"-" %><span><%= body[i].restaurant %></span></a></h2>
+                    <div class="jg"><%= body[i].price %></div>
+                </div>
+                <div class="bh"><div class="dz"><%= body[i].accountType %></div>
+                    <div class="float_l">余额 <%= body[i].accountBalance %></div>
+                </div>
+            </div>
+        </li>
+        <% } %>
+    </ul>
+</article>
+<% include ../common/footer.ejs %>
+</body>
+</html>

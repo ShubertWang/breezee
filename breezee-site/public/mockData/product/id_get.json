@@ -1,0 +1,29 @@
+{
+  "success": true,
+  "msg": "",
+  "prop": {},
+  "value": {
+      "id": "1",
+      "code": "fishFlavoredPorkSlices",
+      "name": "鱼香肉丝",
+      "basePrice": "16",
+      "category" : {
+        "id" : "1",
+        "name" : "中餐"
+      },
+      "productData" : [
+        {
+          "code" : "1",
+          "value" : "测试菜品数据"
+        },
+        {
+          "code" : "2",
+          "value" : "有点红"
+        },
+        {
+          "code" : "3",
+          "value":"中盘"
+        }
+      ]
+    }
+}
