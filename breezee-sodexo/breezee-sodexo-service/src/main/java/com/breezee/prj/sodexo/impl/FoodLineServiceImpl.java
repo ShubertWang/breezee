@@ -38,7 +38,7 @@ public class FoodLineServiceImpl implements IFoodLineService {
     public FoodLineInfo findInfoById(Long id) {
         FoodLineEntity entity = foodLineRepository.findOne(id);
         if(entity==null)
-            return NullInfo.build(FoodLineInfo.class);
+            return ErrorInfo.build(FoodLineInfo.class);
         return entity.toInfo();
     }
 

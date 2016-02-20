@@ -60,7 +60,7 @@ public class CategoryServiceImpl implements ICategoryService {
     public CategoryInfo findInfoById(Long id) {
         CategoryEntity en = categoryRepository.findOne(id);
         if(en==null)
-            return NullInfo.build(CategoryInfo.class);
+            return ErrorInfo.build(CategoryInfo.class);
         return en.toInfo(false);
     }
 

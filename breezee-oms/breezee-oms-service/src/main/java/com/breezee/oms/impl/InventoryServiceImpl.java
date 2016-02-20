@@ -59,7 +59,7 @@ public class InventoryServiceImpl implements InventoryService {
     public InventoryInfo findInfoById(Long id) {
         InventoryEntity entity = inventoryRepository.findOne(id);
         if(entity==null)
-            return NullInfo.build(InventoryInfo.class);
+            return ErrorInfo.build(InventoryInfo.class);
         return entity.toInfo();
     }
 

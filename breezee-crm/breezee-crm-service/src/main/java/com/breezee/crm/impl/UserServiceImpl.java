@@ -64,7 +64,7 @@ public class UserServiceImpl implements IUserService {
     public UserInfo findInfoById(Long id) {
         UserEntity ue = userRepository.findOne(id);
         if(ue == null)
-            return NullInfo.build(UserInfo.class);
+            return ErrorInfo.build(UserInfo.class);
         return ue.toInfo();
     }
 

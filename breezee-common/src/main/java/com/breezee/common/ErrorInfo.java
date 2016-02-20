@@ -9,8 +9,7 @@ package com.breezee.common;
  * 空对象的界面信息
  * Created by Silence on 2016/2/9.
  */
-public class NullInfo {
-
+public class ErrorInfo {
 
     public static <T extends BaseInfo> T build(Class<T> cla){
         T t = null;
@@ -27,4 +26,11 @@ public class NullInfo {
         t.setId(-1L);
         return t;
     }
+
+    public static <T extends BaseInfo> T build(T t,String errorMessage){
+        t.setId(-1L);
+        t.setRemark(errorMessage);
+        return t;
+    }
+
 }

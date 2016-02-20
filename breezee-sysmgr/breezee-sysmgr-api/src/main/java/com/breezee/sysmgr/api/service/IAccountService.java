@@ -28,4 +28,16 @@ public interface IAccountService extends IServiceLayer<AccountInfo> {
     @Path("/role/{roleId}")
     @POST
     PageResult<AccountInfo> findAccountsByRoleId(@PathParam("roleId") Long roleId, PageInfo pageInfo);
+
+    @Path("/status/{accountId}/{status}")
+    @GET
+    void updateAccountStatus(@PathParam("accountId") Long accountId, @PathParam("status") Integer status);
+
+    @Path("/updatePassword")
+    @POST
+    AccountInfo updatePassword(AccountInfo info);
+
+    @Path("/checkPassword")
+    @POST
+    AccountInfo checkPassword(AccountInfo info);
 }

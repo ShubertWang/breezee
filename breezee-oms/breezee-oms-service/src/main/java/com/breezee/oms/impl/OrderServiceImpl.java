@@ -62,7 +62,7 @@ public class OrderServiceImpl implements IOrderService {
     public OrderInfo findInfoById(Long id) {
         OrderEntity entity = orderRepository.findOne(id);
         if(entity==null)
-            return NullInfo.build(OrderInfo.class);
+            return ErrorInfo.build(OrderInfo.class);
         return entity.toInfo();
     }
 

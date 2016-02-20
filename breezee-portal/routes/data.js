@@ -52,6 +52,10 @@ router.use('*', function (req, res, next) {
                 reponse.total = ret.total;
                 reponse.rows = ret.content;
             } else {
+                if(ret.id < 0){
+                    reponse.success = false;
+                    reponse.msg = ret.remark;
+                }
                 reponse.total = 1;
                 reponse.value = ret;
             }

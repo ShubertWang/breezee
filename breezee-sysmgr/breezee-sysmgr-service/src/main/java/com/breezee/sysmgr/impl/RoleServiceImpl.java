@@ -10,6 +10,9 @@ import com.breezee.common.PageResult;
 import com.breezee.common.SuccessInfo;
 import com.breezee.sysmgr.api.domain.RoleInfo;
 import com.breezee.sysmgr.api.service.IRoleService;
+import com.breezee.sysmgr.entity.RoleEntity;
+import com.breezee.sysmgr.repository.RoleRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -21,8 +24,13 @@ import java.util.Map;
 @Service("roleService")
 public class RoleServiceImpl implements IRoleService {
 
+    @Autowired
+    private RoleRepository roleRepository;
+
     @Override
     public RoleInfo saveInfo(RoleInfo roleInfo) {
+
+        roleRepository.save(new RoleEntity().parse(roleInfo));
         return SuccessInfo.build(RoleInfo.class);
     }
 

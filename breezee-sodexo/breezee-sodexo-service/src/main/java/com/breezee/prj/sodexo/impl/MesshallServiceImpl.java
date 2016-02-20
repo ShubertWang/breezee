@@ -38,7 +38,7 @@ public class MesshallServiceImpl implements IMesshallService {
     public MesshallInfo findInfoById(Long id) {
         MesshallEntity entity = messhallRepository.findOne(id);
         if (entity == null)
-            return NullInfo.build(MesshallInfo.class);
+            return ErrorInfo.build(MesshallInfo.class);
         return entity.toInfo();
     }
 

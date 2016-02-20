@@ -6,7 +6,7 @@
 package com.breezee.prj.sodexo.impl;
 
 import com.breezee.common.InfoList;
-import com.breezee.common.NullInfo;
+import com.breezee.common.ErrorInfo;
 import com.breezee.common.PageInfo;
 import com.breezee.common.PageResult;
 import com.breezee.common.util.Callback;
@@ -40,7 +40,7 @@ public class SeatOrderServiceImpl implements ISeatOrderService {
     public SeatOrderInfo findInfoById(Long id) {
         SeatOrderEntity entity = seatOrderRepository.findOne(id);
         if(entity==null)
-            return NullInfo.build(SeatOrderInfo.class);
+            return ErrorInfo.build(SeatOrderInfo.class);
         return entity.toInfo();
     }
 

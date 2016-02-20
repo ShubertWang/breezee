@@ -5,7 +5,7 @@
 
 package com.breezee.sysmgr.impl;
 
-import com.breezee.common.NullInfo;
+import com.breezee.common.ErrorInfo;
 import com.breezee.common.PageInfo;
 import com.breezee.common.PageResult;
 import com.breezee.common.SuccessInfo;
@@ -43,7 +43,7 @@ public class OrganizationServiceImpl implements IOrganizationService {
     public OrganizationInfo findInfoById(Long id) {
         OrganizationEntity en = organizationRepository.findOne(id);
         if(en==null)
-            return NullInfo.build(OrganizationInfo.class);
+            return ErrorInfo.build(OrganizationInfo.class);
         return en.toInfo(false);
     }
 

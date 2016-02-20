@@ -5,11 +5,9 @@
 
 package com.breezee.sysmgr.impl;
 
-import com.breezee.common.InfoList;
-import com.breezee.common.PageInfo;
-import com.breezee.common.PageResult;
-import com.breezee.common.SuccessInfo;
+import com.breezee.common.*;
 import com.breezee.common.util.Callback;
+import com.breezee.common.util.ContextUtil;
 import com.breezee.common.util.SpecificationUtil;
 import com.breezee.sysmgr.api.domain.AccountInfo;
 import com.breezee.sysmgr.api.service.IAccountService;
@@ -17,10 +15,12 @@ import com.breezee.sysmgr.entity.AccountEntity;
 import com.breezee.sysmgr.repository.AccountRepository;
 import com.breezee.sysmgr.repository.OrganizationRepository;
 import com.breezee.sysmgr.repository.RoleRepository;
+import org.apache.commons.codec.digest.Md5Crypt;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
+import java.io.UnsupportedEncodingException;
 import java.util.List;
 import java.util.Map;
 
@@ -29,6 +29,8 @@ import java.util.Map;
  */
 @Service("accountService")
 public class AccountServiceImpl implements IAccountService {
+
+    private final static String salt = "breezee.password.salt";
 
     @Autowired
     private AccountRepository accountRepository;
@@ -41,6 +43,10 @@ public class AccountServiceImpl implements IAccountService {
 
     @Override
     public AccountInfo saveInfo(AccountInfo accountInfo) {
+        //如果新增的账号已经存在，则返回错误信息
+        if(accountInfo.getId()==null && accountRepository.findAccountByCode(accountInfo.getCode())!=null){
+            return ErrorInfo.build(accountInfo, ContextUtil.getMessage("duplicate.key", new String[]{accountInfo.getCode()}));
+        }
         AccountEntity entity = new AccountEntity().parse(accountInfo);
         if(accountInfo.getOrgId()!=null)
             entity.setOrganization(organizationRepository.findOne(accountInfo.getOrgId()));
@@ -48,6 +54,9 @@ public class AccountServiceImpl implements IAccountService {
             accountInfo.getRoles().forEach(a->{
                 entity.addRole(roleRepository.findOne(a));
             });
+        }
+        if(accountInfo.getPassword()==null){
+            entity.setPassword(md5Crypt(accountInfo.getCode()+"123"));
         }
         accountRepository.save(entity);
         return SuccessInfo.build(AccountInfo.class);
@@ -80,5 +89,57 @@ public class AccountServiceImpl implements IAccountService {
     @Override
     public PageResult<AccountInfo> findAccountsByRoleId(Long roleId, PageInfo pageInfo) {
         return null;
+    }
+
+    @Override
+    public void updateAccountStatus(Long accountId, Integer status) {
+        AccountEntity entity = accountRepository.findOne(accountId);
+        if(entity!=null) {
+            entity.setStatus(status);
+            accountRepository.save(entity);
+        }
+    }
+
+    @Override
+    public AccountInfo updatePassword(AccountInfo info) {
+        AccountEntity entity = accountRepository.findOne(info.getId());
+        if(entity!=null) {
+            String password = entity.getPassword();
+            String oldPassword = md5Crypt(info.getOldPassword());
+            if(!password.equals(oldPassword)){
+                return ErrorInfo.build(info,ContextUtil.getMessage("account.password.dismatch"));
+            } else {
+                entity.setPassword(md5Crypt(info.getPassword()));
+                accountRepository.save(entity);
+            }
+        }
+        return SuccessInfo.build(info);
+    }
+
+    @Override
+    public AccountInfo checkPassword(AccountInfo info) {
+        AccountEntity entity = accountRepository.findOne(info.getId());
+        if(entity!=null){
+            if(!entity.getPassword().equals(md5Crypt(info.getPassword()))){
+                return ErrorInfo.build(info,ContextUtil.getMessage("account.password.dismatch"));
+            }
+        }
+        return info;
+    }
+
+    /**
+     * 使用md5进行加密
+     * @param s
+     * @return
+     */
+    private String md5Crypt(String s){
+        if(s==null)
+            return "none";
+        try {
+            return Md5Crypt.md5Crypt(s.getBytes("UTF-8"),salt);
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+        return s;
     }
 }
