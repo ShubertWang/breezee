@@ -11,7 +11,10 @@
 
     <dubbo:service interface="com.breezee.sysmgr.api.service.IDictService" ref="dictService"
                    protocol="dubbo,rest" />
-
     <dubbo:service interface="com.breezee.sysmgr.api.service.IAccountService" ref="accountService"
+                   protocol="dubbo,rest" />
+    <dubbo:service interface="com.breezee.sysmgr.api.service.IRoleService" ref="roleService"
+                   protocol="dubbo,rest" />
+    <dubbo:service interface="com.breezee.sysmgr.api.service.IOrganizationService" ref="organizationService"
                    protocol="dubbo,rest" />
 </beans>

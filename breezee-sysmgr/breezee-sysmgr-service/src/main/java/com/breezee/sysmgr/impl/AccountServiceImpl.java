@@ -30,8 +30,6 @@ import java.util.Map;
 @Service("accountService")
 public class AccountServiceImpl implements IAccountService {
 
-    private final static String salt = "breezee.password.salt";
-
     @Autowired
     private AccountRepository accountRepository;
 
@@ -43,17 +41,20 @@ public class AccountServiceImpl implements IAccountService {
 
     @Override
     public AccountInfo saveInfo(AccountInfo accountInfo) {
+        AccountEntity entity = accountRepository.findByCode(accountInfo.getCode());
         //如果新增的账号已经存在，则返回错误信息
-        if(accountInfo.getId()==null && accountRepository.findAccountByCode(accountInfo.getCode())!=null){
+        if(accountInfo.getId()==null && entity !=null){
             return ErrorInfo.build(accountInfo, ContextUtil.getMessage("duplicate.key", new String[]{accountInfo.getCode()}));
         }
-        AccountEntity entity = new AccountEntity().parse(accountInfo);
+        if(entity==null)
+            entity = new AccountEntity();
+        entity.parse(accountInfo);
         if(accountInfo.getOrgId()!=null)
             entity.setOrganization(organizationRepository.findOne(accountInfo.getOrgId()));
         if(accountInfo.getRoles()!=null && accountInfo.getRoles().size()>0){
-            accountInfo.getRoles().forEach(a->{
-                entity.addRole(roleRepository.findOne(a));
-            });
+            for (Long roleId : accountInfo.getRoles()) {
+                entity.addRole(roleRepository.findOne(roleId));
+            }
         }
         if(accountInfo.getPassword()==null){
             entity.setPassword(md5Crypt(accountInfo.getCode()+"123"));
@@ -87,7 +88,18 @@ public class AccountServiceImpl implements IAccountService {
     }
 
     @Override
+    public PageResult<AccountInfo> findAccountsNotOrgId(Long orgId, PageInfo pageInfo) {
+        Page<AccountEntity> page = accountRepository.findAccountsNotInOrg(organizationRepository.findOne(orgId),pageInfo);
+        return new PageResult<>(page, AccountInfo.class, (accountEntity, accountInfo) -> accountEntity.toInfo());
+    }
+
+    @Override
     public PageResult<AccountInfo> findAccountsByRoleId(Long roleId, PageInfo pageInfo) {
+        return null;
+    }
+
+    @Override
+    public PageResult<AccountInfo> findAccountsNotRoleId(Long roleId, PageInfo pageInfo) {
         return null;
     }
 
@@ -136,7 +148,7 @@ public class AccountServiceImpl implements IAccountService {
         if(s==null)
             return "none";
         try {
-            return Md5Crypt.md5Crypt(s.getBytes("UTF-8"),salt);
+            return Md5Crypt.md5Crypt(s.getBytes("UTF-8"));
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }

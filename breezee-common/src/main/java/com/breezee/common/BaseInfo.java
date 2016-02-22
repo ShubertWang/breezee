@@ -130,14 +130,15 @@ public class BaseInfo implements Serializable {
      * @param info
      */
     public void cloneAttribute(BaseInfo info) {
-        info.setCode(this.code);
-        info.setId(this.id);
-        info.setName(this.name);
+        if(this.code!=null) info.setCode(this.code);
+        if(this.id!=null) info.setId(this.id);
+        if(this.name!=null) info.setName(this.name);
+        if(this.remark!=null) info.setRemark(this.remark);
         info.setStatus(this.status);
-        info.setTenantId(this.tenantId);
-        info.setCreator(this.creator);
-        info.setUpdator(this.updator);
-        info.setCreateTime(this.createTime);
-        info.setUpdateTime(this.updateTime);
+        if(this.tenantId!=null) info.setTenantId(this.tenantId);
+        if(this.creator!=null) info.setCreator(this.creator);
+        if(this.updator!=null) info.setUpdator(this.updator);
+        if(this.createTime!=null) info.setCreateTime(this.createTime);
+        if(this.updateTime!=null) info.setUpdateTime(this.updateTime);
     }
 }

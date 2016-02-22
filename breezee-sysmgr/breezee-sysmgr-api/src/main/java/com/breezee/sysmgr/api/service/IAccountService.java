@@ -25,9 +25,17 @@ public interface IAccountService extends IServiceLayer<AccountInfo> {
     @POST
     PageResult<AccountInfo> findAccountsByOrgId(@PathParam("orgId") Long orgId, PageInfo pageInfo);
 
+    @Path("/excludeOrg/{orgId}")
+    @POST
+    PageResult<AccountInfo> findAccountsNotOrgId(@PathParam("orgId") Long orgId, PageInfo pageInfo);
+
     @Path("/role/{roleId}")
     @POST
     PageResult<AccountInfo> findAccountsByRoleId(@PathParam("roleId") Long roleId, PageInfo pageInfo);
+
+    @Path("/excludeRole/{roleId}")
+    @POST
+    PageResult<AccountInfo> findAccountsNotRoleId(@PathParam("roleId") Long roleId, PageInfo pageInfo);
 
     @Path("/status/{accountId}/{status}")
     @GET

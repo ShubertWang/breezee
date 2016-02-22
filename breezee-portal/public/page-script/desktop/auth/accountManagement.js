@@ -64,7 +64,6 @@ $(function () {
             $('#listPanel').toggleClass('dolphin-col-24').toggleClass('dolphin-col-18');
             $('#formPanel').toggle();
         }
-        console.log(list.getChecked());
         Dolphin.form.setValue(list.getChecked()[0], '#editForm');
     });
     $('#save').click(function () {

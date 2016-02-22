@@ -20,4 +20,7 @@ public interface OrganizationRepository extends CrudRepository<OrganizationEntit
 
     @Query("select c from OrganizationEntity c where c.parent is null")
     List<OrganizationEntity> findTop();
+
+    OrganizationEntity findByCode(String code);
+
 }

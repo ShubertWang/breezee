@@ -14,32 +14,17 @@ $(function () {
         title: '角色列表',
         columns: [{
             code: 'code',
-            title: '登录名称'
+            title: '角色编码'
         }, {
             code: 'name',
-            title: '账号名称'
+            title: '角色名称'
         }, {
-            code: 'type',
-            title: '类型'
-        }, {
-            code: 'sex',
-            title: '性别'
-        }, {
-            code: 'job',
-            title: '岗位'
-        }, {
-            code: 'mobile',
-            title: '手机'
-        }, {
-            code: 'organization.name',
-            title: '所属组织'
-        }, {
-            code: 'roles',
-            title: '角色'
+            code: 'permits',
+            title: '权限'
         }],
         multiple: false,
         ajaxType: 'post',
-        url: '/data/sym/account/page',
+        url: '/data/sym/role/list',
         dataFilter: function (data) {
             for (var i = 0; i < data.rows.length; i++) {
                 data.rows[i].arguments = Dolphin.string2json(data.rows[i].arguments || '{}');
@@ -52,16 +37,29 @@ $(function () {
     });
 
     //============================================================== event
+    function checkEditFormHidden(){
+        return $('#formPanel').is(':hidden');
+    }
     $('#insert').click(function () {
-        $('#listPanel').toggleClass('dolphin-col-24').toggleClass('dolphin-col-18');
-        $('#formPanel').toggle();
+        if(checkEditFormHidden()){
+            $('#listPanel').toggleClass('dolphin-col-24').toggleClass('dolphin-col-18');
+            $('#formPanel').toggle();
+        }
+        Dolphin.form.empty("#editForm");
+    });
+    $('#update').click(function () {
+        if(checkEditFormHidden()) {
+            $('#listPanel').toggleClass('dolphin-col-24').toggleClass('dolphin-col-18');
+            $('#formPanel').toggle();
+        }
+        Dolphin.form.setValue(list.getChecked()[0], '#editForm');
     });
     $('#save').click(function () {
         if (Dolphin.form.validate('#editForm')) {
             var data = Dolphin.form.getValue('editForm', '"');
             data.arguments = Dolphin.json2string(data.arguments);
             Dolphin.ajax({
-                url: '/data/sym/account',
+                url: '/data/sym/role/',
                 type: Dolphin.requestMethod.PUT,
                 data: Dolphin.json2string(data),
                 onSuccess: function (reData) {
@@ -80,5 +78,10 @@ $(function () {
     });
     $("#conditionReset").click(function () {
         Dolphin.form.empty("#queryForm")
+    });
+    $("#cancel").click(function(){
+        $('#listPanel').toggleClass('dolphin-col-18').toggleClass('dolphin-col-24');
+        $('#formPanel').toggle();
+        Dolphin.form.empty("#editForm");
     });
 });
