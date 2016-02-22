@@ -7,7 +7,7 @@ package com.breezee.oms.impl;
 
 import com.breezee.common.*;
 import com.breezee.common.util.Callback;
-import com.breezee.common.util.SpecificationUtil;
+import com.breezee.common.DynamicSpecifications;
 import com.breezee.oms.api.domain.InventoryInfo;
 import com.breezee.oms.entity.InventoryEntity;
 import com.breezee.oms.repository.InventoryRepository;
@@ -65,13 +65,13 @@ public class InventoryServiceImpl implements InventoryService {
 
     @Override
     public List<InventoryInfo> listAll(Map<String, Object> m) {
-        List<InventoryEntity> l = inventoryRepository.findAll(SpecificationUtil.createSpecification(m));
+        List<InventoryEntity> l = inventoryRepository.findAll(DynamicSpecifications.createSpecification(m));
         return new InfoList<>(l, (Callback<InventoryEntity, InventoryInfo>) (inventoryEntity, inventoryInfo) -> inventoryEntity.toInfo());
     }
 
     @Override
     public PageResult<InventoryInfo> pageAll(Map<String, Object> m, PageInfo pageInfo) {
-        Page<InventoryEntity> page = inventoryRepository.findAll(SpecificationUtil.createSpecification(m), pageInfo);
+        Page<InventoryEntity> page = inventoryRepository.findAll(DynamicSpecifications.createSpecification(m), pageInfo);
         return new PageResult<>(page, InventoryInfo.class, (inventoryEntity, inventoryInfo) -> inventoryEntity.toInfo());
     }
 }

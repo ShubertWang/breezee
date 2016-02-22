@@ -7,7 +7,7 @@ package com.breezee.crm.impl;
 
 import com.breezee.common.*;
 import com.breezee.common.util.Callback;
-import com.breezee.common.util.SpecificationUtil;
+import com.breezee.common.DynamicSpecifications;
 import com.breezee.crm.api.domain.ShippingAddressInfo;
 import com.breezee.crm.api.domain.UserInfo;
 import com.breezee.crm.entity.ShippingAddressEntity;
@@ -70,13 +70,13 @@ public class UserServiceImpl implements IUserService {
 
     @Override
     public List<UserInfo> listAll(Map<String, Object> m) {
-        List<UserEntity> l = userRepository.findAll(SpecificationUtil.createSpecification(m));
+        List<UserEntity> l = userRepository.findAll(DynamicSpecifications.createSpecification(m));
         return new InfoList<>(l, (Callback<UserEntity, UserInfo>) (userEntity, userInfo) -> userEntity.toInfo());
     }
 
     @Override
     public PageResult<UserInfo> pageAll(Map<String, Object> m, PageInfo pageInfo) {
-        Page<UserEntity> page = userRepository.findAll(SpecificationUtil.createSpecification(m),pageInfo);
+        Page<UserEntity> page = userRepository.findAll(DynamicSpecifications.createSpecification(m),pageInfo);
         return new PageResult<>(page, UserInfo.class, (userEntity, userInfo) -> userEntity.toInfo());
     }
 }

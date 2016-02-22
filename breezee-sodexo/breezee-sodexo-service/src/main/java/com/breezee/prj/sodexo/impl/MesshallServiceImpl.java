@@ -7,7 +7,7 @@ package com.breezee.prj.sodexo.impl;
 
 import com.breezee.common.*;
 import com.breezee.common.util.Callback;
-import com.breezee.common.util.SpecificationUtil;
+import com.breezee.common.DynamicSpecifications;
 import com.breezee.prj.sodexo.domain.MesshallInfo;
 import com.breezee.prj.sodexo.entity.MesshallEntity;
 import com.breezee.prj.sodexo.repository.MesshallRepository;
@@ -44,13 +44,13 @@ public class MesshallServiceImpl implements IMesshallService {
 
     @Override
     public List<MesshallInfo> listAll(Map<String, Object> m) {
-        List<MesshallEntity> l = messhallRepository.findAll(SpecificationUtil.createSpecification(m));
+        List<MesshallEntity> l = messhallRepository.findAll(DynamicSpecifications.createSpecification(m));
         return new InfoList<>(l, (Callback<MesshallEntity, MesshallInfo>) (messhallEntity, messhallInfo) -> messhallEntity.toInfo());
     }
 
     @Override
     public PageResult<MesshallInfo> pageAll(Map<String, Object> m, PageInfo pageInfo) {
-        Page<MesshallEntity> page = messhallRepository.findAll(SpecificationUtil.createSpecification(m),pageInfo);
+        Page<MesshallEntity> page = messhallRepository.findAll(DynamicSpecifications.createSpecification(m),pageInfo);
         return new PageResult<>(page, MesshallInfo.class, (messhallEntity, messhallInfo) -> messhallEntity.toInfo());
     }
 }

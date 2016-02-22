@@ -78,7 +78,7 @@
     </div>
 
     <div class="dolphin-row">
-        <div class="dolphin-col-18" id="listPanel">
+        <div class="dolphin-col-24" id="listPanel">
             <!--list-->
             <div id="list"></div>
         </div>
@@ -104,12 +104,9 @@
                             </div>
                             <div class="form-group">
                                 <label>属性类型</label>
-                                <select class="form-control" options="field_type" name="fieldType" dol-validate="required"></select>
+                                <select id="field-Type" class="form-control" options="attr_type" name="fieldType" dol-validate="required"></select>
                             </div>
-                            <hr/>
-                            <div class="form-group">
-                                <label>枚举编码</label>
-                                <input type="text" class="form-control"  name="arguments.enumCode" dol-validate="required">
+                            <div id="extendInfo" class="default-hidden">
                             </div>
                             <hr/>
                             <div class="form-buttons">
@@ -122,9 +119,6 @@
             </div>
         </div>
     </div>
-
-
-
 </div>
 
 <% include ../common/footer.ejs %>

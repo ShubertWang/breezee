@@ -7,7 +7,7 @@
  * Created by Shubert.Wang on 2016/1/27.
  */
 $(function () {
-    var accountPanel = $("#accountPanel"),rolePanel=$("#rolePanel");
+    var accountPanel = $("#accountPanel"),rolePanel=$("#rolePanel"), selectNode;
 
     Dolphin.form.parse();
 
@@ -34,17 +34,18 @@ $(function () {
             return data;
         },
         onCheck: function (data) {
+            selectNode = data;
             Dolphin.form.setValue(data, '#editForm');
+            roleAccntList.load('/data/sym/account/role/'+data.id);
         }
     });
 
     var roleAccntList = new Dolphin.LIST({
         panel : '#accountList',
-        url : '/data/sym/account/role/{id}',
         ajaxType:'post',
         mockPathData : ['id'],
         data : {rows : [], total : 0},
-        pagination : true,
+        pagination : false,
         columns : [{
             code: 'code',
             title: '账号编码'
@@ -78,7 +79,7 @@ $(function () {
         title : '未选择列表',
         panelType : 'panel-info',
         ajaxType:'post',
-        url : '/data/sym/account/excludeRole/'+selectNode.id,
+        url : '/data/sym/account/excludeRole/{id}',
         pagination : true,
         rowIndex : false,
         columns : [{
@@ -99,15 +100,15 @@ $(function () {
     }
     $('#insert').click(function () {
         if(checkEditFormHidden()){
-            $('#listPanel').toggleClass('dolphin-col-24').toggleClass('dolphin-col-18');
-            $('#formPanel').toggle();
+            $('#formPanel').show();
+            $("#acntList").hide();
         }
         Dolphin.form.empty("#editForm");
     });
     $('#update').click(function () {
         if(checkEditFormHidden()) {
-            $('#listPanel').toggleClass('dolphin-col-24').toggleClass('dolphin-col-18');
-            $('#formPanel').toggle();
+            $('#formPanel').show();
+            $("#acntList").hide();
         }
         Dolphin.form.setValue(list.getChecked()[0], '#editForm');
     });
@@ -138,7 +139,9 @@ $(function () {
         Dolphin.form.empty("#queryForm")
     });
     $("#cancel").click(function(){
-
+        $('#formPanel').hide();
+        roleAccntList.reload();
+        $("#acntList").show();
     });
 
     $('#multipleUpdateAttr').click(function () {
@@ -175,7 +178,7 @@ $(function () {
     });
 
     $('#confirm').click(function () {
-        var data = {},selectNode=list.getChecked()[0];
+        var data = {};
         data.id = selectNode.id;
         data.code = selectNode.code;
         data.accounts = [];
@@ -183,7 +186,6 @@ $(function () {
         for(var i = 0; i < selData.length; i++){
             data.accounts.push(selData[i].id);
         }
-        console.log(selectNode);
         Dolphin.ajax({
             url : '/data/sym/role/acntRel',
             type : Dolphin.requestMethod.PUT,
@@ -192,6 +194,9 @@ $(function () {
                 Dolphin.alert(reData.msg || '保存成功', {
                     callback : function () {
                         roleAccntList.reload();
+                        accountPanel.slideToggle(300, function () {
+                            rolePanel.slideToggle(300);
+                        });
                     }
                 })
             }

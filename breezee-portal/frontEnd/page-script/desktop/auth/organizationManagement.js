@@ -92,7 +92,6 @@ $(function () {
         title : '未选择列表',
         panelType : 'panel-info',
         ajaxType:'post',
-        url : '/data/sym/account/excludeOrg/'+selectNode.id,
         pagination : true,
         rowIndex : false,
         columns : [{
@@ -216,7 +215,6 @@ $(function () {
         for(var i = 0; i < selData.length; i++){
             data.accounts.push(selData[i].id);
         }
-        console.log(selectNode);
         Dolphin.ajax({
             url : '/data/sym/organization/acntRel',
             type : Dolphin.requestMethod.PUT,
@@ -224,8 +222,12 @@ $(function () {
             onSuccess : function (reData) {
                 Dolphin.alert(reData.msg || '保存成功', {
                     callback : function () {
-                        categoryTree.reload();
-                        categoryWin.modal('hide');
+                        //categoryTree.reload();
+                        //categoryWin.modal('hide');
+                        attributePanel.slideToggle(300, function () {
+                            categoryPanel.slideToggle(300);
+                        });
+                        attrList.reload();
                     }
                 })
             }

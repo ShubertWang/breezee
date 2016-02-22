@@ -35,10 +35,10 @@ public class RoleServiceImpl implements IRoleService {
     @Override
     public RoleInfo saveInfo(RoleInfo roleInfo) {
         RoleEntity entity = roleRepository.findByCode(roleInfo.getCode());
-        if(roleInfo.getId()==null && entity!=null){
+        if (roleInfo.getId() == null && entity != null) {
             return ErrorInfo.build(roleInfo, ContextUtil.getMessage("duplicate.key", new String[]{roleInfo.getCode()}));
         }
-        if(entity==null)
+        if (entity == null)
             entity = new RoleEntity();
         roleRepository.save(entity.parse(roleInfo));
         return SuccessInfo.build(RoleInfo.class);
@@ -47,7 +47,7 @@ public class RoleServiceImpl implements IRoleService {
     @Override
     public RoleInfo findInfoById(Long id) {
         RoleEntity entity = roleRepository.findOne(id);
-        if(entity==null)
+        if (entity == null)
             return ErrorInfo.build(new RoleInfo(), ContextUtil.getMessage("entity.error.exist"));
         return entity.toInfo();
     }
@@ -65,16 +65,16 @@ public class RoleServiceImpl implements IRoleService {
 
     @Override
     public void updateRoleAccount(RoleInfo roleInfo) {
-        if(roleInfo.getAccounts()==null || roleInfo.getAccounts().size()==0)
-            return;
-        String delSql = "delete from sym_tf_acnt_role where ROLE_ID="+roleInfo.getId();
+        String delSql = "delete from sym_tf_acnt_role where ROLE_ID=" + roleInfo.getId();
         String insertSql = "insert into sym_tf_acnt_role (ROLE_ID,ACNT_ID) values(?,?)";
         List<Object[]> l = new ArrayList<>();
 
-        roleInfo.getAccounts().forEach(a->{
-            l.add(new Object[]{roleInfo.getId(),a});
-        });
+        if (roleInfo.getAccounts() != null)
+            roleInfo.getAccounts().forEach(a -> {
+                l.add(new Object[]{roleInfo.getId(), a});
+            });
         jdbcTemplate.update(delSql);
-        jdbcTemplate.batchUpdate(insertSql,l);
+        if(l.size()>0)
+            jdbcTemplate.batchUpdate(insertSql, l);
     }
 }

@@ -4,7 +4,6 @@ $(function () {
     var infoPanel = $('#infoPanel'),
         categoryPanel = $('#categoryPanel'),
         attributePanel = $('#attributePanel'),
-        categoryAttrSave = $('#categoryAttrSave'),
         attributeLibrary,selectNode;
 
     //categoryTree
@@ -52,14 +51,8 @@ $(function () {
             title : '联系手机'
         }],
         onLoadSuccess : function (data) {
-            Dolphin.toggleEnable(categoryAttrSave, false);
         },
         onCheck : function (data, row, thisInput) {
-            if(this.getChecked().length > 0){
-                Dolphin.toggleEnable(categoryAttrSave, true);
-            }else{
-                Dolphin.toggleEnable(categoryAttrSave, false);
-            }
         },
         onChecked : function (data) {
             var row = $('tr[__id__="'+data.__id__+'"]');
@@ -99,7 +92,6 @@ $(function () {
         title : '未选择列表',
         panelType : 'panel-info',
         ajaxType:'post',
-        url : '/data/sym/account/excludeOrg'+selectNode.id,
         pagination : true,
         rowIndex : false,
         columns : [{
@@ -213,6 +205,7 @@ $(function () {
             }
         }
     });
+
     $('#confirm').click(function () {
         var data = {};
         data.id = selectNode.id;
@@ -222,7 +215,6 @@ $(function () {
         for(var i = 0; i < selData.length; i++){
             data.accounts.push(selData[i].id);
         }
-        console.log(selectNode);
         Dolphin.ajax({
             url : '/data/sym/organization/acntRel',
             type : Dolphin.requestMethod.PUT,
@@ -230,8 +222,12 @@ $(function () {
             onSuccess : function (reData) {
                 Dolphin.alert(reData.msg || '保存成功', {
                     callback : function () {
-                        categoryTree.reload();
-                        categoryWin.modal('hide');
+                        //categoryTree.reload();
+                        //categoryWin.modal('hide');
+                        attributePanel.slideToggle(300, function () {
+                            categoryPanel.slideToggle(300);
+                        });
+                        attrList.reload();
                     }
                 })
             }
@@ -271,7 +267,7 @@ $(function () {
             categoryWin.modal('hide');
         });
         categoryWin = Dolphin.modalWin({
-            title : '编辑品类基本信息',
+            title : '编辑组织基本信息',
             content : $('#categoryModalWin').show(),
             footer : footer,
             defaultHidden : true,

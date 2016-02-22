@@ -7,7 +7,7 @@ package com.breezee.prj.sodexo.impl;
 
 import com.breezee.common.*;
 import com.breezee.common.util.Callback;
-import com.breezee.common.util.SpecificationUtil;
+import com.breezee.common.DynamicSpecifications;
 import com.breezee.prj.sodexo.domain.FoodLineInfo;
 import com.breezee.prj.sodexo.entity.FoodLineEntity;
 import com.breezee.prj.sodexo.repository.FoodLineRepository;
@@ -44,13 +44,13 @@ public class FoodLineServiceImpl implements IFoodLineService {
 
     @Override
     public List<FoodLineInfo> listAll(Map<String, Object> m) {
-        List<FoodLineEntity> l = foodLineRepository.findAll(SpecificationUtil.createSpecification(m));
+        List<FoodLineEntity> l = foodLineRepository.findAll(DynamicSpecifications.createSpecification(m));
         return new InfoList<>(l,(Callback<FoodLineEntity,FoodLineInfo>)(FoodLineEntity,FoodLineInfo)->FoodLineEntity.toInfo());
     }
 
     @Override
     public PageResult<FoodLineInfo> pageAll(Map<String, Object> m, PageInfo pageInfo) {
-        Page<FoodLineEntity> page = foodLineRepository.findAll(SpecificationUtil.createSpecification(m),pageInfo);
+        Page<FoodLineEntity> page = foodLineRepository.findAll(DynamicSpecifications.createSpecification(m),pageInfo);
         return new PageResult<>(page, FoodLineInfo.class, (foodLineEntity, foodLineInfo) -> foodLineEntity.toInfo());
     }
 }

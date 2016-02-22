@@ -3,7 +3,7 @@
  * Breezee.com All Rights Reserved.
  */
 
-package com.breezee.common.util;
+package com.breezee.common;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.data.jpa.domain.Specification;
@@ -21,7 +21,7 @@ import java.util.Map;
  *
  * @author Silence
  */
-public class SpecificationUtil {
+public class DynamicSpecifications {
 
     /**
      * 生成查询条件

@@ -7,7 +7,7 @@ package com.breezee.sysmgr.impl;
 
 import com.breezee.common.*;
 import com.breezee.common.util.Callback;
-import com.breezee.common.util.SpecificationUtil;
+import com.breezee.common.DynamicSpecifications;
 import com.breezee.sysmgr.api.domain.DictDetailInfo;
 import com.breezee.sysmgr.api.domain.DictInfo;
 import com.breezee.sysmgr.api.service.IDictService;
@@ -57,7 +57,7 @@ public class DictServiceImpl implements IDictService {
 
     @Override
     public List<DictInfo> listAll(Map<String, Object> m) {
-        List<DictEntity> l = dictRepository.findAll(SpecificationUtil.createSpecification(m));
+        List<DictEntity> l = dictRepository.findAll(DynamicSpecifications.createSpecification(m));
         return new InfoList<>(l, (Callback<DictEntity, DictInfo>) (dictEntity, dictInfo) -> dictEntity.toInfo());
     }
 

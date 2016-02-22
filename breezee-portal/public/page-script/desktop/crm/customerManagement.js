@@ -36,10 +36,13 @@ $(function () {
         }, {
             code: 'wechat',
             title: '微信号'
+        }, {
+            code: 'status',
+            title: '状态'
         }],
         multiple: false,
         ajaxType: 'post',
-        url: '/data/sdx/user/page',
+        url: '/data/crm/user/page',
         dataFilter: function (data) {
             for (var i = 0; i < data.rows.length; i++) {
                 data.rows[i].arguments = Dolphin.string2json(data.rows[i].arguments || '{}');
@@ -52,16 +55,29 @@ $(function () {
     });
 
     //============================================================== event
+    function checkEditFormHidden(){
+        return $('#formPanel').is(':hidden');
+    }
     $('#insert').click(function () {
-        $('#listPanel').toggleClass('dolphin-col-24').toggleClass('dolphin-col-18');
-        $('#formPanel').toggle();
+        if(checkEditFormHidden()){
+            $('#listPanel').toggleClass('dolphin-col-24').toggleClass('dolphin-col-18');
+            $('#formPanel').toggle();
+        }
+        Dolphin.form.empty("#editForm");
+    });
+    $('#update').click(function () {
+        if(checkEditFormHidden()) {
+            $('#listPanel').toggleClass('dolphin-col-24').toggleClass('dolphin-col-18');
+            $('#formPanel').toggle();
+        }
+        Dolphin.form.setValue(list.getChecked()[0], '#editForm');
     });
     $('#save').click(function () {
         if (Dolphin.form.validate('#editForm')) {
             var data = Dolphin.form.getValue('editForm', '"');
             data.arguments = Dolphin.json2string(data.arguments);
             Dolphin.ajax({
-                url: '/data/sdx/user/',
+                url: '/data/crm/user/',
                 type: Dolphin.requestMethod.PUT,
                 data: Dolphin.json2string(data),
                 onSuccess: function (reData) {
@@ -80,5 +96,10 @@ $(function () {
     });
     $("#conditionReset").click(function () {
         Dolphin.form.empty("#queryForm")
+    });
+    $("#cancel").click(function(){
+        $('#listPanel').toggleClass('dolphin-col-18').toggleClass('dolphin-col-24');
+        $('#formPanel').toggle();
+        Dolphin.form.empty("#editForm");
     });
 });

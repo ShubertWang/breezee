@@ -27,7 +27,7 @@ public class UserInfo extends BaseInfo {
 
     protected String sign;
 
-    protected int star;
+    protected int star = 3;
 
     /**
      * 第三方系统的标识，例如餐卡号等

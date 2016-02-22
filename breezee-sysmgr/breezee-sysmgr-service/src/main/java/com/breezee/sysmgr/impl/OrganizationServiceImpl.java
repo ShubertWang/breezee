@@ -37,10 +37,10 @@ public class OrganizationServiceImpl implements IOrganizationService {
     @Override
     public OrganizationInfo saveInfo(OrganizationInfo organizationInfo) {
         OrganizationEntity entity = organizationRepository.findByCode(organizationInfo.getCode());
-        if(organizationInfo.getId()==null && entity!=null){
+        if (organizationInfo.getId() == null && entity != null) {
             return ErrorInfo.build(organizationInfo, ContextUtil.getMessage("duplicate.key", new String[]{organizationInfo.getCode()}));
         }
-        if(entity==null)
+        if (entity == null)
             entity = new OrganizationEntity();
         entity.parse(organizationInfo);
         if (organizationInfo.getParent() != null && organizationInfo.getParent().getId() != null) {
@@ -87,21 +87,22 @@ public class OrganizationServiceImpl implements IOrganizationService {
 
     @Override
     public void updateOrganizationAccount(OrganizationInfo organizationInfo) {
-        if(organizationInfo.getAccounts()==null || organizationInfo.getAccounts().size()==0)
-            return;
-        String delSql = "delete from auth_tf_acnt_org where ORG_ID="+organizationInfo.getId();
+        String delSql = "delete from auth_tf_acnt_org where ORG_ID=" + organizationInfo.getId();
         //一个账号只能属于一个组织，所以删除其关联的其他组织
         String delSqlAct = "delete from auth_tf_acnt_org where ACNT_ID=?";
         String insertSql = "insert into auth_tf_acnt_org (ORG_ID,ACNT_ID) values(?,?)";
         List<Object[]> l = new ArrayList<>();
         List<Object[]> ll = new ArrayList<>();
 
-        organizationInfo.getAccounts().forEach(a->{
-            l.add(new Object[]{organizationInfo.getId(),a});
-            ll.add(new Object[]{a});
-        });
+        if (organizationInfo.getAccounts() != null)
+            organizationInfo.getAccounts().forEach(a -> {
+                l.add(new Object[]{organizationInfo.getId(), a});
+                ll.add(new Object[]{a});
+            });
         jdbcTemplate.update(delSql);
-        jdbcTemplate.batchUpdate(delSqlAct,ll);
-        jdbcTemplate.batchUpdate(insertSql,l);
+        if(ll.size()>0)
+            jdbcTemplate.batchUpdate(delSqlAct, ll);
+        if(l.size()>0)
+            jdbcTemplate.batchUpdate(insertSql, l);
     }
 }
