@@ -3,6 +3,8 @@ var router = express.Router();
 var viewRoutes = {};
 viewRoutes.account = require('./viewRoutes/account.js');
 viewRoutes.message = require('./viewRoutes/message.js');
+viewRoutes.restaurant = require('./viewRoutes/restaurant.js');
+viewRoutes.order = require('./viewRoutes/order.js');
 
 /* GET users listing. */
 router.get('*', function(req, res, next) {
@@ -11,17 +13,20 @@ router.get('*', function(req, res, next) {
             queryData;
 
         userInfo = true;
-//        userInfo = req.session.username;
+        //userInfo = req.session.username;
+        //endType = /mobile|Mobile/.test(req.headers['user-agent'])?"/mobile":"/desktop";
+        endType = "/mobile";
 
         if(userInfo == null){
-            res.render('login', {
-                path : '/login',
+            res.render(endType.substring(1) + '/login', {
+                path : endType + '/login',
                 endType : "",
                 title : '登录',
-                redirect : req.url
+                redirect : req.url,
+                data : {},
+                body : {}
             });
         }else{
-            endType = /mobile|Mobile/.test(req.headers['user-agent'])?"/mobile":"/desktop";
             url = endType + req.url;
             queryData = req.query;
 

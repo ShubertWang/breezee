@@ -282,11 +282,11 @@
             function traversal(data) {
                 var i, item;
                 for (i = 0; i < data.length; i++) {
-                    if (data[i].id == id) {
+                    if (data[i][_this.opts.idField] == id) {
                         return data[i];
                     } else {
-                        if (data[_this.opts.childrenField]) {
-                            item = arguments.callee(data[_this.opts.childrenField]);
+                        if (data[i][_this.opts.childrenField]) {
+                            item = arguments.callee(data[i][_this.opts.childrenField]);
                             if (item) {
                                 return item
                             }

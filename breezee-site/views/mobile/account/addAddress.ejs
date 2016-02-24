@@ -2,16 +2,17 @@
 <html>
 <head>
     <% include ../common/meta.ejs %>
-    <title>收货地址</title>
+    <title>添加地址</title>
     <% include ../common/public.ejs %>
 </head>
 <body ontouchstart>
+<form id="form">
 <article>
     <div class="weui_cells weui_cells_form">
         <div class="weui_cell">
             <div class="weui_cell_hd"><label class="weui_label">联系人</label></div>
             <div class="weui_cell_bd weui_cell_primary">
-                <input class="weui_input" type="text" placeholder="您的姓名"/>
+                <input class="weui_input" type="text" placeholder="您的姓名" name="name"/>
             </div>
         </div>
     </div>
@@ -19,7 +20,7 @@
         <div class="weui_cell">
             <div class="weui_cell_hd"><label class="weui_label">联系电话</label></div>
             <div class="weui_cell_bd weui_cell_primary">
-                <input class="weui_input" type="tel" placeholder="您的手机号码"/>
+                <input class="weui_input" type="tel" placeholder="您的手机号码" name="phone"/>
             </div>
         </div>
     </div>
@@ -27,14 +28,15 @@
         <div class="weui_cell">
             <div class="weui_cell_hd"><label class="weui_label">收货地址</label></div>
             <div class="weui_cell_bd weui_cell_primary">
-                <input class="weui_input" type="text" placeholder="您的详细地址"/>
+                <input class="weui_input" type="text" placeholder="您的详细地址" name="address"/>
             </div>
         </div>
     </div>
 </article>
+</form>
 
 <footer>
-    <div class="footer_box"><a href="javascript:;" class="weui_btn weui_btn_warn">确定</a></div>
+    <div class="footer_box"><a href="javascript:void(0);" id="submit" class="weui_btn weui_btn_warn">确定</a></div>
 </footer>
 
 <% include ../common/footer.ejs %>

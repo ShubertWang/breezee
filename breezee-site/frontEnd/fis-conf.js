@@ -2,7 +2,7 @@
 fis.match('/dolphin/js/*.js', {
   packTo: '/dolphin/dolphin.js'
 });
-fis.match('{/dolphin/js/core.js,/dolphin/js/validate.js,/dolphin/js/form.js,/dolphin/js/enum.js}', {
+fis.media('core').match('{/dolphin/js/core.js,/dolphin/js/validate.js,/dolphin/js/form.js,/dolphin/js/enum.js}', {
   packTo: '/dolphin/dolphin.core.js'
 });
 

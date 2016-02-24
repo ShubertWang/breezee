@@ -20,6 +20,7 @@ console.log("///////////////////////////////////////////////////////////////");
 
 //common util
 global.myUtil = require('./module/util/util.js');
+global.htmlRender = require('./module/util/htmlRender.js');
 
 var app = express();
 

@@ -1,12 +1,13 @@
 <script>
     var REQUEST_MAP = {
-        data : JSON.parse('<%=JSON.stringify(data)%>'.replace(/&#34;/g, '"') || "{}"),
-        body : JSON.parse('<%=JSON.stringify(body)%>'.replace(/&#34;/g, '"') || "{}")
+        data : JSON.parse('<%= JSON.stringify(data) %>'.replace(/&#34;/g, '"') || "{}"),
+        body : JSON.parse('<%= JSON.stringify(body) %>'.replace(/&#34;/g, '"') || "{}")
     };
 </script>
 
 <!--jquery-->
 <script src="//cdn.bootcss.com/jquery/2.2.0/jquery.js"></script>
+<script src="/custom/wx_style/js/jquery.nicescroll.js"></script>
 
 <!--rp-->
 <script src="/custom/wx_style/js/zepto.js"></script>

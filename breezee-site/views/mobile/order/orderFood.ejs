@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <% include ../common/meta.ejs %>
+    <title>点餐</title>
+    <% include ../common/public.ejs %>
+</head>
+<body ontouchstart class="bg_zi">
+<% var i;%>
+<article>
+    <div class="tab_list bh">
+        <ul id="headTab">
+            <li class="li1" data-tab="order_food">订餐</li>
+            <li data-tab="restaurant_info">餐厅信息</li>
+        </ul>
+    </div>
+
+    <div class="pagePanel" id="order_food">
+        <div id="boxscroll">
+            <div class="nav_box bh">
+                <% for(i = 0; i <body.food.length; i++){%>
+                <div class="nav_icon" data-foodTypeId="<%= body.food[i].id %>" data-foodTypeName="<%= body.food[i].name %>">
+                    <div><img src="/custom/wx_style/images/nav_<%= body.food[i].imageCode %>.png"></div>
+                    <div><%= body.food[i].name %></div>
+                </div>
+                <% } %>
+            </div>
+        </div>
+
+        <div class="ty_bt_title">
+            <h3><span class="icon_tj">&nbsp;</span><%= body.food[0].name %></h3>
+        </div>
+
+        <% for(i = 0; i < body.food.length; i++){%>
+        <div class="div_list foodTypeList foodTypeList_<%= body.food[i].id %>" style="<%= i==0?'':'display:none;'%>">
+            <% var food = null;%>
+            <% for(var j = 0; j < body.food[i].children.length; j++){%>
+            <% food = body.food[i].children[j]; %>
+            <div class="list bh" data-foodId="<%= food.id %>">
+                <div class="text"><a href="#"><%= food.name %></a></div>
+                <div class="img"><img src="/custom/wx_style/images/<%= food.image %>.png"></div>
+                <div class="bh">
+
+                    <div class="btn_gm">
+                        <div class="icon_jh"> </div>
+                        <div class="sz"  style=" display:none;">5</div>
+                        <div class="icon_jh1" style=" display:none;"> </div>
+                    </div>
+                    <div class="jg_b"><span>￥</span><%= food.price %></div>
+                </div>
+            </div>
+            <% } %>
+        </div>
+        <% } %>
+
+
+        <div class="footer_box" style="position: relative;">
+            <div class="btn_box bh">
+                <div class="div_gwc"><span>0</span></div>
+                <div class="fkjg"><strong>￥0.00</strong></div>
+                <a href="javascript:;" class="weui_btn weui_btn_warn">去结算</a>
+                <div class="fkjg1">配送费 <strong>8</strong> 元</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="pagePanel" id="restaurant_info" style="display: none;">
+        <ul class="nr_list">
+            <li class="bh li_ct" data-id="<%= body.id %>">
+                <div class="img time_yy">
+                    <div><a href="#"><img src="/custom/wx_style/images/<%= body.image %>.png"></a></div>
+                    <div class="ms"><%= body.businessHours %></div>
+                </div>
+                <div class="text_ct bh">
+                    <h2><a href="#"><%= body.name %></a></h2>
+                    <div class="f_pj bh">
+                        <div class="float_l">
+                            <%- global.htmlRender.renderStar(body.point, 5)%>
+                        </div>
+                        <span class=" float_l">( <%= body.commentLength %>评价 )</span></div>
+                    <div class="icon_ty like"><s> </s><a href="tel:<%= body.phone %>"><%= body.phone %></a></div>
+                </div>
+            </li>
+        </ul>
+
+        <div>
+            <div class="ty_bt_title">
+                <h3><span class="icon_gg">&nbsp;</span>餐厅公告</h3>
+                <h5 class="ty_bt_box"><%- body.notice %></h5>
+            </div>
+            <div class="weui_cells" style="margin-top:0;">
+
+                <div class=" weui_cells_access">
+                    <a class="weui_cell" href="javascript:;">
+                        <div class="weui_cell_bd weui_cell_primary">
+                            <p><%= body.name %></p>
+                        </div>
+                        <div class="weui_cell_ft"> </div>
+                    </a>
+                </div>
+            </div>
+            <div class="div_ddlist">
+                <div class="ddmx">
+                    <ul class="list-group" style="margin-top:0;">
+                        <li class=" bh">
+                            <div class="title_b">餐厅地址 ：</div>
+                            <div class="title_b_text"><%= body.address %></div>
+                        </li>
+
+                        <li class=" bh">
+                            <div class="title_b">营业时间 ：</div>
+                            <div class="title_b_text"><%= body.businessDate %> <%= body.businessHours %></div>
+                        </li>
+                        <li class=" bh">
+                            <div class="title_b">联系方式 ：</div>
+                            <div class="title_b_text"><%= body.phone %></div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="ty_bt_title" style="background:none;">
+                <h3><span class="icon_ct">&nbsp;</span>餐厅简介</h3>
+                <h5 class="ty_bt_box"><%- body.remark %></h5>
+            </div>
+            <div class="ty_bt_title">
+                <h3><span class="icon_pj">&nbsp;</span>餐厅评价</h3>
+                <h5 class="ty_bt_box">
+
+                    <div class="div_mddp">
+                        <ul class=" bh">
+                            <li class="line_gray">
+                                <h4 class="w_68">综合评价</h4>
+                                <span>
+                                    <%- global.htmlRender.renderStar(body.point, 5)%>
+                                </span><em><%= body.point %></em></li>
+                            <li class="top_20 bh">
+                                <h4>餐厅环境</h4>
+                                <span>
+                                    <%- global.htmlRender.renderStar(body.environmentPoint, 5)%>
+                                </span><em><%= body.environmentPoint %></em></li>
+                            <li class="bh">
+                                <h4>服务态度</h4>
+                                <span>
+                                    <%- global.htmlRender.renderStar(body.servicePoint, 5)%>
+                                </span><em><%= body.servicePoint %></em></li>
+                            <li class="bh">
+                                <h4>菜品口味</h4>
+                                <span>
+                                    <%- global.htmlRender.renderStar(body.deliciousPoint, 5)%>
+                                </span><em><%= body.deliciousPoint %></em></li>
+                        </ul>
+                    </div>
+                </h5>
+            </div>
+            <ul class="nr_list">
+                <% for(i = 0; i < body.comment.length; i++){%>
+                <li class="bh li_ct">
+                    <div class="img_txx"><a href="#"><img src="/custom/wx_style/images/<%= body.comment[i].user.icon %>.png"></a><h3><%= body.comment[i].user.name %></h3></div>
+                    <div class=" text_zh">
+
+                        <div class="f_pj bh"><div class="float_l"><%- global.htmlRender.renderStar(body.comment[i].point, 5) %></div></div>
+                        <h4><%- body.comment[i].remark %></h4>
+                        <h5><%= body.comment[i].time %></h5>
+                    </div>
+                </li>
+                <% } %>
+            </ul>
+        </div>
+    </div>
+
+    <div class="pagePanel" id="food_detail" style="display: none;">
+        <div class="div_list">
+            <div class="list_k bh">
+                <div class="img"><img src="wx_style/images/img_cp2.png"></div>
+                <div class="text_bt">农家小炒肉</div>
+                <div class="bh">
+
+                    <div class="btn_gm">
+                        <div class="icon_jh"> </div>
+                        <div class="sz" >5</div>
+                        <div class="icon_jh1" > </div>
+                    </div>
+                    <div class="jg"><span>￥</span>18.00</div>
+                    <div class="ty_bt_title" >
+                        <h3><span class="icon_cp">&nbsp;</span>菜品简介</h3>
+                        <h5 class="ty_bt_box">中式餐厅，能提前预定，且包厢有空气净化器，服务不错 <br>
+                            地方不大，蛇会送到包厢门口给客户确认。椒盐大王蛇不错蛇皮凉拌，配菜过多 </h5>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</article>
+
+
+<% include ../common/footer.ejs %>
+<script>
+    $(document).ready(function() {
+        var nicesx = $("#boxscroll").niceScroll("#boxscroll div",{touchbehavior:true,cursorcolor:"#FF00FF",cursoropacitymax:0.6,cursorwidth:24,usetransition:true,hwacceleration:true,autohidemode:"hidden"});
+    });
+</script>
+</body>
+</html>
