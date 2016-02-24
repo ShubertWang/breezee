@@ -10,6 +10,7 @@ import com.breezee.common.PageInfo;
 import com.breezee.common.PageResult;
 import com.breezee.common.SuccessInfo;
 import com.breezee.common.DynamicSpecifications;
+import com.breezee.common.util.Callback;
 import com.breezee.pcm.api.domain.AttributeInfo;
 import com.breezee.pcm.api.service.IAttributeService;
 import com.breezee.pcm.entity.AttributeEntity;
@@ -45,7 +46,7 @@ public class AttributeServiceImpl implements IAttributeService {
     @Override
     public List<AttributeInfo> listAll(Map<String, Object> m) {
         List<AttributeEntity> l = attributeRepository.findAll(DynamicSpecifications.createSpecification(m));
-        return new InfoList<>(l, (attributeEntity, attributeInfo) -> attributeEntity.toInfo());
+        return new InfoList<>(l, (Callback<AttributeEntity, AttributeInfo>) (attributeEntity, attributeInfo) -> attributeEntity.toInfo());
     }
 
     @Override
