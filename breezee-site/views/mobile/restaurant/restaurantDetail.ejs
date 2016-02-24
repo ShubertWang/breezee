@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <% include ../common/meta.ejs %>
+    <title>餐厅菜单</title>
+    <% include ../common/public.ejs %>
+</head>
+<body ontouchstart class="bg_zi">
+<div class="div_cd">
+    <div class="weui_cells weui_cells_access">
+
+        <a class="weui_cell" href="javascript:;">
+
+            <div class="weui_cell_bd weui_cell_primary">
+                <p>请选择餐厅</p>
+            </div>
+            <div class="weui_cell_ft" restaurantId="<%= body.id %>"><%= body.name %></div>
+        </a>
+        <a class="weui_cell" href="javascript:;">
+
+            <div class="weui_cell_bd weui_cell_primary">
+                <p>时间</p>
+            </div>
+            <div class="weui_cell_ft">第<%= body.week %>周（<%= body.date %>）</div>
+        </a>
+    </div>
+    <div class="footer_cd">
+        <div class="title_bt">第<h2><%= body.week %></h2>周<span>（<%= body.date %>）</span></div>
+        <div class="cd_box">
+            <% for(var i = 0; i < body.food.length; i++){ %>
+            <div class="cd_list bh">
+                <div class="list_fl">
+                    <div><img src="/custom/wx_style/images/nav_<%= body.food[i].imageCode %>.png"></div>
+                    <div><%= body.food[i].name %></div>
+                </div>
+                <div class="list_fr">
+                    <ul>
+                        <% for(var j = 0; j < body.food[i].children.length; j++){%>
+                        <li><%= body.food[i].children[j].name %></li>
+                        <% } %>
+                    </ul>
+                </div>
+            </div>
+            <% } %>
+        </div>
+    </div>
+</div>
+<% include ../common/footer.ejs %>
+</body>
+</html>

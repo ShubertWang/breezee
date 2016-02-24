@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <% include common/meta.ejs %>
+    <title>账户登录</title>
+    <% include common/public.ejs %>
+</head>
+<body ontouchstart class="bg_zi">
+<article>
+    <div class="search_cyc">
+        <div class=" p_10 bg_logo"></div>
+        <form role="form" id="form">
+            <div class="input-group">
+                <input type="text" class="input_jg" placeholder="请输入机构代码" name="code" />
+            </div>
+            <div align="right"><a href="#">从哪里查看机构编号？</a></div>
+            <div class="ty_bt_yj" >如果您是公司员工请继续填写以下信息，
+                不是则请忽略</div>
+            <div class="input-group">
+                <input type="text" class="input_name" placeholder="姓名" name="username" />
+                <input type="text" class="input_sj top_10" placeholder="手机" name="phone" />
+                <input type="text" class="input_cxbm top_10" placeholder="工号" name="staffId" />
+                <input type="text" class="input_yhk top_10" placeholder="身份证后四位数字" name="cardId" />
+            </div>
+        </form>
+    </div>
+    <footer>
+        <div class="footer_box"><a href="javascript:void(0);" class="weui_btn weui_btn_warn" id="submit" data-redirect="<%= body.redirect %>">确定</a></div>
+    </footer>
+</article>
+<% include common/footer.ejs %>
+</body>
+</html>
