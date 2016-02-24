@@ -3571,12 +3571,13 @@
 			var thisTree = this, _url;
 			node.target.find('.toggleIcon').removeClass(thisTree.opts.icon.folder_close);
 			_url = this.opts.url.replace('{'+this.opts.requestKey+'}', node[this.opts.idField]);
-
+			var data={};
+			data[this.opts.idField]=node[this.opts.idField];
 			if(!node.hasLoadChildren){
 				this.opts.ajax({
 					url : _url,
 					mockPathData : this.opts.mockPathData,
-					data : {code : node[this.opts.idField]},
+					data : data,
 					onSuccess : function(returnData){
 						var childrenData = returnData.rows;
 						thisTree.initData(childrenData, node);

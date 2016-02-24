@@ -10,7 +10,7 @@ import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.NoSuchBeanDefinitionException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
-import org.springframework.context.ConfigurableApplicationContext;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
 
@@ -26,24 +26,26 @@ public final class ContextUtil implements ApplicationContextAware {
 
     public static String contextPath = "ROOT";
 
-    public static ConfigurableApplicationContext current = null;
-
-    public static ApplicationContext applicationContext;
+    public static ApplicationContext current = null;
 
     public static String getProperty(String key) {
-        if (current == null)
-            return applicationContext.getEnvironment().getProperty(key);
         return current.getEnvironment().getProperty(key);
     }
 
     protected static BeanFactory factory() {
-        return current == null ? applicationContext : current;
+        return current;
     }
 
     public static String getProperty(String key, String defaultValue) {
-        if (current == null)
-            return applicationContext.getEnvironment().getProperty(key, defaultValue);
         return current.getEnvironment().getProperty(key, defaultValue);
+    }
+
+    public static String getMessage(String code) {
+        return current.getMessage(code, null, LocaleContextHolder.getLocale());
+    }
+
+    public static String getMessage(String code, Object[] params) {
+        return current.getMessage(code, params,code, LocaleContextHolder.getLocale());
     }
 
     public static Object getBean(String name) {
@@ -81,16 +83,16 @@ public final class ContextUtil implements ApplicationContextAware {
     }
 
     public void setApplicationContext(ApplicationContext applicationContext) {
-        ContextUtil.applicationContext = applicationContext;
+        ContextUtil.current = applicationContext;
     }
 
     public static void run(Class<?> cla, String... file) {
-        run(cla,true,file);
+        run(cla, true, file);
     }
 
-    public static void run(Class<?> cla,boolean common, String... file) {
+    public static void run(Class<?> cla, boolean common, String... file) {
         List<String> cf = new ArrayList<>();
-        if(common) {
+        if (common) {
             cf.add("classpath*:/bean/bre-*.xml");
             cf.add("classpath*:/bean/*-bean.xml");
         }
@@ -102,25 +104,26 @@ public final class ContextUtil implements ApplicationContextAware {
         String[] tmp = new String[cf.size()];
         ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext(cf.toArray(tmp));
         context.start();
-        applicationContext = context;
+        current = context;
         dump(cla);
     }
 
     /**
      * 以注解的形式启动容器
+     *
      * @param cla
      */
-    public static void runAnnotation(Class<?> cla,Class<?> ... app){
+    public static void runAnnotation(Class<?> cla, Class<?>... app) {
         AnnotationConfigWebApplicationContext rootContext = new AnnotationConfigWebApplicationContext();
         rootContext.register(app);
         rootContext.refresh();
-        applicationContext = rootContext;
+        current = rootContext;
         dump(cla);
     }
 
-    private static void dump(Class<?> cla){
+    private static void dump(Class<?> cla) {
         System.out.println("***************************************************************");
-        System.out.println(cla.getName()+" Start Completed.");
+        System.out.println(cla.getName() + " Start Completed.");
         System.out.println("***************************************************************");
     }
 }

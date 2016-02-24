@@ -6,6 +6,7 @@
 package com.breezee.sysmgr.entity;
 
 import com.breezee.common.BaseInfo;
+import com.breezee.sysmgr.api.domain.RoleInfo;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -84,5 +85,18 @@ public class RoleEntity extends BaseInfo {
 
     public void setAccounts(Set<AccountEntity> accounts) {
         this.accounts = accounts;
+    }
+
+    public RoleInfo toInfo(){
+        RoleInfo roleInfo = new RoleInfo();
+        cloneAttribute(roleInfo);
+        roleInfo.setPermits(this.getPermits());
+        return roleInfo;
+    }
+
+    public RoleEntity parse(RoleInfo info){
+        info.cloneAttribute(this);
+        this.setPermits(info.getPermits());
+        return this;
     }
 }

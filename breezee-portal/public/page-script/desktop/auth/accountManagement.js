@@ -25,11 +25,8 @@ $(function () {
             code: 'sex',
             title: '性别'
         }, {
-            code: 'job',
-            title: '岗位'
-        }, {
             code: 'mobile',
-            title: '手机'
+            title: '联系手机'
         }, {
             code: 'orgName',
             title: '所属组织'
@@ -52,9 +49,22 @@ $(function () {
     });
 
     //============================================================== event
+    function checkEditFormHidden(){
+        return $('#formPanel').is(':hidden');
+    }
     $('#insert').click(function () {
-        $('#listPanel').toggleClass('dolphin-col-24').toggleClass('dolphin-col-18');
-        $('#formPanel').toggle();
+        if(checkEditFormHidden()){
+            $('#listPanel').toggleClass('dolphin-col-24').toggleClass('dolphin-col-18');
+            $('#formPanel').toggle();
+        }
+        Dolphin.form.empty("#editForm");
+    });
+    $('#update').click(function () {
+        if(checkEditFormHidden()) {
+            $('#listPanel').toggleClass('dolphin-col-24').toggleClass('dolphin-col-18');
+            $('#formPanel').toggle();
+        }
+        Dolphin.form.setValue(list.getChecked()[0], '#editForm');
     });
     $('#save').click(function () {
         if (Dolphin.form.validate('#editForm')) {
@@ -79,6 +89,11 @@ $(function () {
         list.query(Dolphin.form2json("queryForm"));
     });
     $("#conditionReset").click(function () {
-        Dolphin.form.empty("#queryForm")
+        Dolphin.form.empty("#queryForm");
+    });
+    $("#cancel").click(function(){
+        $('#listPanel').toggleClass('dolphin-col-18').toggleClass('dolphin-col-24');
+        $('#formPanel').toggle();
+        Dolphin.form.empty("#editForm");
     });
 });

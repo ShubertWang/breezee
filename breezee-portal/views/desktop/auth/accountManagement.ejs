@@ -4,6 +4,16 @@
     <% include ../common/meta.ejs %>
     <title>管理平台</title>
     <% include ../common/public.ejs %>
+    <style>
+
+        .rel_li {
+            height: 20px;
+        }
+        .rel_li a {
+            float:left;
+            padding-left: 10px;
+        }
+    </style>
 </head>
 <body>
 <% include ../common/header.ejs %>
@@ -78,7 +88,7 @@
     </div>
 
     <div class="dolphin-row">
-        <div class="dolphin-col-18" id="listPanel">
+        <div class="dolphin-col-24" id="listPanel">
             <!--list-->
             <div id="list"></div>
         </div>
@@ -94,6 +104,7 @@
                     </div>
                     <div class="panel-body">
                         <form id="editForm">
+                            <input type="hidden" name="id" />
                             <div class="form-group">
                                 <label>登录名称</label>
                                 <input type="text" class="form-control"  name="code" dol-validate="required">
@@ -107,8 +118,19 @@
                                 <select class="form-control" options="account_type" name="type" dol-validate="required"></select>
                             </div>
                             <div class="form-group">
+                                <label>性别</label>
+                                <select class="form-control" options="sex" name="sex" dol-validate="required"></select>
+                            </div>
+                            <div class="form-group">
                                 <label>联系手机</label>
-                                <input type="text" class="form-control"  name="mobile">
+                                <input type="text" class="form-control"  name="mobile" dol-validate="required">
+                            </div>
+                            <div class="form-group">
+                                <label>关联关系</label>
+                                <div class="rel_li">
+                                    <a href="#">关联组织</a>
+                                    <a href="#">关联角色</a>
+                                </div>
                             </div>
                             <hr/>
                             <div class="form-buttons">

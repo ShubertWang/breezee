@@ -5,15 +5,17 @@
 
 package com.breezee.sysmgr.impl;
 
-import com.breezee.common.NullInfo;
+import com.breezee.common.ErrorInfo;
 import com.breezee.common.PageInfo;
 import com.breezee.common.PageResult;
 import com.breezee.common.SuccessInfo;
+import com.breezee.common.util.ContextUtil;
 import com.breezee.sysmgr.api.domain.OrganizationInfo;
 import com.breezee.sysmgr.api.service.IOrganizationService;
 import com.breezee.sysmgr.entity.OrganizationEntity;
 import com.breezee.sysmgr.repository.OrganizationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -29,10 +31,19 @@ public class OrganizationServiceImpl implements IOrganizationService {
     @Autowired
     private OrganizationRepository organizationRepository;
 
+    @Autowired
+    private JdbcTemplate jdbcTemplate;
+
     @Override
     public OrganizationInfo saveInfo(OrganizationInfo organizationInfo) {
-        OrganizationEntity entity = new OrganizationEntity().parse(organizationInfo);
-        if(organizationInfo.getParent()!=null && organizationInfo.getParent().getId()!=null){
+        OrganizationEntity entity = organizationRepository.findByCode(organizationInfo.getCode());
+        if (organizationInfo.getId() == null && entity != null) {
+            return ErrorInfo.build(organizationInfo, ContextUtil.getMessage("duplicate.key", new String[]{organizationInfo.getCode()}));
+        }
+        if (entity == null)
+            entity = new OrganizationEntity();
+        entity.parse(organizationInfo);
+        if (organizationInfo.getParent() != null && organizationInfo.getParent().getId() != null) {
             entity.setParent(organizationRepository.findOne(organizationInfo.getParent().getId()));
         }
         organizationRepository.save(entity);
@@ -42,8 +53,8 @@ public class OrganizationServiceImpl implements IOrganizationService {
     @Override
     public OrganizationInfo findInfoById(Long id) {
         OrganizationEntity en = organizationRepository.findOne(id);
-        if(en==null)
-            return NullInfo.build(OrganizationInfo.class);
+        if (en == null)
+            return ErrorInfo.build(OrganizationInfo.class);
         return en.toInfo(false);
     }
 
@@ -59,17 +70,39 @@ public class OrganizationServiceImpl implements IOrganizationService {
 
     @Override
     public List<OrganizationInfo> findOrganizationsByParentId(Long id) {
-        if(id == -1){
-            List<OrganizationEntity> l = organizationRepository.findTop();
-            List<OrganizationInfo> _l = new ArrayList<>(l.size());
-            l.forEach(a->{
-                _l.add(a.toInfo(false));
-            });
-            return _l;
+        List<OrganizationEntity> l = new ArrayList<>();
+        if (id == -1) {
+            l = organizationRepository.findTop();
+        } else {
+            OrganizationEntity en = organizationRepository.findOne(id);
+            if (en != null)
+                l.addAll(en.getChildren());
         }
-        OrganizationEntity en = organizationRepository.findOne(id);
-        if(en==null)
-            return new ArrayList<>();
-        return en.toInfo(true).getChildren();
+        List<OrganizationInfo> _l = new ArrayList<>(l.size());
+        l.forEach(a -> {
+            _l.add(a.toInfo(false));
+        });
+        return _l;
+    }
+
+    @Override
+    public void updateOrganizationAccount(OrganizationInfo organizationInfo) {
+        String delSql = "delete from auth_tf_acnt_org where ORG_ID=" + organizationInfo.getId();
+        //一个账号只能属于一个组织，所以删除其关联的其他组织
+        String delSqlAct = "delete from auth_tf_acnt_org where ACNT_ID=?";
+        String insertSql = "insert into auth_tf_acnt_org (ORG_ID,ACNT_ID) values(?,?)";
+        List<Object[]> l = new ArrayList<>();
+        List<Object[]> ll = new ArrayList<>();
+
+        if (organizationInfo.getAccounts() != null)
+            organizationInfo.getAccounts().forEach(a -> {
+                l.add(new Object[]{organizationInfo.getId(), a});
+                ll.add(new Object[]{a});
+            });
+        jdbcTemplate.update(delSql);
+        if(ll.size()>0)
+            jdbcTemplate.batchUpdate(delSqlAct, ll);
+        if(l.size()>0)
+            jdbcTemplate.batchUpdate(insertSql, l);
     }
 }

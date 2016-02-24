@@ -10,7 +10,7 @@ import com.breezee.bpm.api.service.ITaskService;
 import com.breezee.bpm.api.service.IWorkflowService;
 import com.breezee.common.*;
 import com.breezee.common.util.Callback;
-import com.breezee.common.util.SpecificationUtil;
+import com.breezee.common.DynamicSpecifications;
 import com.breezee.oms.api.domain.OrderInfo;
 import com.breezee.oms.entity.OrderEntity;
 import com.breezee.oms.repository.OrderRepository;
@@ -62,19 +62,19 @@ public class OrderServiceImpl implements IOrderService {
     public OrderInfo findInfoById(Long id) {
         OrderEntity entity = orderRepository.findOne(id);
         if(entity==null)
-            return NullInfo.build(OrderInfo.class);
+            return ErrorInfo.build(OrderInfo.class);
         return entity.toInfo();
     }
 
     @Override
     public List<OrderInfo> listAll(Map<String, Object> m) {
-        List<OrderEntity> l = orderRepository.findAll(SpecificationUtil.createSpecification(m));
+        List<OrderEntity> l = orderRepository.findAll(DynamicSpecifications.createSpecification(m));
         return new InfoList<>(l, (Callback<OrderEntity, OrderInfo>) (orderEntity, orderInfo) -> orderEntity.toInfo());
     }
 
     @Override
     public PageResult<OrderInfo> pageAll(Map<String, Object> m, PageInfo pageInfo) {
-        Page<OrderEntity> page = orderRepository.findAll(SpecificationUtil.createSpecification(m),pageInfo);
+        Page<OrderEntity> page = orderRepository.findAll(DynamicSpecifications.createSpecification(m),pageInfo);
         return new PageResult<>(page, OrderInfo.class, (orderEntity, orderInfo) -> orderEntity.toInfo());
     }
 }

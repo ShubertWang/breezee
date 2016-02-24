@@ -12,7 +12,7 @@
     <div id="categoryPanel">
         <!--title-->
         <div class="page-header">
-            <h1>品类管理</h1>
+            <h1>组织管理</h1>
 
             <div class="operationButton">
                 <div class="btn-group" role="group">
@@ -41,7 +41,7 @@
                 <div class="panel panel-default">
                     <div class="panel-heading">
                         <div class="panel-title">
-                            品类树
+                            组织树
                         </div>
                     </div>
                     <div class="panel-body">
@@ -63,7 +63,7 @@
                             <div class="dolphin-col-12">
                                 <div class="form-group">
                                     <label class="col-sm-4 control-label">
-                                        品类编码
+                                        组织编码
                                     </label>
                                     <div class="col-sm-8">
                                         <p class="form-control-static" name="code"></p>
@@ -73,7 +73,7 @@
                             <div class="dolphin-col-12">
                                 <div class="form-group">
                                     <label class="col-sm-4 control-label">
-                                        品类名称
+                                        组织名称
                                     </label>
                                     <div class="col-sm-8">
                                         <p class="form-control-static" name="name"></p>
@@ -86,7 +86,7 @@
                                         上级节点
                                     </label>
                                     <div class="col-sm-8">
-                                        <p class="form-control-static" name="parent.name"></p>
+                                        <p class="form-control-static" id="parentName" name="parent.name"></p>
                                     </div>
                                 </div>
                             </div>
@@ -107,16 +107,11 @@
                 <div class="panel panel-primary">
                     <div class="panel-heading">
                         <div class="panel-title">
-                            属性列表
-
+                            组织人员列表
                             <div class="operationButton">
                                 <button type="button" class="btn btn-success" id="multipleUpdateAttr">
                                     <span class="glyphicon glyphicon-sort dolphin-rotate-90"></span>
-                                    添加/删除属性
-                                </button>
-                                <button type="button" class="btn btn-info" id="categoryAttrSave" disabled="disabled">
-                                    <span class="glyphicon glyphicon-save"></span>
-                                    保存
+                                    添加/删除人员
                                 </button>
                             </div>
                         </div>
@@ -168,20 +163,21 @@
 <div class="default-hidden" id="categoryModalWin">
     <form id="categoryForm" class="form-horizontal">
         <input type="hidden" name="parent.id" />
+        <input type="hidden" name="id" />
         <div class="dolphin-row">
             <div class="dolphin-col-24">
                 <div class="form-group">
-                    <label class="dolphin-col-6 control-label">品类编码</label>
+                    <label class="dolphin-col-6 control-label">组织编码</label>
                     <div class="dolphin-col-18">
-                        <input type="text" class="form-control" name="code" dol-validate="require"/>
+                        <input type="text" class="form-control" name="code"/>
                     </div>
                 </div>
             </div>
             <div class="dolphin-col-24">
                 <div class="form-group">
-                    <label class="dolphin-col-6 control-label">品类名称</label>
+                    <label class="dolphin-col-6 control-label">组织名称</label>
                     <div class="dolphin-col-18">
-                        <input type="text" class="form-control" name="name" dol-validate="require" />
+                        <input type="text" class="form-control" name="name" />
                     </div>
                 </div>
             </div>

@@ -65,6 +65,9 @@ body .page-content{
 .form-buttons{
     text-align: center;
 }
+.form-group{
+    margin-bottom:8px;
+}
 
 .workspaceMenuPanel{
     margin: 0;

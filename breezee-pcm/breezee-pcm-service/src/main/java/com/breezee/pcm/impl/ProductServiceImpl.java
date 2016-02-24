@@ -10,7 +10,7 @@ import com.breezee.common.PageInfo;
 import com.breezee.common.PageResult;
 import com.breezee.common.SuccessInfo;
 import com.breezee.common.util.Callback;
-import com.breezee.common.util.SpecificationUtil;
+import com.breezee.common.DynamicSpecifications;
 import com.breezee.pcm.api.domain.ProductInfo;
 import com.breezee.pcm.api.service.IProductService;
 import com.breezee.pcm.entity.CategoryEntity;
@@ -90,13 +90,13 @@ public class ProductServiceImpl implements IProductService {
 
     @Override
     public List<ProductInfo> listAll(Map<String, Object> m) {
-        List<ProductEntity> l = productRepository.findAll(SpecificationUtil.createSpecification(m));
+        List<ProductEntity> l = productRepository.findAll(DynamicSpecifications.createSpecification(m));
         return new InfoList<>(l, (Callback<ProductEntity, ProductInfo>) (productEntity, productInfo) -> productEntity.toInfo());
     }
 
     @Override
     public PageResult<ProductInfo> pageAll(Map<String, Object> m, PageInfo pageInfo) {
-        Page<ProductEntity> page = productRepository.findAll(SpecificationUtil.createSpecification(m),pageInfo);
+        Page<ProductEntity> page = productRepository.findAll(DynamicSpecifications.createSpecification(m),pageInfo);
         return new PageResult<>(page, ProductInfo.class, (productEntity, productInfo) -> productEntity.toInfo());
     }
 }

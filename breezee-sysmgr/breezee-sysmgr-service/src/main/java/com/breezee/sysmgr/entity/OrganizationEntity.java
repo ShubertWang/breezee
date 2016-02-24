@@ -9,7 +9,9 @@ import com.breezee.common.BaseInfo;
 import com.breezee.sysmgr.api.domain.OrganizationInfo;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -60,6 +62,10 @@ public class OrganizationEntity extends BaseInfo{
         return updateTime;
     }
 
+    public String getRemark() {
+        return remark;
+    }
+
     @OneToOne
     @JoinColumn(name = "PARENT_ID", referencedColumnName = "ORG_ID")
     public OrganizationEntity getParent() {
@@ -79,7 +85,7 @@ public class OrganizationEntity extends BaseInfo{
         this.children = children;
     }
 
-    @OneToMany(mappedBy = "organization", cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "organization", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     public Set<AccountEntity> getAccounts() {
         return accounts;
     }
@@ -88,18 +94,36 @@ public class OrganizationEntity extends BaseInfo{
         this.accounts = accounts;
     }
 
+    public void addAccount(AccountEntity accountEntity){
+        if(accountEntity==null)
+            return;
+        if(this.getAccounts()==null)
+            this.setAccounts(new HashSet<>());
+        this.getAccounts().add(accountEntity);
+    }
+
     public OrganizationInfo toInfo(boolean loadChild){
-        OrganizationInfo info = (OrganizationInfo) this.clone();
-        if(loadChild && this.getChildren()!=null && this.getChildren().size()>0){
-            this.getChildren().forEach(a->{
-                info.getChildren().add(a.toInfo(false));
-            });
+        OrganizationInfo info = new OrganizationInfo();
+        cloneAttribute(info);
+        if(this.getChildren()!=null && this.getChildren().size()>0){
+            if(loadChild) {
+                info.setChildren(new ArrayList<>());
+                this.getChildren().forEach(a -> {
+                    info.getChildren().add(a.toInfo(false));
+                });
+            }
+            info.setLeaf(false);
+        }
+        if(this.getParent()!=null){
+            OrganizationInfo pInfo = new OrganizationInfo();
+            this.getParent().cloneAttribute(pInfo);
+            info.setParent(pInfo);
         }
         return info;
     }
 
-    public OrganizationEntity parse(OrganizationInfo categoryInfo){
-        categoryInfo.cloneAttribute(this);
+    public OrganizationEntity parse(OrganizationInfo info){
+        info.cloneAttribute(this);
         return this;
     }
 }

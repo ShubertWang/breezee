@@ -5,7 +5,6 @@
 
 package com.breezee.common;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -51,12 +50,12 @@ public class TreeObject<T> extends BaseInfo {
     /**
      * 存储所有的子对象
      */
-    protected List<T> children = new ArrayList<>();
+    protected List<T> children = null;
 
     /**
      * 是否叶子节点
      */
-    protected boolean leaf;
+    protected boolean leaf=true;
 
     protected String path;
 
@@ -113,7 +112,11 @@ public class TreeObject<T> extends BaseInfo {
     }
 
     public boolean isLeaf() {
-        return this.getChildren().size() == 0;
+        return leaf;
+    }
+
+    public void setLeaf(boolean leaf) {
+        this.leaf = leaf;
     }
 
     /**

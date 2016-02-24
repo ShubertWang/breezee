@@ -20,18 +20,12 @@ $(function () {
             code: 'unitCode',
             title: '单位'
         }, {
-            code: 'i18nAble',
-            title: '可国际化'
-        }, {
-            code: 'searchAble',
-            title: '可检索'
-        }, {
-            code: 'subType',
-            title: '附注'
-        }, {
-            code: 'writeBack',
-            title: '回写'
-        }, {
+            code:'arguments',
+            title:'参数'
+        },{
+            code:'orderNo',
+            title:'排序'
+        },{
             code: 'remark',
             title: '备注'
         }],
@@ -78,5 +72,19 @@ $(function () {
     });
     $("#conditionReset").click(function () {
         Dolphin.form.empty("#queryForm")
+    });
+    $("#field-Type").change(function(){
+        var selVal = $(this).children('option:selected').val();
+        switch (selVal){
+            case 'dict':
+                $("#extendInfo").show();
+                $("#extendInfo").empty();
+                $('<hr/><div class="form-group"><label>枚举编码</label><input type="text" class="form-control"  name="arguments.enumCode" dol-validate="required"></div>').appendTo($("#extendInfo"));
+                break;
+            default:
+                $("#extendInfo").empty();
+                $("#extendInfo").hide();
+                break;
+        }
     });
 });

@@ -38,7 +38,7 @@ public class UserEntity extends BaseInfo {
      */
     protected String sign;
 
-    protected int star;
+    protected int star = 3;
 
     /**
      * 第三方系统的标识，例如餐卡号等
@@ -220,7 +220,8 @@ public class UserEntity extends BaseInfo {
     }
 
     public UserInfo toInfo() {
-        UserInfo info = (UserInfo) this.clone();
+        UserInfo info = new UserInfo();
+        cloneAttribute(info);
         info.setAddress(this.getAddress());
         info.setCompany(this.getCompany());
         info.setDn(this.getDn());

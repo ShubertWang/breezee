@@ -17,6 +17,8 @@ public class AccountInfo extends BaseInfo {
 
     private String password;
 
+    private String oldPassword;
+
     /**
      * 员工内型，例如：正式的，临时的，借调的等
      */
@@ -144,5 +146,13 @@ public class AccountInfo extends BaseInfo {
 
     public void setOrgName(String orgName) {
         this.orgName = orgName;
+    }
+
+    public String getOldPassword() {
+        return oldPassword;
+    }
+
+    public void setOldPassword(String oldPassword) {
+        this.oldPassword = oldPassword;
     }
 }

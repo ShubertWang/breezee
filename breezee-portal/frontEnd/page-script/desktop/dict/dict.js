@@ -115,7 +115,7 @@ $(function () {
         var data = list.getChecked();
         Dolphin.form.empty('#editForm');
         Dolphin.form.setValue(data[0], '#editForm');
-        editOptionList.loadData({rows : data[0].children, total : data[0].children.length});
+        editOptionList.loadData({rows : data[0].detailInfos, total : data[0].detailInfos.length});
 
         editWin.modal('show');
     });

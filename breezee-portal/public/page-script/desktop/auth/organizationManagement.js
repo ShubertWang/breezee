@@ -1,24 +1,23 @@
-/**
- * Created by Shubert.Wang on 2016/1/27.
- */
-Dolphin.defaults.mockFlag = false;
 $(function () {
     Dolphin.form.parse();
 
     var infoPanel = $('#infoPanel'),
         categoryPanel = $('#categoryPanel'),
         attributePanel = $('#attributePanel'),
-        categoryAttrSave = $('#categoryAttrSave'),
-        attributeLibrary;
+        attributeLibrary,selectNode;
 
     //categoryTree
     var categoryTree = new Dolphin.TREE({
         panel : '#categoryTree',
-        url : '/data/model/tree/{id}',
+        url : '/data/sym/organization/p/{id}',
         mockPathData : ['id'],
         multiple : false,
         onChecked : function (data) {
+            selectNode = data;
             Dolphin.form.setValue(data, '#baseInfo');
+            if(!data.parent){
+                $("#parentName").html("");
+            }
             attrList.query(null, {
                 id : data.id
             });
@@ -29,36 +28,31 @@ $(function () {
 
     var attrList = new Dolphin.LIST({
         panel : '#productList',
-        url : '/data/model/categoryAttr/{id}',
+        url : '/data/sym/account/org/{id}',
+        ajaxType:'post',
         mockPathData : ['id'],
         data : {rows : [], total : 0},
-        pagination : false,
+        pagination : true,
         columns : [{
-            code: 'attributeDefine.code',
-            title: '属性编码'
+            code: 'code',
+            title: '账号编码'
         }, {
-            code: 'attributeDefine.name',
-            title: '属性名称'
+            code: 'name',
+            title: '账号名称'
         }, {
-            code : 'attributeDefine.fieldType',
-            title : '字段类型'
+            code : 'type',
+            title : '账号类型'
         }, {
-            code : 'inheritFlag',
-            title : '是否可继承',
-            width : '100px'
+            code : 'set',
+            title : '性别',
+            width : '60px'
         }, {
-            code : 'attributeDefine.remark',
-            title : '备注'
+            code : 'mobile',
+            title : '联系手机'
         }],
         onLoadSuccess : function (data) {
-            Dolphin.toggleEnable(categoryAttrSave, false);
         },
         onCheck : function (data, row, thisInput) {
-            if(this.getChecked().length > 0){
-                Dolphin.toggleEnable(categoryAttrSave, true);
-            }else{
-                Dolphin.toggleEnable(categoryAttrSave, false);
-            }
         },
         onChecked : function (data) {
             var row = $('tr[__id__="'+data.__id__+'"]');
@@ -78,17 +72,17 @@ $(function () {
         panel : '#selectedList',
         data : {rows : [], total : 0},
         title : '已选择列表',
-        pagination : false,
+        pagination : true,
         rowIndex : false,
         columns : [{
             code : 'code',
-            title : '属性编码'
+            title : '账号编码'
         }, {
             code : 'name',
-            title : '属性名称'
+            title : '账号名称'
         }, {
-            code : 'remark',
-            title : '备注'
+            code : 'status',
+            title : '状态'
         }]
     });
 
@@ -97,17 +91,18 @@ $(function () {
         data : {rows : [], total : 0},
         title : '未选择列表',
         panelType : 'panel-info',
-        pagination : false,
+        ajaxType:'post',
+        pagination : true,
         rowIndex : false,
         columns : [{
             code : 'code',
-            title : '属性编码'
+            title : '账号编码'
         }, {
             code : 'name',
-            title : '属性名称'
+            title : '账号名称'
         }, {
-            code : 'remark',
-            title : '备注'
+            code : 'status',
+            title : '状态'
         }]
     });
 
@@ -131,7 +126,6 @@ $(function () {
                     id : checkedData[0].id
                 }
             }, '#categoryForm');
-
             categoryWin.modal('show');
         }
     });
@@ -141,7 +135,6 @@ $(function () {
             Dolphin.alert('请选择一个品类节点。');
         }else{
             Dolphin.form.setValue(checkedData[0], '#categoryForm');
-
             categoryWin.modal('show');
         }
     });
@@ -178,61 +171,10 @@ $(function () {
 
     // list button
     $('#multipleUpdateAttr').click(function () {
-        var selectedData = [], ids = ',',
-            i, j;
-        if(!attributeLibrary){
-            Dolphin.ajax({
-                url : '/data/model/attribute',
-                loading : true,
-                onSuccess : function (reData) {
-                    attributeLibrary = reData.rows;
-                    showAttributePanel();
-                }
-            })
-        }else{
-            showAttributePanel();
-        }
-
-        function showAttributePanel(){
-            var _attributeLibrary = $.extend(true, [], attributeLibrary);
-            for(i = 0; i < attrList.data.rows.length; i++){
-                selectedData.push($.extend({}, attrList.data.rows[i].attributeDefine, {
-                    relId : attrList.data.rows[i].id,
-                    inheritFlag : attrList.data.rows[i].inheritFlag
-                }));
-                for(j = 0; j < _attributeLibrary.length;){
-                    if(selectedData[i].id == _attributeLibrary[j].id){
-                        _attributeLibrary.splice(j,1);
-                    }else{
-                        j++;
-                    }
-                }
-            }
-            selectedList.loadData({rows : selectedData, total:selectedData.length});
-            unselectedList.loadData({rows : _attributeLibrary, total: _attributeLibrary.length});
-            categoryPanel.slideToggle(300, function () {
-                attributePanel.slideToggle(300);
-            });
-        }
-    });
-    categoryAttrSave.click(function () {
-        var data = attrList.getChecked(),
-            i;
-        for(i = 0; i < data.length; i++){
-            data[i].inheritFlag = $('tr[__id__="'+data[i].__id__+'"]').find('[name="inheritFlag"]')[0].checked;
-        }
-
-        Dolphin.ajax({
-            url : '/data/pcm/categoryAttr',
-            type : Dolphin.requestMethod.POST,
-            data : Dolphin.json2string(data),
-            onSuccess : function (reData) {
-                Dolphin.alert(reData.msg || "保存成功", {
-                    callback : function () {
-                        attrList.reload();
-                    }
-                })
-            }
+        categoryPanel.slideToggle(300, function () {
+            attributePanel.slideToggle(300);
+            unselectedList.load('/data/sym/account/excludeOrg/'+selectNode.id);
+            selectedList.loadData(attrList.data);
         });
     });
 
@@ -263,35 +205,35 @@ $(function () {
             }
         }
     });
+
     $('#confirm').click(function () {
-        var data = [], attrData,
-            i;
-
-        for(i = 0; i < selectedList.data.rows.length; i++){
-            attrData = {
-                attributeDefine : {
-                    id : selectedList.data.rows[i].id
-                },
-                inheritFlag : selectedList.data.rows[i].inheritFlag==null?true:selectedList.data.rows[i].inheritFlag
-            }
+        var data = {};
+        data.id = selectNode.id;
+        data.code = selectNode.code;
+        data.accounts = [];
+        var selData = selectedList.data.rows;
+        for(var i = 0; i < selData.length; i++){
+            data.accounts.push(selData[i].id);
         }
-
         Dolphin.ajax({
-            url : '/data/pcm/categoryAttr',
+            url : '/data/sym/organization/acntRel',
             type : Dolphin.requestMethod.PUT,
-            data : Dolphin.string2json(data),
+            data : Dolphin.json2string(data),
             onSuccess : function (reData) {
                 Dolphin.alert(reData.msg || '保存成功', {
                     callback : function () {
-                        attrList.reload();
+                        //categoryTree.reload();
+                        //categoryWin.modal('hide');
                         attributePanel.slideToggle(300, function () {
                             categoryPanel.slideToggle(300);
                         });
+                        attrList.reload();
                     }
                 })
             }
         });
     });
+
     $('#cancel').click(function () {
         attributePanel.slideToggle(300, function () {
             categoryPanel.slideToggle(300);
@@ -305,14 +247,27 @@ $(function () {
 
         confirmButton = $('<button type="button" class="btn btn-primary btn-small">').html('确定').appendTo(footer);
         confirmButton.click(function () {
-            categoryWin.modal('hide');
+            var data = Dolphin.form.getValue('categoryForm', '"');
+            Dolphin.ajax({
+                url : '/data/sym/organization/',
+                type : Dolphin.requestMethod.PUT,
+                data : Dolphin.json2string(data),
+                onSuccess : function (reData) {
+                    Dolphin.alert(reData.msg || '保存成功', {
+                        callback : function () {
+                            categoryTree.reload();
+                            categoryWin.modal('hide');
+                        }
+                    })
+                }
+            });
         });
         cancelButton = $('<button type="button" class="btn btn-default btn-small" >').html('取消').appendTo(footer);
         cancelButton.click(function () {
             categoryWin.modal('hide');
         });
         categoryWin = Dolphin.modalWin({
-            title : '编辑品类基本信息',
+            title : '编辑组织基本信息',
             content : $('#categoryModalWin').show(),
             footer : footer,
             defaultHidden : true,
