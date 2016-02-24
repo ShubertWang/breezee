@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <% include ../common/meta.ejs %>
+    <title>点餐</title>
+    <% include ../common/public.ejs %>
+</head>
+<body ontouchstart>
+<div class="wdcd bh">
+    <ul>
+        <li class="bot_dfd1<%= data.orderType=='dfd'?' bot_choose':'' %>"><a href="<%= data.orderType=='dfd'?'javascript:void(0)':'/view/order/myOrder?orderType=dfd' %>" >待付款订单</a></li>
+        <li class="bot_yfd<%= data.orderType=='yfd'?' bot_choose':'' %>"><a href="<%= data.orderType=='yfd'?'javascript:void(0)':'/view/order/myOrder?orderType=yfd' %>">已付款订单</a></li>
+        <li class="bot_ywc<%= data.orderType=='ywc'?' bot_choose':'' %>"><a href="<%= data.orderType=='ywc'?'javascript:void(0)':'/view/order/myOrder?orderType=ywc' %>">已完成订单</a></li>
+    </ul>
+</div>
+
+<% if(body.length > 0 ){%>
+    <% for(var i = 0; i < body.length; i++){ %>
+    <div class="weui_cells weui_cells_access">
+        <a class="weui_cell" href="javascript:;">
+            <div class="weui_cell_bd weui_cell_primary">
+                <p>订单号：<%= body[i].id %></p>
+            </div>
+            <div class="weui_cell_ft"><%= body[i].status %>配送中<!--TODO 枚举--></div>
+        </a>
+
+        <div class="wdlist <%= body[i].status==5?'bg_ywc':''  %>"><!--TODO 根据orderStatus判断已完成订单 -->
+            <div>
+                <div class="wddd_ddlist bh">
+                    <div class="cpxq bh">
+                        <div class="cp"><img src="/custom/wx_style/images/<%= body[i].restaurant.image %>.jpg"></div>
+                        <div class="text">
+                            <h1><%= body[i].restaurant.name %></h1 > <div class="wddd_list"><%= body[i].time %> </div>             </div>
+                        <div class="jg"><span><%= body[i].price %> </span>元</div>
+                    </div>
+                </div>
+                <div class="wddd_money bg_<%= body[i].type %>"><%= body[i].type %>外卖订单<!--TODO 枚举-->  <input type="submit" name="button"  value="立即支付" class="btnred"></div>
+            </div>
+        </div>
+    </div>
+    <% } %>
+<% }else{ %>
+<div class="noorder">
+
+    <div class="noorder_text">
+        有种淡淡的忧伤
+        <p><a href="#">去餐厅逛逛</a></p>
+    </div>
+
+</div>
+<% } %>
+<% include ../common/footer.ejs %>
+<script>
+    $(document).ready(function() {
+        var nicesx = $("#boxscroll").niceScroll("#boxscroll div",{touchbehavior:true,cursorcolor:"#FF00FF",cursoropacitymax:0.6,cursorwidth:24,usetransition:true,hwacceleration:true,autohidemode:"hidden"});
+    });
+</script>
+</body>
+</html>
