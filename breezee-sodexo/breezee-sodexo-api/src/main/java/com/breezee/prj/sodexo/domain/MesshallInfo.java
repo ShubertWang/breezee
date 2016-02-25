@@ -22,6 +22,13 @@ public class MesshallInfo extends BaseInfo {
      */
     protected Long orgId;
 
+    protected String orgName;
+
+    /**
+     * 餐厅电话
+     */
+    protected String telephone;
+
     /**
      * 餐厅里面的店面数
      */
@@ -46,6 +53,8 @@ public class MesshallInfo extends BaseInfo {
      * 负责人
      */
     protected Long dutyPerson;
+
+    protected String dutyName;
 
     public Long getOrgId() {
         return orgId;
@@ -93,5 +102,29 @@ public class MesshallInfo extends BaseInfo {
 
     public void setDutyPerson(Long dutyPerson) {
         this.dutyPerson = dutyPerson;
+    }
+
+    public String getTelephone() {
+        return telephone;
+    }
+
+    public void setTelephone(String telephone) {
+        this.telephone = telephone;
+    }
+
+    public String getOrgName() {
+        return orgName;
+    }
+
+    public void setOrgName(String orgName) {
+        this.orgName = orgName;
+    }
+
+    public String getDutyName() {
+        return dutyName;
+    }
+
+    public void setDutyName(String dutyName) {
+        this.dutyName = dutyName;
     }
 }

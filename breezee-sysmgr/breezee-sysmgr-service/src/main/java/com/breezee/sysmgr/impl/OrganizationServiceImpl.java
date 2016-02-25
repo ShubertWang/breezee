@@ -51,6 +51,11 @@ public class OrganizationServiceImpl implements IOrganizationService {
     }
 
     @Override
+    public OrganizationInfo deleteById(Long id) {
+        return null;
+    }
+
+    @Override
     public OrganizationInfo findInfoById(Long id) {
         OrganizationEntity en = organizationRepository.findOne(id);
         if (en == null)

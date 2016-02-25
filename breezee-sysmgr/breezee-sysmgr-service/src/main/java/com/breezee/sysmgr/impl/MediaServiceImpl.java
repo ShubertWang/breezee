@@ -26,6 +26,11 @@ public class MediaServiceImpl implements IMediaService {
     }
 
     @Override
+    public MediaInfo deleteById(Long id) {
+        return null;
+    }
+
+    @Override
     public MediaInfo findInfoById(Long id) {
         return null;
     }

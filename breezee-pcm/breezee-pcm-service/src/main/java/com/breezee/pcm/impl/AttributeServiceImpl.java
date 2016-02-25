@@ -44,6 +44,11 @@ public class AttributeServiceImpl implements IAttributeService {
     }
 
     @Override
+    public AttributeInfo deleteById(Long id) {
+        return null;
+    }
+
+    @Override
     public AttributeInfo findInfoById(Long id) {
         AttributeEntity entity = attributeRepository.findOne(id);
         return entity.toInfo();

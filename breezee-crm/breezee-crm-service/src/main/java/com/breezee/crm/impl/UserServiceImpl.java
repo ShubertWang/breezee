@@ -61,6 +61,11 @@ public class UserServiceImpl implements IUserService {
     }
 
     @Override
+    public UserInfo deleteById(Long id) {
+        return null;
+    }
+
+    @Override
     public UserInfo findInfoById(Long id) {
         UserEntity ue = userRepository.findOne(id);
         if(ue == null)

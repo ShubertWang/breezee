@@ -26,6 +26,11 @@ public interface IServiceLayer<T extends BaseInfo> {
     @Consumes(MediaType.APPLICATION_JSON)
     T saveInfo(T t);
 
+    @Path("/{id}")
+    @DELETE
+    @Produces(MediaType.APPLICATION_JSON)
+    T deleteById(@PathParam("id") Long id);
+
     /**
      * 获取指定Id的对象
      * @param id

@@ -59,6 +59,11 @@ public class OrderServiceImpl implements IOrderService {
     }
 
     @Override
+    public OrderInfo deleteById(Long id) {
+        return null;
+    }
+
+    @Override
     public OrderInfo findInfoById(Long id) {
         OrderEntity entity = orderRepository.findOne(id);
         if(entity==null)

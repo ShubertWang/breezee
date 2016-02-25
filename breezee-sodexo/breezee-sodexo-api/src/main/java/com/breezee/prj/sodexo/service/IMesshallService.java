@@ -15,4 +15,5 @@ import javax.ws.rs.Path;
  */
 @Path("/messhall")
 public interface IMesshallService extends IServiceLayer<MesshallInfo> {
+
 }

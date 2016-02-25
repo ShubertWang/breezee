@@ -27,7 +27,7 @@
 
     <!--uncomment this if you want to test dubbo's monitor-->
     <!--<dubbo:monitor protocol="registry"/>-->
-    <dubbo:consumer timeout="1000000"/>
+    <dubbo:consumer timeout="60000"/>
     <!--uncomment this if you want to test dubbo's monitor-->
     <!--<dubbo:monitor protocol="registry"/>-->
 

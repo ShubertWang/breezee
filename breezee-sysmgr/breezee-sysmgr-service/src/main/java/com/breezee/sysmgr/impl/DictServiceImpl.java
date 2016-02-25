@@ -51,6 +51,11 @@ public class DictServiceImpl implements IDictService {
     }
 
     @Override
+    public DictInfo deleteById(Long id) {
+        return null;
+    }
+
+    @Override
     public DictInfo findInfoById(Long id) {
         return dictRepository.findOne(id).toInfo();
     }
