@@ -19,6 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -53,5 +54,10 @@ public class AttributeServiceImpl implements IAttributeService {
     public PageResult<AttributeInfo> pageAll(Map<String, Object> m, PageInfo pageInfo) {
         Page<AttributeEntity> page = attributeRepository.findAll(DynamicSpecifications.createSpecification(m), pageInfo);
         return new PageResult<>(page, AttributeInfo.class, (attributeEntity, attributeInfo) -> attributeEntity.toInfo());
+    }
+
+    @Override
+    public PageResult<AttributeInfo> findAttrsNotForCateId(Long categoryId, PageInfo pageInfo) {
+        return pageAll(new HashMap<>(),pageInfo);
     }
 }

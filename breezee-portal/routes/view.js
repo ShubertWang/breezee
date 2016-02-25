@@ -7,15 +7,16 @@ router.get('*', function(req, res, next) {
         var url, endType, userInfo,
             queryData;
 
-        userInfo = true;
-//        userInfo = req.session.username;
+        //userInfo = true;
+        userInfo = req.session.userId;
 
         if(userInfo == null){
             res.render('login', {
                 path : '/login',
                 endType : "",
                 title : '登录',
-                redirect : req.url
+                redirect : req.url,
+                data:{}
             });
         }else{
             endType = /mobile/.test(req.headers['user-agent'])?"/mobile":"/desktop";

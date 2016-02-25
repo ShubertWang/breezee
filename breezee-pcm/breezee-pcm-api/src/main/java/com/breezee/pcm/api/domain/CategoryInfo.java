@@ -17,7 +17,13 @@ import java.util.List;
 @JsonInclude(value = JsonInclude.Include.NON_NULL)
 public class CategoryInfo extends TreeObject<CategoryInfo> {
 
+    protected String type="leaf";
+
     private List<CateAttrInfo> cateAttrInfos;
+
+    public String getType() {
+        return leaf?"leaf":"folder";
+    }
 
     public List<CateAttrInfo> getCateAttrInfos() {
         return cateAttrInfos;

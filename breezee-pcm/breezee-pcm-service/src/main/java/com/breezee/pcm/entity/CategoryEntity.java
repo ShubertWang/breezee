@@ -9,6 +9,7 @@ import com.breezee.common.BaseInfo;
 import com.breezee.pcm.api.domain.CategoryInfo;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.Set;
 
@@ -119,11 +120,21 @@ public class CategoryEntity extends BaseInfo {
      * @return
      */
     public CategoryInfo toInfo(boolean loadChild){
-        CategoryInfo info = (CategoryInfo) this.clone();
-        if(loadChild && this.getChildren()!=null && this.getChildren().size()>0){
-            this.getChildren().forEach(a->{
-                info.getChildren().add(a.toInfo(false));
-            });
+        CategoryInfo info = new CategoryInfo();
+        cloneAttribute(info);
+        if(this.getChildren()!=null && this.getChildren().size()>0){
+            if(loadChild) {
+                info.setChildren(new ArrayList<>());
+                this.getChildren().forEach(a -> {
+                    info.getChildren().add(a.toInfo(false));
+                });
+            }
+            info.setLeaf(false);
+        }
+        if(this.getParent()!=null){
+            CategoryInfo pInfo = new CategoryInfo();
+            this.getParent().cloneAttribute(pInfo);
+            info.setParent(pInfo);
         }
         return info;
     }

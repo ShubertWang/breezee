@@ -7,17 +7,20 @@ package com.breezee.pcm.impl;
 
 import com.breezee.common.*;
 import com.breezee.common.util.Callback;
+import com.breezee.common.util.ContextUtil;
+import com.breezee.pcm.api.domain.CateAttrInfo;
 import com.breezee.pcm.api.domain.CategoryInfo;
 import com.breezee.pcm.api.service.ICategoryService;
+import com.breezee.pcm.entity.AttributeEntity;
+import com.breezee.pcm.entity.CateAttrEntity;
 import com.breezee.pcm.entity.CategoryEntity;
+import com.breezee.pcm.repository.AttributeRepository;
 import com.breezee.pcm.repository.CategoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * 品类服务实现类
@@ -30,30 +33,71 @@ public class CategoryServiceImpl implements ICategoryService {
     @Autowired
     protected CategoryRepository categoryRepository;
 
+    @Autowired
+    private AttributeRepository attributeRepository;
+
     @Override
     public List<CategoryInfo> findCategoryByParentId(Long id) {
-        if(id == -1){
-            List<CategoryEntity> l = categoryRepository.findTop();
-            List<CategoryInfo> _l = new ArrayList<>(l.size());
-            l.forEach(a->{
-                _l.add(a.toInfo(false));
-            });
-            return _l;
+        List<CategoryEntity> l = new ArrayList<>();
+        if (id == -1) {
+            l = categoryRepository.findTop();
+        } else {
+            CategoryEntity en = categoryRepository.findOne(id);
+            if (en != null)
+                l.addAll(en.getChildren());
         }
-        CategoryEntity en = categoryRepository.findOne(id);
-        if(en==null)
-            return new ArrayList<>();
-        return en.toInfo(true).getChildren();
+        List<CategoryInfo> _l = new ArrayList<>(l.size());
+        l.forEach(a -> {
+            _l.add(a.toInfo(false));
+        });
+        return _l;
+    }
+
+    @Override
+    public void saveCateAttr(CategoryInfo categoryInfo) {
+        CategoryEntity entity = categoryRepository.findOne(categoryInfo.getId());
+        if(entity==null)
+            return;
+        entity.getCateAttrs().removeAll(entity.getCateAttrs());
+        categoryRepository.save(entity);
+        List<CateAttrInfo> l = categoryInfo.getCateAttrInfos();
+        if(l!=null && l.size()>0){
+            for (CateAttrInfo cateAttrInfo : l) {
+                AttributeEntity attributeEntity = attributeRepository.findOne(cateAttrInfo.getAttrId());
+                if(attributeEntity!=null) {
+                    entity.getCateAttrs().add(new CateAttrEntity(entity,attributeEntity).parse(cateAttrInfo));
+                }
+            }
+            categoryRepository.save(entity);
+        }
+    }
+
+    @Override
+    public List<CateAttrInfo> findCateAttrsByCateId(Long cateId) {
+        CategoryEntity entity = categoryRepository.findOne(cateId);
+        List<CateAttrInfo> l = new ArrayList<>();
+        while (entity != null){
+            l.addAll(new InfoList<>(entity.getCateAttrs(), (Callback<CateAttrEntity, CateAttrInfo>) (cateAttrEntity, info) -> cateAttrEntity.toInfo()));
+            entity = entity.getParent();
+        }
+        return l;
     }
 
     @Override
     public CategoryInfo saveInfo(CategoryInfo categoryInfo) {
-        CategoryEntity entity = new CategoryEntity().parse(categoryInfo);
-        if(categoryInfo.getParent()!=null && categoryInfo.getParent().getId()!=null){
+        CategoryEntity entity = categoryRepository.findByCode(categoryInfo.getCode());
+        if (categoryInfo.getId() == null && entity != null) {
+            return ErrorInfo.build(categoryInfo, ContextUtil.getMessage("duplicate.key", new String[]{categoryInfo.getCode()}));
+        }
+        if (entity == null)
+            entity = new CategoryEntity();
+        entity.parse(categoryInfo);
+        if (categoryInfo.getParent() != null && categoryInfo.getParent().getId() != null) {
             entity.setParent(categoryRepository.findOne(categoryInfo.getParent().getId()));
         }
         categoryRepository.save(entity);
         return SuccessInfo.build(CategoryInfo.class);
+
     }
 
     @Override

@@ -9,16 +9,20 @@ $(function () {
         categoryPanel = $('#categoryPanel'),
         attributePanel = $('#attributePanel'),
         categoryAttrSave = $('#categoryAttrSave'),
-        attributeLibrary;
+        attributeLibrary,selectNode;
 
     //categoryTree
     var categoryTree = new Dolphin.TREE({
         panel : '#categoryTree',
-        url : '/data/model/tree/{id}',
+        url : '/data/pcm/category/p/{id}',
         mockPathData : ['id'],
         multiple : false,
         onChecked : function (data) {
+            selectNode = data;
             Dolphin.form.setValue(data, '#baseInfo');
+            if(!data.parent){
+                $("#parentName").html("");
+            }
             attrList.query(null, {
                 id : data.id
             });
@@ -29,26 +33,34 @@ $(function () {
 
     var attrList = new Dolphin.LIST({
         panel : '#productList',
-        url : '/data/model/categoryAttr/{id}',
+        url : '/data/pcm/category/cateAttrs/{id}',
         mockPathData : ['id'],
         data : {rows : [], total : 0},
         pagination : false,
         columns : [{
-            code: 'attributeDefine.code',
+            code: 'code',
             title: '属性编码'
         }, {
-            code: 'attributeDefine.name',
+            code: 'name',
             title: '属性名称'
         }, {
-            code : 'attributeDefine.fieldType',
+            code : 'attrType',
             title : '字段类型'
         }, {
-            code : 'inheritFlag',
+            code : 'inheritable',
             title : '是否可继承',
             width : '100px'
         }, {
-            code : 'attributeDefine.remark',
-            title : '备注'
+            code:'sourceCateId',
+            title:'来源',
+            formatter:function(val,dat){
+                console.log(val);
+                if(val==selectNode.id){
+                    return "自身";
+                } else {
+                    return "父类"+val;
+                }
+            }
         }],
         onLoadSuccess : function (data) {
             Dolphin.toggleEnable(categoryAttrSave, false);
@@ -79,6 +91,7 @@ $(function () {
         data : {rows : [], total : 0},
         title : '已选择列表',
         pagination : false,
+        idField:'attrId',
         rowIndex : false,
         columns : [{
             code : 'code',
@@ -97,7 +110,8 @@ $(function () {
         data : {rows : [], total : 0},
         title : '未选择列表',
         panelType : 'panel-info',
-        pagination : false,
+        ajaxType:'post',
+        pagination : true,
         rowIndex : false,
         columns : [{
             code : 'code',
@@ -178,42 +192,11 @@ $(function () {
 
     // list button
     $('#multipleUpdateAttr').click(function () {
-        var selectedData = [], ids = ',',
-            i, j;
-        if(!attributeLibrary){
-            Dolphin.ajax({
-                url : '/data/model/attribute',
-                loading : true,
-                onSuccess : function (reData) {
-                    attributeLibrary = reData.rows;
-                    showAttributePanel();
-                }
-            })
-        }else{
-            showAttributePanel();
-        }
-
-        function showAttributePanel(){
-            var _attributeLibrary = $.extend(true, [], attributeLibrary);
-            for(i = 0; i < attrList.data.rows.length; i++){
-                selectedData.push($.extend({}, attrList.data.rows[i].attributeDefine, {
-                    relId : attrList.data.rows[i].id,
-                    inheritFlag : attrList.data.rows[i].inheritFlag
-                }));
-                for(j = 0; j < _attributeLibrary.length;){
-                    if(selectedData[i].id == _attributeLibrary[j].id){
-                        _attributeLibrary.splice(j,1);
-                    }else{
-                        j++;
-                    }
-                }
-            }
-            selectedList.loadData({rows : selectedData, total:selectedData.length});
-            unselectedList.loadData({rows : _attributeLibrary, total: _attributeLibrary.length});
-            categoryPanel.slideToggle(300, function () {
-                attributePanel.slideToggle(300);
-            });
-        }
+        categoryPanel.slideToggle(300, function () {
+            attributePanel.slideToggle(300);
+            unselectedList.load('/data/pcm/attribute/excludeCate/'+selectNode.id);
+            selectedList.loadData(attrList.data);
+        });
     });
     categoryAttrSave.click(function () {
         var data = attrList.getChecked(),
@@ -259,27 +242,28 @@ $(function () {
         for(i = 0; i < checkedData.length; i++){
             if(!checkedData[i].inheritFlag){
                 sourceList.removeRow(checkedData[i].__id__);
-                targetList.addRowWithData(checkedData[i]);
+                targetList.addRowWithData($.extend({attrId:checkedData[i].id}, checkedData[i]));
             }
         }
+        console.log('------------');
+        console.log(targetList.data.rows);
     });
     $('#confirm').click(function () {
-        var data = [], attrData,
+        var data = {id:selectNode.id,cateAttrInfos:[]}, attrData,
             i;
-
         for(i = 0; i < selectedList.data.rows.length; i++){
-            attrData = {
-                attributeDefine : {
-                    id : selectedList.data.rows[i].id
-                },
-                inheritFlag : selectedList.data.rows[i].inheritFlag==null?true:selectedList.data.rows[i].inheritFlag
+            if(!selectedList.data.rows[i].sourceCateId) {
+                data.cateAttrInfos.push({
+                    attrId: selectedList.data.rows[i].attrId,
+                    inheritable: selectedList.data.rows[i].inheritable == null ? true : selectedList.data.rows[i].inheritable
+                });
             }
         }
-
+        console.log(data);
         Dolphin.ajax({
-            url : '/data/pcm/categoryAttr',
+            url : '/data/pcm/category/categoryAttr',
             type : Dolphin.requestMethod.PUT,
-            data : Dolphin.string2json(data),
+            data : Dolphin.json2string(data),
             onSuccess : function (reData) {
                 Dolphin.alert(reData.msg || '保存成功', {
                     callback : function () {
@@ -305,7 +289,20 @@ $(function () {
 
         confirmButton = $('<button type="button" class="btn btn-primary btn-small">').html('确定').appendTo(footer);
         confirmButton.click(function () {
-            categoryWin.modal('hide');
+            var data = Dolphin.form.getValue('categoryForm', '"');
+            Dolphin.ajax({
+                url : '/data/pcm/category/',
+                type : Dolphin.requestMethod.PUT,
+                data : Dolphin.json2string(data),
+                onSuccess : function (reData) {
+                    Dolphin.alert(reData.msg || '保存成功', {
+                        callback : function () {
+                            categoryTree.reload();
+                            categoryWin.modal('hide');
+                        }
+                    })
+                }
+            });
         });
         cancelButton = $('<button type="button" class="btn btn-default btn-small" >').html('取消').appendTo(footer);
         cancelButton.click(function () {

@@ -10,14 +10,11 @@ router.use('*', function (req, res, next) {
         var service, queryData, bodyData,
             uri, method;
 
-
+        service = global.config.service;
         var parseUrl = function (url) {
             var m = url.substr(6, 3);
             return global.config.service[m] + url.substring(9);
         }
-
-        service = global.config.service;
-
         if (service.mockFlag) {
             uri = req.originalUrl.replace('/data', service.mockPath);
         } else {
@@ -73,7 +70,7 @@ router.use('*', function (req, res, next) {
             }
         }, function (error, response, body) {
             res.send(toJson(body));
-        })
+        });
     } catch (e) {
         console.error(e);
         throw e;

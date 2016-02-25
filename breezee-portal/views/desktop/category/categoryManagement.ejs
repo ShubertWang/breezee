@@ -86,7 +86,7 @@
                                         上级节点
                                     </label>
                                     <div class="col-sm-8">
-                                        <p class="form-control-static" name="parent.name"></p>
+                                        <p id="parentName" class="form-control-static" name="parent.name"></p>
                                     </div>
                                 </div>
                             </div>
@@ -168,12 +168,13 @@
 <div class="default-hidden" id="categoryModalWin">
     <form id="categoryForm" class="form-horizontal">
         <input type="hidden" name="parent.id" />
+        <input type="hidden" name="id" />
         <div class="dolphin-row">
             <div class="dolphin-col-24">
                 <div class="form-group">
                     <label class="dolphin-col-6 control-label">品类编码</label>
                     <div class="dolphin-col-18">
-                        <input type="text" class="form-control" name="code" dol-validate="require"/>
+                        <input type="text" class="form-control" name="code"/>
                     </div>
                 </div>
             </div>
@@ -181,7 +182,7 @@
                 <div class="form-group">
                     <label class="dolphin-col-6 control-label">品类名称</label>
                     <div class="dolphin-col-18">
-                        <input type="text" class="form-control" name="name" dol-validate="require" />
+                        <input type="text" class="form-control" name="name" />
                     </div>
                 </div>
             </div>

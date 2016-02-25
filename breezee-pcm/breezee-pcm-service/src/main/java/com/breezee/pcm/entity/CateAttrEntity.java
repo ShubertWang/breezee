@@ -6,6 +6,7 @@
 package com.breezee.pcm.entity;
 
 import com.breezee.common.BaseInfo;
+import com.breezee.pcm.api.domain.CateAttrInfo;
 
 import javax.persistence.*;
 
@@ -52,6 +53,13 @@ public class CateAttrEntity extends BaseInfo {
      */
     private int orderNo = -1;
 
+    public CateAttrEntity() {
+    }
+
+    public CateAttrEntity(CategoryEntity category, AttributeEntity attribute) {
+        this.category = category;
+        this.attribute = attribute;
+    }
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -127,5 +135,34 @@ public class CateAttrEntity extends BaseInfo {
 
     public void setOrderNo(int orderNo) {
         this.orderNo = orderNo;
+    }
+
+    public CateAttrInfo toInfo(){
+        CateAttrInfo cateAttrInfo = new CateAttrInfo();
+        cloneAttribute(cateAttrInfo);
+        if(this.getAttribute()!=null) {
+            cateAttrInfo.setAttrId(this.getAttribute().getId());
+            cateAttrInfo.setCode(this.getAttribute().getCode());
+            cateAttrInfo.setAttrType(this.getAttribute().getFieldType());
+        }
+        cateAttrInfo.setDefaultValue(this.getDefaultValue());
+        cateAttrInfo.setDisplay(this.isDisplay());
+        cateAttrInfo.setInheritable(this.isInheritable());
+        cateAttrInfo.setNullable(this.isNullable());
+        cateAttrInfo.setOrderNo(this.getOrderNo());
+        if(this.getCategory()!=null)
+            cateAttrInfo.setSourceCateId(this.getCategory().getId());
+        return cateAttrInfo;
+    }
+
+    public CateAttrEntity parse(CateAttrInfo info){
+        info.cloneAttribute(this);
+        this.setId(null);
+        this.setDefaultValue(info.getDefaultValue());
+        this.setDisplay(info.isDisplay());
+        this.setInheritable(info.isInheritable());
+        this.setNullable(info.isNullable());
+        this.setOrderNo(info.getOrderNo());
+        return this;
     }
 }
