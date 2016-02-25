@@ -37,6 +37,11 @@ public class SeatOrderServiceImpl implements ISeatOrderService {
     }
 
     @Override
+    public SeatOrderInfo deleteById(Long id) {
+        return null;
+    }
+
+    @Override
     public SeatOrderInfo findInfoById(Long id) {
         SeatOrderEntity entity = seatOrderRepository.findOne(id);
         if(entity==null)

@@ -45,6 +45,11 @@ public class RoleServiceImpl implements IRoleService {
     }
 
     @Override
+    public RoleInfo deleteById(Long id) {
+        return null;
+    }
+
+    @Override
     public RoleInfo findInfoById(Long id) {
         RoleEntity entity = roleRepository.findOne(id);
         if (entity == null)

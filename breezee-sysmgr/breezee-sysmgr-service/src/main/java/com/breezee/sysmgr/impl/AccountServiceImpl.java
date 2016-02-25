@@ -64,6 +64,11 @@ public class AccountServiceImpl implements IAccountService {
     }
 
     @Override
+    public AccountInfo deleteById(Long id) {
+        return null;
+    }
+
+    @Override
     public AccountInfo findInfoById(Long id) {
         AccountEntity entity = accountRepository.findOne(id);
         return entity.toInfo();

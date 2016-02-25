@@ -11,7 +11,7 @@
 <div class="container page-content">
     <!--title-->
     <div class="page-header">
-        <h1>属性管理</h1>
+        <h1>餐厅管理</h1>
 
         <div class="operationButton" >
             <div class="btn-group" role="group">
@@ -45,20 +45,20 @@
                     <div class="dolphin-col-10">
                         <div class="form-group">
                             <label class="col-sm-4 control-label">
-                                属性编码
+                                餐厅编码
                             </label>
                             <div class="col-sm-8">
-                                <input type="text" class="form-control"  name="attrCode">
+                                <input type="text" class="form-control"  name="code">
                             </div>
                         </div>
                     </div>
                     <div class="dolphin-col-10">
                         <div class="form-group">
                             <label class="col-sm-4 control-label">
-                                属性名称
+                                餐厅名称
                             </label>
                             <div class="col-sm-8">
-                                <input type="text" class="form-control"  name="attrName">
+                                <input type="text" class="form-control"  name="name">
                             </div>
                         </div>
                     </div>
@@ -89,25 +89,35 @@
                     <div class="panel-heading">
                         <div class="panel-title">
                             <span class="glyphicon glyphicon-list-alt"></span>
-                            属性维护
+                            餐厅维护
                         </div>
                     </div>
                     <div class="panel-body">
                         <form id="editForm">
                             <input type="hidden" name="id" />
                             <div class="form-group">
-                                <label>属性编码</label>
+                                <label>餐厅编码</label>
                                 <input type="text" class="form-control"  name="code" dol-validate="required">
                             </div>
                             <div class="form-group">
-                                <label>属性名称</label>
+                                <label>餐厅名称</label>
                                 <input type="text" class="form-control"  name="name" dol-validate="required">
                             </div>
                             <div class="form-group">
-                                <label>属性类型</label>
-                                <select id="field-Type" class="form-control" options="attr_type" name="fieldType" dol-validate="required"></select>
+                                <label>组织机构</label>
+                                <input type="text" class="form-control"  name="orgId" dol-validate="required">
                             </div>
-                            <div id="extendInfo" class="default-hidden">
+                            <div class="form-group">
+                                <label>负责人</label>
+                                <input type="text" class="form-control"  name="dutyPerson">
+                            </div>
+                            <div class="form-group">
+                                <label>营业时间</label>
+                                <input type="text" class="form-control"  name="startTime">
+                            </div>
+                            <div class="form-group">
+                                <label>结束时间</label>
+                                <input type="text" class="form-control"  name="endTime">
                             </div>
                             <hr/>
                             <div class="form-buttons">

@@ -101,6 +101,11 @@ public class CategoryServiceImpl implements ICategoryService {
     }
 
     @Override
+    public CategoryInfo deleteById(Long id) {
+        return null;
+    }
+
+    @Override
     public CategoryInfo findInfoById(Long id) {
         CategoryEntity en = categoryRepository.findOne(id);
         if(en==null)

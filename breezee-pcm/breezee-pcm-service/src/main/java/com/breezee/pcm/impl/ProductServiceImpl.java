@@ -82,6 +82,11 @@ public class ProductServiceImpl implements IProductService {
     }
 
     @Override
+    public ProductInfo deleteById(Long id) {
+        return null;
+    }
+
+    @Override
     public ProductInfo findInfoById(Long id) {
         ProductEntity entity = productRepository.findOne(id);
         ProductInfo info = entity.toInfo();

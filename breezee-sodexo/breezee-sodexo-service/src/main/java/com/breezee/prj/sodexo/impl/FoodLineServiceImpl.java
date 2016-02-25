@@ -35,6 +35,11 @@ public class FoodLineServiceImpl implements IFoodLineService {
     }
 
     @Override
+    public FoodLineInfo deleteById(Long id) {
+        return null;
+    }
+
+    @Override
     public FoodLineInfo findInfoById(Long id) {
         FoodLineEntity entity = foodLineRepository.findOne(id);
         if(entity==null)

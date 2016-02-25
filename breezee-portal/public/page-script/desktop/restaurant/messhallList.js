@@ -6,35 +6,32 @@ $(function () {
 
     var list = new Dolphin.LIST({
         panel : "#list",
-        title : '属性列表',
+        title : '餐厅列表',
         columns: [{
             code: 'code',
-            title: '属性编码'
+            title: '餐厅编码',
+            formatter:function(val,data){
+                return "<a href='messhallDetail?id="+data.id+"'>"+val+"</a>";
+            }
         }, {
             code: 'name',
-            title: '属性名称'
+            title: '餐厅名称'
         }, {
-            code: 'fieldType',
-            title: '字段类型'
-        }, {
-            code: 'unitCode',
-            title: '单位'
-        }, {
-            code:'arguments',
-            title:'参数',
-            formatter : function (val) {
-                return Dolphin.json2string(val);
-            }
+            code: 'orgName',
+            title: '所属组织'
         },{
-            code:'orderNo',
-            title:'排序'
+            code: 'startTime',
+            title: '营业时间'
         },{
-            code: 'remark',
-            title: '备注'
+            code: 'endTime',
+            title: '结束时间'
+        },{
+            code: 'dutyName',
+            title: '负责人'
         }],
         multiple : false,
         ajaxType:'post',
-        url : '/data/pcm/attribute/page',
+        url : '/data/sdx/messhall/page',
         dataFilter : function (data) {
             for(var i = 0; i < data.rows.length; i++){
                 data.rows[i].arguments = Dolphin.string2json(data.rows[i].arguments || '{}');
@@ -58,6 +55,10 @@ $(function () {
         Dolphin.form.empty("#editForm");
     });
     $('#update').click(function () {
+        if(list.getChecked().length==0) {
+            Dolphin.alert( '无选择项');
+            return;
+        }
         if(checkEditFormHidden()) {
             $('#listPanel').toggleClass('dolphin-col-24').toggleClass('dolphin-col-18');
             $('#formPanel').toggle();
@@ -66,12 +67,29 @@ $(function () {
         $("#field-Type").change();
         Dolphin.form.setValue(list.getChecked()[0], '#editForm');
     });
+    $("#delete").click(function(){
+        if(list.getChecked().length>0) {
+            Dolphin.ajax({
+                url: '/data/sdx/messhall/'+list.getChecked()[0].id,
+                type: Dolphin.requestMethod.DELETE,
+                onSuccess: function (reData) {
+                    Dolphin.alert(reData.msg || '删除成功', {
+                        callback: function () {
+                            list.reload();
+                        }
+                    })
+                }
+            });
+        } else {
+            Dolphin.alert( '无选择项');
+        }
+    });
     $('#save').click(function () {
         if(Dolphin.form.validate('#editForm')){
             var data = Dolphin.form.getValue('editForm', '"');
             data.arguments = Dolphin.json2string(data.arguments);
             Dolphin.ajax({
-                url : '/data/pcm/attribute',
+                url : '/data/sdx/messhall',
                 type : Dolphin.requestMethod.PUT,
                 data : Dolphin.json2string(data),
                 onSuccess : function (reData) {
@@ -82,7 +100,7 @@ $(function () {
                         }
                     })
                 }
-            })
+            });
         }
     });
     $("#cancel").click(function(){
@@ -96,25 +114,4 @@ $(function () {
     $("#conditionReset").click(function () {
         Dolphin.form.empty("#queryForm")
     });
-    $("#field-Type").change(function(){
-        var selVal = $(this).children('option:selected').val();
-        switch (selVal){
-            case 'dict':
-                $("#extendInfo").show();
-                $("#extendInfo").empty();
-                $('<hr/><div class="form-group"><label>枚举编码</label><input type="text" class="form-control"  name="arguments.enumCode" dol-validate="required"></div>').appendTo($("#extendInfo"));
-                break;
-            case 'integer':
-            case 'numberic':
-                $("#extendInfo").show();
-                $("#extendInfo").empty();
-                $('<hr/><div class="form-group"><label>单位</label><input type="text" class="form-control"  name="unitCode"></div>').appendTo($("#extendInfo"));
-                break;
-            default:
-                $("#extendInfo").empty();
-                $("#extendInfo").hide();
-                break;
-        }
-    });
-
 });

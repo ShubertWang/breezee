@@ -11,141 +11,63 @@
 <div class="container page-content">
     <!--title-->
     <div class="page-header">
-        <h1>菜品列表</h1>
-
-        <div class="operationButton" >
-            <div class="btn-group" role="group">
-                <button type="button" class="btn btn-success" id="insert">
-                    <span class="glyphicon glyphicon-plus"></span>
-                    添加
-                </button>
-                <button type="button" class="btn btn-primary" id="update">
-                    <span class="glyphicon glyphicon-pencil"></span>
-                    修改
-                </button>
-                <button type="button" class="btn btn-danger" id="delete">
-                    <span class="glyphicon glyphicon-trash"></span>
-                    删除
-                </button>
-            </div>
-        </div>
+        <h1>餐厅设置</h1>
     </div>
-
     <div class="dolphin-row">
-        <div class="dolphin-col-6">
-            <div class="panel panel-primary">
-                <div class="panel-heading">
-                    <div class="panel-title">
-                        餐厅树
-                    </div>
-                </div>
-                <div class="panel-body" id="restaurantTreePanel">
-
-                </div>
-            </div>
-        </div>
-
-        <div class="dolphin-col-18" id="infoPanel">
+        <div class="dolphin-col-18">
             <div class="panel panel-default">
                 <div class="panel-heading">
                     <div class="panel-title">
-                        餐厅和服务线信息
+                        服务线与餐桌信息
                     </div>
                 </div>
                 <div class="panel-body form-horizontal form-single">
-                    <div class="dolphin-row" id="baseInfoPanel">
-                        <div class="dolphin-col-12">
-                            <div class="form-group">
-                                <label class="col-sm-4 control-label">
-                                    餐厅编码
-                                </label>
-                                <div class="col-sm-8">
-                                    <p class="form-control-static" name="code"></p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="dolphin-col-12">
-                            <div class="form-group">
-                                <label class="col-sm-4 control-label">
-                                    餐厅名称
-                                </label>
-                                <div class="col-sm-8">
-                                    <p class="form-control-static" name="name"></p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="dolphin-col-12">
-                            <div class="form-group">
-                                <label class="col-sm-4 control-label">
-                                    组织机构
-                                </label>
-                                <div class="col-sm-8">
-                                    <p class="form-control-static" name="orgId"></p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="dolphin-col-12">
-                            <div class="form-group">
-                                <label class="col-sm-4 control-label">
-                                    负责人
-                                </label>
-                                <div class="col-sm-8">
-                                    <p class="form-control-static" name="dutyPerson"></p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="dolphin-col-12">
-                            <div class="form-group">
-                                <label class="col-sm-4 control-label">
-                                    营业时间
-                                </label>
-                                <div class="col-sm-8">
-                                    <p class="form-control-static" name="startTime"></p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="dolphin-col-12">
-                            <div class="form-group">
-                                <label class="col-sm-4 control-label">
-                                    结束时间
-                                </label>
-                                <div class="col-sm-8">
-                                    <p class="form-control-static" name="endTime"></p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="dolphin-col-12">
-                            <div class="form-group">
-                                <label class="col-sm-4 control-label">
-                                    电话
-                                </label>
-                                <div class="col-sm-8">
-                                    <p class="form-control-static" name="telephone"></p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="dolphin-col-12">
-                            <div class="form-group">
-                                <label class="col-sm-4 control-label">
-                                    描述
-                                </label>
-                                <div class="col-sm-8">
-                                    <p class="form-control-static" name="remark"></p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
                     <ul class="nav nav-pills">
                         <li role="presentation" class="active"><a href="javascript:void(0)">服务线信息</a></li>
                     </ul>
                     <div id="serviceLinePanel"></div>
-
-
                     <ul class="nav nav-pills" style="margin-top: 10px;">
                         <li role="presentation" class="active"><a href="javascript:void(0)">餐桌信息</a></li>
                     </ul>
                     <div id="tablePanel"></div>
+                </div>
+            </div>
+        </div>
+        <div class="dolphin-col-6">
+            <div>
+                <div class="panel panel-info">
+                    <div class="panel-heading">
+                        <div class="panel-title">
+                            <span class="glyphicon glyphicon-list-alt"></span>
+                            餐厅信息
+                        </div>
+                    </div>
+                    <div class="panel-body">
+                        <div class="form-group">
+                            <label class="control-label">餐厅编码</label>
+                            <div name="code"></div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label">餐厅名称</label>
+                            <div name="name"></div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label">组织机构</label>
+                            <div name="orgName"></div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label">负责人</label>
+                            <div name="dutyName"></div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label">营业时间</label>
+                            <div name="startTime"></div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label">结束时间</label>
+                            <div name="endTime"></div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -162,7 +84,7 @@
                         餐厅编码
                     </label>
                     <div class="col-sm-8">
-                        <input type="text" class="form-control" name="code" />
+                        <input type="text" class="form-control" name="code"/>
                     </div>
                 </div>
             </div>
@@ -172,7 +94,7 @@
                         餐厅名称
                     </label>
                     <div class="col-sm-8">
-                        <input type="text" class="form-control" name="name" />
+                        <input type="text" class="form-control" name="name"/>
                     </div>
                 </div>
             </div>
@@ -182,7 +104,7 @@
                         组织机构
                     </label>
                     <div class="col-sm-8">
-                        <input type="text" class="form-control" name="orgId" />
+                        <input type="text" class="form-control" name="orgId"/>
                     </div>
                 </div>
             </div>
@@ -192,7 +114,7 @@
                         负责人
                     </label>
                     <div class="col-sm-8">
-                        <input type="text" class="form-control" name="dutyPerson" />
+                        <input type="text" class="form-control" name="dutyPerson"/>
                     </div>
                 </div>
             </div>
@@ -202,7 +124,7 @@
                         营业时间
                     </label>
                     <div class="col-sm-8">
-                        <input type="text" class="form-control" name="startTime" />
+                        <input type="text" class="form-control" name="startTime"/>
                     </div>
                 </div>
             </div>
@@ -212,7 +134,7 @@
                         结束时间
                     </label>
                     <div class="col-sm-8">
-                        <input type="text" class="form-control" name="endTime" />
+                        <input type="text" class="form-control" name="endTime"/>
                     </div>
                 </div>
             </div>
@@ -222,7 +144,7 @@
                         电话
                     </label>
                     <div class="col-sm-8">
-                        <input type="text" class="form-control" name="telephone" />
+                        <input type="text" class="form-control" name="telephone"/>
                     </div>
                 </div>
             </div>
@@ -232,7 +154,7 @@
                         描述
                     </label>
                     <div class="col-sm-8">
-                        <input type="text" class="form-control" name="remark" />
+                        <input type="text" class="form-control" name="remark"/>
                     </div>
                 </div>
             </div>
@@ -249,7 +171,7 @@
                         服务线名称
                     </label>
                     <div class="col-sm-8">
-                        <input type="text" class="form-control" name="name" />
+                        <input type="text" class="form-control" name="name"/>
                     </div>
                 </div>
             </div>
@@ -259,7 +181,7 @@
                         餐次
                     </label>
                     <div class="col-sm-8">
-                        <input type="text" class="form-control" name="mealType" />
+                        <input type="text" class="form-control" name="mealType"/>
                     </div>
                 </div>
             </div>
@@ -269,7 +191,7 @@
                         送餐方式
                     </label>
                     <div class="col-sm-8">
-                        <input type="text" class="form-control" name="deliverType" />
+                        <input type="text" class="form-control" name="deliverType"/>
                     </div>
                 </div>
             </div>
@@ -279,7 +201,7 @@
                         翻台时间
                     </label>
                     <div class="col-sm-8">
-                        <input type="text" class="form-control" name="time" />
+                        <input type="text" class="form-control" name="time"/>
                     </div>
                 </div>
             </div>
@@ -296,7 +218,7 @@
                         餐桌编码
                     </label>
                     <div class="col-sm-8">
-                        <input type="text" class="form-control" name="code" />
+                        <input type="text" class="form-control" name="code"/>
                     </div>
                 </div>
             </div>
@@ -306,7 +228,7 @@
                         餐桌名称
                     </label>
                     <div class="col-sm-8">
-                        <input type="text" class="form-control" name="name" />
+                        <input type="text" class="form-control" name="name"/>
                     </div>
                 </div>
             </div>
@@ -316,7 +238,7 @@
                         标准座位数
                     </label>
                     <div class="col-sm-8">
-                        <input type="text" class="form-control" name="number" />
+                        <input type="text" class="form-control" name="number"/>
                     </div>
                 </div>
             </div>
@@ -326,7 +248,7 @@
                         位置
                     </label>
                     <div class="col-sm-8">
-                        <input type="text" class="form-control" name="location" />
+                        <input type="text" class="form-control" name="location"/>
                     </div>
                 </div>
             </div>
@@ -336,7 +258,7 @@
                         状态
                     </label>
                     <div class="col-sm-8">
-                        <input type="text" class="form-control" name="status" />
+                        <input type="text" class="form-control" name="status"/>
                     </div>
                 </div>
             </div>
@@ -346,7 +268,7 @@
                         备注
                     </label>
                     <div class="col-sm-8">
-                        <input type="text" class="form-control" name="remark" />
+                        <input type="text" class="form-control" name="remark"/>
                     </div>
                 </div>
             </div>
