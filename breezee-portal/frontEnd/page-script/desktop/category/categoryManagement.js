@@ -252,7 +252,7 @@ $(function () {
         var data = {id:selectNode.id,cateAttrInfos:[]}, attrData,
             i;
         for(i = 0; i < selectedList.data.rows.length; i++){
-            if(!selectedList.data.rows[i].sourceCateId) {
+            if(!selectedList.data.rows[i].sourceCateId || selectedList.data.rows[i].sourceCateId==selectNode.id) {
                 data.cateAttrInfos.push({
                     attrId: selectedList.data.rows[i].attrId,
                     inheritable: selectedList.data.rows[i].inheritable == null ? true : selectedList.data.rows[i].inheritable

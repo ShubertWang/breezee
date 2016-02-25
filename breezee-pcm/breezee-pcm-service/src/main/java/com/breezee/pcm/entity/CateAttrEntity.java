@@ -6,9 +6,13 @@
 package com.breezee.pcm.entity;
 
 import com.breezee.common.BaseInfo;
+import com.breezee.common.util.ContextUtil;
 import com.breezee.pcm.api.domain.CateAttrInfo;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import javax.persistence.*;
+import java.io.IOException;
+import java.util.Map;
 
 /**
  * Created by Silence on 2016/2/7.
@@ -144,6 +148,16 @@ public class CateAttrEntity extends BaseInfo {
             cateAttrInfo.setAttrId(this.getAttribute().getId());
             cateAttrInfo.setCode(this.getAttribute().getCode());
             cateAttrInfo.setAttrType(this.getAttribute().getFieldType());
+            if(cateAttrInfo.getAttrType().equals("dict")) {
+                ObjectMapper objectMapper = ContextUtil.getBean("objectMapper",ObjectMapper.class);
+                try {
+                    Map<String,Object> m = objectMapper.readValue(this.getAttribute().getArguments(),Map.class);
+                    cateAttrInfo.setEnumCode(m.get("enumCode")+"");
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+            }
         }
         cateAttrInfo.setDefaultValue(this.getDefaultValue());
         cateAttrInfo.setDisplay(this.isDisplay());

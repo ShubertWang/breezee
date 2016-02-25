@@ -51,5 +51,15 @@ router.post('/', function(req, res, next){
 
 });
 
+router.get('/logout', function(req, res, next) {
+    delete req.session.userId;
+    res.render('login', {
+        path : '/login',
+        endType : "",
+        title : '登录',
+        redirect : '',
+        data:{}
+    });
+});
 
 module.exports = router;
