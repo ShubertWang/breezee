@@ -6,10 +6,12 @@
 package com.breezee.pcm.api.domain;
 
 import com.breezee.common.BaseInfo;
+import com.fasterxml.jackson.annotation.JsonInclude;
 
 /**
  * Created by Silence on 2016/2/7.
  */
+@JsonInclude(value = JsonInclude.Include.NON_NULL)
 public class CateAttrInfo extends BaseInfo {
 
     private Long attrId;
@@ -42,6 +44,8 @@ public class CateAttrInfo extends BaseInfo {
     private int orderNo = -1;
 
     private Long sourceCateId;
+
+    private String enumCode;
 
     public Long getAttrId() {
         return attrId;
@@ -105,5 +109,13 @@ public class CateAttrInfo extends BaseInfo {
 
     public void setSourceCateId(Long sourceCateId) {
         this.sourceCateId = sourceCateId;
+    }
+
+    public String getEnumCode() {
+        return enumCode;
+    }
+
+    public void setEnumCode(String enumCode) {
+        this.enumCode = enumCode;
     }
 }

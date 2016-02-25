@@ -7,6 +7,7 @@ package com.breezee.common;
 
 import com.alibaba.dubbo.remoting.http.servlet.DispatcherServlet;
 import com.breezee.common.servlet.DubboServletContextInitializer;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.boot.context.embedded.ServletContextInitializer;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
@@ -37,5 +38,10 @@ public class EnvConfiguration {
         ResourceBundleMessageSource messageSource = new ResourceBundleMessageSource();
         messageSource.setBasenames("messages","i18n");
         return messageSource;
+    }
+
+    @Bean
+    public ObjectMapper objectMapper(){
+        return new ObjectMapper();
     }
 }

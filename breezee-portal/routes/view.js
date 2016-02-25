@@ -30,7 +30,8 @@ router.get('*', function(req, res, next) {
 
             res.render(url.substring(1), {
                 path : url,
-                data : queryData
+                data : queryData,
+                session:req.session
             });
         }
     }catch(e){

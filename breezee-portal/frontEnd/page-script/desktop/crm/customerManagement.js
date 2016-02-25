@@ -38,7 +38,10 @@ $(function () {
             title: '微信号'
         }, {
             code: 'status',
-            title: '状态'
+            title: '状态',
+            formatter:function(val){
+                return '<div class="slideThree"><input type="checkbox" value="None" id="slideThree" name="check" checked /><label for="slideThree"></label></div>';
+            }
         }],
         multiple: false,
         ajaxType: 'post',

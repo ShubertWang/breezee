@@ -5,6 +5,7 @@
 
 package com.breezee.pcm;
 
+import com.breezee.common.util.ContextUtil;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.context.annotation.ComponentScan;
@@ -28,6 +29,6 @@ public class PcmService {
      * @throws IOException
      */
     public static void main(String[] args) throws IOException {
-        SpringApplication.run(PcmService.class, args);
+        ContextUtil.current = SpringApplication.run(PcmService.class, args);
     }
 }
