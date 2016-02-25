@@ -1,6 +1,7 @@
 var data = {
-    id : "1",
-    status : "1",
+    id : "2",
+    status : "2",
+    type : 'site',
     createTime : 1451534400000,
     code : 'A34',
     restaurant : {
