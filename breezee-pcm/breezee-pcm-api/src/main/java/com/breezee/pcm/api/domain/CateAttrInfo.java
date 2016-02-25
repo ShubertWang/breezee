@@ -14,6 +14,8 @@ public class CateAttrInfo extends BaseInfo {
 
     private Long attrId;
 
+    private String attrType;
+
     /**
      * 可以被继承
      */
@@ -38,6 +40,8 @@ public class CateAttrInfo extends BaseInfo {
      * 排序，如果小于0，则使用define的排序
      */
     private int orderNo = -1;
+
+    private Long sourceCateId;
 
     public Long getAttrId() {
         return attrId;
@@ -85,5 +89,21 @@ public class CateAttrInfo extends BaseInfo {
 
     public void setOrderNo(int orderNo) {
         this.orderNo = orderNo;
+    }
+
+    public String getAttrType() {
+        return attrType;
+    }
+
+    public void setAttrType(String attrType) {
+        this.attrType = attrType;
+    }
+
+    public Long getSourceCateId() {
+        return sourceCateId;
+    }
+
+    public void setSourceCateId(Long sourceCateId) {
+        this.sourceCateId = sourceCateId;
     }
 }

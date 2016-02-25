@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <% include desktop/common %>
+    <% include desktop/common/meta.ejs %>
     <title>登录</title>
-    <% include desktop/common %>
+    <% include desktop/common/public.ejs %>
     <style>
         body{
             padding-top: 40px;
@@ -23,14 +23,16 @@
     <form class="form-signin" action="/login" method="post">
         <input type="hidden" value="<%=redirect %>" name="redirect" />
         <h2 class="form-signin-heading">请登录</h2>
+        <br/>
         <label for="inputEmail" class="sr-only">用户名</label>
-        <input type="text" class="form-control" placeholder="用户名" name="username">
+        <input type="text" class="form-control" placeholder="用户名" name="code">
+        <div style="height: 8px;"></div>
         <label for="inputPassword" class="sr-only">密码</label>
         <input type="password" class="form-control" placeholder="密码" name="password">
         <br/>
         <button class="btn btn-lg btn-primary btn-block" type="submit">登录</button>
     </form>
-    <% include desktop/common %>
+    <% include desktop/common/footer.ejs %>
 </div>
 </body>
 </html>

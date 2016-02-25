@@ -20,4 +20,6 @@ public interface CategoryRepository extends CrudRepository<CategoryEntity, Long>
 
     @Query("select c from CategoryEntity c where c.parent is null")
     List<CategoryEntity> findTop();
+
+    CategoryEntity findByCode(String code);
 }

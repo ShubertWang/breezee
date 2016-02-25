@@ -6,6 +6,7 @@
 package com.breezee.pcm.api.service;
 
 import com.breezee.common.IServiceLayer;
+import com.breezee.pcm.api.domain.CateAttrInfo;
 import com.breezee.pcm.api.domain.CategoryInfo;
 
 import javax.ws.rs.*;
@@ -29,4 +30,11 @@ public interface ICategoryService extends IServiceLayer<CategoryInfo> {
     @GET
     List<CategoryInfo> findCategoryByParentId(@PathParam("id")Long id);
 
+    @Path("/categoryAttr")
+    @PUT
+    void saveCateAttr(CategoryInfo categoryInfo);
+
+    @Path("/cateAttrs/{cateId}")
+    @GET
+    List<CateAttrInfo> findCateAttrsByCateId(@PathParam("cateId") Long cateId);
 }
