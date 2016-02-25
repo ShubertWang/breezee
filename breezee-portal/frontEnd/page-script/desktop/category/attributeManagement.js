@@ -21,7 +21,10 @@ $(function () {
             title: '单位'
         }, {
             code:'arguments',
-            title:'参数'
+            title:'参数',
+            formatter : function (val) {
+                return Dolphin.json2string(val);
+            }
         },{
             code:'orderNo',
             title:'排序'
@@ -44,9 +47,24 @@ $(function () {
     });
 
     //============================================================== event
+    function checkEditFormHidden(){
+        return $('#formPanel').is(':hidden');
+    }
     $('#insert').click(function () {
-        $('#listPanel').toggleClass('dolphin-col-24').toggleClass('dolphin-col-18');
-        $('#formPanel').toggle();
+        if(checkEditFormHidden()) {
+            $('#listPanel').toggleClass('dolphin-col-24').toggleClass('dolphin-col-18');
+            $('#formPanel').toggle();
+        }
+        Dolphin.form.empty("#editForm");
+    });
+    $('#update').click(function () {
+        if(checkEditFormHidden()) {
+            $('#listPanel').toggleClass('dolphin-col-24').toggleClass('dolphin-col-18');
+            $('#formPanel').toggle();
+        }
+        Dolphin.form.setValue(list.getChecked()[0], '#editForm');
+        $("#field-Type").change();
+        Dolphin.form.setValue(list.getChecked()[0], '#editForm');
     });
     $('#save').click(function () {
         if(Dolphin.form.validate('#editForm')){
@@ -67,6 +85,11 @@ $(function () {
             })
         }
     });
+    $("#cancel").click(function(){
+        $('#listPanel').toggleClass('dolphin-col-18').toggleClass('dolphin-col-24');
+        $('#formPanel').toggle();
+        Dolphin.form.empty("#editForm");
+    });
     $("#query").click(function () {
         list.query(Dolphin.form2json("queryForm"));
     });
@@ -81,10 +104,17 @@ $(function () {
                 $("#extendInfo").empty();
                 $('<hr/><div class="form-group"><label>枚举编码</label><input type="text" class="form-control"  name="arguments.enumCode" dol-validate="required"></div>').appendTo($("#extendInfo"));
                 break;
+            case 'integer':
+            case 'numberic':
+                $("#extendInfo").show();
+                $("#extendInfo").empty();
+                $('<hr/><div class="form-group"><label>单位</label><input type="text" class="form-control"  name="unitCode"></div>').appendTo($("#extendInfo"));
+                break;
             default:
                 $("#extendInfo").empty();
                 $("#extendInfo").hide();
                 break;
         }
     });
+
 });

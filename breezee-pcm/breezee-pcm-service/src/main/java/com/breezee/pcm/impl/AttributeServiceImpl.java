@@ -5,12 +5,9 @@
 
 package com.breezee.pcm.impl;
 
-import com.breezee.common.InfoList;
-import com.breezee.common.PageInfo;
-import com.breezee.common.PageResult;
-import com.breezee.common.SuccessInfo;
-import com.breezee.common.DynamicSpecifications;
+import com.breezee.common.*;
 import com.breezee.common.util.Callback;
+import com.breezee.common.util.ContextUtil;
 import com.breezee.pcm.api.domain.AttributeInfo;
 import com.breezee.pcm.api.service.IAttributeService;
 import com.breezee.pcm.entity.AttributeEntity;
@@ -34,6 +31,14 @@ public class AttributeServiceImpl implements IAttributeService {
 
     @Override
     public AttributeInfo saveInfo(AttributeInfo attributeInfo) {
+        AttributeEntity entity = attributeRepository.findByCode(attributeInfo.getCode());
+        //如果新增的账号已经存在，则返回错误信息
+        if (attributeInfo.getId() == null && entity != null) {
+            return ErrorInfo.build(attributeInfo, ContextUtil.getMessage("duplicate.key", new String[]{attributeInfo.getCode()}));
+        }
+        if (entity == null)
+            entity = new AttributeEntity();
+        entity.parse(attributeInfo);
         attributeRepository.save(new AttributeEntity().parse(attributeInfo));
         return SuccessInfo.build(AttributeInfo.class);
     }
