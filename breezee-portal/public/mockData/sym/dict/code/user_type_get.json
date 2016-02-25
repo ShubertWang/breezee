@@ -1,0 +1,43 @@
+{
+    "success": true,
+    "msg": "",
+    "prop": {},
+    "total": 100,
+    "rows": [
+        {
+            "code": "string",
+            "name": "字符串",
+            "orderNo": "1",
+            "remark": "TRUE",
+            "status": "1"
+        },
+        {
+            "code": "number",
+            "name": "数值",
+            "orderNo": "2",
+            "remark": "FALSE",
+            "status": "1"
+        },
+        {
+            "code": "date",
+            "name": "日期",
+            "orderNo": "3",
+            "remark": "FALSE",
+            "status": "1"
+        },
+        {
+            "code": "enum",
+            "name": "枚举",
+            "orderNo": "4",
+            "remark": "FALSE",
+            "status": "1"
+        },
+        {
+            "code": "image",
+            "name": "图片",
+            "orderNo": "5",
+            "remark": "FALSE",
+            "status": "1"
+        }
+    ]
+}

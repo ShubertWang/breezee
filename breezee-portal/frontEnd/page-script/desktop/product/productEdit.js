@@ -121,10 +121,10 @@ $(function () {
             onSuccess : function (reData) {
                 _this.categoryAttr = reData.rows;
 
-                _this.categoryAttrPanel.show();
                 _this.categoryAttrPanelBody.empty();
+                _this.categoryAttrPanel.show();
                 $.each(_this.categoryAttr, function (i, attr) {
-                    _this.renderField(attr.attributeDefine, _this.categoryAttrPanelBody);
+                    _this.renderField(attr, _this.categoryAttrPanelBody);
                 });
                 if(typeof callback == 'function'){
                     callback.call(_this, reData);
@@ -143,7 +143,7 @@ $(function () {
             }
         }
 
-        if(attr.hidden){
+        if(!attr.display){
             $('<input type="hidden" name="'+attr.id+'" />').prependTo(panel);
         }else{
             col = $('<div class="dolphin-col-12">').appendTo(panel);
@@ -155,19 +155,20 @@ $(function () {
             inputLabel = $('<label class="col-sm-2 control-label">').html(attr.name).appendTo(control);
             inputPanel = $('<div class="col-sm-10">').appendTo(control);
 
-            switch (attr.fieldType){
-                case "enum":
-                    input = $('<select class="form-control">');
-                    input.attr($.extend({}, {options:attr.subType}, attr.param));
-                    input.attr('name', attr.id);
+            switch (attr.attrType){
+                case "integer":
+                case "numberic":
+                    input = $('<div class="input-group">');
+                    $('<input type="text" class="form-control">').attr({
+                        name : attr.id
+                    }).appendTo(input);
+                    $('<span class="input-group-addon">').html(attr.unitCode || '&nbsp;').appendTo(input);
                     break;
-                case "image":
-                    col.attr('class', 'dolphin-col-24');
-                    inputLabel.removeClass('col-sm-2').addClass('col-sm-1');
-                    inputPanel.removeClass('col-sm-10').addClass('col-sm-11');
-
-                    input = $('<div class="dolphin_file_box">').html('<input type="file" name="'+attr.id+'">');
-                    input.fileBox();
+                case "dict":
+                    input = $('<select class="form-control">');
+                    input.attr($.extend({}, {options:attr.enumCode}, attr.param));
+                    input.attr('name', attr.id);
+                    Dolphin.form.parseSelect(input);
                     break;
                 default :
                     input = $('<input type="text" class="form-control" />');
