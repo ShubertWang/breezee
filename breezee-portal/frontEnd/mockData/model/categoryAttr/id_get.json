@@ -1,12 +1,70 @@
 {
-  "success":true,
-  "msg":"",
-  "prop":{},
-
   "total": 3,
-  "rows" : [
-    {"id":"1","inheritFlag":true, "attributeDefine" : {"id":"1","code":"productName", "name":"商品描述", "fieldType" : "string", "unitCode" : "kg", "arguments" : "{\"enumCode\":\"1\"}", "i18nAble" : "true", "searchAble" : "true", "writeBack":"", "remark":""}},
-    {"id":"2","inheritFlag":false, "attributeDefine" : {"id":"2","code":"color", "name":"颜色", "fieldType" : "string", "unitCode" : "kg", "subType" : "", "i18nAble" : "true", "searchAble" : "true", "writeBack":"", "remark":""}},
-    {"id":"3","inheritFlag":true, "attributeDefine" : {"id":"3","code":"size", "name":"尺寸", "fieldType" : "string", "unitCode" : "t", "subType" : "", "i18nAble" : "true", "searchAble" : "true", "writeBack":"", "remark":""}}
+  "success": true,
+  "value": null,
+  "rows": [
+    {
+      "id": 19,
+      "code": "anjing",
+      "name": "anjing",
+      "status": 1,
+      "remark": null,
+      "creator": null,
+      "createTime": null,
+      "updator": null,
+      "updateTime": null,
+      "tenantId": null,
+      "attrId": 2,
+      "attrType": "dict",
+      "inheritable": true,
+      "defaultValue": null,
+      "nullable": false,
+      "display": true,
+      "orderNo": 0,
+      "sourceCateId": 2,
+      "enumCode": "user_type"
+    },
+    {
+      "id": 20,
+      "code": "cc",
+      "name": "cc",
+      "status": 1,
+      "remark": null,
+      "creator": null,
+      "createTime": null,
+      "updator": null,
+      "updateTime": null,
+      "tenantId": null,
+      "attrId": 3,
+      "attrType": "integer",
+      "inheritable": true,
+      "defaultValue": null,
+      "nullable": false,
+      "display": true,
+      "orderNo": 0,
+      "sourceCateId": 2,
+      "enumCode": null
+    },
+    {
+      "id": 3,
+      "code": "a",
+      "name": "a",
+      "status": 1,
+      "remark": null,
+      "creator": null,
+      "createTime": null,
+      "updator": null,
+      "updateTime": null,
+      "tenantId": null,
+      "attrId": 1,
+      "attrType": "numberic",
+      "inheritable": true,
+      "defaultValue": null,
+      "nullable": false,
+      "display": true,
+      "orderNo": 0,
+      "sourceCateId": 1,
+      "enumCode": null
+    }
   ]
 }
