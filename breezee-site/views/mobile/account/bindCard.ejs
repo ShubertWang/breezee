@@ -8,17 +8,18 @@
 <body ontouchstart class="bg_zi">
 <article>
     <div class="div_cd">
+        <form id="editForm">
         <div class="weui_cells weui_cells_form">
             <div class="weui_cell">
 
                 <div class="weui_cell_bd weui_cell_primary">
-                    <input class="weui_input" type="text" placeholder="您的姓名"/>
+                    <input class="weui_input" type="text" placeholder="您的姓名" name="name"/>
                 </div>
             </div>
             <div class="weui_cell">
 
                 <div class="weui_cell_bd weui_cell_primary">
-                    <input class="weui_input" type="text" placeholder="手机号码"/>
+                    <input class="weui_input" type="text" placeholder="手机号码" name="phone"/>
                 </div>
             </div>
         </div>
@@ -27,10 +28,10 @@
             <div class="">
                 <div class="weui_cell weui_cell_select">
                     <div class="weui_cell_bd weui_cell_primary">
-                        <select class="weui_select" name="select1">
-                            <option selected="" value="1">请选择公司</option>
+                        <select class="weui_select" name="company">
+                            <option selected="" value="-1">请选择公司</option>
+                            <option value="1">微软一号</option>
                             <option value="2">微软一号</option>
-                            <option value="3">微软一号</option>
                         </select>
                     </div>
                 </div>
@@ -42,28 +43,29 @@
             <div class="weui_cell">
 
                 <div class="weui_cell_bd weui_cell_primary">
-                    <input class="weui_input" type="tel" placeholder="机构编码"/>
+                    <input class="weui_input" type="tel" placeholder="机构编码" name="orgId"/>
                 </div>
             </div>
             <div class="weui_cell">
 
                 <div class="weui_cell_bd weui_cell_primary">
-                    <input class="weui_input" type="tel" placeholder="工号"/>
+                    <input class="weui_input" type="tel" placeholder="工号" name="code"/>
                 </div>
             </div>
             <div class="weui_cell">
 
                 <div class="weui_cell_bd weui_cell_primary">
-                    <input class="weui_input" type="tel" placeholder="员工卡号"/>
+                    <input class="weui_input" type="tel" placeholder="员工卡号" name="dn"/>
                 </div>
             </div>
             <div class="weui_cell">
 
                 <div class="weui_cell_bd weui_cell_primary">
-                    <input class="weui_input" type="tel" placeholder="身份证后四位数字"/>
+                    <input class="weui_input" type="tel" placeholder="身份证后四位数字" name="idCard"/>
                 </div>
             </div>
         </div>
+        </form>
     </div>
 </article>
 

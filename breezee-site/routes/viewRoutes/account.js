@@ -5,9 +5,13 @@ var accountRoute = {};
 accountRoute.myAccount = function (queryData, res, callback) {
     global.myUtil.request({
         method : 'get',
-        uri : '/account/myAccount',
+        uri : 'http://127.0.0.1:10248/services/user/'+queryData.userId,
         mockData : '/account/myAccount',
-        form : queryData
+        json:{},
+        headers: {
+            "Content-Type": "application/json",
+            "Accept": "application/json"
+        }
     }, function(error, response, body){
         callback(body);
     });
@@ -25,9 +29,13 @@ accountRoute.account = function (queryData, res, callback) {
 accountRoute.address = function (queryData, res, callback) {
     global.myUtil.request({
         method : 'get',
-        uri : '/account/address',
+        uri : 'http://127.0.0.1:10248/services/user/shippingAddress/user/'+queryData.userId,
         mockData : '/account/address',
-        form : queryData
+        json:{},
+        headers: {
+            "Content-Type": "application/json",
+            "Accept": "application/json"
+        }
     }, function(error, response, body){
         callback(body);
     });

@@ -25,7 +25,7 @@
             <div class="weui_cell_bd weui_cell_primary">
                 <p>员工卡</p>
             </div>
-            <div class="weui_cell_ft" name="cardNumber"><%= body.cardNumber %></div>
+            <div class="weui_cell_ft" name="dn"><%= body.dn %></div>
         </a>
         <a class="weui_cell" href="javascript:;">
             <div class="weui_cell_hd"><img src="/custom/wx_style/images/icon_50_zd.png" alt="" style="width:60%;margin-right:5px;display:block"></div>
@@ -49,7 +49,7 @@
             <div class="weui_cell_bd weui_cell_primary">
                 <p>收货地址</p>
             </div>
-            <div class="weui_cell_ft"><span name="address"><%= body.address.length %></span>个</div>
+            <div class="weui_cell_ft"><span name="address"><%= body.shippingAddressInfos.length %></span>个</div>
         </a>
     </div>
     <div class="weui_cells weui_cells_access">

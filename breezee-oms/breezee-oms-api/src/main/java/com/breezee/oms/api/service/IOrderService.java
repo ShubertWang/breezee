@@ -12,4 +12,5 @@ import com.breezee.oms.api.domain.OrderInfo;
  * Created by Silence on 2016/2/11.
  */
 public interface IOrderService extends IServiceLayer<OrderInfo>{
+
 }

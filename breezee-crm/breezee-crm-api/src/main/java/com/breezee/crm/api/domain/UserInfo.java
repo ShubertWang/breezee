@@ -44,7 +44,11 @@ public class UserInfo extends BaseInfo {
 
     protected String email;
 
-    protected List<ShippingAddressInfo> shippingAddressInfos;
+    protected String orgId;
+
+    protected double balance = 0.00;
+
+    protected List<ShippingAddressInfo> shippingAddressInfos = new ArrayList<>();
 
     public String getType() {
         return type;
@@ -148,6 +152,22 @@ public class UserInfo extends BaseInfo {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public String getOrgId() {
+        return orgId;
+    }
+
+    public void setOrgId(String orgId) {
+        this.orgId = orgId;
+    }
+
+    public double getBalance() {
+        return balance;
+    }
+
+    public void setBalance(double balance) {
+        this.balance = balance;
     }
 
     public List<ShippingAddressInfo> getShippingAddressInfos() {

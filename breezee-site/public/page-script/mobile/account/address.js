@@ -1,4 +1,4 @@
-Dolphin.defaults.mockFlag = true;
+Dolphin.defaults.mockFlag = false;
 $(function () {
     /*Dolphin.ajax({
         url : '/data/account/myAccount',
@@ -8,4 +8,6 @@ $(function () {
             Dolphin.form.setValue(reData.value, '#myAccount');
         }
     })*/
+
+
 });

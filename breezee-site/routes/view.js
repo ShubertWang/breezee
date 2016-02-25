@@ -12,8 +12,8 @@ router.get('*', function(req, res, next) {
         var url, endType, userInfo,
             queryData;
 
-        userInfo = true;
-        //userInfo = req.session.username;
+        //userInfo = true;
+        userInfo = req.session.userId;
         //endType = /mobile|Mobile/.test(req.headers['user-agent'])?"/mobile":"/desktop";
         endType = "/mobile";
 
@@ -46,13 +46,16 @@ router.get('*', function(req, res, next) {
                 res.render(url.substring(1), {
                     path : url,
                     data : queryData,
-                    body : {}
+                    redirect:'',
+                    body : {userId:userInfo}
                 });
             }else{
+                queryData.userId = userInfo;
                 fun(queryData, res, function(body){
                     res.render(url.substring(1), {
                         path : url,
                         data : queryData,
+                        redirect:'',
                         body : body
                     });
                 })

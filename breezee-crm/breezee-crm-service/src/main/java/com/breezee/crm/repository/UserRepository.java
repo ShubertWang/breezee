@@ -16,4 +16,10 @@ import org.springframework.stereotype.Repository;
 @Repository("userRepository")
 public interface UserRepository extends PagingAndSortingRepository<UserEntity,Long>,
         JpaSpecificationExecutor<UserEntity> {
+
+    UserEntity findByCode(String code);
+
+    UserEntity findByWechat(String wechat);
+
+    UserEntity findByDn(String dn);
 }
