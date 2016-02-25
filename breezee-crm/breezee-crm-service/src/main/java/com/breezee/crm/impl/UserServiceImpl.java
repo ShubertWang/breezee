@@ -8,6 +8,7 @@ package com.breezee.crm.impl;
 import com.breezee.common.*;
 import com.breezee.common.util.Callback;
 import com.breezee.common.DynamicSpecifications;
+import com.breezee.common.util.ContextUtil;
 import com.breezee.crm.api.domain.ShippingAddressInfo;
 import com.breezee.crm.api.domain.UserInfo;
 import com.breezee.crm.entity.ShippingAddressEntity;
@@ -56,6 +57,14 @@ public class UserServiceImpl implements IUserService {
 
     @Override
     public UserInfo saveInfo(UserInfo userInfo) {
+        UserEntity entity = userRepository.findByCode(userInfo.getCode());
+        //如果新增的账号已经存在，则返回错误信息
+        if (userInfo.getId() == null && entity != null) {
+            return ErrorInfo.build(userInfo, ContextUtil.getMessage("duplicate.key", new String[]{userInfo.getCode()}));
+        }
+        if (entity == null)
+            entity = new UserEntity();
+        entity.parse(userInfo);
         userRepository.save(new UserEntity().parse(userInfo));
         return SuccessInfo.build(UserInfo.class);
     }

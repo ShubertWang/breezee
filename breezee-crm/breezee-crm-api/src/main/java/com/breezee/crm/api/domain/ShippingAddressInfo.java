@@ -6,10 +6,12 @@
 package com.breezee.crm.api.domain;
 
 import com.breezee.common.BaseInfo;
+import com.fasterxml.jackson.annotation.JsonInclude;
 
 /**
  * Created by Silence on 2016/2/11.
  */
+@JsonInclude(value = JsonInclude.Include.NON_NULL)
 public class ShippingAddressInfo extends BaseInfo {
 
     protected Long userId;

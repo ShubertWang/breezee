@@ -25,13 +25,13 @@
             </list>
         </property>
         <!--<property name="databaseTablePrefix" value="BPM_"/>-->
-        <property name="deploymentResources">
-            <list>
-                <!--<value>classpath*:/diagram/simple-product.bpmn</value>-->
-                <value>classpath*:/diagram/OrderProcess.bpmn</value>
-                <value>classpath*:/diagram/SeatProcess.bpmn</value>
-            </list>
-        </property>
+        <!--<property name="deploymentResources">-->
+            <!--<list>-->
+                <!--&lt;!&ndash;<value>classpath*:/diagram/simple-product.bpmn</value>&ndash;&gt;-->
+                <!--<value>classpath*:/diagram/OrderProcess.bpmn</value>-->
+                <!--<value>classpath*:/diagram/SeatProcess.bpmn</value>-->
+            <!--</list>-->
+        <!--</property>-->
     </bean>
 
     <bean id="processEngine" class="org.activiti.spring.ProcessEngineFactoryBean" destroy-method="destroy">

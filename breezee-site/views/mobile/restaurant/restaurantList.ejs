@@ -11,17 +11,17 @@
         <% for(var i = 0; i < body.length; i++){ %>
         <li class="bh li_ct" data-id="<%= body[i].id %>">
             <div class="img time_yy">
-                <div><a href="#"><img src="/custom/wx_style/images/<%= body[i].image %>.png"></a></div>
-                <div class="ms"><%= body[i].time %></div>
+                <div><a href="#"><img src="/custom/wx_style/images/<%= body[i].imageCode %>.png"></a></div>
+                <div class="ms"><%= body[i].startTime %> - <%= body[i].endTime %></div>
             </div>
             <div class="text_ct bh">
                 <h2><a href="#"><%= body[i].name %></a></h2>
                 <div class="f_pj bh">
-                    <div class="float_l">
+                    <div class="float_l" id="pointRender">
                         <%= global.htmlRender.renderStar(body[i].point, 5)%>
                     </div>
-                    <span class=" float_l">( <%= body[i].comment %>评价 )</span></div>
-                <div class="icon_ty like"><s> </s><a href="tel:<%= body[i].phone %>"><%= body[i].phone %></a></div>
+                    <span class=" float_l">( <%= body[i].commentCount %>评价 )</span></div>
+                <div class="icon_ty like"><s> </s><a href="tel:<%= body[i].telephone %>"><%= body[i].telephone %></a></div>
             </div>
         </li>
         <% } %>

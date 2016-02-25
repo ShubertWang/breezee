@@ -1,9 +1,9 @@
-Dolphin.defaults.mockFlag = true;
+Dolphin.defaults.mockFlag = false;
 $(function () {
     $('#submit').click(function () {
         var data = Dolphin.form.getValue('form');
         Dolphin.ajax({
-            url : '/data/account/bindCard',
+            url : '/data/crm/user/shippingAddress',
             type : Dolphin.requestMethod.PUT,
             data : Dolphin.json2string(data),
             onSuccess : function (reData) {

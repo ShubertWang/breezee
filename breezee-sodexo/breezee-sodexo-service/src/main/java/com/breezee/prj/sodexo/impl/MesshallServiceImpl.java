@@ -70,8 +70,10 @@ public class MesshallServiceImpl implements IMesshallService {
         Page<MesshallEntity> page = messhallRepository.findAll(DynamicSpecifications.createSpecification(m),pageInfo);
         return new PageResult<>(page, MesshallInfo.class, (messhallEntity, messhallInfo) -> {
             MesshallInfo info = messhallEntity.toInfo();
-            info.setOrgName(organizationService.findInfoById(info.getOrgId()).getName());
-            info.setDutyName(accountService.findInfoById(info.getDutyPerson()).getName());
+            if(info.getOrgId()!=null)
+                info.setOrgName(organizationService.findInfoById(info.getOrgId()).getName());
+            if(info.getDutyPerson()!=null)
+                info.setDutyName(accountService.findInfoById(info.getDutyPerson()).getName());
             return info;
         });
     }

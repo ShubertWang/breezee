@@ -84,6 +84,30 @@ public class MesshallEntity extends MesshallInfo {
         return dutyPerson;
     }
 
+    public String getImageCode() {
+        return imageCode;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public String getNotice() {
+        return notice;
+    }
+
+    public String getTimeType() {
+        return timeType;
+    }
+
+    public String getTelephone() {
+        return telephone;
+    }
+
+    public String getRemark() {
+        return remark;
+    }
+
     public MesshallInfo toInfo(){
         MesshallInfo info = new MesshallInfo();
         BeanUtils.copyProperties(this,info);

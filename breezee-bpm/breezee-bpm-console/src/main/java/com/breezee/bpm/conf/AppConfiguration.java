@@ -12,20 +12,22 @@ import org.springframework.context.annotation.*;
 @PropertySources({
         @PropertySource(value = "classpath:/application.properties", ignoreResourceNotFound = true),
         @PropertySource(value = "classpath:/config/application.properties", ignoreResourceNotFound = true),
-        @PropertySource(value = "classpath:/wfs.properties", ignoreResourceNotFound = true),
         @PropertySource(value = "classpath:/properties/engine.properties", ignoreResourceNotFound = true)
 })
 @ImportResource({"classpath:/activiti-context.xml", "classpath:/activiti-app-context.xml"})
 public class AppConfiguration {
 
-    @Bean()
+    @Bean
     public ObjectMapper objectMapper() {
         // To avoid instantiating and configuring the mapper everywhere
         ObjectMapper mapper = new ObjectMapper();
         return mapper;
     }
 
-//    @Bean DataConfiguration dataConfiguration(){
-//        return new DataConfiguration();
-//    }
+    @Bean
+    public DataConfiguration dataConfiguration(){
+        return new DataConfiguration();
+    }
+
+
 }

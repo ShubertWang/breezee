@@ -34,7 +34,7 @@ public class WorkflowServiceImpl implements IWorkflowService {
 
     @Override
     public ProcsInsInfo startProcessInstanceById(String processDefinitionId, String businessKey, Map<String, Object> variables) {
-        ProcessInstance processInstance = runtimeService.startProcessInstanceById(processDefinitionId, businessKey, variables);
+        ProcessInstance processInstance = runtimeService.startProcessInstanceByKey(processDefinitionId, businessKey, variables);
         return this.populator(processInstance);
     }
 
