@@ -94,7 +94,10 @@
                 <div class="btn_box bh">
                     <div class="div_gwc" id="cartIcon"><span id="cartTotalNumber">0</span></div>
                     <div class="fkjg"><strong>￥<span id="cartTotalPrice">0.00</span></strong></div>
-                    <a href="javascript:;" class="weui_btn weui_btn_warn">去结算</a>
+                    <form name="form" id="form">
+                        <input type="hidden" name="foodList" id="foodList" />
+                        <a href="javascript:void(0);" class="weui_btn weui_btn_warn" id="submit">去结算</a>
+                    </form>
                     <div class="fkjg1">配送费 <strong>8</strong> 元</div>
                 </div>
             </div>
@@ -202,29 +205,6 @@
                 </li>
                 <% } %>
             </ul>
-        </div>
-    </div>
-
-    <div class="pagePanel" id="food_detail" style="display: none;">
-        <div class="div_list">
-            <div class="list_k bh">
-                <div class="img"><img src="/custom/wx_style/images/img_cp2.png"></div>
-                <div class="text_bt">农家小炒肉</div>
-                <div class="bh">
-
-                    <div class="btn_gm">
-                        <div class="icon_jh"> </div>
-                        <div class="sz" >5</div>
-                        <div class="icon_jh1" > </div>
-                    </div>
-                    <div class="jg"><span>￥</span>18.00</div>
-                    <div class="ty_bt_title" >
-                        <h3><span class="icon_cp">&nbsp;</span>菜品简介</h3>
-                        <h5 class="ty_bt_box">中式餐厅，能提前预定，且包厢有空气净化器，服务不错 <br>
-                            地方不大，蛇会送到包厢门口给客户确认。椒盐大王蛇不错蛇皮凉拌，配菜过多 </h5>
-                    </div>
-                </div>
-            </div>
         </div>
     </div>
 </article>

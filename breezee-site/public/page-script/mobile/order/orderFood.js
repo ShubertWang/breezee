@@ -32,6 +32,10 @@ $(function () {
             _this.reduceFood($(this).closest('[data-food-id]').data());
         });
 
+        $('#cartIcon').click(function () {
+            $('#cartPanel').toggleClass('weui_mask');
+        });
+
         $('#clear').click(function () {
             for(var key in _this.foodList){
                 _this.reduceFood({
@@ -40,8 +44,20 @@ $(function () {
             }
         });
 
-        $('#cartIcon').click(function () {
-            $('#cartPanel').toggleClass('weui_mask');
+        $('#submit').click(function () {
+            var foodForm = $('#form')[0];
+            var foodList = [];
+            for(var key in _this.foodList){
+                _this.foodList[key].price = _this.foodList[key].price * _this.foodList[key].number;
+                foodList.push(_this.foodList[key]);
+            }
+
+            if(foodList.length == 0){
+                alert('请至少选择一道菜肴');
+            }else{
+                Dolphin.cookie("foodList", Dolphin.json2string(foodList));
+                Dolphin.goUrl("/order/orderConfirm");
+            }
         });
     };
     page.addFood = function (data, number) {

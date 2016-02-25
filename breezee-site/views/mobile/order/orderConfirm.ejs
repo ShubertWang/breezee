@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <% include ../common/meta.ejs %>
+    <title>订单详情</title>
+    <% include ../common/public.ejs %>
+    <style>
+        .weui_cell:before{
+            left : 0;
+        }
+    </style>
+</head>
+<body ontouchstart>
+<%
+    var i, totalPrice=0;
+%>
+<div>
+    <ul class="list-group">
+        <% for(i = 0; i < body.address.length; i++){ %>
+            <% if(body.address[i].defaultFlag){ %>
+            <li class="list-group-item_edit bh">
+                <div class="bh">
+                    <div class="title_a_h"><%= body.address[i].addressee %></div>
+                    <div class="title_c_h"><%= body.address[i].phone %></div>
+                </div>
+                <div class="mr"><%= body.address[i].address %></div>
+            </li>
+            <% break;%>
+            <% } %>
+        <% } %>
+    </ul>
+</div>
+<div>
+
+    <div class="weui_cells weui_cells_radio">
+        <div class="weui_cell">
+            <div class="weui_cell_bd weui_cell_primary">
+                <p>在线支付</p>
+            </div>
+        </div>
+        <label class="weui_cell weui_check_label" for="x11">
+            <div class="weui_cell_bd weui_cell_primary">
+                <p>微信支付<span>仅支持微信4.2及上版本</span></p>
+            </div>
+            <div class="weui_cell_ft">
+                <input type="radio" class="weui_check" name="radio1" id="x11">
+                <span class="weui_icon_checked"></span>
+            </div>
+        </label>
+        <label class="weui_cell weui_check_label" for="x12">
+
+            <div class="weui_cell_bd weui_cell_primary">
+                <p>员工卡支付<span>从员工卡中在线扣款</span></p>
+            </div>
+            <div class="weui_cell_ft">
+                <input type="radio" name="radio1" class="weui_check" id="x12" checked="checked">
+                <span class="weui_icon_checked"></span>
+            </div>
+        </label>
+        <label class="weui_cell weui_check_label" for="x13">
+
+            <div class="weui_cell_bd weui_cell_primary">
+                <p>就餐时支付<span>只支持持有员工卡的公司员工使用</span></p>
+            </div>
+            <div class="weui_cell_ft">
+                <input type="radio" name="radio1" class="weui_check" id="x13">
+                <span class="weui_icon_checked"></span>
+            </div>
+        </label>
+    </div>
+
+
+    <div class="weui_cells">
+        <div class="weui_cell line_bot">
+            <div class="weui_cell_bd weui_cell_primary">
+                <p>堂吃</p>
+            </div>
+        </div>
+        <div class=" weui_cells_access">
+            <a class="weui_cell" href="javascript:;">
+                <div class="weui_cell_bd weui_cell_primary">
+                    <p>餐位</p>
+                </div>
+                <div class="weui_cell_ft">如已有餐位请选择</div>
+            </a>
+            <a class="weui_cell" href="javascript:;">
+                <div class="weui_cell_bd weui_cell_primary">
+                    <p>取餐时间/就餐时间/送达时间</p>
+                </div>
+                <div class="weui_cell_ft">请选择</div>
+            </a>
+
+        </div>
+    </div>
+
+
+
+    <div class="weui_cells">
+
+        <div class=" weui_cells_access">
+            <a class="weui_cell" href="javascript:;">
+                <div class="weui_cell_bd weui_cell_primary">
+                    <p>订单备注</p>
+                </div>
+            </a>
+        </div>
+        <div class="weui_cell">
+            <div class="weui_cell_bd weui_cell_primary">
+                <textarea class="weui_textarea" placeholder="如有特殊要求请留言" rows="3"></textarea>
+                <div class="weui_textarea_counter"><span>0</span>/200</div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="div_ddlist">
+
+        <div class="ddmx">
+            <ul class="list-group">
+                <% for(i = 0; i < body.foodList.length; i++){ %>
+                <% totalPrice += body.foodList[i].price; %>
+                <li class=" bh">
+                    <div class="title_a"><%= body.foodList[i].name %></div>
+                    <div class="title_ad"> × <%= body.foodList[i].number %></div>
+                    <div class="title_c_text">￥<%= body.foodList[i].price.toFixed(2) %></div>
+                </li>
+                <% } %>
+                <!--<hr/>-->
+                <!--<li class=" bh">-->
+                    <!--<div class="title_a">配送费</div>-->
+                    <!--<div class="title_ad"> × 1</div>-->
+                    <!--<div class="title_c_text">￥8.00</div>-->
+                <!--</li>-->
+                <!--<li class=" bh">-->
+                    <!--<div class="title_a">餐盒费</div>-->
+                    <!--<div class="title_ad"> × 2</div>-->
+                    <!--<div class="title_c_text">￥2.00</div>-->
+                <!--</li>-->
+            </ul>
+
+
+        </div>
+
+    </div>
+</div>
+<article>
+    <div class="btn_box bh">
+        <div class="fkjg">总计：<strong id="totalPrice" data-total-price="<%= totalPrice %>">￥<%= totalPrice.toFixed(2) %></strong></div>
+        <div class="bd">
+            <a href="javascript:;" class="weui_btn weui_btn_warn">确认</a>
+        </div>
+    </div>
+
+</article>
+<% include ../common/footer.ejs %>
+<script>
+    $(document).ready(function () {
+        var nicesx = $("#boxscroll").niceScroll("#boxscroll div", {
+            touchbehavior: true,
+            cursorcolor: "#FF00FF",
+            cursoropacitymax: 0.6,
+            cursorwidth: 24,
+            usetransition: true,
+            hwacceleration: true,
+            autohidemode: "hidden"
+        });
+    });
+</script>
+</body>
+</html>
