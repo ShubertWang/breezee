@@ -164,19 +164,19 @@
                     </div>
                 </h5>
             </div>
-            <ul class="nr_list">
-                <% for(i = 0; i < body.comment.length; i++){%>
-                <li class="bh li_ct">
-                    <div class="img_txx"><a href="#"><img src="/custom/wx_style/images/<%= body.comment[i].user.icon %>.png"></a><h3><%= body.comment[i].user.name %></h3></div>
-                    <div class=" text_zh">
+            <!--<ul class="nr_list">-->
+                <!--<% for(i = 0; i < body.comment.length; i++){%>-->
+                <!--<li class="bh li_ct">-->
+                    <!--<div class="img_txx"><a href="#"><img src="/custom/wx_style/images/<%= body.comment[i].user.icon %>.png"></a><h3><%= body.comment[i].user.name %></h3></div>-->
+                    <!--<div class=" text_zh">-->
 
-                        <div class="f_pj bh"><div class="float_l"><%- global.htmlRender.renderStar(body.comment[i].point, 5) %></div></div>
-                        <h4><%- body.comment[i].remark %></h4>
-                        <h5><%= body.comment[i].time %></h5>
-                    </div>
-                </li>
-                <% } %>
-            </ul>
+                        <!--<div class="f_pj bh"><div class="float_l"><%- global.htmlRender.renderStar(body.comment[i].point, 5) %></div></div>-->
+                        <!--<h4><%- body.comment[i].remark %></h4>-->
+                        <!--<h5><%= body.comment[i].time %></h5>-->
+                    <!--</div>-->
+                <!--</li>-->
+                <!--<% } %>-->
+            <!--</ul>-->
         </div>
     </div>
 
@@ -224,7 +224,9 @@
                     <input type="hidden" name="foodList" id="foodList" />
                     <a href="javascript:void(0);" class="weui_btn weui_btn_warn" id="submit">去结算</a>
                 </form>
-                <div class="fkjg1">配送费 <strong>8</strong> 元</div>
+                <% if(data.orderType == 'wm'){ %>
+                <div class="fkjg1">配送费 <strong><%= body.deliveryFee%></strong> 元</div>
+                <% } %>
             </div>
         </div>
     </div>

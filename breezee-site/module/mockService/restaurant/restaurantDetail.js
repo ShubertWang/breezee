@@ -2,6 +2,7 @@ var data = {
     id : "1",
     name : "索迪斯微软食堂三号",
     image : 'img_ct',
+    deliveryFee : 8,
     businessDate : "周一至周五",
     businessHours : "08:00-22:00",
     address : '天宝路280弄35号星星堂商业6号楼',
