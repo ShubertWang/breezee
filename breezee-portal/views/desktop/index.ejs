@@ -10,7 +10,17 @@
 
 <div class="container">
     首页
+    <span class="btn btn-success fileinput-button">
+        <i class="glyphicon glyphicon-plus"></i>
+        <span>Select files...</span>
+        <!-- The file input field used as target for the file upload widget -->
+        <input id="fileupload" type="file" name="files[]" multiple>
+    </span>
 </div>
+<form action="/file" method="post" enctype='multipart/form-data'>
+    <input type="file" name="upload" />
+    <input type="submit" value="上传" />
+</form>
 
 <% include common/footer.ejs %>
 </body>
