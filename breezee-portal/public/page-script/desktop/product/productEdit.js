@@ -1,4 +1,4 @@
-Dolphin.defaults.mockFlag = true;
+Dolphin.defaults.mockFlag = false;
 $(function () {
     Dolphin.form.parse();
 
@@ -7,7 +7,6 @@ $(function () {
         productData : null,
 
         baseInfo : $('#baseInfo'),
-        categoryId : $('#categoryId'),
         categoryAttrPanel : $('#extendAttrPanel'),
         categoryAttrPanelBody : $('#categoryAttrPanelBody'),
         save : $('#save')
@@ -15,16 +14,19 @@ $(function () {
 
     page.connect = {
         productDetail : {
-            url : '/data/product/'
+            url : '/data/pcm/product/'
         },
         category : {
-            url : '/data/model/categoryAttr/{id}'
+            url : '/data/pcm/category/cateAttrs/{id}'
         },
-        productData : {
-            url : '/data/product/{id}'
+        categoryTree: {
+            url: '/data/pcm/category/p/{id}'
+        },
+        productInfo : {
+            url : '/data/pcm/product/{id}'
         },
         productSave : {
-            url : '/data/product/',
+            url : '/data/pcm/product/',
             type : Dolphin.requestMethod.PUT
         }
     };
@@ -38,10 +40,10 @@ $(function () {
 
     page.initPage = function () {
         var _this = this;
-
+        _this.curPage = 1;
         if(REQUEST_MAP.data.id){
-            _this.productData = Dolphin.ajax({
-                url : _this.connect.productData.url,
+            Dolphin.ajax({
+                url : _this.connect.productInfo.url,
                 pathData : {
                     id : REQUEST_MAP.data.id
                 },
@@ -49,63 +51,78 @@ $(function () {
                 loading : true,
                 onSuccess : function (reData) {
                     _this.initValue(reData.value);
+                    _this.selCat = {id:_this.productInfo.cateId,name:_this.productInfo.cateName};
+                    _this.curPage = 2;
+                    _this._buttonInit();
                 }
             });
+        } else {
+            this.categoryTree();
         }
-
     };
+
+    page._buttonInit = function(){
+        var _this = this;
+        //这块逻辑写的太差了，先这样吧--anjing
+        var previousPage = _this.curPage;
+        _this.save.html('保存');
+
+        $(".page-info").hide();
+        $(".page-" + _this.curPage).show();
+
+        $("#categoryId").val(_this.selCat.id);
+        $("#categoryName").val(_this.selCat.name);
+    }
 
     page.initEvent = function () {
         var _this = this;
-        _this.categoryId.change(function () {
-            if(this.value){
-                _this.renderForm(this.value);
-            }else{
-                _this.categoryAttrPanel.hide();
+        _this.save.click(function (){
+            _this.curPage++;
+            _this._buttonInit();
+            _this.renderForm(_this.selCat.id);
+            if(_this.curPage == 3) {
+                var submitData = $.extend({}, _this.productInfo, Dolphin.form.getValue(_this.baseInfo), {
+                    productData: Dolphin.form.getValue(_this.categoryAttrPanel)
+                });
+
+                Dolphin.ajax($.extend({}, _this.connect.productSave, {
+                    loading: true,
+                    data: Dolphin.json2string(submitData),
+                    onSuccess: function (reData) {
+                        Dolphin.alert(reData.msg || '保存成功', {
+                            callback: function () {
+                                Dolphin.goUrl('/product/productList');
+                            }
+                        })
+                    }
+                }))
             }
         });
-
-        _this.save.click(function (){
-            var productDataArr = [],
-                productDataMap,submitData,
-                key;
-
-            productDataMap = Dolphin.form.getValue(_this.categoryAttrPanel);
-            for(key in productDataMap){
-                productDataArr.push({
-                    code : key,
-                    value : productDataMap[key]
-                });
-            }
-
-            submitData = $.extend({}, _this.productData, Dolphin.form.getValue(_this.baseInfo), {
-                productData : productDataArr
-            });
-
-            Dolphin.ajax($.extend({}, _this.connect.productSave, {
-                loading : true,
-                data : Dolphin.json2string(submitData),
-                onSuccess : function (reData) {
-                    Dolphin.alert(reData.msg || '保存成功', {
-                        callback : function () {
-                            Dolphin.goUrl('/product/productList');
-                        }
-                    })
-                }
-            }))
-        })
     };
 
     page.initValue = function(data){
-        var _this = this, productDataMap = {},
-            i;
-        _this.productData = data;
+        var _this = this;
+        _this.productInfo = data;
         Dolphin.form.setValue(data, _this.baseInfo);
-        for(i = 0; i < data.productData.length; i++){
-            productDataMap[data.productData[i].code] = data.productData[i].value;
-        }
-        _this.renderForm(data.category.id, function (reData) {
-            Dolphin.form.setValue(productDataMap, _this.categoryAttrPanel);
+        _this.renderForm(data.cateId, function (reData) {
+            Dolphin.form.setValue(data.productData, _this.categoryAttrPanel);
+        });
+    };
+
+    page.categoryTree  = function () {
+        var _this = this;
+        new Dolphin.HORIZONTAL_TREE({
+            panel: "#categoryTree",
+            url: _this.connect.categoryTree.url,
+            mockPathData: ["hid"],
+            loadingFlag : true,
+            itemType: "folder",
+            idField:'id',
+            click: function (node, event) {
+                _this.selCat = node;
+            },
+            buttons: [],
+            itemButtons: []
         });
     };
 

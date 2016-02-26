@@ -8,7 +8,7 @@ package com.breezee.pcm.api.domain;
 import com.breezee.common.BaseInfo;
 import com.breezee.common.types.Amount;
 import com.breezee.common.types.Quantity;
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
+import com.fasterxml.jackson.annotation.JsonInclude;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -17,15 +17,18 @@ import java.util.Map;
  * 领域对象 -- 产品信息
  * Created by Silence on 2016/2/6.
  */
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class ProductInfo extends BaseInfo {
 
     protected Long cateId;
 
+    protected String cateName;
+
     protected Amount basePrice;
 
-    protected Quantity quantity;
+    protected Quantity quantity=new Quantity("",0);
 
-    protected Map<String, Object> values=new HashMap<>();
+    protected Map<String, Object> productData = new HashMap<>();
 
     public Long getCateId() {
         return cateId;
@@ -35,13 +38,12 @@ public class ProductInfo extends BaseInfo {
         this.cateId = cateId;
     }
 
-    @JsonAnyGetter
-    public Map<String, Object> getValues() {
-        return values;
+    public Map<String, Object> getProductData() {
+        return productData;
     }
 
-    public void setValues(Map<String, Object> values) {
-        this.values = values;
+    public void setProductData(Map<String, Object> productData) {
+        this.productData = productData;
     }
 
     public Amount getBasePrice() {
@@ -58,5 +60,13 @@ public class ProductInfo extends BaseInfo {
 
     public void setQuantity(Quantity quantity) {
         this.quantity = quantity;
+    }
+
+    public String getCateName() {
+        return cateName;
+    }
+
+    public void setCateName(String cateName) {
+        this.cateName = cateName;
     }
 }

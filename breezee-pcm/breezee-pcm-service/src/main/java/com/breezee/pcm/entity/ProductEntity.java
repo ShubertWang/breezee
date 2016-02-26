@@ -105,23 +105,29 @@ public class ProductEntity extends BaseInfo {
     }
 
     public ProductInfo toInfo() {
-        ProductInfo info = (ProductInfo) this.clone();
-        if (this.getCategory() != null)
+        ProductInfo info = new ProductInfo();
+        cloneAttribute(info);
+        if (this.getCategory() != null) {
             info.setCateId(this.getCategory().getId());
-        if(this.getData()!=null&&this.getData().size()>0){
-            this.getData().forEach(a->{
-                info.getValues().put(a.getAttribute().getCode(),a.getAttrValue());
+            info.setCateName(this.getCategory().getName());
+        }
+        if (this.getData() != null && this.getData().size() > 0) {
+            this.getData().forEach(a -> {
+                info.getProductData().put(a.getAttribute().getId().toString(), a.getAttrValue());
             });
         }
-        info.setBasePrice(new Amount(this.currencyCode,this.basePrice));
+        info.setBasePrice(new Amount(this.currencyCode, this.basePrice));
         return info;
     }
 
     public ProductEntity parse(ProductInfo info) {
         info.cloneAttribute(this);
-        if(info.getBasePrice()!=null) {
+        if (info.getBasePrice() != null) {
             this.setBasePrice(info.getBasePrice().getValue());
-            this.setCurrencyCode(info.getBasePrice().getCurrencyCode());
+            if (info.getBasePrice().getCurrencyCode() != null)
+                this.setCurrencyCode(info.getBasePrice().getCurrencyCode());
+            else
+                this.setCurrencyCode("RMB");
         }
         return this;
     }

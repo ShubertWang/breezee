@@ -8,7 +8,9 @@ package com.breezee.pcm.api.service;
 import com.breezee.common.IServiceLayer;
 import com.breezee.pcm.api.domain.ProductInfo;
 
+import javax.ws.rs.GET;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import java.util.List;
 
 /**
@@ -25,4 +27,12 @@ public interface IProductService extends IServiceLayer<ProductInfo> {
      * @return
      */
     List<ProductInfo> findProductsByCateId(Long cateId, boolean rec);
+
+    @Path("/code/{code}")
+    @GET
+    ProductInfo findByCode(@PathParam("code") String code);
+
+    @Path("/location/{location}")
+    @GET
+    List<ProductInfo> findProductByLocationId(@PathParam("location") String locationId);
 }

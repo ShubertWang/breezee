@@ -1,10 +1,10 @@
-Dolphin.defaults.mockFlag = true;
+Dolphin.defaults.mockFlag = false;
 $(function () {
     var page = {};
 
     page.connect = {
         productList : {
-            url : '/data/product/'
+            url : '/data/pcm/product/page'
         },
         productDelete : {
             url : '/data/product/',
@@ -24,7 +24,8 @@ $(function () {
         this.productList = new Dolphin.LIST({
             panel : '#list',
             url : _this.connect.productList.url,
-            queryParams : Dolphin.form.getValue('queryForm'),
+            //queryParams : Dolphin.form.getValue('queryForm'),
+            ajaxType: 'post',
             title : '菜品列表',
             columns : [{
                 code : 'code',
@@ -33,11 +34,19 @@ $(function () {
                 code : 'name',
                 title : '菜品名称'
             }, {
-                code : 'basePrice',
+                code : 'basePrice.value',
+                width:'90px',
                 title : '基本价格'
             }, {
-                code : 'category.name',
+                code : 'cateName',
                 title : '所属品类'
+            }, {
+                code : 'quantity.value',
+                width:'120px',
+                title:'库存',
+                formatter:function(val,data){
+                    return '<div class="text-center">'+val+' &nbsp;&nbsp;&nbsp;<a href="productStock?skuId='+data.code+'">明细</a> </div>';
+                }
             }]
         });
     };

@@ -9,6 +9,7 @@ import com.breezee.bpm.api.domain.ProcsInsInfo;
 import com.breezee.common.PageInfo;
 import com.breezee.common.PageResult;
 
+import javax.ws.rs.Path;
 import java.util.List;
 import java.util.Map;
 
@@ -18,6 +19,7 @@ import java.util.Map;
  * <p>
  * Created by Silence on 2016/2/2.
  */
+@Path("/bpm-workflow")
 public interface IWorkflowService {
 
     /**
