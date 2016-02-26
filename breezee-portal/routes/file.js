@@ -2,7 +2,6 @@ var express = require('express');
 var router = express.Router();
 
 var formidable = require('formidable');
-var multiparty = require('multiparty');
 var fs = require('fs');
 var uuid = require('uuid');
 
@@ -22,14 +21,14 @@ router.post('/', function(req, res, next) {
             console.log('error')
         }
         console.log(++count);
-        var avatarName = Math.random();
+        var avatarName = uuid.v1();
         var newPath = form.uploadDir + avatarName;
 
         console.log(files);
         console.log("===========================================================================");
         console.log(fields);
-        //fs.renameSync(files.file.path, newPath);  //重命名
-        res.send({success : true});
+        fs.renameSync(files.file.path, newPath);  //重命名
+        res.send({success : true, fileId : avatarName});
     });
 });
 
