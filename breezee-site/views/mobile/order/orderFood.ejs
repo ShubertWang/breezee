@@ -27,10 +27,10 @@
         }
     </style>
 </head>
-<body ontouchstart class="bg_zi">
+<body ontouchstart class="bg_b">
 <% var i;%>
 <article>
-    <div class="tab_list bh">
+    <div class="tab_list bh bg_zi">
         <ul id="headTab">
             <li class="li1" data-tab="order_food">订餐</li>
             <li data-tab="restaurant_info">餐厅信息</li>
@@ -39,7 +39,7 @@
 
     <div class="pagePanel" id="order_food">
         <div id="boxscroll">
-            <div class="nav_box bh foodType">
+            <div class="nav_box bh bg_zi1 foodType">
                 <% for(i = 0; i <body.food.length; i++){%>
                 <div class="nav_icon" data-food-type-id="<%= body.food[i].id %>" data-food-type-name="<%= body.food[i].name %>">
                     <div><img src="/custom/wx_style/images/nav_<%= body.food[i].imageCode %>.png"></div>
@@ -50,21 +50,21 @@
         </div>
 
         <div class="ty_bt_title">
-            <h3><span class="icon_tj">&nbsp;</span><span id="foodTypeName"><%= body.food[0].name %></span></h3>
+            <h3><span class="icon_tj1">&nbsp;</span><span id="foodTypeName"><%= body.food[0].name %></span></h3>
         </div>
 
         <% for(i = 0; i < body.food.length; i++){%>
-        <div class="div_list foodTypeList foodTypeList_<%= body.food[i].id %>" style="<%= i==0?'':'display:none;'%>">
+        <div class="div_listtz foodTypeList foodTypeList_<%= body.food[i].id %>" style="<%= i==0?'':'display:none;'%>">
             <% var food = null;%>
             <% for(var j = 0; j < body.food[i].children.length; j++){%>
             <% food = body.food[i].children[j]; %>
-            <div class="list bh" data-food-id="<%= food.id %>" data-food-price="<%= food.price %>" data-food-name="<%= food.name %>">
-                <div class="text"><a href="#"><%= food.name %></a></div>
-                <div class="img"><img src="/custom/wx_style/images/<%= food.image %>.png"></div>
+            <div class="list bh foodData" data-food-id="<%= food.id %>" data-food-price="<%= food.price %>" data-food-name="<%= food.name %>">
+                <div class="text foodDetail"><a href="#"><%= food.name %></a></div>
+                <div class="img foodDetail"><img src="/custom/wx_style/images/<%= food.image %>.png"></div>
                 <div class="bh">
 
                     <div class="btn_gm">
-                        <div class="icon_jh"> </div>
+                        <div class="icon_jh icon_jhh"> </div>
                         <div class="sz"  style=" display:none;">5</div>
                         <div class="icon_jh1" style=" display:none;"> </div>
                     </div>
@@ -74,34 +74,6 @@
             <% } %>
         </div>
         <% } %>
-
-        <div class="" id="cartPanel"><!--weui_mask-->
-            <div class="footer_box ">
-                <div class="weui_cells cartInfo">
-                    <div class=" weui_cells_access">
-                        <a class="weui_cell" href="javascript:;">
-                            <div class="weui_cell_bd weui_cell_primary">
-                                <p>购物车</p>
-                            </div>
-                            <div class="icon_sc" id="clear">清空</div>
-                        </a>
-                    </div>
-                </div>
-                <div class="ddmx bh cartInfo">
-                    <ul class="list-group" style="margin:0;" id="cartList">
-                    </ul>
-                </div>
-                <div class="btn_box bh">
-                    <div class="div_gwc" id="cartIcon"><span id="cartTotalNumber">0</span></div>
-                    <div class="fkjg"><strong>￥<span id="cartTotalPrice">0.00</span></strong></div>
-                    <form name="form" id="form">
-                        <input type="hidden" name="foodList" id="foodList" />
-                        <a href="javascript:void(0);" class="weui_btn weui_btn_warn" id="submit">去结算</a>
-                    </form>
-                    <div class="fkjg1">配送费 <strong>8</strong> 元</div>
-                </div>
-            </div>
-        </div>
     </div>
 
     <div class="pagePanel" id="restaurant_info" style="display: none;">
@@ -205,6 +177,55 @@
                 </li>
                 <% } %>
             </ul>
+        </div>
+    </div>
+
+    <div class="pagePanel" id="food_detail" style="display: none;background-color:#E8E5E2;">
+        <div class="div_list">
+            <div class="list_k1 bh foodData" id="food_detail_panel">
+                <div class="img" name="img"></div>
+                <div class="text_bth" name="name"></div>
+                <div class="bh">
+                    <div class="btn_gm">
+                        <div class="icon_jh food_detail_button"> </div>
+                        <div class="sz" name="number"></div>
+                        <div class="icon_jh1 food_detail_button" > </div>
+                    </div>
+                    <div class="jg">￥<span name="price"></span></div>
+                    <div class="ty_bt_titleh" >
+                        <h3><span class="icon_cp1">&nbsp;</span>菜品简介</h3>
+                        <h5 class="ty_bt_box" name="desc"></h5>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="" id="cartPanel"><!--weui_mask-->
+        <div class="footer_box ">
+            <div class="weui_cells cartInfo">
+                <div class=" weui_cells_access">
+                    <a class="weui_cell" href="javascript:;">
+                        <div class="weui_cell_bd weui_cell_primary">
+                            <p>购物车</p>
+                        </div>
+                        <div class="icon_sc" id="clear">清空</div>
+                    </a>
+                </div>
+            </div>
+            <div class="ddmx bh cartInfo">
+                <ul class="list-group" style="margin:0;" id="cartList">
+                </ul>
+            </div>
+            <div class="btn_box bh">
+                <div class="div_gwc" id="cartIcon"><span id="cartTotalNumber">0</span></div>
+                <div class="fkjg"><strong>￥<span id="cartTotalPrice">0.00</span></strong></div>
+                <form name="form" id="form">
+                    <input type="hidden" name="foodList" id="foodList" />
+                    <a href="javascript:void(0);" class="weui_btn weui_btn_warn" id="submit">去结算</a>
+                </form>
+                <div class="fkjg1">配送费 <strong>8</strong> 元</div>
+            </div>
         </div>
     </div>
 </article>
