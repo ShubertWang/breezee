@@ -59,6 +59,8 @@ router.use('*', function (req, res, next) {
             return reponse;
         }
 
+        bodyData.username = req.session.username;
+
         request({
             method: req.method,
             uri: uri,
