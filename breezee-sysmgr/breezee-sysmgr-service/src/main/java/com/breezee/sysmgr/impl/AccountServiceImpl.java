@@ -52,8 +52,8 @@ public class AccountServiceImpl implements IAccountService {
         if (accountInfo.getOrgId() != null)
             entity.setOrganization(organizationRepository.findOne(accountInfo.getOrgId()));
         if (accountInfo.getRoles() != null && accountInfo.getRoles().size() > 0) {
-            for (Long roleId : accountInfo.getRoles()) {
-                entity.addRole(roleRepository.findOne(roleId));
+            for (String roleId : accountInfo.getRoles()) {
+                entity.addRole(roleRepository.findByCode(roleId));
             }
         }
         if (accountInfo.getPassword() == null) {
