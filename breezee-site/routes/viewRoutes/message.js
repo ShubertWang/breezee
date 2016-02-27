@@ -12,6 +12,26 @@ route.message = function (queryData, res, callback) {
         callback(body);
     });
 };
+route.news = function (queryData, res, callback) {
+    global.myUtil.request({
+        method : 'get',
+        uri : '/message/message',
+        mockData : '/message/news',
+        form : queryData
+    }, function(error, response, body){
+        callback(body);
+    });
+};
+route.newsDetail = function (queryData, res, callback) {
+    global.myUtil.request({
+        method : 'get',
+        uri : '/message/message',
+        mockData : '/message/newsDetail',
+        form : queryData
+    }, function(error, response, body){
+        callback(body);
+    });
+};
 route.messageLuckyMoney = function (queryData, res, callback) {
     global.myUtil.request({
         method : 'get',

@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <% include ../common/meta.ejs %>
+    <title>消息中心</title>
+    <% include ../common/public.ejs %>
+</head>
+<body ontouchstart>
+
+<div class="news_xq">
+    <ul>
+        <li class="name"><%- body.title %></li>
+        <li class="rq"><%= global.myUtil.dateFormatter(new Date(body.date), "yyyy年MM月dd日") %><span><%= body.type %></span></li>
+        <li><img src="/custom/wx_style/images/img_ctd.png"></li>
+        <li><%- body.content %></li>
+    </ul>
+</div>
+<% include ../common/evaluate.ejs %>
+<% include ../common/footer.ejs %>
+</body>
+</html>

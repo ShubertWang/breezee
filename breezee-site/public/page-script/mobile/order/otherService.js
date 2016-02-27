@@ -1,6 +1,6 @@
 $(function () {
     $('#submit').click(function () {
-        var data = Dolphin.form.getValue('.weui_cells_form');
+        var data = Dolphin.form.getValue('form');
         console.log(data);
         //ajax
     });

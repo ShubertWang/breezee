@@ -140,7 +140,8 @@
 
                     <div class="div_mddp">
                         <ul class=" bh">
-                            <li class="line_gray">
+                            <li> <% include ../common/evaluate.ejs %></li>
+                            <!--<li class="line_gray">
                                 <h4 class="w_68">综合评价</h4>
                                 <span>
                                     <%- global.htmlRender.renderStar(body.point, 5)%>
@@ -159,7 +160,7 @@
                                 <h4>菜品口味</h4>
                                 <span>
                                     <%- global.htmlRender.renderStar(body.deliciousPoint, 5)%>
-                                </span><em><%= body.deliciousPoint %></em></li>
+                                </span><em><%= body.deliciousPoint %></em></li>-->
                         </ul>
                     </div>
                 </h5>

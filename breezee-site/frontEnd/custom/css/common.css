@@ -6,6 +6,25 @@
     margin:0 4% 0 4%;
 }
 
+.evaluate_box {
+    width:100%;
+    text-align: center;
+    margin:0;
+}
+
+.evaluate_box .weui_btn_mini {
+    margin: 0 5px;
+    width: 90px;
+    padding: 0 0 0 40px;
+}
+
+.evaluate_box .weui_btn_mini.evaluate_yes {
+    background: url(../images/icon/yes.png) no-repeat 5px 50%;
+}
+.evaluate_box .weui_btn_mini.evaluate_no {
+    background: url(../images/icon/no.png) no-repeat 5px 50%;
+}
+
 /* .slideThree */
 .slideThree {
     width: 60px;
