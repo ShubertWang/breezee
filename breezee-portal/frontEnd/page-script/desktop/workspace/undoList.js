@@ -4,7 +4,7 @@ $(function () {
 
     page.connect = {
         undoList : {
-            url : '/data/workspace/undoList'
+            url : '/data/bpm/bpm-task/findUndoTasks'
         }
     };
 
@@ -21,6 +21,7 @@ $(function () {
             panel : '#list',
             url : _this.connect.undoList.url,
             queryParams : Dolphin.form.getValue('queryForm'),
+            ajaxType:'post',
             title : '待办列表',
             columns : [{
                 code: 'id',
