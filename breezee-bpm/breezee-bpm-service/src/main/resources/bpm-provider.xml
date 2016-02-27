@@ -15,4 +15,7 @@
     <dubbo:service interface="com.breezee.bpm.api.service.IWorkflowTraceService" ref="workflowTraceService"
                    protocol="dubbo,rest"/>
 
+    <dubbo:service interface="com.breezee.bpm.api.service.IWorkflowService" ref="workflowServiceImpl"
+                   protocol="dubbo,rest"/>
+
 </beans>

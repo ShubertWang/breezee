@@ -148,6 +148,7 @@ public class CateAttrEntity extends BaseInfo {
             cateAttrInfo.setAttrId(this.getAttribute().getId());
             cateAttrInfo.setCode(this.getAttribute().getCode());
             cateAttrInfo.setAttrType(this.getAttribute().getFieldType());
+            cateAttrInfo.setUnitCode(this.getAttribute().getUnitCode());
             if(cateAttrInfo.getAttrType().equals("dict")) {
                 ObjectMapper objectMapper = ContextUtil.getBean("objectMapper",ObjectMapper.class);
                 try {

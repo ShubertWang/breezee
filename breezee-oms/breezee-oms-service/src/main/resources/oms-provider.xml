@@ -9,7 +9,16 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans
        http://www.springframework.org/schema/beans/spring-beans.xsd http://code.alibabatech.com/schema/dubbo http://code.alibabatech.com/schema/dubbo/dubbo.xsd">
 
-    <dubbo:service interface="com.breezee.pcm.api.service.ICategoryService" ref="categoryService"
+    <dubbo:service interface="com.breezee.oms.api.service.InventoryService" ref="inventoryService"
+                   protocol="dubbo,rest"/>
+    <dubbo:service interface="com.breezee.oms.api.service.IOrderService" ref="orderService"
                    protocol="dubbo,rest"/>
 
+    <dubbo:reference interface="com.breezee.bpm.api.service.ITaskService" id="taskServiceImpl"
+                     protocol="dubbo" check="false" />
+    <dubbo:reference interface="com.breezee.bpm.api.service.IWorkflowService" id="workflowServiceImpl"
+                     protocol="dubbo" check="false" />
+
+    <dubbo:reference interface="com.breezee.pcm.api.service.IProductService" id="productService"
+                     protocol="dubbo" check="false" />
 </beans>

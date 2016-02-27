@@ -18,5 +18,9 @@ public interface InventoryRepository extends PagingAndSortingRepository<Inventor
 
     List<InventoryEntity> findBySkuId(String skuId);
 
-    List<InventoryEntity> findBySkuIdAndLocationId(String skuId, String locationId);
+    List<InventoryEntity> findByLocationId(String LocationId);
+
+    InventoryEntity findBySkuIdAndLocationId(String skuId, String locationId);
+
+
 }

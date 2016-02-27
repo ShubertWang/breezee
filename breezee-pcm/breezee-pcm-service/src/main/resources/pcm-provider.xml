@@ -17,4 +17,7 @@
 
     <dubbo:service interface="com.breezee.pcm.api.service.IProductService" ref="productService"
                    protocol="dubbo,rest"/>
+
+    <dubbo:reference interface="com.breezee.oms.api.service.InventoryService"
+                     id="inventoryService" protocol="dubbo" check="false" />
 </beans>

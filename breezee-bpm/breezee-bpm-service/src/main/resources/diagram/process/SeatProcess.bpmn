@@ -2,12 +2,14 @@
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
   <process id="seatProcess" name="Seat process" isExecutable="true" activiti:candidateStarterUsers="root">
     <startEvent id="startevent1" name="Start"></startEvent>
-    <userTask id="seatConfirm" name="Seat Confirm" activiti:assignee="${storeName}" activiti:candidateUsers="root"></userTask>
+    <userTask id="seatConfirm" name="Seat Confirm" activiti:candidateUsers="root" activiti:candidateGroups="${foodLineRole},${admin}"></userTask>
     <endEvent id="endevent1" name="End"></endEvent>
-    <serviceTask id="seatUpdate" name="Seat Update" activiti:delegateExpression="aaa"></serviceTask>
+    <serviceTask id="seatUpdate" name="Seat Update" activiti:delegateExpression="${seatComplete}"></serviceTask>
     <sequenceFlow id="flow2" sourceRef="startevent1" targetRef="seatConfirm"></sequenceFlow>
-    <sequenceFlow id="flow3" sourceRef="seatConfirm" targetRef="seatUpdate"></sequenceFlow>
     <sequenceFlow id="flow4" sourceRef="seatUpdate" targetRef="endevent1"></sequenceFlow>
+    <userTask id="seatAssgin" name="Seat Assign" activiti:candidateUsers="root" activiti:candidateGroups="${foodLineRole},${admin}"></userTask>
+    <sequenceFlow id="flow5" sourceRef="seatConfirm" targetRef="seatAssgin"></sequenceFlow>
+    <sequenceFlow id="flow6" sourceRef="seatAssgin" targetRef="seatUpdate"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_seatProcess">
     <bpmndi:BPMNPlane bpmnElement="seatProcess" id="BPMNPlane_seatProcess">
@@ -18,22 +20,29 @@
         <omgdc:Bounds height="55.0" width="105.0" x="240.0" y="140.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="endevent1" id="BPMNShape_endevent1">
-        <omgdc:Bounds height="35.0" width="35.0" x="640.0" y="150.0"></omgdc:Bounds>
+        <omgdc:Bounds height="35.0" width="35.0" x="670.0" y="280.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="seatUpdate" id="BPMNShape_seatUpdate">
-        <omgdc:Bounds height="55.0" width="105.0" x="450.0" y="140.0"></omgdc:Bounds>
+        <omgdc:Bounds height="55.0" width="105.0" x="460.0" y="270.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="seatAssgin" id="BPMNShape_seatAssgin">
+        <omgdc:Bounds height="55.0" width="105.0" x="460.0" y="140.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge bpmnElement="flow2" id="BPMNEdge_flow2">
         <omgdi:waypoint x="135.0" y="167.0"></omgdi:waypoint>
         <omgdi:waypoint x="240.0" y="167.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="flow3" id="BPMNEdge_flow3">
-        <omgdi:waypoint x="345.0" y="167.0"></omgdi:waypoint>
-        <omgdi:waypoint x="450.0" y="167.0"></omgdi:waypoint>
-      </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow4" id="BPMNEdge_flow4">
-        <omgdi:waypoint x="555.0" y="167.0"></omgdi:waypoint>
-        <omgdi:waypoint x="640.0" y="167.0"></omgdi:waypoint>
+        <omgdi:waypoint x="565.0" y="297.0"></omgdi:waypoint>
+        <omgdi:waypoint x="670.0" y="297.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow5" id="BPMNEdge_flow5">
+        <omgdi:waypoint x="345.0" y="167.0"></omgdi:waypoint>
+        <omgdi:waypoint x="460.0" y="167.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow6" id="BPMNEdge_flow6">
+        <omgdi:waypoint x="512.0" y="195.0"></omgdi:waypoint>
+        <omgdi:waypoint x="512.0" y="270.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>

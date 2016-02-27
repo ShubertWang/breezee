@@ -9,15 +9,14 @@ import com.breezee.common.BaseInfo;
 import com.breezee.common.types.Quantity;
 import com.breezee.oms.api.domain.InventoryInfo;
 
-import javax.persistence.Column;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.util.Date;
 
 /**
  * Created by Silence on 2016/2/12.
  */
+@Entity
+@Table(name = "OMS_TF_INVENTORY")
 public class InventoryEntity extends BaseInfo {
     private String locationId;
     private String skuId;
@@ -92,7 +91,8 @@ public class InventoryEntity extends BaseInfo {
     }
 
     public InventoryInfo toInfo(){
-        InventoryInfo info = (InventoryInfo) this.clone();
+        InventoryInfo info = new InventoryInfo();
+        cloneAttribute(info);
         info.setSkuId(this.getSkuId());
         info.setLocationId(this.getLocationId());
         info.setQuantity(new Quantity(this.getUnitCode(),this.getQuantity()));

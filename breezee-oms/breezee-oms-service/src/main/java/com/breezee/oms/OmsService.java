@@ -5,6 +5,7 @@
 
 package com.breezee.oms;
 
+import com.breezee.common.util.ContextUtil;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.context.annotation.ComponentScan;
@@ -20,7 +21,7 @@ import java.io.IOException;
 @EnableAutoConfiguration
 @ComponentScan("com.breezee")
 @ImportResource(value = {"classpath:/oms-provider.xml"})
-public final class OmsService {
+public class OmsService {
 
     /**
      * 启动本服务
@@ -28,6 +29,6 @@ public final class OmsService {
      * @throws IOException
      */
     public static void main(String[] args) throws IOException {
-        SpringApplication.run(OmsService.class, args);
+        ContextUtil.current = SpringApplication.run(OmsService.class, args);
     }
 }

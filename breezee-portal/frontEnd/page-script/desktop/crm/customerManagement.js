@@ -22,9 +22,6 @@ $(function () {
             code: 'type',
             title: '客户类型'
         }, {
-            code: 'sex',
-            title: '性别'
-        }, {
             code: 'star',
             title: '星级'
         }, {

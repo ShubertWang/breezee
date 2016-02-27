@@ -61,6 +61,10 @@ public interface IServiceLayer<T extends BaseInfo> {
     @Path("/page")
     @POST
     @Produces(MediaType.APPLICATION_JSON)
-    @Consumes({MediaType.APPLICATION_FORM_URLENCODED,MediaType.APPLICATION_JSON})
+    @Consumes(MediaType.APPLICATION_JSON)
     PageResult<T> pageAll(Map<String,Object> m, PageInfo pageInfo);
+
+    @Path("/status/{id}/{status}")
+    @GET
+    default void updateStatus(@PathParam("id") Long id, @PathParam("status") int status){}
 }

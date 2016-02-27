@@ -16,4 +16,6 @@ import org.springframework.stereotype.Repository;
 @Repository("productRepository")
 public interface ProductRepository extends PagingAndSortingRepository<ProductEntity, Long>,
         JpaSpecificationExecutor<ProductEntity> {
+
+    ProductEntity findByCode(String code);
 }

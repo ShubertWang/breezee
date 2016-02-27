@@ -7,7 +7,6 @@ $(function () {
         productData : null,
 
         baseInfo : $('#baseInfo'),
-        categoryId : $('#categoryId'),
         categoryAttrPanel : $('#extendAttrPanel'),
         categoryAttrPanelBody : $('#categoryAttrPanelBody'),
         save : $('#save')
@@ -19,6 +18,9 @@ $(function () {
         },
         category : {
             url : '/data/pcm/category/cateAttrs/{id}'
+        },
+        categoryTree: {
+            url: '/data/pcm/category/p/{id}'
         },
         productInfo : {
             url : '/data/pcm/product/{id}'
@@ -38,7 +40,7 @@ $(function () {
 
     page.initPage = function () {
         var _this = this;
-
+        _this.curPage = 1;
         if(REQUEST_MAP.data.id){
             Dolphin.ajax({
                 url : _this.connect.productInfo.url,
@@ -49,38 +51,53 @@ $(function () {
                 loading : true,
                 onSuccess : function (reData) {
                     _this.initValue(reData.value);
+                    _this.selCat = {id:_this.productInfo.cateId,name:_this.productInfo.cateName};
+                    _this.curPage = 2;
+                    _this._buttonInit();
                 }
             });
+        } else {
+            this.categoryTree();
         }
     };
 
+    page._buttonInit = function(){
+        var _this = this;
+        //这块逻辑写的太差了，先这样吧--anjing
+        var previousPage = _this.curPage;
+        _this.save.html('保存');
+
+        $(".page-info").hide();
+        $(".page-" + _this.curPage).show();
+
+        $("#categoryId").val(_this.selCat.id);
+        $("#categoryName").val(_this.selCat.name);
+    }
+
     page.initEvent = function () {
         var _this = this;
-        _this.categoryId.change(function () {
-            if(this.value){
-                _this.renderForm(this.value);
-            }else{
-                _this.categoryAttrPanel.hide();
+        _this.save.click(function (){
+            _this.curPage++;
+            _this._buttonInit();
+            _this.renderForm(_this.selCat.id);
+            if(_this.curPage == 3) {
+                var submitData = $.extend({}, _this.productInfo, Dolphin.form.getValue(_this.baseInfo), {
+                    productData: Dolphin.form.getValue(_this.categoryAttrPanel)
+                });
+
+                Dolphin.ajax($.extend({}, _this.connect.productSave, {
+                    loading: true,
+                    data: Dolphin.json2string(submitData),
+                    onSuccess: function (reData) {
+                        Dolphin.alert(reData.msg || '保存成功', {
+                            callback: function () {
+                                Dolphin.goUrl('/product/productList');
+                            }
+                        })
+                    }
+                }))
             }
         });
-
-        _this.save.click(function (){
-            var submitData = $.extend({}, _this.productInfo, Dolphin.form.getValue(_this.baseInfo), {
-                productData : Dolphin.form.getValue(_this.categoryAttrPanel)
-            });
-
-            Dolphin.ajax($.extend({}, _this.connect.productSave, {
-                loading : true,
-                data : Dolphin.json2string(submitData),
-                onSuccess : function (reData) {
-                    Dolphin.alert(reData.msg || '保存成功', {
-                        callback : function () {
-                            Dolphin.goUrl('/product/productList');
-                        }
-                    })
-                }
-            }))
-        })
     };
 
     page.initValue = function(data){
@@ -89,6 +106,23 @@ $(function () {
         Dolphin.form.setValue(data, _this.baseInfo);
         _this.renderForm(data.cateId, function (reData) {
             Dolphin.form.setValue(data.productData, _this.categoryAttrPanel);
+        });
+    };
+
+    page.categoryTree  = function () {
+        var _this = this;
+        new Dolphin.HORIZONTAL_TREE({
+            panel: "#categoryTree",
+            url: _this.connect.categoryTree.url,
+            mockPathData: ["hid"],
+            loadingFlag : true,
+            itemType: "folder",
+            idField:'id',
+            click: function (node, event) {
+                _this.selCat = node;
+            },
+            buttons: [],
+            itemButtons: []
         });
     };
 
