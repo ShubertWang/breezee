@@ -62,9 +62,8 @@ $(function () {
                 title : '是否上架',
                 width:'75px',
                 formatter:function(val,data){
-                    return '<div class="slideThree"><input type="checkbox" value="'+val+'" ' +
-                    'onchange="updateStatus(this,'+data.id+')" name="check'+data.id+'" '+ (val?'checked':'')+' />' +
-                    '<label for="slideThree"></label></div>';
+                    return '<input type="checkbox" value="'+val+'" ' +
+                    'onchange="updateStatus(this,'+data.id+')" name="check'+data.id+'" '+ (val?'checked':'')+' />';
                 }
             }]
         });
@@ -125,7 +124,7 @@ $(function () {
         console.log(el.checked);
         return;
         Dolphin.ajax({
-            url : '/data/pcm/product/status/'+id+'/0'
+            url : '/data/pcm/product/status/'+id+'/'+el.checked?1:0
         });
     }
 

@@ -4,7 +4,11 @@ var router = express.Router();
 /* GET home page. */
 router.get('/', function(req, res, next) {
 
-   res.send(true);
+   var queryData = req.query;
+   console.log("==========");
+   console.log(queryData);
+   console.log("==========");
+   res.send(queryData.echostr);
 
    /* url = req.originalUrl;
 

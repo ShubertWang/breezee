@@ -101,4 +101,8 @@ public class ArticleInfo extends BaseInfo {
     public String getUedit() {
         return content;
     }
+
+    public void setUedit(String uedit) {
+        this.content = uedit;
+    }
 }

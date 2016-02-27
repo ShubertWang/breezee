@@ -30,8 +30,8 @@ public class ArticleServiceImpl implements IArticleService {
     @Override
     public PageResult<ArticleInfo> findByModelId(Long modelId, PageInfo page) {
         ModelEntity entity = modelRepository.findOne(modelId);
-        if(entity!=null) {
-            Page<ArticleEntity> pa = articleRepository.findByModel(entity,page);
+        if (entity != null) {
+            Page<ArticleEntity> pa = articleRepository.findByModel(entity, page);
             return new PageResult<>(pa, ArticleInfo.class, (articleEntity, articleInfo) -> articleEntity.toInfo());
         }
         return new PageResult<>();
@@ -39,9 +39,15 @@ public class ArticleServiceImpl implements IArticleService {
 
     @Override
     public ArticleInfo saveInfo(ArticleInfo articleInfo) {
-        ModelEntity modelEntity = modelRepository.findOne(articleInfo.getModelId());
-        ArticleEntity entity = new ArticleEntity().parse(articleInfo);
-        entity.setModel(modelEntity);
+        ArticleEntity entity;
+        if (articleInfo.getId() != null) {
+            entity = articleRepository.findOne(articleInfo.getId());
+            entity.parse(articleInfo);
+        } else {
+            entity = new ArticleEntity().parse(articleInfo);
+            ModelEntity modelEntity = modelRepository.findOne(articleInfo.getModelId());
+            entity.setModel(modelEntity);
+        }
         articleRepository.save(entity);
         return SuccessInfo.build(ArticleInfo.class);
     }
@@ -55,7 +61,7 @@ public class ArticleServiceImpl implements IArticleService {
     @Override
     public ArticleInfo findInfoById(Long id) {
         ArticleEntity entity = articleRepository.findOne(id);
-        if(entity==null)
+        if (entity == null)
             return ErrorInfo.build(ArticleInfo.class);
         return entity.toInfo();
     }
@@ -68,7 +74,7 @@ public class ArticleServiceImpl implements IArticleService {
 
     @Override
     public PageResult<ArticleInfo> pageAll(Map<String, Object> m, PageInfo pageInfo) {
-        Page<ArticleEntity> pa = articleRepository.findAll(DynamicSpecifications.createSpecification(m),pageInfo);
+        Page<ArticleEntity> pa = articleRepository.findAll(DynamicSpecifications.createSpecification(m), pageInfo);
         return new PageResult<>(pa, ArticleInfo.class, (articleEntity, articleInfo) -> articleEntity.toInfo());
     }
 
