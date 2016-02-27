@@ -22,22 +22,22 @@ $(function () {
             code: 'type',
             title: '客户类型'
         }, {
-            code: 'star',
-            title: '星级'
-        }, {
-            code: 'mobile',
-            title: '手机'
-        }, {
             code: 'company',
-            title: '公司'
+            title: '网点编码'
         }, {
             code: 'wechat',
-            title: '微信号'
+            title: '微信ID'
+        },{
+            code: 'accountId',
+            title: '工作人员'
         }, {
-            code: 'status',
-            title: '状态',
-            formatter:function(val){
-                return '<div class="slideThree"><input type="checkbox" value="None" id="slideThree" name="check" checked /><label for="slideThree"></label></div>';
+            code:'addressCount',
+            title:'收货地址',
+            formatter:function(val,data){
+                if(val>0)
+                    return "<a href='shippingAddress?userId="+data.id+"'>"+val+"</a>";
+                return val;
+
             }
         }],
         multiple: false,
@@ -86,9 +86,9 @@ $(function () {
                             list.reload();
                             Dolphin.form.empty('#editForm');
                         }
-                    })
+                    });
                 }
-            })
+            });
         }
     });
     $("#query").click(function () {
