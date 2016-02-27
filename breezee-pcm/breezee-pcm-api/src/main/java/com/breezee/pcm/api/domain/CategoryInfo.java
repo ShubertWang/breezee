@@ -19,6 +19,18 @@ public class CategoryInfo extends TreeObject<CategoryInfo> {
 
     protected String type="leaf";
 
+    public CategoryInfo() {
+    }
+
+    public CategoryInfo(Long id) {
+        this.id=id;
+    }
+
+    public CategoryInfo(String code,String name) {
+        this.code = code;
+        this.name = name;
+    }
+
     private List<CateAttrInfo> cateAttrInfos;
 
     public String getType() {

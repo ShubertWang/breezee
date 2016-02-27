@@ -10,10 +10,7 @@ $(function () {
         columns: [{
             code: 'code',
             title: '餐厅编码',
-            width:'90px',
-            formatter:function(val,data){
-                return "<a href='messhallDetail?id="+data.id+"'>"+val+"</a>";
-            }
+            width:'90px'
         }, {
             code: 'name',
             title: '餐厅名称'
@@ -21,26 +18,18 @@ $(function () {
             code: 'address',
             title: '地址'
         },{
-            code: 'startTime',
-            title: '营业时间',
-            width:'170px',
-            formatter:function(val,data){
-                return data['timeType']+" "+data['startTime']+'-'+data['endTime'];
-            }
+            code: 'orgName',
+            title: '所属组织',
+            width:'170px'
         },{
             code: 'telephone',
-            width:'90px',
+            width:'180px',
             title: '联系电话'
         },{
-            code: 'commentCount',
-            width:'90px',
-            title: '评价次数'
-        },{
-            code: 'status',
-            title: '状态',
-            width:'90px',
-            formatter:function(val){
-                return '<div class="slideThree"><input type="checkbox" value="None" id="slideThree" name="check" checked /><label for="slideThree"></label></div>';
+            code:'setting',
+            title:'设置',
+            formatter:function(val,data){
+                return "<a href='messhallDetail?id="+data.id+"'>设置</a>";
             }
         }],
         multiple : false,

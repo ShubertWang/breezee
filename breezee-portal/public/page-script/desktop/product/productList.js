@@ -7,7 +7,7 @@ $(function () {
             url : '/data/pcm/product/page'
         },
         productDelete : {
-            url : '/data/product/',
+            url : '/data/pcm/product/',
             type : Dolphin.requestMethod.DELETE
         }
     };
@@ -23,6 +23,7 @@ $(function () {
         var _this = this;
         this.productList = new Dolphin.LIST({
             panel : '#list',
+            rowIndex:false,
             url : _this.connect.productList.url,
             //queryParams : Dolphin.form.getValue('queryForm'),
             ajaxType: 'post',
@@ -31,6 +32,14 @@ $(function () {
                 code : 'code',
                 title : '菜品编码'
             }, {
+                code : 'recommend',
+                title : '推荐菜品',
+                width:'75px',
+                formatter:function(val,data){
+                    return '<input type="checkbox" value="'+val+'" ' +
+                        'id="recoslideThree" onchange="updateSome(this,'+data.id+',0)" name="check" '+ (val?'checked':'')+' />';
+                }
+            },{
                 code : 'name',
                 title : '菜品名称'
             }, {
@@ -45,7 +54,17 @@ $(function () {
                 width:'120px',
                 title:'库存',
                 formatter:function(val,data){
-                    return '<div class="text-center">'+val+' &nbsp;&nbsp;&nbsp;<a href="productStock?skuId='+data.code+'">明细</a> </div>';
+                    //return '<div class="text-center">'+val+' &nbsp;&nbsp;&nbsp;<a href="productStock?skuId='+data.code+'">明细</a> </div>';
+                    return val;
+                }
+            },{
+                code : 'status',
+                title : '是否上架',
+                width:'75px',
+                formatter:function(val,data){
+                    return '<div class="slideThree"><input type="checkbox" value="'+val+'" ' +
+                    'onchange="updateStatus(this,'+data.id+')" name="check'+data.id+'" '+ (val?'checked':'')+' />' +
+                    '<label for="slideThree"></label></div>';
                 }
             }]
         });
@@ -100,6 +119,15 @@ $(function () {
             Dolphin.form.empty("#queryForm")
         });
     };
+
+    window.updateStatus = function(el,id){
+        var tmp = ['recommend','status'];
+        console.log(el.checked);
+        return;
+        Dolphin.ajax({
+            url : '/data/pcm/product/status/'+id+'/0'
+        });
+    }
 
     window.page = page.init();
 });

@@ -42,7 +42,7 @@ router.use('*', function (req, res, next) {
                 "value": null,
                 "rows": []
             };
-            if (toString.apply(ret) === '[object Array]') {
+            if (reponse.rows) {
                 reponse.total = ret.length;
                 reponse.rows = ret;
             } else if (ret.content) {
@@ -59,7 +59,6 @@ router.use('*', function (req, res, next) {
             return reponse;
         }
 
-        console.log(bodyData);
         request({
             method: req.method,
             uri: uri,

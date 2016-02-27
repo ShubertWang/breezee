@@ -37,4 +37,6 @@ public interface ICategoryService extends IServiceLayer<CategoryInfo> {
     @Path("/cateAttrs/{cateId}")
     @GET
     List<CateAttrInfo> findCateAttrsByCateId(@PathParam("cateId") Long cateId);
+
+    CategoryInfo findByCode(String code);
 }

@@ -84,4 +84,7 @@ public class MesshallServiceImpl implements IMesshallService {
     public List<MesshallInfo> findAll() {
         return listAll(new HashMap<>());
     }
+
+    @Override
+    public void updateStatus(Long id, int status){}
 }

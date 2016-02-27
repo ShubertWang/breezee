@@ -16,4 +16,7 @@
 
     <dubbo:reference interface="com.breezee.sysmgr.api.service.IOrganizationService" id="organizationService" protocol="dubbo" />
     <dubbo:reference interface="com.breezee.sysmgr.api.service.IAccountService" id="accountService" protocol="dubbo" />
+    <dubbo:reference interface="com.breezee.pcm.api.service.ICategoryService" id="categoryService" protocol="dubbo" />
+
+
 </beans>

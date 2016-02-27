@@ -16,7 +16,7 @@ import java.util.Date;
  * Created by Silence on 2016/2/13.
  */
 @Entity
-@Table(name = "PRJ_TD_MESSHALL")
+@Table(name = "SDX_TD_MESSHALL")
 public class MesshallEntity extends MesshallInfo {
 
     @Id

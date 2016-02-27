@@ -28,6 +28,8 @@ public class ProductInfo extends BaseInfo {
 
     protected Quantity quantity=new Quantity("",0);
 
+    private boolean recommend;
+
     protected Map<String, Object> productData = new HashMap<>();
 
     public Long getCateId() {
@@ -68,5 +70,13 @@ public class ProductInfo extends BaseInfo {
 
     public void setCateName(String cateName) {
         this.cateName = cateName;
+    }
+
+    public boolean isRecommend() {
+        return recommend;
+    }
+
+    public void setRecommend(boolean recommend) {
+        this.recommend = recommend;
     }
 }

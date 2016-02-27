@@ -28,6 +28,8 @@ public class ProductEntity extends BaseInfo {
 
     private String currencyCode;
 
+    private boolean recommend;
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "PRODUCT_ID", unique = true, nullable = false)
@@ -69,6 +71,10 @@ public class ProductEntity extends BaseInfo {
         return updateTime;
     }
 
+    public String getRemark() {
+        return remark;
+    }
+
     @ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
     @JoinColumn(name = "CATE_ID", referencedColumnName = "CATE_ID")
     public CategoryEntity getCategory() {
@@ -104,6 +110,14 @@ public class ProductEntity extends BaseInfo {
         this.currencyCode = currencyCode;
     }
 
+    public boolean isRecommend() {
+        return recommend;
+    }
+
+    public void setRecommend(boolean recommend) {
+        this.recommend = recommend;
+    }
+
     public ProductInfo toInfo() {
         ProductInfo info = new ProductInfo();
         cloneAttribute(info);
@@ -117,6 +131,7 @@ public class ProductEntity extends BaseInfo {
             });
         }
         info.setBasePrice(new Amount(this.currencyCode, this.basePrice));
+        info.setRecommend(this.recommend);
         return info;
     }
 
@@ -129,6 +144,7 @@ public class ProductEntity extends BaseInfo {
             else
                 this.setCurrencyCode("RMB");
         }
+        this.setRecommend(info.isRecommend());
         return this;
     }
 }

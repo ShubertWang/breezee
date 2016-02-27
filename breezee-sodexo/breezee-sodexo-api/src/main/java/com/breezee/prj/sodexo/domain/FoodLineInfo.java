@@ -20,9 +20,38 @@ public class FoodLineInfo extends BaseInfo {
     protected Long messhallId;
 
     /**
+     * 所属组织
+     */
+    protected Long orgId;
+
+    protected String site;
+
+    protected String orgName;
+
+    /**
      * 餐次：早，中，晚
      */
     protected String timer;
+
+    /**
+     * 营业开始时间,9:00
+     */
+    protected String startTime;
+
+    /**
+     * 营业结束时间,11:00
+     */
+    protected String endTime;
+
+    /**
+     * 预计截止时间,10:00
+     */
+    protected String closeTime;
+
+    /**
+     * 预定提前量,min
+     */
+    protected Integer shiftNum;
 
     /**
      * 堂吃、外送
@@ -35,9 +64,9 @@ public class FoodLineInfo extends BaseInfo {
     protected Long owner;
 
     /**
-     * 此餐线的订餐，是否需要支付
+     * 支付方式（多选：到付，微信支付，餐卡支付）逗号分开
      */
-    protected boolean payment;
+    protected String payType;
 
     /**
      * 此服务线的外送费用
@@ -47,7 +76,7 @@ public class FoodLineInfo extends BaseInfo {
     /**
      * 服务线翻台时间
      */
-    protected Double turnTime;
+    protected Integer turnTime;
 
     public Long getMesshallId() {
         return messhallId;
@@ -81,14 +110,6 @@ public class FoodLineInfo extends BaseInfo {
         this.owner = owner;
     }
 
-    public boolean isPayment() {
-        return payment;
-    }
-
-    public void setPayment(boolean payment) {
-        this.payment = payment;
-    }
-
     public Amount getShippingPrice() {
         return shippingPrice;
     }
@@ -97,11 +118,75 @@ public class FoodLineInfo extends BaseInfo {
         this.shippingPrice = shippingPrice;
     }
 
-    public Double getTurnTime() {
+    public String getStartTime() {
+        return startTime;
+    }
+
+    public void setStartTime(String startTime) {
+        this.startTime = startTime;
+    }
+
+    public String getEndTime() {
+        return endTime;
+    }
+
+    public void setEndTime(String endTime) {
+        this.endTime = endTime;
+    }
+
+    public String getCloseTime() {
+        return closeTime;
+    }
+
+    public void setCloseTime(String closeTime) {
+        this.closeTime = closeTime;
+    }
+
+    public Integer getShiftNum() {
+        return shiftNum;
+    }
+
+    public void setShiftNum(Integer shiftNum) {
+        this.shiftNum = shiftNum;
+    }
+
+    public String getPayType() {
+        return payType;
+    }
+
+    public void setPayType(String payType) {
+        this.payType = payType;
+    }
+
+    public Integer getTurnTime() {
         return turnTime;
     }
 
-    public void setTurnTime(Double turnTime) {
+    public void setTurnTime(Integer turnTime) {
         this.turnTime = turnTime;
+    }
+
+    public Long getOrgId() {
+        return orgId;
+    }
+
+    public void setOrgId(Long orgId) {
+        this.orgId = orgId;
+    }
+
+    public String getOrgName() {
+        return orgName;
+    }
+
+    public void setOrgName(String orgName) {
+        this.orgName = orgName;
+    }
+
+    public String getSite() {
+        return site;
+    }
+
+    public void setSite(String site) {
+        this.site = site;
     }
 }

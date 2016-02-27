@@ -19,11 +19,15 @@ import com.breezee.pcm.entity.ProductEntity;
 import com.breezee.pcm.repository.AttributeRepository;
 import com.breezee.pcm.repository.CategoryRepository;
 import com.breezee.pcm.repository.ProductRepository;
+import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.jdbc.support.incrementer.MySQLMaxValueIncrementer;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import javax.sql.DataSource;
+import javax.ws.rs.PathParam;
 import java.util.*;
 
 /**
@@ -31,7 +35,7 @@ import java.util.*;
  * Created by Silence on 2016/2/7.
  */
 @Service("productService")
-public class ProductServiceImpl implements IProductService {
+public class ProductServiceImpl implements IProductService, InitializingBean {
 
     @Autowired
     private ProductRepository productRepository;
@@ -44,6 +48,11 @@ public class ProductServiceImpl implements IProductService {
 
     @Resource
     private InventoryService inventoryService;
+
+    @Autowired
+    private DataSource dataSource;
+
+    private MySQLMaxValueIncrementer valueIncrementer;
 
     @Override
     public List<ProductInfo> findProductsByCateId(Long cateId, boolean rec){
@@ -93,15 +102,27 @@ public class ProductServiceImpl implements IProductService {
     }
 
     @Override
+    public void updateRecommend(Long id, boolean recommend) {
+        ProductEntity entity = productRepository.findOne(id);
+        if(entity!=null){
+            entity.setRecommend(recommend);
+            productRepository.save(entity);
+        }
+    }
+
+    @Override
     public ProductInfo saveInfo(ProductInfo productInfo) {
+        if(productInfo.getId()==null) {
+            productInfo.setCode(valueIncrementer.nextStringValue().replace("-", ""));
+        }
         ProductEntity entity = productRepository.findByCode(productInfo.getCode());
         //如果新增的账号已经存在，则返回错误信息
         if (productInfo.getId() == null && entity != null) {
             return ErrorInfo.build(productInfo, ContextUtil.getMessage("duplicate.key", new String[]{productInfo.getCode()}));
         }
-        if (entity == null)
+        if (entity == null) {
             entity = new ProductEntity();
-
+        }
         entity.parse(productInfo);
         entity.setCategory(categoryRepository.findOne(productInfo.getCateId()));
         Set<ProductDataEntity> set = new HashSet<>();
@@ -152,5 +173,21 @@ public class ProductServiceImpl implements IProductService {
             info.setQuantity(new Quantity("",sum));
             return info;
         });
+    }
+
+    @Override
+    public void updateStatus(@PathParam("id") Long id, @PathParam("status") int status){
+        ProductEntity entity = productRepository.findOne(id);
+        if(entity!=null){
+            entity.setStatus(status);
+            productRepository.save(entity);
+        }
+    }
+
+    @Override
+    public void afterPropertiesSet() throws Exception {
+        valueIncrementer = new MySQLMaxValueIncrementer(dataSource,"pcm_tf_product_seq","SEQ_ID");
+        valueIncrementer.setCacheSize(1);
+        valueIncrementer.setPaddingLength(6);
     }
 }

@@ -21,5 +21,8 @@ public interface FoodLineRepository extends PagingAndSortingRepository<FoodLineE
 
     List<FoodLineEntity> findByMesshallId(Long messhallId);
 
-    List<FoodLineEntity> findByTimer(String timer);
+    List<FoodLineEntity> findBySite(String site);
+
+    FoodLineEntity findByCode(String code);
+
 }

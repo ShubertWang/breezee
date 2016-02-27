@@ -14,8 +14,11 @@
     <dubbo:service interface="com.breezee.oms.api.service.IOrderService" ref="orderService"
                    protocol="dubbo,rest"/>
 
-    <dubbo:reference interface="com.breezee.bpm.api.service.ITaskService" id="taskServiceImpl" protocol="dubbo" />
-    <dubbo:reference interface="com.breezee.bpm.api.service.IWorkflowService" id="workflowServiceImpl" protocol="dubbo" />
+    <dubbo:reference interface="com.breezee.bpm.api.service.ITaskService" id="taskServiceImpl"
+                     protocol="dubbo" check="false" />
+    <dubbo:reference interface="com.breezee.bpm.api.service.IWorkflowService" id="workflowServiceImpl"
+                     protocol="dubbo" check="false" />
 
-    <dubbo:reference interface="com.breezee.pcm.api.service.IProductService" id="productService" protocol="dubbo" />
+    <dubbo:reference interface="com.breezee.pcm.api.service.IProductService" id="productService"
+                     protocol="dubbo" check="false" />
 </beans>
