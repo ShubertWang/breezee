@@ -24,6 +24,12 @@
             <groupId>org.activiti</groupId>
             <artifactId>activiti-spring-boot-starter-basic</artifactId>
             <version>${activiti.version}</version>
+            <exclusions>
+                <exclusion>
+                    <artifactId>activiti-common-rest</artifactId>
+                    <groupId>org.activiti</groupId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>org.activiti</groupId>
@@ -40,22 +46,22 @@
             <artifactId>activiti-explorer</artifactId>
             <version>${activiti.version}</version>
         </dependency>
-        <dependency>
-            <groupId>org.activiti</groupId>
-            <artifactId>activiti-modeler</artifactId>
-            <version>${activiti.version}</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>xalan</groupId>
-                    <artifactId>xalan</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
-        <dependency>
-            <groupId>org.activiti</groupId>
-            <artifactId>activiti-diagram-rest</artifactId>
-            <version>${activiti.version}</version>
-        </dependency>
+        <!--<dependency>-->
+            <!--<groupId>org.activiti</groupId>-->
+            <!--<artifactId>activiti-modeler</artifactId>-->
+            <!--<version>${activiti.version}</version>-->
+            <!--<exclusions>-->
+                <!--<exclusion>-->
+                    <!--<groupId>xalan</groupId>-->
+                    <!--<artifactId>xalan</artifactId>-->
+                <!--</exclusion>-->
+            <!--</exclusions>-->
+        <!--</dependency>-->
+        <!--<dependency>-->
+            <!--<groupId>org.activiti</groupId>-->
+            <!--<artifactId>activiti-diagram-rest</artifactId>-->
+            <!--<version>${activiti.version}</version>-->
+        <!--</dependency>-->
         <dependency>
             <groupId>org.activiti</groupId>
             <artifactId>activiti-simple-workflow</artifactId>

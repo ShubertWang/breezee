@@ -20,9 +20,8 @@ $(function () {
         this.undoList = new Dolphin.LIST({
             panel : '#list',
             url : _this.connect.undoList.url,
-            //queryParams : Dolphin.form.getValue('queryForm'),
+            ajaxType:'post',
             title : '待办列表',
-            ajaxType : 'post',
             columns : [{
                 code: 'id',
                 title: '订单号',
