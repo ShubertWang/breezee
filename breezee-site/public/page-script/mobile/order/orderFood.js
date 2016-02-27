@@ -102,7 +102,7 @@ $(function () {
                 alert('请至少选择一道菜肴');
             }else{
                 Dolphin.cookie("foodList", Dolphin.json2string(foodList));
-                Dolphin.goUrl("/order/orderConfirm");
+                Dolphin.goUrl("/order/orderConfirm?orderType=" + REQUEST_MAP.data.orderType);
             }
         });
     };

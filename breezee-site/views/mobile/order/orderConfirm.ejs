@@ -106,8 +106,8 @@
         </div>
         <div class="weui_cell">
             <div class="weui_cell_bd weui_cell_primary">
-                <textarea class="weui_textarea" placeholder="如有特殊要求请留言" rows="3"></textarea>
-                <div class="weui_textarea_counter"><span>0</span>/200</div>
+                <textarea class="weui_textarea" placeholder="如有特殊要求请留言" rows="3" name="remark" id="remark"></textarea>
+                <div class="weui_textarea_counter"><span id="remarkLength">0</span>/200</div>
             </div>
         </div>
     </div>
@@ -125,12 +125,15 @@
                     <div class="title_c_text">￥<%= body.foodList[i].price.toFixed(2) %></div>
                 </li>
                 <% } %>
-                <!--<hr/>-->
-                <!--<li class=" bh">-->
-                    <!--<div class="title_a">配送费</div>-->
-                    <!--<div class="title_ad"> × 1</div>-->
-                    <!--<div class="title_c_text">￥8.00</div>-->
-                <!--</li>-->
+                <% if(data.orderType == 'wm'){%>
+                <% totalPrice += 8; %>
+                <hr/>
+                <li class=" bh">
+                    <div class="title_a">配送费</div>
+                    <div class="title_ad"> × 1</div>
+                    <div class="title_c_text">￥8.00</div>
+                </li>
+                <% } %>
                 <!--<li class=" bh">-->
                     <!--<div class="title_a">餐盒费</div>-->
                     <!--<div class="title_ad"> × 2</div>-->
