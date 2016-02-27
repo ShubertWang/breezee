@@ -26,7 +26,7 @@
 
         <div class="wdlist <%= body[i].status==5?'bg_ywc':''  %>"><!--TODO 根据orderStatus判断已完成订单 -->
             <div>
-                <div class="wddd_ddlist bh">
+                <div class="wddd_ddlist bh" data-order-id="<%= body[i].id %>">
                     <div class="cpxq bh">
                         <div class="cp"><img src="/custom/wx_style/images/<%= body[i].restaurant.image %>.jpg"></div>
                         <div class="text">
