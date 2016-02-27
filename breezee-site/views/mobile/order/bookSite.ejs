@@ -14,7 +14,11 @@
                 <div class="weui_cell_bd weui_cell_primary">
                     <p>请选择餐厅</p>
                 </div>
-                <div class="weui_cell_ft"> </div>
+                <div class=""><select class="weui_select" name="select2">
+                        <option value="1">索迪斯微软食堂一号</option>
+                        <option value="2">索迪斯微软食堂二号</option>
+                        <option value="3">索迪斯微软食堂三号</option>
+                    </select></div>
             </a>
         </div>
     </div>
@@ -25,13 +29,25 @@
                 <div class="weui_cell_bd weui_cell_primary">
                     <p>人数</p>
                 </div>
-                <div class="weui_cell_ft">4人</div>
+                <div class=""><select class="weui_select" name="select2">
+                        <option value="1">1人</option>
+                        <option value="2">2人</option>
+                        <option value="3">3人</option>
+                        <option value="4" selected>4人</option>
+                        <option value="5">5人</option>
+                        <option value="6">6人</option>
+                        <option value="7">7人</option>
+                        <option value="8">8人</option>
+                    </select></div>
             </a>
             <a class="weui_cell" href="javascript:;">
                 <div class="weui_cell_bd weui_cell_primary">
                     <p>拼桌</p>
                 </div>
-                <div class="weui_cell_ft">愿意</div>
+                <div class="<!--weui_cell_ft-->"><select style="text-align: right;" class="weui_select" name="select2">
+                        <option value="1" selected>愿意</option>
+                        <option value="2">不愿意</option>
+                    </select></div>
             </a>
             <a class="weui_cell" href="javascript:;">
                 <div class="weui_cell_bd weui_cell_primary">
@@ -105,7 +121,7 @@
 
 
 <footer>
-    <div class="footer_box"><a href="javascript:;" class="weui_btn weui_btn_warn">订位</a></div>
+    <div class="footer_box"><a href="javascript:void(0);" id="submit" class="weui_btn weui_btn_warn">订位</a></div>
 </footer>
 <% include ../common/footer.ejs %>
 </body>
