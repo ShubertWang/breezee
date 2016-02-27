@@ -1,10 +1,10 @@
-Dolphin.defaults.mockFlag = true;
+Dolphin.defaults.mockFlag = false;
 $(function () {
     var page = {};
 
     page.connect = {
         undoList : {
-            url : '/data/workspace/undoList'
+            url : '/data/bpm/bpmTask/findUndoTasks'
         }
     };
 
@@ -20,8 +20,9 @@ $(function () {
         this.undoList = new Dolphin.LIST({
             panel : '#list',
             url : _this.connect.undoList.url,
-            queryParams : Dolphin.form.getValue('queryForm'),
+            //queryParams : Dolphin.form.getValue('queryForm'),
             title : '待办列表',
+            ajaxType : 'post',
             columns : [{
                 code: 'id',
                 title: '订单号',
