@@ -1,0 +1,31 @@
+<% for(var i = 0; i < body.length; i++){ %>
+<div class="weui_cells weui_cells_access">
+    <a class="weui_cell" href="javascript:;">
+        <div class="weui_cell_bd weui_cell_primary">
+            <p>订单号：<%= body[i].id %></p>
+        </div>
+        <div class="weui_cell_ft"><%= body[i].status %>配送中<!--TODO 枚举--></div>
+    </a>
+
+    <div class="wdlist <%= body[i].status==5?'bg_ywc':''  %>"><!--TODO 根据orderStatus判断已完成订单 -->
+        <div>
+            <div class="wddd_ddlist bh" data-order-id="<%= body[i].id %>">
+                <div class="cpxq bh">
+                    <div class="cp"><img src="/custom/wx_style/images/<%= body[i].restaurant.image %>.jpg"></div>
+                    <div class="text">
+                        <h1><%= body[i].restaurant.name %></h1 > <div class="wddd_list"><%= body[i].time %> </div>             </div>
+                    <div class="jg"><span><%= body[i].price %> </span>元</div>
+                </div>
+            </div>
+            <div class="wddd_money bg_<%= body[i].type %>"><%= body[i].type %>外卖订单<!--TODO 枚举-->  <input type="submit" name="button"  value="立即支付" class="btnred"></div>
+        </div>
+    </div>
+</div>
+<% } %>
+<% if(body.length < 20){ %>
+<div class="orderListPanel">
+    <article>
+        <div class=" tybtn_box"><a href="javascript:void(0);" onclick="moreOrder(this,<%= data.pageNumber+1 || 2 %>)" class="weui_btn weui_btn_mini weui_btn_default1">点击加载更多</a></div>
+    </article>
+</div>
+<% } %>

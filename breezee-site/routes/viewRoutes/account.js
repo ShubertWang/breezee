@@ -32,6 +32,21 @@ accountRoute.address = function (queryData, res, callback) {
         callback(body);
     });
 };
+accountRoute.addAddress = function (queryData, res, callback) {
+    if(queryData.id){
+        global.myUtil.request({
+            method : 'get',
+            uri : '/account/address',
+            mockData : '/account/addAddress',
+            form : queryData
+        }, function(error, response, body){
+            callback(body);
+        });
+    }else{
+        callback({});
+    }
+
+};
 accountRoute.accountBalance = function (queryData, res, callback) {
     global.myUtil.request({
         method : 'get',

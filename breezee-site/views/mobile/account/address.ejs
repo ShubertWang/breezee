@@ -10,12 +10,14 @@
     <div class="bh">
         <ul class="list-group">
             <% for(var i = 0; i < body.length; i++){ %>
-            <li class="<%= i==0?"list-group-item_edit":"list-group-item_edit_b" %> bh">
-                <div class="bh">
-                    <div class="title_a_h"><%= body[i].addressee %></div>
-                    <div class="title_c_h"><%= body[i].phone %></div>
-                </div>
-                <div class="mr"><%= body[i].address %></div>
+            <li class="<%= body[i].defaultFlag?"list-group-item_edit":"list-group-item_edit_b" %> bh">
+                <a href="<%= (data.pickFlag?"/view/order/orderConfirm?addressId=":"/view/account/addAddress?id=") + body[i].id %>">
+                    <div class="bh">
+                        <div class="title_a_h"><%= body[i].addressee %></div>
+                        <div class="title_c_h"><%= body[i].phone %></div>
+                    </div>
+                    <div class="mr"><%= body[i].address %></div>
+                </a>
             </li>
             <% } %>
         </ul>
@@ -23,7 +25,7 @@
 </article>
 
 <footer>
-    <div class="footer_box"><a href="javascript:;" class="weui_btn weui_btn_default">新增收货地址</a></div>
+    <div class="footer_box"><a href="/view/account/addAddress?pickFlag=<%= !!data.pickFlag %>" class="weui_btn weui_btn_default">新增收货地址</a></div>
 </footer>
 
 <% include ../common/footer.ejs %>

@@ -101,8 +101,8 @@ $(function () {
             if(foodList.length == 0){
                 alert('请至少选择一道菜肴');
             }else{
-                Dolphin.cookie("foodList", Dolphin.json2string(foodList));
-                Dolphin.goUrl("/order/orderConfirm?orderType=" + REQUEST_MAP.data.orderType);
+                Dolphin.cookie("foodList", Dolphin.json2string(foodList), {path:'/'});
+                Dolphin.goUrl("/order/orderConfirm");
             }
         });
     };

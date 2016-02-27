@@ -47,6 +47,7 @@ router.get('*', function(req, res, next) {
                     path : url,
                     data : queryData,
                     body : {},
+                    redirect:'',
                     session:req.session,
                     cookie : req.cookies
                 });

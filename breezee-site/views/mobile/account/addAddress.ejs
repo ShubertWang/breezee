@@ -7,12 +7,13 @@
 </head>
 <body ontouchstart>
 <form id="form">
+    <input type="hidden" name="id" value="<%= body.id%>" />
 <article>
     <div class="weui_cells weui_cells_form">
         <div class="weui_cell">
             <div class="weui_cell_hd"><label class="weui_label">联系人</label></div>
             <div class="weui_cell_bd weui_cell_primary">
-                <input class="weui_input" type="text" placeholder="您的姓名" name="name"/>
+                <input class="weui_input" type="text" placeholder="您的姓名" name="addressee" value="<%= body.addressee %>"/>
             </div>
         </div>
     </div>
@@ -20,7 +21,7 @@
         <div class="weui_cell">
             <div class="weui_cell_hd"><label class="weui_label">联系电话</label></div>
             <div class="weui_cell_bd weui_cell_primary">
-                <input class="weui_input" type="tel" placeholder="您的手机号码" name="phone"/>
+                <input class="weui_input" type="tel" placeholder="您的手机号码" name="phone" value="<%= body.phone %>"/>
             </div>
         </div>
     </div>
@@ -28,7 +29,18 @@
         <div class="weui_cell">
             <div class="weui_cell_hd"><label class="weui_label">收货地址</label></div>
             <div class="weui_cell_bd weui_cell_primary">
-                <input class="weui_input" type="text" placeholder="您的详细地址" name="address"/>
+                <input class="weui_input" type="text" placeholder="您的详细地址" name="address" value="<%= body.address %>"/>
+            </div>
+        </div>
+    </div>
+    <div class="weui_cells weui_cells_form">
+        <div class="weui_cell">
+            <div class="weui_cell_hd"><label class="weui_label">是否默认</label></div>
+            <div class="weui_cell_bd weui_cell_primary">
+                <div class="slideThree">
+                    <input type="checkbox" value="true" id="slideThree" name="defaultFlag" <%= body.defaultFlag?"checked":"" %>/>
+                    <label for="slideThree"></label>
+                </div>
             </div>
         </div>
     </div>

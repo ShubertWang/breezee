@@ -14,30 +14,31 @@
 <%
     var i, totalPrice=0;
 %>
+<% if(cookie.orderType == "wm"){ %>
 <div>
     <ul class="list-group">
         <% for(i = 0; i < body.address.length; i++){ %>
-            <% if(body.address[i].defaultFlag){ %>
-            <li class="list-group-item_edit bh">
-                <div class="bh">
-                    <div class="title_a_h"><%= body.address[i].addressee %></div>
-                    <div class="title_c_h"><%= body.address[i].phone %></div>
-                </div>
-                <div class="mr"><%= body.address[i].address %></div>
+            <% if((data.addressId == null && body.address[i].defaultFlag) || data.addressId == body.address[i].id){ %>
+
+            <li class="<%= body.address[i].defaultFlag?"list-group-item_edit":"list-group-item_edit_b" %> bh">
+                <a href="/view/account/address?pickFlag=true">
+                    <div class="bh">
+                        <div class="title_a_h"><%= body.address[i].addressee %></div>
+                        <div class="title_c_h"><%= body.address[i].phone %></div>
+                    </div>
+                    <div class="mr"><%= body.address[i].address %></div>
+                </a>
             </li>
             <% break;%>
             <% } %>
         <% } %>
     </ul>
 </div>
+<% } %>
+
 <div>
 
     <div class="weui_cells weui_cells_radio">
-        <div class="weui_cell">
-            <div class="weui_cell_bd weui_cell_primary">
-                <p>在线支付</p>
-            </div>
-        </div>
         <label class="weui_cell weui_check_label" for="x11">
             <div class="weui_cell_bd weui_cell_primary">
                 <p>微信支付<span>仅支持微信4.2及上版本</span></p>
@@ -71,25 +72,22 @@
 
 
     <div class="weui_cells">
-        <div class="weui_cell line_bot">
-            <div class="weui_cell_bd weui_cell_primary">
-                <p>堂吃</p>
-            </div>
-        </div>
         <div class=" weui_cells_access">
             <a class="weui_cell" href="javascript:;">
                 <div class="weui_cell_bd weui_cell_primary">
-                    <p>餐位</p>
+                    <p><%= cookie.orderType=="wm"?"送达时间":"取餐时间/就餐时间" %></p>
                 </div>
-                <div class="weui_cell_ft">如已有餐位请选择</div>
-            </a>
-            <a class="weui_cell" href="javascript:;">
-                <div class="weui_cell_bd weui_cell_primary">
-                    <p>取餐时间/就餐时间/送达时间</p>
-                </div>
-                <div class="weui_cell_ft">请选择</div>
-            </a>
 
+                <div class="">
+                    <select class="weui_select">
+                        <option value="">请选择</option>
+                        <option value="16:00">16:00</option>
+                        <option value="16:15">16:15</option>
+                        <option value="16:30">16:30</option>
+                        <option value="16:45">16:45</option>
+                    </select>
+                </div>
+            </a>
         </div>
     </div>
 
@@ -125,23 +123,7 @@
                     <div class="title_c_text">￥<%= body.foodList[i].price.toFixed(2) %></div>
                 </li>
                 <% } %>
-                <% if(data.orderType == 'wm'){%>
-                <% totalPrice += 8; %>
-                <hr/>
-                <li class=" bh">
-                    <div class="title_a">配送费</div>
-                    <div class="title_ad"> × 1</div>
-                    <div class="title_c_text">￥8.00</div>
-                </li>
-                <% } %>
-                <!--<li class=" bh">-->
-                    <!--<div class="title_a">餐盒费</div>-->
-                    <!--<div class="title_ad"> × 2</div>-->
-                    <!--<div class="title_c_text">￥2.00</div>-->
-                <!--</li>-->
             </ul>
-
-
         </div>
 
     </div>

@@ -3,6 +3,7 @@ var data = {
     status : "2",
     type : 'site',
     createTime : 1451534400000,
+    queueNo : '34',
     code : 'A34',
     restaurant : {
         id : "1",

@@ -9,13 +9,13 @@
 <article>
     <ul class="nr_list">
         <% for(var i = 0; i < body.length; i++){ %>
-        <li class="bh li_ct" data-id="<%= body[i].id %>">
+        <li class="bh li_ct restaurantId" data-id="<%= body[i].id %>">
             <div class="img time_yy">
-                <div><a href="/view/order/orderFood?id=<%= body[i].id %>&orderType=<%= data.orderType %>"><img src="/custom/wx_style/images/<%= body[i].image %>.png"></a></div>
+                <div><a href="javascript:void(0)" class="restaurantLink"><img src="/custom/wx_style/images/<%= body[i].image %>.png"></a></div>
                 <div class="ms"><%= body[i].time %></div>
             </div>
             <div class="text_ct bh">
-                <h2><a href="/view/order/orderFood?id=<%= body[i].id %>&orderType=<%= data.orderType %>"><%= body[i].name %></a></h2>
+                <h2><a href="javascript:void(0)" class="restaurantLink"><%= body[i].name %></a></h2>
                 <div class="f_pj bh">
                     <div class="float_l">
                         <%- global.htmlRender.renderStar(body[i].point, 5)%>

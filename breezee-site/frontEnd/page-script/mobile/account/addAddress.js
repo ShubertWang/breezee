@@ -3,13 +3,13 @@ $(function () {
     $('#submit').click(function () {
         var data = Dolphin.form.getValue('form');
         Dolphin.ajax({
-            url : '/data/account/bindCard',
+            url : '/data/account/addAddress',
             type : Dolphin.requestMethod.PUT,
             data : Dolphin.json2string(data),
             onSuccess : function (reData) {
-                Dolphin.alert(reData.msg || '绑定成功', {
+                Dolphin.alert(reData.msg || '提交成功', {
                     callback : function () {
-                        Dolphin.goUrl('/index');
+                        Dolphin.goUrl("/account/address?pickFlag=" + !!REQUEST_MAP.data.pickFlag);
                     }
                 });
             }

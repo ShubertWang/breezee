@@ -28,8 +28,19 @@ route.myOrder = function (queryData, res, callback) {
         if(error){
             throw error;
         }
-        body.createTime = global.myUtil.dateFormatter(new Date(body.createTime), "yyyy-MM-dd hh:mm");
-        body.time = global.myUtil.dateFormatter(new Date(body.time), "yyyy-MM-dd hh:mm");
+        callback(body);
+    });
+};
+route.myOrderByPage = function (queryData, res, callback) {
+    global.myUtil.request({
+        method : 'get',
+        uri : '/order/',
+        mockData : '/order/myOrder_dfd',
+        form : queryData
+    }, function(error, response, body){
+        if(error){
+            throw error;
+        }
         callback(body);
     });
 };

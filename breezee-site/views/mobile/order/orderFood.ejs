@@ -224,7 +224,7 @@
                     <input type="hidden" name="foodList" id="foodList" />
                     <a href="javascript:void(0);" class="weui_btn weui_btn_warn" id="submit">去结算</a>
                 </form>
-                <% if(data.orderType == 'wm'){ %>
+                <% if(cookie.orderType == 'wm'){ %>
                 <div class="fkjg1">配送费 <strong><%= body.deliveryFee%></strong> 元</div>
                 <% } %>
             </div>
