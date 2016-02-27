@@ -87,6 +87,11 @@ public class AccountServiceImpl implements IAccountService {
     }
 
     @Override
+    public void updateStatus(Long id, int status) {
+
+    }
+
+    @Override
     public PageResult<AccountInfo> findAccountsByOrgId(Long orgId, PageInfo pageInfo) {
         Page<AccountEntity> page = accountRepository.findAccountsByOrg(organizationRepository.findOne(orgId), pageInfo);
         return new PageResult<>(page, AccountInfo.class, (accountEntity, accountInfo) -> accountEntity.toInfo());
@@ -153,6 +158,14 @@ public class AccountServiceImpl implements IAccountService {
             info = ErrorInfo.build(info, ContextUtil.getMessage("account.not.exist",new Object[]{info.getCode()}));
         }
         return info;
+    }
+
+    @Override
+    public AccountInfo findByCode(String code) {
+        AccountEntity entity = accountRepository.findByCode(code);
+        if(entity==null)
+            return ErrorInfo.build(AccountInfo.class);
+        return entity.toInfo();
     }
 
     /**

@@ -228,7 +228,7 @@ public class AccountEntity extends BaseInfo {
         }
         if(this.getRoles()!=null && this.getRoles().size()>0){
             this.getRoles().forEach(a->{
-                info.addRole(a.getId());
+                info.addRole(a.getCode());
             });
         }
         return info;

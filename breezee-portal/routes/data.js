@@ -42,7 +42,7 @@ router.use('*', function (req, res, next) {
                 "value": null,
                 "rows": []
             };
-            if (reponse.rows) {
+            if (reponse.rows && reponse.rows.length>0) {
                 reponse.total = ret.length;
                 reponse.rows = ret;
             } else if (ret.content) {
