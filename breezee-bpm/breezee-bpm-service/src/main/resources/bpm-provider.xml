@@ -23,5 +23,7 @@
                      id="accountService" protocol="dubbo" check="false" />
     <dubbo:reference interface="com.breezee.sysmgr.api.service.IRoleService"
                      id="roleService" protocol="dubbo" check="false" />
+    <dubbo:reference interface="com.breezee.oms.api.service.IOrderService"
+                     id="orderService" protocol="dubbo" check="false" />
 
 </beans>
