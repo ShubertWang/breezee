@@ -97,6 +97,14 @@ public class UserServiceImpl implements IUserService {
     }
 
     @Override
+    public ShippingAddressInfo findShippingAddressById(Long id) {
+        ShippingAddressEntity entity = shippingAddressRepository.findOne(id);
+        if(entity!=null)
+            return entity.toInfo();
+        return ErrorInfo.build(ShippingAddressInfo.class);
+    }
+
+    @Override
     public UserInfo saveInfo(UserInfo userInfo) {
         UserEntity entity = userRepository.findByCode(userInfo.getCode());
         //如果新增的账号已经存在，则返回错误信息

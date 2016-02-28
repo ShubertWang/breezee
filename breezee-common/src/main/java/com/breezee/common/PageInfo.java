@@ -9,6 +9,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 
 import java.io.Serializable;
+import java.util.Map;
 
 /**
  * 分页查询信息
@@ -28,6 +29,16 @@ public class PageInfo implements Pageable, Serializable {
 	private String sortId;
 
 	public PageInfo() {
+	}
+
+	public PageInfo(Map<String,Object> m) {
+		new PageInfo(Integer.parseInt(m.get("pageNumber")+""),Integer.parseInt(m.get("pageSize")+""));
+	}
+
+	public PageInfo(PageInfo page, Map<String,Object> m) {
+		if(page == null)
+			page = new PageInfo(m);
+		new PageInfo(page.getPageNumber(),page.getPageSize());
 	}
 
 	public PageInfo(int pageNumber, int pageSize, Sort sort) {

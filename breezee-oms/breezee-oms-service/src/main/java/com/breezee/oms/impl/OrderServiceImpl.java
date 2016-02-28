@@ -16,6 +16,7 @@ import com.google.common.collect.Lists;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Sort;
 import org.springframework.jdbc.support.incrementer.MySQLMaxValueIncrementer;
 import org.springframework.stereotype.Service;
 
@@ -97,7 +98,7 @@ public class OrderServiceImpl implements IOrderService, InitializingBean {
         if(m.get("username") != null){
             m.remove("username");
         }
-        Page<OrderEntity> page = orderRepository.findAll(DynamicSpecifications.createSpecification(m),pageInfo);
+        Page<OrderEntity> page = orderRepository.findAll(DynamicSpecifications.createSpecification(m),new PageInfo(pageInfo,m));
         return new PageResult<>(page, OrderInfo.class, (orderEntity, orderInfo) -> orderEntity.toInfo());
     }
 
@@ -128,6 +129,16 @@ public class OrderServiceImpl implements IOrderService, InitializingBean {
             }
         }
         return orderInfoList;
+    }
+
+    @Override
+    public PageResult<OrderInfo> findMyOrder(Long userId, PageInfo pageInfo) {
+        if(pageInfo==null) {
+            pageInfo = new PageInfo();
+            pageInfo.setSort(new Sort(Sort.Direction.DESC,"issueDate"));
+        }
+        Page<OrderEntity> page = orderRepository.findByUserId(userId,pageInfo);
+        return new PageResult<>(page, OrderInfo.class, (orderEntity, orderInfo) -> orderEntity.toInfo());
     }
 
     @Override

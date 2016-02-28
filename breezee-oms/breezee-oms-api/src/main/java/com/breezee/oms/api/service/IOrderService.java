@@ -6,9 +6,13 @@
 package com.breezee.oms.api.service;
 
 import com.breezee.common.IServiceLayer;
+import com.breezee.common.PageInfo;
+import com.breezee.common.PageResult;
 import com.breezee.oms.api.domain.OrderInfo;
 
+import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import java.util.Collection;
 import java.util.List;
 
@@ -18,9 +22,12 @@ import java.util.List;
 @Path("/order")
 public interface IOrderService extends IServiceLayer<OrderInfo>{
 
-    public OrderInfo findOrderInfoByCode(String code);
+    OrderInfo findOrderInfoByCode(String code);
 
-    public List<OrderInfo> findOrderInfoListByCodes(Collection<String> codes);
+    List<OrderInfo> findOrderInfoListByCodes(Collection<String> codes);
 
+    @Path("/myOrder/{userId}")
+    @POST
+    PageResult<OrderInfo> findMyOrder(@PathParam("userId") Long userId, PageInfo pageInfo);
 
 }

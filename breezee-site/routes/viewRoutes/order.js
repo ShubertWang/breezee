@@ -25,40 +25,54 @@ route.orderFood = function (queryData, res, callback) {
 };
 route.myOrder = function (queryData, res, callback) {
     global.myUtil.request({
-        method : 'get',
-        uri : '/order/',
+        method : 'post',
+        uri : 'http://127.0.0.1:10247/services/order/myOrder/'+queryData.userData.userId,
         mockData : '/order/myOrder_dfd',
-        form : queryData
+        json:{},
+        headers: {
+            "Content-Type": "application/json",
+            "Accept": "application/json"
+        }
     }, function(error, response, body){
         if(error){
             throw error;
         }
-        callback(body);
+        callback(body.content);
     });
 };
 route.myOrderByPage = function (queryData, res, callback) {
     global.myUtil.request({
         method : 'get',
-        uri : '/order/',
+        uri : 'http://127.0.0.1:10247/services/order/'+queryData.id,
         mockData : '/order/myOrder_dfd',
-        form : queryData
+        json:{},
+        headers: {
+            "Content-Type": "application/json",
+            "Accept": "application/json"
+        }
     }, function(error, response, body){
         if(error){
             throw error;
         }
+        body.type = 'DineIn';
         callback(body);
     });
 };
 route.orderDetail = function (queryData, res, callback) {
     global.myUtil.request({
         method : 'get',
-        uri : '/order/',
+        uri : 'http://127.0.0.1:10247/services/order/'+queryData.id,
         mockData : '/order/orderDetail_'+queryData.id,
-        form : queryData
+        json:{},
+        headers: {
+            "Content-Type": "application/json",
+            "Accept": "application/json"
+        }
     }, function(error, response, body){
         if(error){
             throw error;
         }
+        body.type = 'DineIn';
         body.createTime = global.myUtil.dateFormatter(new Date(body.createTime), "yyyy-MM-dd hh:mm");
         body.time = global.myUtil.dateFormatter(new Date(body.time), "yyyy-MM-dd hh:mm");
         callback(body);

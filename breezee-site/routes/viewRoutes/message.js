@@ -54,4 +54,7 @@ route.messageLuckyMoney = function (queryData, res, callback) {
     });
 };
 
+route.warningMessage = function(queryData, res, callback){
+
+}
 module.exports = route;

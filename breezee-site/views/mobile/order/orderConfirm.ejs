@@ -186,6 +186,7 @@
     <% if(cookie.orderType == "wm"){ %>
         orderInfo.shippingAddressId = $("#addressSel").attr("addressId");
     <% } %>
+    orderInfo.shippingMethod = "<%= cookie.orderType %>";
 
     $("#confirmOrder").click(function(){
         //userId

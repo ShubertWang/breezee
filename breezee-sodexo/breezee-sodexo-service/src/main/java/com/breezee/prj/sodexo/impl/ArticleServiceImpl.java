@@ -96,7 +96,7 @@ public class ArticleServiceImpl implements IArticleService {
 
     @Override
     public PageResult<ArticleInfo> pageAll(Map<String, Object> m, PageInfo pageInfo) {
-        Page<ArticleEntity> pa = articleRepository.findAll(DynamicSpecifications.createSpecification(m), pageInfo);
+        Page<ArticleEntity> pa = articleRepository.findAll(DynamicSpecifications.createSpecification(m), new PageInfo(pageInfo,m));
         return new PageResult<>(pa, ArticleInfo.class, (articleEntity, articleInfo) -> articleEntity.toInfo());
     }
 
