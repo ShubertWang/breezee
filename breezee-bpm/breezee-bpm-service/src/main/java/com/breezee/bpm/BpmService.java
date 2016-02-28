@@ -7,7 +7,10 @@ package com.breezee.bpm;
 
 
 import com.breezee.bpm.conf.OrderComplete;
+import com.breezee.common.types.Amount;
 import com.breezee.common.util.ContextUtil;
+import com.breezee.oms.api.domain.OrderInfo;
+import com.breezee.oms.api.service.IOrderService;
 import com.google.common.collect.Maps;
 import org.activiti.engine.IdentityService;
 import org.activiti.engine.ProcessEngine;
@@ -21,6 +24,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.ImportResource;
 import org.springframework.context.annotation.PropertySource;
 
+import java.util.Date;
 import java.util.Map;
 
 /**
@@ -37,8 +41,6 @@ import java.util.Map;
         "classpath:/bpm-provider.xml"})
 public class BpmService {
 
-    @Autowired
-    private OrderComplete orderComplete;
     /**
      * 启动BPM服务
      * @param args
@@ -47,32 +49,30 @@ public class BpmService {
 //      ContextUtil.runAnnotation(BpmService.class, AppConfigurationWithDubbo.class);
         ContextUtil.current = SpringApplication.run(BpmService.class, args);
 
-        /*
+/*
         ProcessEngine processEngine = ContextUtil.getBean("processEngine", ProcessEngine.class);
         RuntimeService runtimeService = processEngine.getRuntimeService();
         IdentityService identityService = processEngine.getIdentityService();
         TaskService taskService = processEngine.getTaskService();
 
 
-        /*
+
         //启动流程
         IOrderService orderService = ContextUtil.getBean("orderService", IOrderService.class);
         OrderInfo orderInfo = new OrderInfo();
+        orderInfo.setProcDefId("orderProcess");
+        orderInfo.setCode(String.valueOf(System.currentTimeMillis()));
         orderInfo.setIssueDate(new Date());
         orderInfo.setPaymentAmount(new Amount("CNY",new Double("1000")));
         orderInfo.setShippingMethod("现金");
         orderInfo.setSubTotal(new Amount("CNY",new Double("5000")));
         orderInfo.setUserId(1l);
         orderInfo.setCreateTime(new Date());
-        orderInfo.setCode(String.valueOf(System.currentTimeMillis()));
-        OrderInfo orderInfoResult = orderService.saveInfo(orderInfo);
-        identityService.setAuthenticatedUserId("anjing");
-
-        vars.put("foodLineRole","bpm_admin");//应该通过人找角色 暂时写死
-        ProcessInstance processInstance = runtimeService.startProcessInstanceByKey("orderProcess",orderInfo.getCode(),vars);
-        System.out.println("~~~"+orderInfo.getCode()+"~~~~~Order Process Instance Id:" +processInstance.getId()+"~~~~~");
-
+        orderService.saveInfo(orderInfo);
         */
+
+
+
         /*
         //提交流程
         Map<String,Object> vars1 = Maps.newConcurrentMap();
