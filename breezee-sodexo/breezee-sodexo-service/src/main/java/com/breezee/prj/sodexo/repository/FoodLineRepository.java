@@ -23,6 +23,8 @@ public interface FoodLineRepository extends PagingAndSortingRepository<FoodLineE
 
     List<FoodLineEntity> findBySite(String site);
 
+    List<FoodLineEntity> findBySiteAndShipping(String site,String shipping);
+
     FoodLineEntity findByCode(String code);
 
 }

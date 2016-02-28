@@ -26,4 +26,8 @@ public interface IFoodLineService extends IServiceLayer<FoodLineInfo> {
     @Path("/site/{site}")
     @GET
     List<FoodLineInfo> findBySite(@PathParam("site")String site);
+
+    @Path("/site/{site}/{shipping}")
+    @GET
+    List<FoodLineInfo> findBySiteAndShipping(@PathParam("site")String site, @PathParam("shipping")String shipping);
 }

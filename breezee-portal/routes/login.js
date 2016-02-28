@@ -34,8 +34,6 @@ router.post('/', function(req, res, next){
             "Accept": "application/json"
         }
     }, function (error, response, body) {
-        if(error)
-            throw error;
         //判断body
         if(body && body.id > 0){
             req.session.userCode=bodyData.code;

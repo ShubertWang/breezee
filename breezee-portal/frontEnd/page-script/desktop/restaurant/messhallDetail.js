@@ -14,28 +14,32 @@ $(function () {
             code: 'name',
             title: '服务线名称'
         }, {
-            code: 'orgName',
-            title: '所属组织'
-        }, {
+            code: 'shipping',
+            title: '服务类型'
+        },{
             code: 'startTime',
-            title: '营业时间'
+            title: '营业时间',
+            width:'150px',
+            formatter:function(val,data){
+                return data.startTime+"-"+data.endTime;
+            }
         },{
             code: 'closeTime',
             title: '预订截止',
-            width:'50px'
+            width:'90px'
         },{
             code: 'shiftNum',
-            width:'50px',
+            width:'75px',
             title: '提前量'
         }, {
             code: 'startTime',
             title: '服务类型'
         },{
-            code: 'closeTime',
+            code: 'payType',
             title: '支付方式'
         },{
             code: 'shiftNum',
-            width:'50px',
+            width:'100px',
             title: '翻台时间'
         }],
         multiple : false,
@@ -72,8 +76,13 @@ $(function () {
             $('#formPanel').toggle();
         }
         Dolphin.form.setValue(list.getChecked()[0], '#editForm');
-        $("#field-Type").change();
-        Dolphin.form.setValue(list.getChecked()[0], '#editForm');
+        if(list.getChecked()[0].payType) {
+            var tmp = list.getChecked()[0].payType.split(",");
+            for (var i = 0; i < tmp.length; i++) {
+                if(tmp[i] && document.getElementById(tmp[i]))
+                    document.getElementById(tmp[i]).checked=true;
+            }
+        }
     });
 
     $("#delete").click(function(){
@@ -97,6 +106,13 @@ $(function () {
         if(Dolphin.form.validate('#editForm')){
             var data = Dolphin.form.getValue('editForm', '"');
             data.messhallId = REQUEST_MAP.data.id;
+            var tmp="";
+            $("input[name='payType']").each(function () {
+                if ($(this).is(':checked')) {
+                    tmp = tmp+$(this).val()+",";
+                }
+            });
+            data.payType = tmp;
             Dolphin.ajax({
                 url : '/data/sdx/foodLine/',
                 type : Dolphin.requestMethod.PUT,
@@ -122,5 +138,8 @@ $(function () {
     });
     $("#conditionReset").click(function () {
         Dolphin.form.empty("#queryForm")
+    });
+    $("#cancelSel").click(function(){
+        Dolphin.goHistory();
     });
 });

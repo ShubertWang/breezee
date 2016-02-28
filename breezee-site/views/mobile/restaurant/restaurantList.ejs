@@ -9,7 +9,7 @@
 <article>
     <ul class="nr_list">
         <% for(var i = 0; i < body.length; i++){ %>
-        <li class="bh li_ct restaurantId" data-id="<%= body[i].id %>">
+        <li class="bh li_ct restaurantId" data-id="<%= body[i].code %>">
             <div class="img time_yy">
                 <div><a href="javascript:void(0)" class="restaurantLink"><img src="/custom/wx_style/images/<%= body[i].image %>.png"></a></div>
                 <div class="ms"><%= body[i].time %></div>

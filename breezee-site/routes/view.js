@@ -13,7 +13,8 @@ router.get('*', function(req, res, next) {
             queryData;
 
         //userInfo = true;
-        userInfo = req.session.userId;
+        console.log(req.session);
+        userInfo = req.session.openId;
         //endType = /mobile|Mobile/.test(req.headers['user-agent'])?"/mobile":"/desktop";
         endType = "/mobile";
 
@@ -24,12 +25,14 @@ router.get('*', function(req, res, next) {
                 title : '登录',
                 redirect : req.url,
                 data : {},
-                body : {}
+                body : {},
+                userData : {}
             });
         }else{
             url = endType + req.url;
             queryData = req.query;
 
+            queryData.userData=req.session.userData;
             if(url.indexOf("?") >= 0){
                 url = url.substring(0, url.indexOf("?"));
             }
@@ -49,6 +52,7 @@ router.get('*', function(req, res, next) {
                     body : {},
                     redirect:'',
                     session:req.session,
+                    userData:req.session.userData || {},
                     cookie : req.cookies
                 });
             }else{
@@ -58,6 +62,7 @@ router.get('*', function(req, res, next) {
                         data : queryData,
                         body : body,
                         session:req.session,
+                        userData:req.session.userData || {},
                         cookie : req.cookies
                     });
                 })

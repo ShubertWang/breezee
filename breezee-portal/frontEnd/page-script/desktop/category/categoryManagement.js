@@ -13,6 +13,7 @@ $(function () {
 
     //categoryTree
     var categoryTree = new Dolphin.TREE({
+        defaultId:1,
         panel : '#categoryTree',
         url : '/data/pcm/category/p/{id}',
         mockPathData : ['id'],

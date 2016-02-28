@@ -91,11 +91,24 @@ public class OrganizationServiceImpl implements IOrganizationService {
     }
 
     @Override
+    public List<OrganizationInfo> findOrganizationsByParentCode(String id) {
+        List<OrganizationEntity> l = new ArrayList<>();
+        OrganizationEntity en = organizationRepository.findByCode(id);
+        if (en != null)
+            l.addAll(en.getChildren());
+        List<OrganizationInfo> _l = new ArrayList<>(l.size());
+        l.forEach(a -> {
+            _l.add(a.toInfo(false));
+        });
+        return _l;
+    }
+
+    @Override
     public void updateOrganizationAccount(OrganizationInfo organizationInfo) {
-        String delSql = "delete from auth_tf_acnt_org where ORG_ID=" + organizationInfo.getId();
+        String delSql = "delete from sym_tf_acnt_org where ORG_ID=" + organizationInfo.getId();
         //一个账号只能属于一个组织，所以删除其关联的其他组织
-        String delSqlAct = "delete from auth_tf_acnt_org where ACNT_ID=?";
-        String insertSql = "insert into auth_tf_acnt_org (ORG_ID,ACNT_ID) values(?,?)";
+        String delSqlAct = "delete from sym_tf_acnt_org where ACNT_ID=?";
+        String insertSql = "insert into sym_tf_acnt_org (ORG_ID,ACNT_ID) values(?,?)";
         List<Object[]> l = new ArrayList<>();
         List<Object[]> ll = new ArrayList<>();
 

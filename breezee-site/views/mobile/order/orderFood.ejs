@@ -40,27 +40,31 @@
     <div class="pagePanel" id="order_food">
         <div id="boxscroll">
             <div class="nav_box bh bg_zi1 foodType">
-                <% for(i = 0; i <body.food.length; i++){%>
-                <div class="nav_icon" data-food-type-id="<%= body.food[i].id %>" data-food-type-name="<%= body.food[i].name %>">
-                    <div><img src="/custom/wx_style/images/nav_<%= body.food[i].imageCode %>.png"></div>
-                    <div><%= body.food[i].name %></div>
+                <div class="nav_icon" data-food-type-id="today" data-food-type-name="今日推荐">
+                    <div><img src="/custom/wx_style/images/nav_today.png"></div>
+                    <div>今日推荐</div>
+                </div>
+                <% for(i = 0; i <body.data.length; i++){%>
+                <div class="nav_icon" data-food-type-id="<%= body.data[i].id %>" data-food-type-name="<%= body.data[i].name %>">
+                    <div><img src="/custom/wx_style/images/nav_<%= body.data[i].icon %>.png"></div>
+                    <div><%= body.data[i].name %></div>
                 </div>
                 <% } %>
             </div>
         </div>
 
         <div class="ty_bt_title">
-            <h3><span class="icon_tj1">&nbsp;</span><span id="foodTypeName"><%= body.food[0].name %></span></h3>
+            <h3><span class="icon_tj1">&nbsp;</span><span id="foodTypeName">今日推荐</span></h3>
         </div>
 
-        <% for(i = 0; i < body.food.length; i++){%>
-        <div class="div_listtz foodTypeList foodTypeList_<%= body.food[i].id %>" style="<%= i==0?'':'display:none;'%>">
+        <% for(i = 0; i < body.data.length; i++){%>
+        <div class="div_listtz foodTypeList foodTypeList_<%= body.data[i].id %>" style="<%= i==0?'':'display:none;'%>">
             <% var food = null;%>
-            <% for(var j = 0; j < body.food[i].children.length; j++){%>
-            <% food = body.food[i].children[j]; %>
-            <div class="list bh foodData" data-food-id="<%= food.id %>" data-food-price="<%= food.price %>" data-food-name="<%= food.name %>">
+            <% for(var j = 0; j < body.data[i].products.length; j++){%>
+            <% food = body.food[i].products[j]; %>
+            <div class="list bh foodData" data-food-id="<%= food.id %>" data-food-price="<%= food.basePrice.value %>" data-food-name="<%= food.name %>">
                 <div class="text foodDetail"><a href="#"><%= food.name %></a></div>
-                <div class="img foodDetail"><img src="/custom/wx_style/images/<%= food.image %>.png"></div>
+                <div class="img foodDetail"><img src="/custom/wx_style/images/<%= food.productData.imageCode %>.png"></div>
                 <div class="bh">
 
                     <div class="btn_gm">
@@ -68,7 +72,7 @@
                         <div class="sz"  style=" display:none;">5</div>
                         <div class="icon_jh1" style=" display:none;"> </div>
                     </div>
-                    <div class="jg_b"><span>￥</span><%= food.price %></div>
+                    <div class="jg_b"><span>￥</span><%= food.basePrice.value %></div>
                 </div>
             </div>
             <% } %>

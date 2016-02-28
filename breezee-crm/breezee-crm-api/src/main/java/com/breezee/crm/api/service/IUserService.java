@@ -25,6 +25,10 @@ public interface IUserService extends IServiceLayer<UserInfo> {
     @PUT
     void saveShippingAddress(ShippingAddressInfo addressInfo);
 
+    @Path("/code/{code}")
+    @GET
+    UserInfo findByCode(@PathParam("code") String code);
+
     /**
      * 获取人员的收货地址
      * @param userId
@@ -33,5 +37,13 @@ public interface IUserService extends IServiceLayer<UserInfo> {
     @Path("/shippingAddress/user/{userId}")
     @GET
     List<ShippingAddressInfo> findShippingAddress(@PathParam("userId") Long userId);
+
+    @Path("/shippingAddress/user/{userId}")
+    @POST
+    UserInfo employeeValidate(UserInfo info);
+
+    @Path("/registerSite")
+    @POST
+    UserInfo registerSite(UserInfo info);
 
 }

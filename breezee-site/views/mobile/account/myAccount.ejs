@@ -10,9 +10,9 @@
     <div class="weui_cells weui_cells_access" style="margin-top:0;">
 
         <a class="weui_cell" href="javascript:;">
-            <div class="weui_cell_hd img_tx"><img src="/custom/wx_style/images/icon_tx.png" alt="" style="width:60%;margin-right:5px;display:block"></div>
+            <div class="weui_cell_hd img_tx"><img src="<%= userData.headimgurl?userData.headimgurl:'/custom/wx_style/images/icon_tx.png' %>" alt="" style="width:60%;margin-right:5px;display:block"></div>
             <div class="weui_cell_bd weui_cell_primary">
-                <p name="username"><%= body.username %></p>
+                <p name="username"><%= userData.userName %></p>
             </div>
             <div class="weui_cell_ft"></div>
         </a>
@@ -20,19 +20,19 @@
     </div>
     <div class="weui_cells weui_cells_access">
 
-        <a class="weui_cell" href="<%= body.servicePoint?'javascript:void(0);':'/view/account/servicePoint' %>">
+        <a class="weui_cell" href="<%= userData.siteId?'javascript:void(0);':'/view/account/servicePoint' %>">
             <div class="weui_cell_hd"><img src="/custom/wx_style/images/icon_50_dw.png" alt="" style="width:60%;margin-right:5px;display:block"></div>
             <div class="weui_cell_bd weui_cell_primary">
                 <p>服务点注册</p>
             </div>
-            <div class="weui_cell_ft"><%= body.servicePoint?'已':'未' %>注册</div>
+            <div class="weui_cell_ft"><%= userData.siteId?'已':'未' %>注册</div>
         </a>
-        <a class="weui_cell" href="<%= body.employeeInfo?'javascript:void(0);':'/view/account/bindEmployeeInfo' %>">
+        <a class="weui_cell" href="<%= userData.userType=='employee'?'javascript:void(0);':'/view/account/bindEmployeeInfo' %>">
             <div class="weui_cell_hd"><img src="/custom/wx_style/images/icon_50_ygk.png" alt="" style="width:60%;margin-right:5px;display:block"></div>
             <div class="weui_cell_bd weui_cell_primary" onClick="location.href='bdygk.html'">
                 <p>员工信息</p>
             </div>
-            <div class="weui_cell_ft"><%= body.employeeInfo?'已':'未' %>认证</div>
+            <div class="weui_cell_ft"><%= userData.userType=='employee'?'已':'未' %>认证</div>
         </a>
         <a class="weui_cell" href="javascript:void(0);">
             <div class="weui_cell_hd"><img src="/custom/wx_style/images/icon_50_zd.png" alt="" style="width:60%;margin-right:5px;display:block"></div>
@@ -49,7 +49,7 @@
             <div class="weui_cell_bd weui_cell_primary">
                 <p>收货地址</p>
             </div>
-            <div class="weui_cell_ft"><span name="address"><%= body.address.length %></span>个</div>
+            <div class="weui_cell_ft"><span name="address"><%= userData.addressCount %></span>个</div>
         </a>
     </div>
 </div>

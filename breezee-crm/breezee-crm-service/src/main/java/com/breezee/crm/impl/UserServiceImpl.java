@@ -11,11 +11,14 @@ import com.breezee.common.DynamicSpecifications;
 import com.breezee.common.util.ContextUtil;
 import com.breezee.crm.api.domain.ShippingAddressInfo;
 import com.breezee.crm.api.domain.UserInfo;
+import com.breezee.crm.entity.EncodeEntity;
 import com.breezee.crm.entity.ShippingAddressEntity;
 import com.breezee.crm.entity.UserEntity;
+import com.breezee.crm.repository.EncodeRepository;
 import com.breezee.crm.repository.ShippingAddressRepository;
 import com.breezee.crm.repository.UserRepository;
 import com.breezee.crm.api.service.IUserService;
+import org.apache.commons.codec.digest.Md5Crypt;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
@@ -36,6 +39,9 @@ public class UserServiceImpl implements IUserService {
     @Autowired
     private ShippingAddressRepository shippingAddressRepository;
 
+    @Autowired
+    private EncodeRepository encodeRepository;
+
     @Override
     public void saveShippingAddress(ShippingAddressInfo addressInfo) {
         UserEntity u = userRepository.findOne(addressInfo.getUserId());
@@ -46,6 +52,14 @@ public class UserServiceImpl implements IUserService {
     }
 
     @Override
+    public UserInfo findByCode(String code) {
+        UserEntity ue = userRepository.findByCode(code);
+        if(ue == null)
+            return ErrorInfo.build(UserInfo.class);
+        return ue.toInfo();
+    }
+
+    @Override
     public List<ShippingAddressInfo> findShippingAddress(Long userId) {
         UserEntity u = userRepository.findOne(userId);
         if(u != null){
@@ -53,6 +67,27 @@ public class UserServiceImpl implements IUserService {
             return ui.getShippingAddressInfos();
         }
         return new ArrayList<>(0);
+    }
+
+    @Override
+    public UserInfo employeeValidate(UserInfo info) {
+        String key = Md5Crypt.md5Crypt((info.getDn()+info.getName()+info.getIdCard()).getBytes());
+        EncodeEntity en = encodeRepository.findBySiteAndCode(info.getCompany(),key);
+        if(en == null)
+            return ErrorInfo.build(UserInfo.class);
+        return SuccessInfo.build(info);
+    }
+
+    @Override
+    public UserInfo registerSite(UserInfo info) {
+        UserEntity entity = userRepository.findOne(info.getId());
+        if(entity!=null){
+            entity.setCompany(info.getCompany());
+            entity.setType("site");
+            userRepository.save(entity);
+            return SuccessInfo.build(info);
+        }
+        return ErrorInfo.build(UserInfo.class);
     }
 
     @Override
@@ -92,5 +127,10 @@ public class UserServiceImpl implements IUserService {
     public PageResult<UserInfo> pageAll(Map<String, Object> m, PageInfo pageInfo) {
         Page<UserEntity> page = userRepository.findAll(DynamicSpecifications.createSpecification(m),pageInfo);
         return new PageResult<>(page, UserInfo.class, (userEntity, userInfo) -> userEntity.toInfo());
+    }
+
+    @Override
+    public void updateStatus(Long id, int status) {
+
     }
 }

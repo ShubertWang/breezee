@@ -1,7 +1,8 @@
 <script>
     var REQUEST_MAP = {
         data : JSON.parse('<%= JSON.stringify(data) %>'.replace(/&#34;/g, '"') || "{}"),
-        body : JSON.parse('<%= JSON.stringify(body) %>'.replace(/&#34;/g, '"') || "{}")
+        body : JSON.parse('<%= JSON.stringify(body) %>'.replace(/&#34;/g, '"') || "{}"),
+        userData : JSON.parse('<%=  JSON.stringify(userData || {}) %>'.replace(/&#34;/g, '"') || "{}")
     };
 </script>
 
@@ -24,11 +25,12 @@
 <script src="/page-script<%=path %>.js"></script>
 
 <script>
-    Dolphin.ajax({
-        url: '/wechat?code='+REQUEST_MAP.data.code,
-        type: Dolphin.requestMethod.GET,
-        onSuccess: function (reData) {
-            REQUEST_MAP.data.openId = reData.openId;
-        }
-    });
+//    Dolphin.ajax({
+//        url: '/wechat?code='+REQUEST_MAP.data.code,
+//        type: Dolphin.requestMethod.GET,
+//        onSuccess: function (reData) {
+//            if(reData && reData.openId)
+//                REQUEST_MAP.data.openId = reData.openId;
+//        }
+//    });
 </script>

@@ -173,7 +173,8 @@ $(function () {
     $('#multipleUpdateAttr').click(function () {
         categoryPanel.slideToggle(300, function () {
             attributePanel.slideToggle(300);
-            unselectedList.load('/data/sym/account/excludeOrg/'+selectNode.id);
+            //unselectedList.load('/data/sym/account/excludeOrg/'+selectNode.id);
+            unselectedList.load('/data/sym/account/page');
             selectedList.loadData(attrList.data);
         });
     });

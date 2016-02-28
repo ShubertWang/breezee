@@ -6,16 +6,19 @@ var route = {};
 route.orderFood = function (queryData, res, callback) {
     global.myUtil.request({
         method : 'get',
-        uri : '/restaurant/',
+        url : 'http://127.0.0.1:10246/services/category/pCode/'+queryData.restId,
         mockData : '/restaurant/restaurantDetail',
-        form : queryData
-    }, function(error, response, body){
-        if(error){
-            throw error;
+        json:{},
+        headers: {
+            "Content-Type": "application/json",
+            "Accept": "application/json"
         }
-        body.createTime = global.myUtil.dateFormatter(new Date(body.createTime), "yyyy-MM-dd hh:mm");
-        body.time = global.myUtil.dateFormatter(new Date(body.time), "yyyy-MM-dd hh:mm");
-        callback(body);
+    }, function(error, response, body){
+        var ret = {};
+        ret.data = body || [];
+        ret.createTime = global.myUtil.dateFormatter(new Date(), "yyyy-MM-dd hh:mm");
+        ret.time = global.myUtil.dateFormatter(new Date(), "yyyy-MM-dd hh:mm");
+        callback(ret);
     });
 };
 route.myOrder = function (queryData, res, callback) {

@@ -78,6 +78,21 @@ public class ProductServiceImpl implements IProductService, InitializingBean {
     }
 
     @Override
+    public List<ProductInfo> findProductsByCateCode(String cateCode) {
+        CategoryEntity categoryEntity = categoryRepository.findByCode(cateCode);
+        List<ProductEntity> l = new ArrayList<>();
+        Set<ProductEntity> s = categoryEntity.getProducts();
+        if(s != null && s.size()>0){
+            l.addAll(s);
+        }
+        List<ProductInfo> ll = new ArrayList<>();
+        l.forEach(a->{
+            ll.add(a.toInfo());
+        });
+        return ll;
+    }
+
+    @Override
     public ProductInfo findByCode(String code) {
         ProductEntity entity = productRepository.findByCode(code);
         if(entity==null)

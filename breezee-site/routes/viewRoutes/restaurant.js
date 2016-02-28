@@ -4,8 +4,8 @@ var route = {};
 
 route.restaurantList = function (queryData, res, callback) {
     global.myUtil.request({
-        method : 'post',
-        uri : 'http://127.0.0.1:10250/services/messhall/list',
+        method : 'get',
+        uri : 'http://127.0.0.1:10250/services/foodLine/site/'+queryData.userData.siteId+'/'+queryData.orderType,
         mockData : '/restaurant/restaurantList',
         json:{},
         headers: {
@@ -13,9 +13,7 @@ route.restaurantList = function (queryData, res, callback) {
             "Accept": "application/json"
         }
     }, function(error, response, body){
-        if(error){
-            throw error;
-        }
+        body = body || [];
         callback(body);
     });
 };

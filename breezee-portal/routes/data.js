@@ -24,19 +24,22 @@ router.use('*', function (req, res, next) {
 
         queryData = req.query;
         bodyData = req.body;
-        bodyData.properties = {};
-        if(req.session.userCode) {
-            bodyData.creator = req.session.userCode;
-            bodyData.updator = req.session.userCode;
-        }
-        if(req.session.userId){
-            bodyData.properties.userId = req.session.userId;
-        }
-        if(req.session.userOrg)
-            bodyData.properties.orgId = req.session.userOrg;
-        if(req.session.userRoles)
-            bodyData.properties.roles = req.session.userRoles;
 
+        if(req.method=='PUT') {
+            bodyData.properties = {};
+            if (req.session.userCode) {
+                bodyData.creator = req.session.userCode;
+                bodyData.updator = req.session.userCode;
+            }
+            if (req.session.userId) {
+                bodyData.properties.userId = req.session.userId;
+            }
+            if (req.session.userOrg)
+                bodyData.properties.orgId = req.session.userOrg;
+            if (req.session.userRoles)
+                bodyData.properties.roles = req.session.userRoles;
+
+        }
         console.log('=====================start data ====================');
         console.log(queryData);
         console.log(bodyData);
