@@ -22,7 +22,33 @@ route.myOrder = function (queryData, res, callback) {
     global.myUtil.request({
         method : 'get',
         uri : '/order/',
-        mockData : '/order/myOrder_'+queryData.orderType,
+        mockData : '/order/myOrder_dfd',
+        form : queryData
+    }, function(error, response, body){
+        if(error){
+            throw error;
+        }
+        callback(body);
+    });
+};
+route.myOrderByPage = function (queryData, res, callback) {
+    global.myUtil.request({
+        method : 'get',
+        uri : '/order/',
+        mockData : '/order/myOrder_dfd',
+        form : queryData
+    }, function(error, response, body){
+        if(error){
+            throw error;
+        }
+        callback(body);
+    });
+};
+route.orderDetail = function (queryData, res, callback) {
+    global.myUtil.request({
+        method : 'get',
+        uri : '/order/',
+        mockData : '/order/orderDetail_'+queryData.id,
         form : queryData
     }, function(error, response, body){
         if(error){
@@ -33,11 +59,24 @@ route.myOrder = function (queryData, res, callback) {
         callback(body);
     });
 };
-route.orderDetail = function (queryData, res, callback) {
+route.employeeOrder = function (queryData, res, callback) {
     global.myUtil.request({
         method : 'get',
         uri : '/order/',
-        mockData : '/order/orderDetail_'+queryData.id,
+        mockData : '/order/myOrder_dfd',
+        form : queryData
+    }, function(error, response, body){
+        if(error){
+            throw error;
+        }
+        callback(body);
+    });
+};
+route.employeeOrderDetail = function (queryData, res, callback) {
+    global.myUtil.request({
+        method : 'get',
+        uri : '/order/',
+        mockData : '/order/orderDetail_1',
         form : queryData
     }, function(error, response, body){
         if(error){
@@ -60,6 +99,19 @@ route.orderConfirm = function (queryData, res, callback) {
         }
         var foodList = JSON.parse(res.req.cookies.foodList);
         callback(extend({"foodList":foodList}, body));
+    });
+};
+route.otherService = function (queryData, res, callback) {
+    global.myUtil.request({
+        method : 'get',
+        uri : '/order/',
+        mockData : '/order/otherService',
+        form : queryData
+    }, function(error, response, body){
+        if(error){
+            throw error;
+        }
+        callback(body);
     });
 };
 module.exports = route;

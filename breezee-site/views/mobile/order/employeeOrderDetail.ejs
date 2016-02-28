@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <% include ../common/meta.ejs %>
+    <title>订单详情</title>
+    <% include ../common/public.ejs %>
+    <style>
+        .tybtn_box{
+            text-align: center;
+        }
+        .tybtn_box .weui_btn_mini{
+            margin : 3% 5%;
+            width : 30%;
+        }
+    </style>
+</head>
+<body ontouchstart>
+<% var i;%>
+<div class="div_ddcg">
+    <div class="zt" data-code="<%= body.status %>"><%= body.status == "1"?'订单待确认':'订单已确认' %></div> <!--TODO 接枚举，siteOrderStatus-->
+    <div class="time"><%= body.createTime %></div>
+</div>
+<div>
+    <div class="zt_phone bh">
+        <% if(body.type == 'takeout' || body.type == 'DineIn'){ %> <!--TODO 根据orderType写判断逻辑，当点餐（堂食/外卖）时-->
+        <div class="icon"><img src="/custom/wx_style/images/<%= body.status > 0?'0219':'0219_1'%>.png">
+            <p> 订单已提交
+            </p></div>
+        <div class="icon"><img src="/custom/wx_style/images/<%= body.status > 1?'0426':'0426_1'%>.png">
+            <p>订单已确认</p>
+        </div>
+        <div class="icon"><img src="/custom/wx_style/images/<%= body.status > 2?'0589':'0589_1'%>.png">
+            <p>已制作</p>
+        </div>
+        <div class="icon"><img src="/custom/wx_style/images/<%= body.status > 3?'0414':'0414_1'%>.png">
+            <p>已结单</p>
+        </div>
+        <% }else if(body.type == 'site'){ %>
+        <div class="icon"><img src="/custom/wx_style/images/<%= body.status > 0?'0219':'0219_1'%>.png">
+            <p> 订位已提交
+            </p></div>
+        <div class="icon"><img src="/custom/wx_style/images/<%= body.status > 1?'0426':'0426_1'%>.png">
+            <p>订位已确认</p>
+        </div>
+        <div class="icon"><img src="/custom/wx_style/images/<%= body.status > 2?'0589':'0589_1'%>.png">
+            <p>座位已分配</p>
+        </div>
+        <div class="icon"><img src="/custom/wx_style/images/<%= body.status > 3?'0414':'0414_1'%>.png">
+            <p>订单已完成</p>
+        </div>
+        <% } %>
+    </div>
+</div>
+<div>
+    <% if(body.type == "site" && body.status == 2){%><!--TODO 需根据siteOrderStatus值写逻辑，当排队中时-->
+    <div class="weui_cells">
+        <div class="weui_cell">
+            <div class="weui_cell_bd weui_cell_primary">
+                <p>您的订位已确认，目前排队号为<span></span></p>
+            </div>
+            <div class="weui_cell_ft_red"><%= body.queueNo %></div>
+        </div>
+    </div>
+    <% } %>
+    <% if(body.type == "site" && body.status == 3){%><!--TODO 需根据siteOrderStatus值写逻辑，当已分配座位时-->
+    <div class="weui_cells">
+        <div class="weui_cell">
+            <div class="weui_cell_bd weui_cell_primary">
+                <p>您的就餐餐位号<span>请在预订的就餐时间内到达餐厅，超时将不保留订位</span></p>
+            </div>
+            <div class="weui_cell_ft_red"><%= body.code %></div>
+        </div>
+    </div>
+    <% } %>
+
+    <div class="weui_cells">
+        <div class=" weui_cells_access">
+            <a class="weui_cell" href="javascript:;">
+                <div class="weui_cell_bd weui_cell_primary">
+                    <p><%= body.restaurant.name %></p>
+                </div>
+                <div class="weui_cell_ft"></div>
+            </a>
+        </div>
+    </div>
+
+    <% if(body.type != "site"){%>
+    <div class="div_ddlist">
+        <div class="ddmx">
+            <ul class="list-group" style="margin-top:0;">
+                <% for(i = 0; i < body.food.length; i++){%>
+                <li class="bh <%= i==(body.food.length-1)?'line_bot_p5':''%>">
+                    <div class="title_a"><%= body.food[i].food.name %></div>
+                    <div class="title_ad"> × <%= body.food[i].number %></div>
+                    <div class="title_c_text">￥<%= body.food[i].price %></div>
+                </li>
+                <% } %>
+                <% for(i = 0; i < body.otherCost.length; i++){%>
+                <li class="bh">
+                    <div class="title_a"><%= body.otherCost[i].name %></div>
+                    <div class="title_ad"> × <%= body.otherCost[i].number %></div>
+                    <div class="title_c_text">￥<%= body.otherCost[i].price %></div>
+                </li>
+                <% } %>
+            </ul>
+            <ul class="list-group">
+                <li class=" bh">
+                    <div class="title_d_text">合计：<span class="total_red">￥<%= body.price %></span></div>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <% } %>
+
+    <div class="weui_cells">
+        <div class="weui_cell">
+            <div class="weui_cell_bd weui_cell_primary">
+                <p>订单详情</p>
+            </div>
+        </div>
+        <div class="ddmx">
+            <ul class="list-group" style="margin-top:0;">
+                <li class=" bh">
+                    <div class="title_b">联系姓名 ：</div>
+                    <div class="title_b_text"><%= body.name %></div>
+                </li>
+                <li class=" bh">
+                    <div class="title_b">联系电话 ：</div>
+                    <div class="title_b_text"><%= body.phone %></div>
+                </li>
+                <% if(body.type == "takeout"){%>
+                <li class=" bh">
+                    <div class="title_b">收货地址 ：</div>
+                    <div class="title_b_text"><%= body.address %></div>
+                </li>
+                <li class=" bh">
+                    <div class="title_b">支付方式 ：</div>
+                    <div class="title_b_text"><%= body.payType %></div><!--TODO 枚举-->
+                </li>
+                <li class=" bh">
+                    <div class="title_b">下单时间 ：</div>
+                    <div class="title_b_text"><%= body.time %></div>
+                </li>
+                <% } else if(body.type == "DineIn"){%>
+                <li class=" bh">
+                    <div class="title_b">就餐位号 ：</div>
+                    <div class="title_b_text"><%= body.siteNo %></div>
+                </li>
+                <li class=" bh">
+                    <div class="title_b">就餐时间 ：</div>
+                    <div class="title_b_text"><%= body.time %></div>
+                </li>
+                <% } else if(body.type == "site"){%>
+                <li class=" bh">
+                    <div class="title_b">就餐时间 ：</div>
+                    <div class="title_b_text"><%= body.time %></div>
+                </li>
+                <li class=" bh">
+                    <div class="title_b">订位要求 ：</div>
+                    <div class="title_b_text"><%= body.number %>人 ｜ <%= body.shareTableFlag?'可拼桌':'不拼桌'%></div>
+                </li>
+                <% }%>
+            </ul>
+        </div>
+    </div>
+</div>
+<article id="approveForm">
+    <% if(body.status == "1"){ %> <!--TODO 根据订单状态决定显示button，待确认-->
+    <div class=" tybtn_box">
+        <a href="javascript:confirmOrder('confirm');" class="weui_btn weui_btn_mini weui_btn_default1">确认</a>
+        <a href="javascript:$('#dialog1').show();" class="weui_btn weui_btn_mini weui_btn_default1">拒绝</a>
+    </div>
+    <!--BEGIN dialog1-->
+    <div class="weui_dialog_confirm" id="dialog1" style="display:none;">
+        <div class="weui_mask"></div>
+        <div class="weui_dialog">
+            <div class="weui_dialog_hd"><strong class="weui_dialog_title">请输入拒绝的原因</strong></div>
+            <div class="weui_cells_form">
+                <div class="weui_cell">
+                    <div class="weui_cell_bd weui_cell_primary">
+                        <textarea class="weui_textarea __remark" placeholder="如有特殊要求请留言" name="reason"></textarea>
+                        <div class="weui_textarea_counter"><span>0</span>/200</div>
+                    </div>
+                </div>
+            </div>
+            <div class="weui_dialog_ft">
+                <a href="javascript:$('#dialog1').hide();" class="weui_btn_dialog default">取消</a>
+                <a href="javascript:confirmOrder('reject');" class="weui_btn_dialog primary">确定</a>
+            </div>
+        </div>
+    </div>
+    <!--END dialog1-->
+    <% }else if(body.status == '2' || body.status == '3'){%>
+    <div class=" tybtn_box">
+        <% if(body.status == '2'){%>
+        <a href="javascript:confirmOrder('making');" class="weui_btn weui_btn_mini weui_btn_default1">已制作</a>
+        <% } %>
+        <a href="javascript:confirmOrder('complete');" class="weui_btn weui_btn_mini weui_btn_default1">已完成</a>
+    </div>
+    <% } %>
+</article>
+<% if(body.status == 5){%>
+<article>
+    <div class=" tybtn_box"><a href="javascript:;" class="weui_btn weui_btn_warn">评价</a></div>
+</article>
+<% } %>
+<% include ../common/footer.ejs %>
+<script>
+    $(document).ready(function () {
+        var nicesx = $("#boxscroll").niceScroll("#boxscroll div", {
+            touchbehavior: true,
+            cursorcolor: "#FF00FF",
+            cursoropacitymax: 0.6,
+            cursorwidth: 24,
+            usetransition: true,
+            hwacceleration: true,
+            autohidemode: "hidden"
+        });
+    });
+</script>
+</body>
+</html>

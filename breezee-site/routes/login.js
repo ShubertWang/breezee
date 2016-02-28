@@ -21,9 +21,11 @@ router.get('/', function(req, res, next) {
 router.post('/', function(req, res, next){
     var bodyData = req.body,
         redirect, url;
-    if(bodyData.id){
-        req.cookies.userId = bodyData.id;
-        req.session.userId = bodyData.id;
+
+    if(bodyData.username){
+        req.session.username=bodyData.username;
+        console.log(req.session.username);
+
         res.send({success : true});
     }else{
         res.send({success : false, msg : "username不能为空"});

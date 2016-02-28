@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <% include ../common/meta.ejs %>
+    <title>绑定员工卡</title>
+    <% include ../common/public.ejs %>
+</head>
+<body ontouchstart>
+<article>
+    <div class="bh">
+        <div class="weui_cells weui_cells_form">
+            <div class="weui_cell">
+
+                <div class="weui_cell_bd weui_cell_primary">
+                    <input class="weui_input" type="tel" placeholder="请输入服务网点编号" name="servicePoint"/>
+                </div>
+            </div>
+
+        </div>
+        <div class="div_msxx">* 如果您不知道服务网点编号，可咨询索迪斯工作人员。</div>
+    </div>
+</article>
+
+<footer>
+    <div class="footer_box"><a href="javascript:void(0);" id="submit" class="weui_btn weui_btn_warn">验证</a></div>
+</footer>
+<% include ../common/footer.ejs %>
+</body>
+</html>

@@ -1,0 +1,24 @@
+<div class="tybtn_box evaluate_box">
+    <a href="javascript:void(0);" onclick="__evaluat(this, true)" class="weui_btn weui_btn_mini weui_btn_default1 evaluate_yes">100</a>
+    <a href="javascript:void(0);" onclick="__evaluat(this, false)" class="weui_btn weui_btn_mini weui_btn_default1 evaluate_no">0</a>
+</div>
+<script>
+    function __evaluat(thisObj, flag){
+        var param, _this = $(thisObj);
+
+        var param_panel = _this.closest(".evaluate_param");
+        if(param_panel.length > 0){
+            param = param_panel.data();
+        }else{
+            param = {
+                id : REQUEST_MAP.body.id
+            };
+        }
+
+        console.log(flag);
+        console.log(param);
+        /*ajax*/
+        //onSuccess TODO 后台需对评价的次数做校验限制
+        _this.html(_this.html()-0+(flag?1:-1));
+    }
+</script>

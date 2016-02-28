@@ -1,20 +1,18 @@
 $(function () {
-   $('.panel.togglePanel').each(function () {
-        var thisPanel = this;
-        $(thisPanel).find('.panel-heading').click(function (e) {
-            if ($(e.target).closest('.panel-operation').length == 0) {
-                $(thisPanel).find('.panel-operation').toggle();
-                $(thisPanel).find('.panel-body').slideToggle(500);
-            }
-        });
-    });
-
-    //提示
-    $('[data-toggle="tooltip"]').tooltip();
-
-    //通用按钮
-    $('.dol-goBack').click(function () {
-        history.go(-1);
+    $('.__remark').keyup(function () {
+        var value = $(this).val();
+        if(value.length > 200){
+            value = value.substr(0, 200);
+            $(this).val(value);
+        }
+        $(this).next().children('span').html(value.length);
+    }).change(function () {
+        var value = $(this).val();
+        if(value.length > 200){
+            value = value.substr(0, 200);
+            $(this).val(value);
+        }
+        $(this).next().children('span').html(value.length);
     });
 });
 

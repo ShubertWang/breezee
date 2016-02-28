@@ -8,6 +8,4 @@ $(function () {
             Dolphin.form.setValue(reData.value, '#myAccount');
         }
     })*/
-
-
 });

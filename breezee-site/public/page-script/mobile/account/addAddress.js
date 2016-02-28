@@ -9,7 +9,7 @@ $(function () {
             onSuccess : function (reData) {
                 Dolphin.alert(reData.msg || '绑定成功', {
                     callback : function () {
-                        Dolphin.goUrl('/index');
+                        Dolphin.goUrl("/account/address?pickFlag=" + !!REQUEST_MAP.data.pickFlag);
                     }
                 });
             }

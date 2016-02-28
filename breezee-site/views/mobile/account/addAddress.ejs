@@ -29,7 +29,18 @@
         <div class="weui_cell">
             <div class="weui_cell_hd"><label class="weui_label">收货地址</label></div>
             <div class="weui_cell_bd weui_cell_primary">
-                <input class="weui_input" type="text" placeholder="收货人详细地址" name="consigneeAddress"/>
+                <input class="weui_input" type="text" placeholder="收货人详细地址" name="address" value="<%= body.address %>"/>
+            </div>
+        </div>
+    </div>
+    <div class="weui_cells weui_cells_form">
+        <div class="weui_cell">
+            <div class="weui_cell_hd"><label class="weui_label">是否默认</label></div>
+            <div class="weui_cell_bd weui_cell_primary">
+                <div class="slideThree">
+                    <input type="checkbox" value="true" id="slideThree" name="defaultFlag" <%= body.defaultFlag?"checked":"" %>/>
+                    <label for="slideThree"></label>
+                </div>
             </div>
         </div>
     </div>
