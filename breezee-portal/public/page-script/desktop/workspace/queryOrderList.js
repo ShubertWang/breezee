@@ -3,8 +3,8 @@ $(function () {
     var page = {};
 
     page.connect = {
-        undoList : {
-            url : '/data/bpm/bpmTask/findUndoTasks'
+        orderList : {
+            url : '/data/oms/order/page'
         }
     };
 
@@ -17,13 +17,14 @@ $(function () {
 
     page.initPage = function () {
         var _this = this;
-        this.undoList = new Dolphin.LIST({
+        this.orderList = new Dolphin.LIST({
             panel : '#list',
-            url : _this.connect.undoList.url,
+            url : _this.connect.orderList.url,
+            queryParams : Dolphin.form.getValue('queryForm'),
             ajaxType:'post',
-            title : '待办列表',
+            title : '订单列表',
             columns : [{
-                code: 'businessKey',
+                code: 'code',
                 title: '订单号',
                 formatter : function(val, row, index){
                     var link = $('<a>').html(val);
@@ -31,35 +32,27 @@ $(function () {
                     return link;
                 }
             }, {
-                code:'processInstanceId',
-                title:'实例编号'
+                code:'issueDate',
+                title:'下单日期'
             },{
-                code:'processDefinitionId',
-                title:'流程名称'
-            },{
-                code: 'assignee',
-                title: '当前处理人'
-            },{
-                code:'name',
-                title:'节点名称'
-            }, {
                 code:'userId',
                 title:'下单人'
             },{
-                code: 'createTime',
-                title: '下单时间',
-                formatter:function(val){
-                    return Dolphin.longDate2string(val);
+                code: 'paymentAmount',
+                title: '支付金额',
+                formatter : function(val, row, index){
+
+                    return val.value;
                 }
             },{
-                code: 'paymentAmount',
-                title: '支付金额'
-            },{
-                code: 'shippingMethod',
-                title: '支付方式'
-            },{
-                code: 'subTotal',
-                title: '商品总额'
+                code:'shippingMethod',
+                title:'支付方式'
+            }, {
+                code:'subTotal',
+                title:'商品金额',
+                formatter : function(val, row, index){
+                    return val.value;
+                }
             }]
         });
     };
@@ -67,7 +60,7 @@ $(function () {
     page.initEvent = function () {
         var _this = this;
         $("#query").click(function () {
-            _this.undoList.query(Dolphin.form.getValue("#queryForm"));
+            _this.orderList.query(Dolphin.form.getValue("#queryForm"));
         });
         $("#conditionReset").click(function () {
             Dolphin.form.empty("#queryForm")

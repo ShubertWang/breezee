@@ -228,11 +228,48 @@ public class TaskServiceImpl implements ITaskService {
         sql.append(" ORDER BY RES.CREATE_TIME_ DESC ");
         NativeTaskQuery allTask = taskService.createNativeTaskQuery().sql(sql.toString()).parameter("userId", m.get("username").toString());
         List<Task> l = allTask.listPage(pageInfo.getPageNumber(), pageInfo.getPageSize());
-        PageResult<TaskInfo> pageResult = convert(l,l.size());
+        long count = l.size();
+        PageResult<TaskInfo> pageResult = convert(l,count);
 
-        for(TaskInfo task : pageResult.getContent()){
+        Iterator it = pageResult.getContent().iterator();
+        while(it.hasNext()){
+//        for (int i = 0; i < pageResult.getContent().size() ; i++) {
+            TaskInfo task = (TaskInfo)it.next();
+            Boolean flag = false;
             ProcessInstance processInstance = runtimeService.createProcessInstanceQuery().processInstanceId(task.getProcessInstanceId()).singleResult();
             OrderInfo orderInfo = orderService.findOrderInfoByCode(processInstance.getBusinessKey());
+            if(!StringUtils.isEmpty(m.get("name")) || !StringUtils.isEmpty(m.get("code"))){
+                if(orderInfo.getName().equals(m.get("name"))){
+                    flag = true;
+                }else if(orderInfo.getCode().equals(m.get("code"))){
+                    flag = true;
+                }else{
+                    it.remove();
+                    count--;
+                }
+            }else{
+                flag = true;
+            }
+
+            if(flag){
+                task.setBusinessKey(processInstance.getBusinessKey());
+                task.setUserId(orderInfo.getUserId());
+                task.setIssueDate(orderInfo.getIssueDate());
+                task.setSubTotal(orderInfo.getSubTotal().getValue().toString());
+                task.setShippingMethod(orderInfo.getShippingMethod());
+                task.setPaymentAmount(orderInfo.getPaymentAmount().getValue().toString());
+            }
+        }
+
+        pageResult.setTotal(count);
+
+        /*for(TaskInfo task : pageResult.getContent()){
+            ProcessInstance processInstance = runtimeService.createProcessInstanceQuery().processInstanceId(task.getProcessInstanceId()).singleResult();
+            OrderInfo orderInfo = orderService.findOrderInfoByCode(processInstance.getBusinessKey());
+            if(m.get("name") != null){
+                orderInfo.getName().equals(m.get("name"))
+            }
+
             task.setBusinessKey(processInstance.getBusinessKey());
             task.setUserId(orderInfo.getUserId());
             task.setIssueDate(orderInfo.getIssueDate());
@@ -240,7 +277,7 @@ public class TaskServiceImpl implements ITaskService {
             task.setShippingMethod(orderInfo.getShippingMethod());
             task.setPaymentAmount(orderInfo.getPaymentAmount().getValue().toString());
 
-        }
+        }*/
 
         return pageResult;
     }
