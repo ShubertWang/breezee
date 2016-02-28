@@ -1,10 +1,12 @@
 $(function () {
     var page = {
-        foodList : {}
+        foodList : {},
+        restaurant : null
     };
 
     page.init = function () {
         this.event();
+        this.restaurant = REQUEST_MAP.body;
     };
 
     page.event = function () {
@@ -16,6 +18,50 @@ $(function () {
 
             $('.pagePanel').hide();
             $('#'+_this.data('tab')).show();
+
+            if(_this.data('tab') == 'restaurant_info'){
+                $('#cartPanel').hide();
+            }else{
+                $('#cartPanel').show();
+            }
+        });
+
+        $('div.foodDetail').click(function (e) {
+            var food, foodId, number=0,
+                i, j;
+
+            foodId = $(this).closest('[data-food-id]').data('food-id');
+            for(i = 0; i < _this.restaurant.food.length; i++){
+                for(j = 0; j < _this.restaurant.food[i].children.length; j++){
+                    if(foodId == _this.restaurant.food[i].children[j].id){
+                        food = _this.restaurant.food[i].children[j];
+                        break;
+                    }
+                }
+                if(food){
+                    break;
+                }
+            }
+
+            if(_this.foodList[foodId]){
+                number = _this.foodList[foodId].number;
+            }
+
+            var detailPanel = $('#food_detail');
+
+            detailPanel.find('#food_detail_panel').data({
+                'foodId' : food.id,
+                'foodName' : food.name,
+                'foodPrice' : food.price
+            });
+            detailPanel.find('div[name="img"]').html('<img src="/custom/wx_style/images/'+food.image+'.png">');
+            detailPanel.find('div[name="name"]').html(food.name);
+            detailPanel.find('div[name="number"]').html(number);
+            detailPanel.find('span[name="price"]').html(food.price);
+            detailPanel.find('[name="desc"]').html(food.desc || '暂无');
+
+            $('.pagePanel').hide();
+            detailPanel.show();
         });
 
         $('[data-food-type-id]').click(function () {
@@ -25,11 +71,11 @@ $(function () {
             $('.foodTypeList_'+_this.data('food-type-id')).show();
         });
 
-        $('[data-food-id] .icon_jh').click(function () {
-            _this.addFood($(this).closest('[data-food-id]').data());
+        $('.icon_jh').click(function () {
+            _this.addFood($(this).closest('.foodData').data());
         });
-        $('[data-food-id] .icon_jh1').click(function () {
-            _this.reduceFood($(this).closest('[data-food-id]').data());
+        $('.icon_jh1').click(function () {
+            _this.reduceFood($(this).closest('.foodData').data());
         });
 
         $('#cartIcon').click(function () {
@@ -55,7 +101,7 @@ $(function () {
             if(foodList.length == 0){
                 alert('请至少选择一道菜肴');
             }else{
-                Dolphin.cookie("foodList", Dolphin.json2string(foodList));
+                Dolphin.cookie("foodList", Dolphin.json2string(foodList), {path:'/'});
                 Dolphin.goUrl("/order/orderConfirm");
             }
         });
@@ -81,9 +127,12 @@ $(function () {
             }
         }
 
+        $('#food_detail').find('div[name="number"]').html(_this.foodList[id].number);
+
         var foodPanel = $('[data-food-id="'+id+'"]');
         foodPanel.find('.sz,.icon_jh1').show();
         foodPanel.find('.jg_b').addClass('jg');
+        foodPanel.find('.icon_jh').removeClass('icon_jhh');
         foodPanel.find('.sz').html(_this.foodList[id].number);
 
         _this.modifyFood();
@@ -93,17 +142,25 @@ $(function () {
         var _this = this;
         var id = data.foodId;
 
+        if(_this.foodList[id] == null){
+            return this;
+        }
+
         if(number != null){
             _this.foodList[id].number = number;
         }else{
             _this.foodList[id].number--;
         }
 
+        $('#food_detail').find('div[name="number"]').html(_this.foodList[id].number);
+
         var foodPanel = $('[data-food-id="'+id+'"]');
         foodPanel.find('.sz').html(_this.foodList[id].number);
         if(_this.foodList[id].number == 0){
             foodPanel.find('.jg_b').removeClass('jg');
+            foodPanel.find('.icon_jh').addClass('icon_jhh');
             foodPanel.find('.sz,.icon_jh1').hide();
+
             delete _this.foodList[id];
         }
 

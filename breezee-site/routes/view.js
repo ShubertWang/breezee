@@ -46,17 +46,19 @@ router.get('*', function(req, res, next) {
                 res.render(url.substring(1), {
                     path : url,
                     data : queryData,
+                    body : {},
                     redirect:'',
-                    body : {userId:userInfo}
+                    session:req.session,
+                    cookie : req.cookies
                 });
             }else{
-                queryData.userId = userInfo;
                 fun(queryData, res, function(body){
                     res.render(url.substring(1), {
                         path : url,
                         data : queryData,
-                        redirect:'',
-                        body : body
+                        body : body,
+                        session:req.session,
+                        cookie : req.cookies
                     });
                 })
             }

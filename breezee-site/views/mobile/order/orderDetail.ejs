@@ -13,7 +13,7 @@
 </div>
 <div>
     <div class="zt_phone bh">
-        <% if(body.type == 'takeout'){ %>
+        <% if(body.type == 'takeout' || body.type == 'DineIn'){ %> <!--TODO 根据orderType写判断逻辑，当点餐（堂食/外卖）时-->
         <div class="icon"><img src="/custom/wx_style/images/<%= body.status > 0?'0219':'0219_1'%>.png">
             <p> 订单已提交
             </p></div>
@@ -21,30 +21,39 @@
             <p>订单已确认</p>
         </div>
         <div class="icon"><img src="/custom/wx_style/images/<%= body.status > 2?'0589':'0589_1'%>.png">
-            <p>配送中</p>
+            <p>已制作</p>
         </div>
         <div class="icon"><img src="/custom/wx_style/images/<%= body.status > 3?'0414':'0414_1'%>.png">
-            <p>已送达</p>
-        </div>
-        <% }else if(body.type == 'DineIn'){ %>
-        <div class="icon m_20"><img src="/custom/wx_style/images/<%= body.status > 0?'0219':'0219_1'%>.png">
-            <p> 订单已提交
-            </p></div>
-        <div class="icon m_20"><img src="/custom/wx_style/images/<%= body.status > 1?'0426':'0426_1'%>.png">
-            <p>订单已确认</p>
+            <p>已结单</p>
         </div>
         <% }else if(body.type == 'site'){ %>
-        <div class="icon m_20"><img src="/custom/wx_style/images/<%= body.status > 0?'0219':'0219_1'%>.png">
+        <div class="icon"><img src="/custom/wx_style/images/<%= body.status > 0?'0219':'0219_1'%>.png">
             <p> 订位已提交
             </p></div>
-        <div class="icon m_20"><img src="/custom/wx_style/images/<%= body.status > 1?'0426':'0426_1'%>.png">
+        <div class="icon"><img src="/custom/wx_style/images/<%= body.status > 1?'0426':'0426_1'%>.png">
             <p>订位已确认</p>
+        </div>
+        <div class="icon"><img src="/custom/wx_style/images/<%= body.status > 2?'0589':'0589_1'%>.png">
+            <p>座位已分配</p>
+        </div>
+        <div class="icon"><img src="/custom/wx_style/images/<%= body.status > 3?'0414':'0414_1'%>.png">
+            <p>订单已完成</p>
         </div>
         <% } %>
     </div>
 </div>
 <div>
-    <% if(body.type == "site" && body.status > 1){%><!--TODO 需根据siteOrderStatus值写逻辑-->
+    <% if(body.type == "site" && body.status == 2){%><!--TODO 需根据siteOrderStatus值写逻辑，当排队中时-->
+    <div class="weui_cells">
+        <div class="weui_cell">
+            <div class="weui_cell_bd weui_cell_primary">
+                <p>您的订位已确认，目前排队号为<span></span></p>
+            </div>
+            <div class="weui_cell_ft_red"><%= body.queueNo %></div>
+        </div>
+    </div>
+    <% } %>
+    <% if(body.type == "site" && body.status == 3){%><!--TODO 需根据siteOrderStatus值写逻辑，当已分配座位时-->
     <div class="weui_cells">
         <div class="weui_cell">
             <div class="weui_cell_bd weui_cell_primary">
@@ -146,15 +155,15 @@
         </div>
     </div>
 </div>
-<% if(!data.bookFlag && body.type == "site" && body.status < 3){%><!--TODO 需根据siteOrderStatus值写逻辑-->
+<% if(body.type == "site" || body.status < 3){%><!--TODO 需根据siteOrderStatus值写逻辑-->
 <article>
-    <div class=" tybtn_box"><a href="javascript:$('#dialog1').show();" class="weui_btn weui_btn_mini weui_btn_default1">取消订位</a></div>
+    <div class=" tybtn_box"><a href="javascript:$('#dialog1').show();" class="weui_btn weui_btn_mini weui_btn_default1">取消订单</a></div>
     <!--BEGIN dialog1-->
     <div class="weui_dialog_confirm" id="dialog1" style="display:none;">
         <div class="weui_mask"></div>
         <div class="weui_dialog">
-            <div class="weui_dialog_hd"><strong class="weui_dialog_title">您的订位已被商家受理</strong></div>
-            <div class="weui_dialog_bd">亲，您的订位已被商家受理，确认真的不再就餐么？</div>
+            <div class="weui_dialog_hd"><strong class="weui_dialog_title">您的订单已被商家受理</strong></div>
+            <div class="weui_dialog_bd">亲，您的订单已被商家受理，确认要取消么？</div>
             <div class="weui_dialog_ft">
                 <a href="javascript:$('#dialog1').hide();" class="weui_btn_dialog default">取消</a>
                 <a href="javascript:;" class="weui_btn_dialog primary">确定</a>
@@ -164,14 +173,7 @@
     <!--END dialog1-->
 </article>
 <% } %>
-<% if(data.bookFlag){%>
-<article>
-    <div class=" footer_box">
-        <a href="javascript:;" class="weui_btn weui_btn_warn">继续订餐</a>
-    </div>
-</article>
-<% } %>
-<% if(!data.bookFlag && body.status == 5){%>
+<% if(body.status == 5){%>
 <article>
     <div class=" tybtn_box"><a href="javascript:;" class="weui_btn weui_btn_warn">评价</a></div>
 </article>
