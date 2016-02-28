@@ -24,7 +24,7 @@
                 <bean class="org.activiti.explorer.form.MonthFormType"/>
             </list>
         </property>
-        <property name="customSessionFactories">
+        <!--<property name="customSessionFactories">
             <list>
                 <bean class="com.breezee.bpm.identity.MyGroupManagerFactory">
                     <property name="accountService" ref="accountService" />
@@ -33,7 +33,7 @@
                     <property name="accountService" ref="accountService" />
                 </bean>
             </list>
-        </property>
+        </property>-->
 
         <!--<property name="databaseTablePrefix" value="BPM_"/>-->
         <!--<property name="deploymentResources">-->
