@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <% include ../common/meta.ejs %>
+    <title>消息中心</title>
+    <% include ../common/public.ejs %>
+</head>
+<body ontouchstart>
+<% var i, j;%>
+<% for(i = 0; i < body.length; i++){ %>
+<div class="news">
+    <ul class="bh">
+        <li class="img"><a href="/view/message/newsDetail?id=<%= body[i].main.id %>"><img src="/custom/wx_style/images/<%= body[i].main.image %>.png"></a><div class="img_text"><%= body[i].main.title %></div></li>
+        <% for(j = 0; j < body[i].children.length; j++){%>
+        <li class="line_gray bh">
+            <div class="name">
+                <a href="/view/message/newsDetail?id=<%= body[i].children[j].id %>"><%- body[i].children[j].title %></a></div>
+            <div class="ms_img"><img src="/custom/wx_style/images/<%= body[i].children[j].image %>.png" ></div>
+        </li>
+        <% } %>
+    </ul>
+</div>
+<% } %>
+<% include ../common/footer.ejs %>
+</body>
+</html>

@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <% include ../common/meta.ejs %>
+    <title>订位</title>
+    <% include ../common/public.ejs %>
+</head>
+<body ontouchstart>
+<article id="form">
+    <div class="bh">
+        <div class="weui_cells weui_cells_form">
+            <div class="">
+                <div class="weui_cell weui_cell_select">
+                    <div class="weui_cell_bd weui_cell_primary">
+                        <select class="weui_select" name="select1">
+                            <option selected="" value="0">请选择服务类型</option>
+                            <% for(var i = 0; i < body.serviceType.length; i++){%>
+                            <option value="<%= body.serviceType[i].value %>"><%= body.serviceType[i].text %></option>
+                            <% } %>
+                        </select>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <div class="weui_cells weui_cells_form">
+            <div class="weui_cell">
+                <div class="weui_cell_bd weui_cell_primary">
+                    <textarea class="weui_textarea __remark" placeholder="如有特殊要求请留言">如有特殊要求请留言</textarea>
+                    <div class="weui_textarea_counter"><span>0</span>/200</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</article>
+
+<footer>
+    <div class="footer_box"><a href="javascript:void(0);" id="submit" class="weui_btn weui_btn_warn">确定</a></div>
+</footer>
+
+<% include ../common/footer.ejs %>
+</body>
+</html>

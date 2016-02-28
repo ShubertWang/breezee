@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <% include ../common/meta.ejs %>
+    <title>绑定员工卡</title>
+    <% include ../common/public.ejs %>
+</head>
+<body ontouchstart>
+<article>
+    <div class="bh">
+        <div class="weui_cells weui_cells_form">
+            <div class="weui_cell">
+
+                <div class="weui_cell_bd weui_cell_primary">
+                    <input class="weui_input" type="tel" placeholder="员工编号" name="code"/>
+                </div>
+            </div>
+            <div class="weui_cell">
+
+                <div class="weui_cell_bd weui_cell_primary">
+                    <input class="weui_input" type="tel" placeholder="员工姓名" name="name"/>
+                </div>
+            </div>
+            <div class="weui_cell">
+
+                <div class="weui_cell_bd weui_cell_primary">
+                    <input class="weui_input" type="tel" placeholder="证件后四位字符" name="cardId"/>
+                </div>
+            </div>
+        </div>
+    </div>
+</article>
+
+<footer>
+    <div class="footer_box"><a href="javascript:void(0);" id="submit" class="weui_btn weui_btn_warn">验证</a></div>
+</footer>
+<% include ../common/footer.ejs %>
+</body>
+</html>

@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <% include ../common/meta.ejs %>
+    <title>点餐</title>
+    <% include ../common/public.ejs %>
+</head>
+<body ontouchstart>
+<% if(body.length > 0 ){%>
+    <% include ./myOrderByPage.ejs %>
+<% }else{ %>
+<div class="noorder">
+
+    <div class="noorder_text">
+        有种淡淡的忧伤
+    </div>
+
+</div>
+<% } %>
+<% include ../common/footer.ejs %>
+<script>
+    $(document).ready(function() {
+        var nicesx = $("#boxscroll").niceScroll("#boxscroll div",{touchbehavior:true,cursorcolor:"#FF00FF",cursoropacitymax:0.6,cursorwidth:24,usetransition:true,hwacceleration:true,autohidemode:"hidden"});
+    });
+</script>
+</body>
+</html>
