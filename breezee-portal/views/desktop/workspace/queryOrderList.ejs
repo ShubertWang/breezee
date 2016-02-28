@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <% include ../common/meta.ejs %>
+    <title>管理平台</title>
+    <% include ../common/public.ejs %>
+    <style>
+        #query-node{
+            color: blue;
+        }
+    </style>
+</head>
+<body>
+<% include ../common/header.ejs %>
+<div class="container">
+    <div class="dolphin-row">
+        <div class="dolphin-col-19">
+            <div class="page-content">
+                <!--title-->
+                <div class="page-header">
+                    <h1>订单查询</h1>
+                </div>
+
+                <!--query condition-->
+                <div class="panel panel-default togglePanel">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">
+                            <span class="glyphicon glyphicon-search"></span>
+                            查询条件
+                        </h3>
+                    </div>
+                    <div class="panel-body default-hidden">
+                        <form id="queryForm" name="queryForm" class="form-horizontal form-single">
+                            <div class="dolphin-row">
+                                <div class="dolphin-col-10">
+                                    <div class="form-group">
+                                        <label class="col-sm-4 control-label">
+                                            订单编码
+                                        </label>
+                                        <div class="col-sm-8">
+                                            <input type="text" class="form-control"  name="code">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="dolphin-col-10">
+                                    <div class="form-group">
+                                        <label class="col-sm-4 control-label">
+                                            任务标题
+                                        </label>
+                                        <div class="col-sm-8">
+                                            <input type="text" class="form-control"  name="name">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="dolphin-col-4">
+                                    <div class="queryButtonPanel">
+                                        <button class="btn btn-small btn-primary" type="button" id="query">
+                                            查询
+                                        </button>
+                                        <button class="btn btn-small btn-default" type="button" id="conditionReset">
+                                            清空
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <!--list-->
+                <div id="list"></div>
+            </div>
+        </div>
+        <div class="dolphin-col-5">
+            <% include ./workspaceMenu.ejs %>
+        </div>
+    </div>
+</div>
+<% include ../common/footer.ejs %>
+</body>
+</html>

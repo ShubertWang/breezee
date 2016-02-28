@@ -65,7 +65,7 @@ $(function () {
     page.initEvent = function () {
         var _this = this;
         $("#query").click(function () {
-            this.undoList.query(Dolphin.form.getValue("#queryForm"));
+            _this.undoList.query(Dolphin.form.getValue("#queryForm"));
         });
         $("#conditionReset").click(function () {
             Dolphin.form.empty("#queryForm")

@@ -94,9 +94,15 @@ public class OrderServiceImpl implements IOrderService, InitializingBean {
 
     @Override
     public PageResult<OrderInfo> pageAll(Map<String, Object> m, PageInfo pageInfo) {
+        if(m.get("username") != null){
+            m.remove("username");
+        }
         Page<OrderEntity> page = orderRepository.findAll(DynamicSpecifications.createSpecification(m),pageInfo);
         return new PageResult<>(page, OrderInfo.class, (orderEntity, orderInfo) -> orderEntity.toInfo());
     }
+
+
+
 
     @Override
     public OrderInfo findOrderInfoByCode(String code){

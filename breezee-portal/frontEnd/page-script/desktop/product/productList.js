@@ -112,7 +112,7 @@ $(function () {
         });
 
         $("#query").click(function () {
-            this.productList.query(Dolphin.form.getValue("#queryForm"));
+            _this.productList.query(Dolphin.form.getValue("#queryForm"));
         });
         $("#conditionReset").click(function () {
             Dolphin.form.empty("#queryForm")

@@ -53,6 +53,11 @@ public class OrderEntity extends BaseInfo {
         return code;
     }
 
+    @Column(name = "ORDER_NAME", unique = true, updatable = false, nullable = false, length = 64)
+    public String getName() {
+        return name;
+    }
+
     public String getRemark() {
         return remark;
     }
