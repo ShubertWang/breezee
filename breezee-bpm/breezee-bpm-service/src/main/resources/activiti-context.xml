@@ -24,13 +24,24 @@
                 <bean class="org.activiti.explorer.form.MonthFormType"/>
             </list>
         </property>
+        <property name="customSessionFactories">
+            <list>
+                <bean class="com.breezee.bpm.identity.MyGroupManagerFactory">
+                    <property name="accountService" ref="accountService" />
+                </bean>
+                <bean class="com.breezee.bpm.identity.MyUserManagerFactory">
+                    <property name="accountService" ref="accountService" />
+                </bean>
+            </list>
+        </property>
+
         <!--<property name="databaseTablePrefix" value="BPM_"/>-->
         <!--<property name="deploymentResources">-->
-            <!--<list>-->
-                <!--&lt;!&ndash;<value>classpath*:/diagram/simple-product.bpmn</value>&ndash;&gt;-->
-                <!--<value>classpath*:/diagram/OrderProcess.bpmn</value>-->
-                <!--<value>classpath*:/diagram/SeatProcess.bpmn</value>-->
-            <!--</list>-->
+        <!--<list>-->
+        <!--&lt;!&ndash;<value>classpath*:/diagram/simple-product.bpmn</value>&ndash;&gt;-->
+        <!--<value>classpath*:/diagram/OrderProcess.bpmn</value>-->
+        <!--<value>classpath*:/diagram/SeatProcess.bpmn</value>-->
+        <!--</list>-->
         <!--</property>-->
     </bean>
 

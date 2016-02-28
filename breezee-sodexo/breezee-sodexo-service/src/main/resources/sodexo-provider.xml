@@ -14,6 +14,12 @@
     <dubbo:service interface="com.breezee.prj.sodexo.service.IFoodLineService"
                    ref="foodLineService" protocol="dubbo,rest" />
 
+    <dubbo:service interface="com.breezee.prj.sodexo.service.IModelService"
+                   ref="modelService" protocol="dubbo,rest" />
+    <dubbo:service interface="com.breezee.prj.sodexo.service.IArticleService"
+                   ref="articleService" protocol="dubbo,rest" />
+
+
     <dubbo:reference interface="com.breezee.sysmgr.api.service.IOrganizationService" id="organizationService" protocol="dubbo" />
     <dubbo:reference interface="com.breezee.sysmgr.api.service.IAccountService" id="accountService" protocol="dubbo" />
     <dubbo:reference interface="com.breezee.pcm.api.service.ICategoryService" id="categoryService" protocol="dubbo" />

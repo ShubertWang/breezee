@@ -205,16 +205,19 @@ public class TaskServiceImpl implements ITaskService {
     }
 
     @Override
-    public PageResult<TaskInfo> findUndoTasks(TaskInfo TaskInfo, PageInfo pageInfo) {
-        TaskQuery taskQuery = taskService.createTaskQuery().taskCandidateOrAssigned(TaskInfo.getAssignee()).active();
+    public PageResult<TaskInfo> findUndoTasks(Map<String,Object> m, PageInfo pageInfo) {
+        if(pageInfo==null){
+            pageInfo = new PageInfo(Integer.valueOf(m.get("pageNumber").toString()),Integer.valueOf(m.get("pageSize").toString()));
+        }
+        TaskQuery taskQuery = taskService.createTaskQuery().taskCandidateOrAssigned(m.get("username").toString()).active();
         long count = taskQuery.count();
         List<Task> l = taskQuery.listPage(pageInfo.getPageNumber(), pageInfo.getPageSize());
         return convert(l, count);
     }
 
     @Override
-    public PageResult<TaskInfo> findFinishedTasks(TaskInfo TaskInfo, PageInfo pageInfo) {
-        HistoricTaskInstanceQuery hquery = historyService.createHistoricTaskInstanceQuery().taskAssignee(TaskInfo.getAssignee()).finished();
+    public PageResult<TaskInfo> findFinishedTasks(Map<String,Object> m, PageInfo pageInfo) {
+        HistoricTaskInstanceQuery hquery = historyService.createHistoricTaskInstanceQuery().taskAssignee(m.get("username").toString()).finished();
         long count = hquery.count();
         List<HistoricTaskInstance> l = hquery.listPage(pageInfo.getPageNumber(), pageInfo.getPageSize());
         return convert(l, count);

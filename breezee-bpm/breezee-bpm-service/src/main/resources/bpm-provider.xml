@@ -18,4 +18,10 @@
     <dubbo:service interface="com.breezee.bpm.api.service.IWorkflowService" ref="workflowServiceImpl"
                    protocol="dubbo,rest"/>
 
+
+    <dubbo:reference interface="com.breezee.sysmgr.api.service.IAccountService"
+                     id="accountService" protocol="dubbo" check="false" />
+    <dubbo:reference interface="com.breezee.sysmgr.api.service.IRoleService"
+                     id="roleService" protocol="dubbo" check="false" />
+
 </beans>

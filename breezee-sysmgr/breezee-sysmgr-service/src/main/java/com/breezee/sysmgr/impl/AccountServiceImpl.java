@@ -52,8 +52,8 @@ public class AccountServiceImpl implements IAccountService {
         if (accountInfo.getOrgId() != null)
             entity.setOrganization(organizationRepository.findOne(accountInfo.getOrgId()));
         if (accountInfo.getRoles() != null && accountInfo.getRoles().size() > 0) {
-            for (Long roleId : accountInfo.getRoles()) {
-                entity.addRole(roleRepository.findOne(roleId));
+            for (String roleId : accountInfo.getRoles()) {
+                entity.addRole(roleRepository.findByCode(roleId));
             }
         }
         if (accountInfo.getPassword() == null) {
@@ -84,6 +84,11 @@ public class AccountServiceImpl implements IAccountService {
     public PageResult<AccountInfo> pageAll(Map<String, Object> m, PageInfo pageInfo) {
         Page<AccountEntity> page = accountRepository.findAll(DynamicSpecifications.createSpecification(m), pageInfo);
         return new PageResult<>(page, AccountInfo.class, (accountEntity, accountInfo) -> accountEntity.toInfo());
+    }
+
+    @Override
+    public void updateStatus(Long id, int status) {
+
     }
 
     @Override
@@ -153,6 +158,14 @@ public class AccountServiceImpl implements IAccountService {
             info = ErrorInfo.build(info, ContextUtil.getMessage("account.not.exist",new Object[]{info.getCode()}));
         }
         return info;
+    }
+
+    @Override
+    public AccountInfo findByCode(String code) {
+        AccountEntity entity = accountRepository.findByCode(code);
+        if(entity==null)
+            return ErrorInfo.build(AccountInfo.class);
+        return entity.toInfo();
     }
 
     /**

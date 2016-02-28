@@ -46,7 +46,13 @@ public class UserInfo extends BaseInfo {
 
     protected String orgId;
 
+    protected String accountId;
+
     protected double balance = 0.00;
+
+    protected Integer addressCount;
+
+    protected boolean accountAble;
 
     protected List<ShippingAddressInfo> shippingAddressInfos = new ArrayList<>();
 
@@ -170,6 +176,14 @@ public class UserInfo extends BaseInfo {
         this.balance = balance;
     }
 
+    public String getAccountId() {
+        return accountId;
+    }
+
+    public void setAccountId(String accountId) {
+        this.accountId = accountId;
+    }
+
     public List<ShippingAddressInfo> getShippingAddressInfos() {
         return shippingAddressInfos;
     }
@@ -184,4 +198,10 @@ public class UserInfo extends BaseInfo {
             this.shippingAddressInfos = new ArrayList<>();
         this.shippingAddressInfos.add(sinfo);
     }
+
+    public Integer getAddressCount() {
+        return shippingAddressInfos!=null?shippingAddressInfos.size():0;
+    }
+
+
 }

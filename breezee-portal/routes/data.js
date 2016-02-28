@@ -42,7 +42,7 @@ router.use('*', function (req, res, next) {
                 "value": null,
                 "rows": []
             };
-            if (reponse.rows) {
+            if (toString.apply(ret) === '[object Array]') {
                 reponse.total = ret.length;
                 reponse.rows = ret;
             } else if (ret.content) {
@@ -58,6 +58,8 @@ router.use('*', function (req, res, next) {
             }
             return reponse;
         }
+
+        bodyData.username = req.session.username;
 
         request({
             method: req.method,

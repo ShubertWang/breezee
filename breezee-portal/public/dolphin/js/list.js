@@ -320,6 +320,10 @@
 					pageSize : this.opts.pageSize,
 					pageNumber : this.opts.pageNumber - 1
 				});
+				$.extend(queryCondition, {
+					pageSize : this.opts.pageSize,
+					pageNumber : this.opts.pageNumber - 1
+				});
 			}
 			if(this.opts.sortName){
 				url = thisTool.urlAddParam(url, {
@@ -331,9 +335,16 @@
 				$.extend(queryCondition, {groupCode : this.groupCode});
 			}
 
+			var _data;
+			if(this.opts.ajaxType=='get'){
+				_data = queryCondition;
+			} else {
+				_data = Dolphin.json2string(queryCondition);
+			}
+
 			this.opts.ajax({
 				url : url,
-				data : queryCondition,
+				data : _data,
 				type : this.opts.ajaxType,
 				mockPathData : this.opts.mockPathData,
 				pathData : this.opts.pathData,

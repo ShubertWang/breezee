@@ -33,6 +33,7 @@ public final class TaskInfo extends BaseInfo {
     protected String parentTaskId;
     protected Date startTime;
     protected Date endTime;
+    protected String username;
 
     public String getOwner() {
         return owner;
@@ -176,5 +177,15 @@ public final class TaskInfo extends BaseInfo {
 
     public void setEndTime(Date endTime) {
         this.endTime = endTime;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+        if(this.assignee == null)
+            this.assignee = username;
     }
 }
