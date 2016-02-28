@@ -37,7 +37,7 @@ $(function () {
                 width:'75px',
                 formatter:function(val,data){
                     return '<input type="checkbox" value="'+val+'" ' +
-                        'id="recoslideThree" onchange="updateSome(this,'+data.id+',0)" name="check" '+ (val?'checked':'')+' />';
+                        'id="recoslideThree" onchange="updateRecommend(this,'+data.id+')" name="check" '+ (val?'checked':'')+' />';
                 }
             },{
                 code : 'name',
@@ -120,11 +120,14 @@ $(function () {
     };
 
     window.updateStatus = function(el,id){
-        var tmp = ['recommend','status'];
-        console.log(el.checked);
-        return;
         Dolphin.ajax({
-            url : '/data/pcm/product/status/'+id+'/'+el.checked?1:0
+            url : '/data/pcm/product/status/'+id+'/'+(el.checked?1:0)
+        });
+    }
+
+    window.updateRecommend = function(el,id){
+        Dolphin.ajax({
+            url : '/data/pcm/product/recommend/'+id+'/'+(el.checked?true:false)
         });
     }
 

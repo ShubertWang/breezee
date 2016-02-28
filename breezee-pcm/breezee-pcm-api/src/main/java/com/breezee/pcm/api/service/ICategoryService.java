@@ -42,5 +42,5 @@ public interface ICategoryService extends IServiceLayer<CategoryInfo> {
 
     @Path("/pCode/{code}")
     @GET
-    List<CategoryInfo> findCategoryByParentCode(@PathParam("code")String code);
+    List<CategoryInfo> findCategoryByParentCode(@PathParam("code")String code, @QueryParam("recom") boolean norecom);
 }

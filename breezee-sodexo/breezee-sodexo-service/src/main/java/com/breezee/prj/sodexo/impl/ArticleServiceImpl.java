@@ -10,8 +10,10 @@ import com.breezee.prj.sodexo.repository.ModelRepository;
 import com.breezee.prj.sodexo.service.IArticleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -29,7 +31,25 @@ public class ArticleServiceImpl implements IArticleService {
 
     @Override
     public PageResult<ArticleInfo> findByModelId(Long modelId, PageInfo page) {
+        if(page==null){
+            page = new PageInfo();
+        }
+        page.setSort(new Sort(Sort.Direction.DESC,"updateTime"));
         ModelEntity entity = modelRepository.findOne(modelId);
+        if (entity != null) {
+            Page<ArticleEntity> pa = articleRepository.findByModel(entity, page);
+            return new PageResult<>(pa, ArticleInfo.class, (articleEntity, articleInfo) -> articleEntity.toInfo());
+        }
+        return new PageResult<>();
+    }
+
+    @Override
+    public PageResult<ArticleInfo> findByModelCode(String modelCode, PageInfo page) {
+        if(page==null){
+            page = new PageInfo();
+        }
+        page.setSort(new Sort(Sort.Direction.DESC,"updateTime"));
+        ModelEntity entity = modelRepository.findByCode(modelCode);
         if (entity != null) {
             Page<ArticleEntity> pa = articleRepository.findByModel(entity, page);
             return new PageResult<>(pa, ArticleInfo.class, (articleEntity, articleInfo) -> articleEntity.toInfo());
@@ -48,6 +68,8 @@ public class ArticleServiceImpl implements IArticleService {
             ModelEntity modelEntity = modelRepository.findOne(articleInfo.getModelId());
             entity.setModel(modelEntity);
         }
+        entity.setCreateTime(new Date());
+        entity.setUpdateTime(new Date());
         articleRepository.save(entity);
         return SuccessInfo.build(ArticleInfo.class);
     }

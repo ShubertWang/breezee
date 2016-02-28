@@ -102,4 +102,20 @@ public class FoodLineServiceImpl implements IFoodLineService {
         List<FoodLineEntity> l = foodLineRepository.findBySiteAndShipping(site,shipping);
         return new InfoList<>(l, (Callback<FoodLineEntity, FoodLineInfo>) (FoodLineEntity, FoodLineInfo) -> FoodLineEntity.toInfo());
     }
+
+    @Override
+    public FoodLineInfo findByOrgId(Long orgId) {
+        FoodLineEntity entity = foodLineRepository.findByOrgId(orgId);
+        if (entity == null)
+            return ErrorInfo.build(FoodLineInfo.class);
+        return entity.toInfo();
+    }
+
+    @Override
+    public FoodLineInfo findByCode(String code) {
+        FoodLineEntity entity = foodLineRepository.findByCode(code);
+        if (entity == null)
+            return ErrorInfo.build(FoodLineInfo.class);
+        return entity.toInfo();
+    }
 }

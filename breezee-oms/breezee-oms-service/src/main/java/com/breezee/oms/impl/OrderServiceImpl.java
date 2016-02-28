@@ -5,30 +5,32 @@
 
 package com.breezee.oms.impl;
 
-import com.breezee.bpm.api.domain.ProcsInsInfo;
-import com.breezee.bpm.api.service.ITaskService;
 import com.breezee.bpm.api.service.IWorkflowService;
 import com.breezee.common.*;
 import com.breezee.common.util.Callback;
-import com.breezee.common.DynamicSpecifications;
 import com.breezee.oms.api.domain.OrderInfo;
+import com.breezee.oms.api.service.IOrderService;
 import com.breezee.oms.entity.OrderEntity;
 import com.breezee.oms.repository.OrderRepository;
-import com.breezee.oms.api.service.IOrderService;
 import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
+import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.jdbc.support.incrementer.MySQLMaxValueIncrementer;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.util.*;
+import javax.sql.DataSource;
+import java.util.Collection;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Created by Silence on 2016/2/12.
  */
 @Service("orderService")
-public class OrderServiceImpl implements IOrderService {
+public class OrderServiceImpl implements IOrderService, InitializingBean {
 
     @Autowired
     private OrderRepository orderRepository;
@@ -36,8 +38,15 @@ public class OrderServiceImpl implements IOrderService {
     @Resource
     private IWorkflowService workflowService;
 
+    @Autowired
+    private DataSource dataSource;
+
+    private MySQLMaxValueIncrementer valueIncrementer;
+
     @Override
     public OrderInfo saveInfo(OrderInfo orderInfo) {
+        if(orderInfo.getId()==null)
+            orderInfo.setCode(1+valueIncrementer.nextStringValue().replace("-", ""));
         OrderEntity entity = new OrderEntity().parse(orderInfo);
         entity.setIssueDate(new Date());
         orderRepository.save(entity);
@@ -53,12 +62,12 @@ public class OrderServiceImpl implements IOrderService {
         } else {
             taskService.complete(orderInfo.getTaskId().toString());
         }*/
-        if(orderInfo.getTaskId()==null || orderInfo.getTaskId()<0) {
-            Map<String,Object> vars = Maps.newConcurrentMap();
-            //注意第一次保存启动流程orderInfo的ProcDefId和code一定要有值
-            vars.put("foodLineRole",orderInfo.getStoreName());
-            workflowService.startProcessInstanceById(orderInfo.getProcDefId(), entity.getCode(),vars);
-        }
+//        if(orderInfo.getTaskId()==null || orderInfo.getTaskId()<0) {
+//            Map<String,Object> vars = Maps.newConcurrentMap();
+//            //注意第一次保存启动流程orderInfo的ProcDefId和code一定要有值
+//            vars.put("foodLineRole",orderInfo.getStoreName());
+//            workflowService.startProcessInstanceById(orderInfo.getProcDefId(), entity.getCode(),vars);
+//        }
 
         //TODO:减库存
         return SuccessInfo.build(OrderInfo.class);
@@ -115,5 +124,11 @@ public class OrderServiceImpl implements IOrderService {
         return orderInfoList;
     }
 
+    @Override
+    public void afterPropertiesSet() throws Exception {
+        valueIncrementer = new MySQLMaxValueIncrementer(dataSource,"pcm_tf_product_seq","SEQ_ID");
+        valueIncrementer.setCacheSize(1);
+        valueIncrementer.setPaddingLength(8);
+    }
 
 }

@@ -6,6 +6,7 @@
 package com.breezee.crm.entity;
 
 import com.breezee.common.BaseInfo;
+import com.breezee.crm.api.domain.ShippingAddressInfo;
 import com.breezee.crm.api.domain.UserInfo;
 
 import javax.persistence.*;
@@ -259,8 +260,15 @@ public class UserEntity extends BaseInfo {
         info.setAccountId(this.getAccountId());
         if (this.getShippingAddresses()!=null && this.getShippingAddresses().size()>0){
             this.getShippingAddresses().forEach(a->{
-                info.addShippingAddressInfo(a.toInfo());
+                ShippingAddressInfo si = a.toInfo();
+                info.addShippingAddressInfo(si);
+                if(a.isDefaultAddress()){
+                    info.setDefaultAddress(si);
+                }
             });
+            if(info.getDefaultAddress()==null && info.getShippingAddressInfos().size()>0){
+                info.setDefaultAddress(info.getShippingAddressInfos().get(0));
+            }
         }
         return info;
     }

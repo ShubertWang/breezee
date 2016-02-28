@@ -16,6 +16,8 @@ route.orderFood = function (queryData, res, callback) {
     }, function(error, response, body){
         var ret = {};
         ret.data = body || [];
+        ret.messhall={};
+        ret.foodTypeName =
         ret.createTime = global.myUtil.dateFormatter(new Date(), "yyyy-MM-dd hh:mm");
         ret.time = global.myUtil.dateFormatter(new Date(), "yyyy-MM-dd hh:mm");
         callback(ret);
@@ -93,15 +95,41 @@ route.employeeOrderDetail = function (queryData, res, callback) {
 route.orderConfirm = function (queryData, res, callback) {
     global.myUtil.request({
         method : 'get',
-        uri : '/order/',
+        uri : 'http://127.0.0.1:10250/services/foodLine/code/'+queryData.restId,
         mockData : '/account/myAccount',
-        form : queryData
+        json:{},
+        headers: {
+            "Content-Type": "application/json",
+            "Accept": "application/json"
+        }
     }, function(error, response, body){
         if(error){
             throw error;
         }
         var foodList = JSON.parse(res.req.cookies.foodList);
-        callback(extend({"foodList":foodList}, body));
+        var data = {"foodList":foodList,"payType":{}};
+        var payType = (body.payType || "").split(",");
+        for(var i=0;i<payType.length;i++){
+            if(payType[i]){
+                data['payType'][payType[i]]=true;
+            }
+        }
+        global.myUtil.request({
+            method : 'get',
+            uri : 'http://127.0.0.1:10248/services/user/shippingAddress/user/'+queryData.userId,
+            mockData : '/account/myAccount',
+            json:{},
+            headers: {
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            }
+        },function(error, response, body){
+            if(error){
+                throw error;
+            }
+            data.address = body;
+            callback(data);
+        });
     });
 };
 route.otherService = function (queryData, res, callback) {

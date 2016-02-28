@@ -43,7 +43,9 @@ router.get('/', function (req, res, next) {
                 req.session.userData.userCode = openId;
                 req.session.userData.userName = body.name;
                 req.session.userData.addressCount = body.addressCount;
-
+                if(body.defaultAddress) {
+                    req.session.userData.defaultAddress = body.defaultAddress;
+                }
                 //req.session.dn =
             }
         });

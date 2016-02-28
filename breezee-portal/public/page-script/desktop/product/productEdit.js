@@ -165,7 +165,7 @@ $(function () {
 
             switch (attr.attrType){
                 case "string":
-                    input = $('<'+attr.textType+' type="text" class="form-control" />');
+                    input = $('<'+(attr.textType || 'input')+' type="text" class="form-control" />');
                     input.attr('name', attr.id);
                     break;
                 case "integer":

@@ -8,6 +8,8 @@ package com.breezee.sysmgr.impl;
 import com.breezee.common.*;
 import com.breezee.common.util.Callback;
 import com.breezee.common.util.ContextUtil;
+import com.breezee.prj.sodexo.domain.FoodLineInfo;
+import com.breezee.prj.sodexo.service.IFoodLineService;
 import com.breezee.sysmgr.api.domain.AccountInfo;
 import com.breezee.sysmgr.api.service.IAccountService;
 import com.breezee.sysmgr.entity.AccountEntity;
@@ -19,6 +21,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -38,6 +41,9 @@ public class AccountServiceImpl implements IAccountService {
 
     @Autowired
     private RoleRepository roleRepository;
+
+    @Resource
+    private IFoodLineService foodLineService;
 
     @Override
     public AccountInfo saveInfo(AccountInfo accountInfo) {
@@ -153,10 +159,14 @@ public class AccountServiceImpl implements IAccountService {
                 info = ErrorInfo.build(info, ContextUtil.getMessage("account.login.wrong"));
             } else {
                 info = entity.toInfo();
+                //获取服务线
+                FoodLineInfo lineInfo = foodLineService.findByOrgId(info.getOrgId());
+                info.setJob(lineInfo.getCode());
             }
         } else {
             info = ErrorInfo.build(info, ContextUtil.getMessage("account.not.exist",new Object[]{info.getCode()}));
         }
+
         return info;
     }
 

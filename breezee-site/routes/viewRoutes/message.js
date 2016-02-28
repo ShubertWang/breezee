@@ -14,20 +14,27 @@ route.message = function (queryData, res, callback) {
 };
 route.news = function (queryData, res, callback) {
     global.myUtil.request({
-        method : 'get',
-        uri : '/message/message',
-        mockData : '/message/news',
-        form : queryData
+        method : 'post',
+        uri : 'http://127.0.0.1:10250/services/article/modelCode/'+queryData.modelCode,
+        json:{},
+        headers: {
+            "Content-Type": "application/json",
+            "Accept": "application/json"
+        }
     }, function(error, response, body){
-        callback(body);
+        callback(body.content);
     });
 };
 route.newsDetail = function (queryData, res, callback) {
     global.myUtil.request({
         method : 'get',
-        uri : '/message/message',
+        uri : 'http://127.0.0.1:10250/services/article/'+queryData.id,
         mockData : '/message/newsDetail',
-        form : queryData
+        json:{},
+        headers: {
+            "Content-Type": "application/json",
+            "Accept": "application/json"
+        }
     }, function(error, response, body){
         callback(body);
     });

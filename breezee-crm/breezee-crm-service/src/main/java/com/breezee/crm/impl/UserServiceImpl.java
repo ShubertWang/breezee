@@ -24,6 +24,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -43,12 +44,17 @@ public class UserServiceImpl implements IUserService {
     private EncodeRepository encodeRepository;
 
     @Override
-    public void saveShippingAddress(ShippingAddressInfo addressInfo) {
+    public Map<String,Object> saveShippingAddress(ShippingAddressInfo addressInfo) {
         UserEntity u = userRepository.findOne(addressInfo.getUserId());
         //TODO:throw user not found exception
         ShippingAddressEntity se = new ShippingAddressEntity().parse(addressInfo);
         se.setUser(u);
         shippingAddressRepository.save(se);
+
+        Map<String,Object> m = new HashMap<>();
+        m.put("callback",true);
+        m.put("value",se.toInfo());
+        return m;
     }
 
     @Override

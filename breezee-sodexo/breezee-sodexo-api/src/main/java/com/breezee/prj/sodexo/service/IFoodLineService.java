@@ -30,4 +30,12 @@ public interface IFoodLineService extends IServiceLayer<FoodLineInfo> {
     @Path("/site/{site}/{shipping}")
     @GET
     List<FoodLineInfo> findBySiteAndShipping(@PathParam("site")String site, @PathParam("shipping")String shipping);
+
+    @Path("/orgId/{orgId}")
+    @GET
+    FoodLineInfo findByOrgId(@PathParam("orgId") Long orgId);
+
+    @Path("/code/{code}")
+    @GET
+    FoodLineInfo findByCode(@PathParam("code") String code);
 }

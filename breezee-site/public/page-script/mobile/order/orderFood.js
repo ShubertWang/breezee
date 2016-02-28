@@ -66,6 +66,8 @@ $(function () {
 
         $('[data-food-type-id]').click(function () {
             var _this = $(this);
+            //Dolphin.goUrl('/order/orderFood?restId='+REQUEST_MAP.data.restId+"&cateId="+$(this).attr("data-food-type-id"));
+            //根据code 从界面上拿到
             $('#foodTypeName').html(_this.data('food-type-name'));
             $('.foodTypeList').hide();
             $('.foodTypeList_'+_this.data('food-type-id')).show();
@@ -102,7 +104,7 @@ $(function () {
                 alert('请至少选择一道菜肴');
             }else{
                 Dolphin.cookie("foodList", Dolphin.json2string(foodList), {path:'/'});
-                Dolphin.goUrl("/order/orderConfirm");
+                Dolphin.goUrl("/order/orderConfirm?restId="+REQUEST_MAP.data.restId+"&userId="+REQUEST_MAP.userData.userId);
             }
         });
     };

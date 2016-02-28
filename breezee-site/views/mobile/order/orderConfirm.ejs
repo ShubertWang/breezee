@@ -18,53 +18,51 @@
 <div>
     <ul class="list-group">
         <% for(i = 0; i < body.address.length; i++){ %>
-            <% if((data.addressId == null && body.address[i].defaultFlag) || data.addressId == body.address[i].id){ %>
-
-            <li class="<%= body.address[i].defaultFlag?"list-group-item_edit":"list-group-item_edit_b" %> bh">
-                <a href="/view/account/address?pickFlag=true">
-                    <div class="bh">
-                        <div class="title_a_h"><%= body.address[i].addressee %></div>
-                        <div class="title_c_h"><%= body.address[i].phone %></div>
-                    </div>
-                    <div class="mr"><%= body.address[i].address %></div>
-                </a>
-            </li>
-            <% break;%>
-            <% } %>
+        <% if((data.addressId == null && body.address[i].defaultAddress) || data.addressId == body.address[i].id){ %>
+        <li class="<%= body.address[i].defaultAddress?"list-group-item_edit":"list-group-item_edit_b" %> bh">
+            <a href="/view/account/address?pickFlag=true&restId=<%= data.restId %>&userId=<%= data.userId %>">
+                <div class="bh">
+                    <div id="addressSel" addressId="<%= body.address[i].id %>" class="title_a_h"><%= body.address[i].consigneeName %></div>
+                    <div class="title_c_h"><%= body.address[i].consigneeMobile %></div>
+                </div>
+                <div class="mr"><%= body.address[i].consigneeAddress %></div>
+            </a>
+        </li>
+        <% break;%>
+        <% } %>
         <% } %>
     </ul>
 </div>
 <% } %>
 
 <div>
-
     <div class="weui_cells weui_cells_radio">
-        <label class="weui_cell weui_check_label" for="x11">
+        <label class="weui_cell weui_check_label" for="x11" style="display: <%= body.payType.wepay?"block":"none" %>;">
             <div class="weui_cell_bd weui_cell_primary">
                 <p>微信支付<span>仅支持微信4.2及上版本</span></p>
             </div>
             <div class="weui_cell_ft">
-                <input type="radio" class="weui_check" name="radio1" id="x11">
+                <input type="radio" class="weui_check" name="payType" id="x11">
                 <span class="weui_icon_checked"></span>
             </div>
         </label>
-        <label class="weui_cell weui_check_label" for="x12">
+        <label class="weui_cell weui_check_label" for="x12" style="display: <%= body.payType.cardpay?"block":"none" %>;">
 
             <div class="weui_cell_bd weui_cell_primary">
                 <p>员工卡支付<span>从员工卡中在线扣款</span></p>
             </div>
             <div class="weui_cell_ft">
-                <input type="radio" name="radio1" class="weui_check" id="x12" checked="checked">
+                <input type="radio" name="payType" class="weui_check" id="x12" checked="checked">
                 <span class="weui_icon_checked"></span>
             </div>
         </label>
-        <label class="weui_cell weui_check_label" for="x13">
+        <label class="weui_cell weui_check_label" for="x13" style="display: <%= body.payType.cash?"block":"none" %>;">
 
             <div class="weui_cell_bd weui_cell_primary">
                 <p>就餐时支付<span>只支持持有员工卡的公司员工使用</span></p>
             </div>
             <div class="weui_cell_ft">
-                <input type="radio" name="radio1" class="weui_check" id="x13">
+                <input type="radio" name="payType" class="weui_check" id="x13">
                 <span class="weui_icon_checked"></span>
             </div>
         </label>
@@ -79,18 +77,28 @@
                 </div>
 
                 <div class="">
-                    <select class="weui_select">
+                    <select class="weui_select" name="needTime" id="needTime">
                         <option value="">请选择</option>
+                        <option value="16:00">7:00</option>
+                        <option value="16:00">8:00</option>
+                        <option value="16:00">9:00</option>
+                        <option value="16:00">10:00</option>
+                        <option value="16:00">11:00</option>
+                        <option value="16:00">12:00</option>
+                        <option value="16:00">13:00</option>
+                        <option value="16:00">14:00</option>
+                        <option value="16:00">15:00</option>
                         <option value="16:00">16:00</option>
-                        <option value="16:15">16:15</option>
-                        <option value="16:30">16:30</option>
-                        <option value="16:45">16:45</option>
+                        <option value="16:00">17:00</option>
+                        <option value="16:00">18:00</option>
+                        <option value="16:00">19:00</option>
+                        <option value="16:00">20:00</option>
+                        <option value="16:00">21:00</option>
                     </select>
                 </div>
             </a>
         </div>
     </div>
-
 
 
     <div class="weui_cells">
@@ -104,7 +112,7 @@
         </div>
         <div class="weui_cell">
             <div class="weui_cell_bd weui_cell_primary">
-                <textarea class="weui_textarea __remark" placeholder="如有特殊要求请留言" rows="3" name="remark"></textarea>
+                <textarea class="weui_textarea __remark" placeholder="如有特殊要求请留言" rows="3" id="remark" name="remark"></textarea>
                 <div class="weui_textarea_counter"><span class="__remarkLength">0</span>/200</div>
             </div>
         </div>
@@ -132,7 +140,7 @@
     <div class="btn_box bh">
         <div class="fkjg">总计：<strong id="totalPrice" data-total-price="<%= totalPrice %>">￥<%= totalPrice.toFixed(2) %></strong></div>
         <div class="bd">
-            <a href="javascript:;" class="weui_btn weui_btn_warn">确认</a>
+            <a href="javascript:;" id="confirmOrder" class="weui_btn weui_btn_warn">确认</a>
         </div>
     </div>
 
@@ -150,6 +158,55 @@
             autohidemode: "hidden"
         });
     });
+
+    var orderInfo = {};
+    orderInfo.subTotal = {value:"<%= totalPrice.toFixed(2) %>"};
+    orderInfo.storeName = REQUEST_MAP.data.restId;
+    orderInfo.userId = REQUEST_MAP.data.userId;
+
+    $("input[name='payType']").each(function () {
+        if ($(this).is(':checked')) {
+            orderInfo.paymentType = $(this).val();
+        }
+    });
+    orderInfo.needTime = document.getElementById("needTime").value;
+    orderInfo.remark = document.getElementById("remark").value;
+
+    var orderLines = [];
+    <% for(i = 0; i < body.foodList.length; i++){ %>
+    orderLines.push({
+        skuId:"<%= body.foodList[i].id %>",
+        note:"<%= body.foodList[i].name %>",
+        quantity : {value:"<%= body.foodList[i].number %>"},
+        unitPrice:{value:"<%= body.foodList[i].price.toFixed(2) %>"}
+    });
+    <% }%>
+
+    orderInfo.orderLines = orderLines;
+    <% if(cookie.orderType == "wm"){ %>
+        orderInfo.shippingAddressId = $("#addressSel").attr("addressId");
+    <% } %>
+
+    $("#confirmOrder").click(function(){
+        //userId
+        //subTotal
+        //storeName 服务线
+        //orderLines
+        Dolphin.ajax({
+            url: '/data/oms/order/',
+            type: Dolphin.requestMethod.PUT,
+            data: Dolphin.json2string(orderInfo),
+            onSuccess: function (reData) {
+                Dolphin.alert(reData.msg || '保存成功', {
+                    callback: function () {
+                        //判断支付情况
+                        Dolphin.goUrl("/order/myOrder");
+                    }
+                })
+            }
+        })
+    });
+
 </script>
 </body>
 </html>

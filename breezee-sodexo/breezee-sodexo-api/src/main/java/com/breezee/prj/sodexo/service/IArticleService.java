@@ -19,4 +19,8 @@ public interface IArticleService extends IServiceLayer<ArticleInfo> {
     @Path("/modelId/{modelId}")
     @POST
     PageResult<ArticleInfo> findByModelId(@PathParam("modelId") Long modelId, PageInfo page);
+
+    @Path("/modelCode/{modelCode}")
+    @POST
+    PageResult<ArticleInfo> findByModelCode(@PathParam("modelCode") String modelCode, PageInfo page);
 }

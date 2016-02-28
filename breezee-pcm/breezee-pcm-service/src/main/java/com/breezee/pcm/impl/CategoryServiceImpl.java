@@ -12,6 +12,7 @@ import com.breezee.pcm.api.domain.CateAttrInfo;
 import com.breezee.pcm.api.domain.CategoryInfo;
 import com.breezee.pcm.api.domain.ProductInfo;
 import com.breezee.pcm.api.service.ICategoryService;
+import com.breezee.pcm.api.service.IProductService;
 import com.breezee.pcm.entity.AttributeEntity;
 import com.breezee.pcm.entity.CateAttrEntity;
 import com.breezee.pcm.entity.CategoryEntity;
@@ -22,6 +23,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -40,6 +42,9 @@ public class CategoryServiceImpl implements ICategoryService {
 
     @Autowired
     private AttributeRepository attributeRepository;
+
+    @Resource
+    private IProductService productService;
 
     @Override
     public List<CategoryInfo> findCategoryByParentId(Long id) {
@@ -97,12 +102,22 @@ public class CategoryServiceImpl implements ICategoryService {
     }
 
     @Override
-    public List<CategoryInfo> findCategoryByParentCode(String code) {
+    public List<CategoryInfo> findCategoryByParentCode(String code,boolean norecom) {
         CategoryEntity en = categoryRepository.findByCode(code);
         List<CategoryEntity> l = new ArrayList<>();
         if (en != null)
             l.addAll(en.getChildren());
         List<CategoryInfo> ret = new ArrayList<>();
+        if(!norecom) {
+            //今日推荐的
+            CategoryInfo categoryInfo = new CategoryInfo();
+            categoryInfo.setId(-100L);
+            categoryInfo.setCode("today");
+            categoryInfo.setName("今日推荐");
+            categoryInfo.setIcon("today");
+            categoryInfo.setProducts(productService.findRecomProductByCateId(code));
+            ret.add(categoryInfo);
+        }
         for (CategoryEntity e : l) {
             List<ProductInfo> ll = new ArrayList<>();
             Set<ProductEntity> s = e.getProducts();
@@ -115,7 +130,6 @@ public class CategoryServiceImpl implements ICategoryService {
             inf.setProducts(ll);
             ret.add(inf);
         }
-
         return ret;
     }
 

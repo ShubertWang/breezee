@@ -43,4 +43,8 @@ public interface IProductService extends IServiceLayer<ProductInfo> {
     @Path("/recommend/{id}/{recommend}")
     @GET
     void updateRecommend(@PathParam("id") Long id, @PathParam("recommend") boolean recommend);
+
+    @Path("/recommendproduct/{cateId}")
+    @GET
+    List<ProductInfo> findRecomProductByCateId(@PathParam("cateId") String cateId);
 }

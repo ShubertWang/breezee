@@ -54,6 +54,8 @@ public class UserInfo extends BaseInfo {
 
     protected boolean accountAble;
 
+    protected ShippingAddressInfo defaultAddress;
+
     protected List<ShippingAddressInfo> shippingAddressInfos = new ArrayList<>();
 
     public String getType() {
@@ -205,5 +207,13 @@ public class UserInfo extends BaseInfo {
 
     public boolean isAccountAble() {
         return accountId!=null?true:false;
+    }
+
+    public ShippingAddressInfo getDefaultAddress() {
+        return defaultAddress;
+    }
+
+    public void setDefaultAddress(ShippingAddressInfo defaultAddress) {
+        this.defaultAddress = defaultAddress;
     }
 }

@@ -35,6 +35,7 @@ public class OrderEntity extends BaseInfo {
     private Double shippingPrice;
     private String shippingMethod;
     private String storeName;
+    private String needTime;
     /**
      * 总商品金额
      */
@@ -185,6 +186,14 @@ public class OrderEntity extends BaseInfo {
         this.subTotal = subTotal;
     }
 
+    public String getNeedTime() {
+        return needTime;
+    }
+
+    public void setNeedTime(String needTime) {
+        this.needTime = needTime;
+    }
+
     public OrderInfo toInfo(){
         OrderInfo info = new OrderInfo();
         cloneAttribute(info);
@@ -203,7 +212,7 @@ public class OrderEntity extends BaseInfo {
                 info.addOrderLine(a.toInfo());
             });
         }
-
+        info.setNeedTime(this.getNeedTime());
         return info;
     }
 
@@ -214,12 +223,14 @@ public class OrderEntity extends BaseInfo {
         this.setShippingAddressId(info.getShippingAddressId());
         this.setCurrencyCode(info.getSubTotal().getCurrencyCode());
         this.setIssueDate(info.getIssueDate());
-        this.setPaymentAmount(info.getPaymentAmount().getValue());
+        if(info.getPaymentAmount()!=null)
+            this.setPaymentAmount(info.getPaymentAmount().getValue());
         this.setPaymentType(info.getPaymentType());
         this.setPriority(info.getPriority());
         this.setShippingPrice(info.getShippingPrice() == null ? new Amount("CNY",new Double(0)).getValue() : info.getShippingPrice().getValue());
         this.setSubTotal(info.getSubTotal().getValue());
         this.setUserId(info.getUserId());
+        this.setNeedTime(info.getNeedTime());
         if(info.getOrderLines().size()>0){
             info.getOrderLines().forEach(a->{
                 this.addOrderLine(new OrderLineEntity().parse(a));
@@ -227,4 +238,6 @@ public class OrderEntity extends BaseInfo {
         }
         return this;
     }
+
+
 }

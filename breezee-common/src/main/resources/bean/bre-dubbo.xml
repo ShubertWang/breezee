@@ -20,6 +20,7 @@
             address="${dubbo.registry.address}"
             timeout="${dubbo.registry.timeout}"
             register="${dubbo.registry.register}"
+            file="${dubbo.registry.file}"
             subscribe="${dubbo.registry.subscribe}"/>
 
     <!-- 使用基于dubbo提供的注解，例如Service等等，来减少xml的配置 -->

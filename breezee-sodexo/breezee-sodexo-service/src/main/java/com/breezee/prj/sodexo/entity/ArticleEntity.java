@@ -107,6 +107,7 @@ public class ArticleEntity extends BaseInfo {
         this.subtitle = subtitle;
     }
 
+    @Lob
     public String getContent() {
         return content;
     }
@@ -144,6 +145,7 @@ public class ArticleEntity extends BaseInfo {
         BeanUtils.copyProperties(this,info,new String[]{"model"});
         if(this.getModel()!=null){
             info.setModelId(this.getModel().getId());
+            info.setModelName(this.getModel().getName());
         }
         return info;
     }

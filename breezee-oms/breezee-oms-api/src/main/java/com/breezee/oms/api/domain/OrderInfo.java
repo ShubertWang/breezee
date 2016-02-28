@@ -37,6 +37,8 @@ public class OrderInfo extends BaseInfo {
      */
     private Amount subTotal;
 
+    private String needTime;
+
     /**
      * 下面的流程定义的字段从界面上传递过来，而不是从数据库取出来的
      */
@@ -159,5 +161,13 @@ public class OrderInfo extends BaseInfo {
 
     public void setProcsInsId(Long procsInsId) {
         this.procsInsId = procsInsId;
+    }
+
+    public String getNeedTime() {
+        return needTime;
+    }
+
+    public void setNeedTime(String needTime) {
+        this.needTime = needTime;
     }
 }
