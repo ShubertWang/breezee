@@ -142,7 +142,6 @@ $(function () {
                     editWin.modal('hide');
                     Dolphin.alert(reData.msg || '保存成功', {
                         callback : function () {
-                            infoPanel.hide();
                             list.reload();
                         }
                     })

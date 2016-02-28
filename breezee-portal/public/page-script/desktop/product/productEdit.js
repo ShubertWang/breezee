@@ -9,7 +9,9 @@ $(function () {
         baseInfo : $('#baseInfo'),
         categoryId : $('#categoryId'),
         categoryAttrPanel : $('#extendAttrPanel'),
+        imageAttrPanel : $('#imageAttrPanel'),
         categoryAttrPanelBody : $('#categoryAttrPanelBody'),
+        imageAttrPanelBody : $('#imageAttrPanelBody'),
         save : $('#save')
     };
 
@@ -61,6 +63,7 @@ $(function () {
                 _this.renderForm(this.value);
             }else{
                 _this.categoryAttrPanel.hide();
+                _this.imageAttrPanel.hide();
             }
         });
 
@@ -68,7 +71,7 @@ $(function () {
             var submitData = $.extend({}, _this.productInfo, Dolphin.form.getValue(_this.baseInfo), {
                 productData : Dolphin.form.getValue(_this.categoryAttrPanel)
             });
-
+            submitData.recommend = $('#slideThree').is(':checked')?"true":"false";
             Dolphin.ajax($.extend({}, _this.connect.productSave, {
                 loading : true,
                 data : Dolphin.json2string(submitData),
@@ -80,7 +83,7 @@ $(function () {
                     })
                 }
             }))
-        })
+        });
     };
 
     page.initValue = function(data){
@@ -105,10 +108,30 @@ $(function () {
                 _this.categoryAttr = reData.rows;
 
                 _this.categoryAttrPanelBody.empty();
+                _this.imageAttrPanelBody.empty();
                 _this.categoryAttrPanel.show();
+                var textareaField = [];
+                var imageField = [];
                 $.each(_this.categoryAttr, function (i, attr) {
+                    if(attr.attrType=='string' && attr.textType && attr.textType=='textArea'){
+                        textareaField.push(attr);
+                    } else if(attr.attrType == 'image') {
+                        imageField.push(attr);
+                    } else {
+                        _this.renderField(attr, _this.categoryAttrPanelBody);
+                    }
+                });
+                $.each(textareaField, function (i, attr) {
                     _this.renderField(attr, _this.categoryAttrPanelBody);
                 });
+                if(imageField.length>0){
+                    _this.imageAttrPanelBody.show();
+                    _this.imageAttrPanel.show();
+                }
+                $.each(imageField, function (i, attr) {
+                    _this.renderField(attr, _this.imageAttrPanelBody);
+                });
+
                 if(typeof callback == 'function'){
                     callback.call(_this, reData);
                 }
@@ -135,10 +158,16 @@ $(function () {
                 'id': attr.id
             }).appendTo(col);
 
-            inputLabel = $('<label class="col-sm-2 control-label">').html(attr.name).appendTo(control);
-            inputPanel = $('<div class="col-sm-10">').appendTo(control);
+            if(attr.attrType != 'image') {
+                inputLabel = $('<label class="col-sm-2 control-label">').html(attr.name).appendTo(control);
+                inputPanel = $('<div class="col-sm-10">').appendTo(control);
+            }
 
             switch (attr.attrType){
+                case "string":
+                    input = $('<'+attr.textType+' type="text" class="form-control" />');
+                    input.attr('name', attr.id);
+                    break;
                 case "integer":
                 case "numberic":
                     input = $('<div class="input-group">');
@@ -152,6 +181,21 @@ $(function () {
                     input.attr($.extend({}, {options:attr.enumCode}, attr.param));
                     input.attr('name', attr.id);
                     Dolphin.form.parseSelect(input);
+                    break;
+                case "image":
+                    input = $('<input type="hidden" id="'+attr.code+'" class="form-control" />');
+                    input.attr('name', attr.id);
+                    $("#fileupload").attr('attrCode',attr.code);
+                    $('#fileupload').fileupload({
+                        url: '/file/',
+                        dataType: 'json',
+                        done: function (e, data) {
+                            $("#"+$("#fileupload").attr("attrCode")).val(data.result.name);
+                            $("#imageShowBody").attr("src",data.result.url);
+                        },
+                        progressall: function (e, data) {
+                        }
+                    });
                     break;
                 default :
                     input = $('<input type="text" class="form-control" />');

@@ -141,36 +141,34 @@ public class CateAttrEntity extends BaseInfo {
         this.orderNo = orderNo;
     }
 
-    public CateAttrInfo toInfo(){
+    public CateAttrInfo toInfo() {
         CateAttrInfo cateAttrInfo = new CateAttrInfo();
         cloneAttribute(cateAttrInfo);
-        if(this.getAttribute()!=null) {
+        if (this.getAttribute() != null) {
             cateAttrInfo.setAttrId(this.getAttribute().getId());
             cateAttrInfo.setCode(this.getAttribute().getCode());
             cateAttrInfo.setAttrType(this.getAttribute().getFieldType());
             cateAttrInfo.setUnitCode(this.getAttribute().getUnitCode());
-            if(cateAttrInfo.getAttrType().equals("dict")) {
-                ObjectMapper objectMapper = ContextUtil.getBean("objectMapper",ObjectMapper.class);
+            ObjectMapper objectMapper = ContextUtil.getBean("objectMapper", ObjectMapper.class);
+            if (this.getAttribute() != null && this.getAttribute().getArguments() != null)
                 try {
-                    Map<String,Object> m = objectMapper.readValue(this.getAttribute().getArguments(),Map.class);
-                    cateAttrInfo.setEnumCode(m.get("enumCode")+"");
+                    Map<String, Object> m = objectMapper.readValue(this.getAttribute().getArguments(), Map.class);
+                    cateAttrInfo.setExtend(m);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-
-            }
         }
         cateAttrInfo.setDefaultValue(this.getDefaultValue());
         cateAttrInfo.setDisplay(this.isDisplay());
         cateAttrInfo.setInheritable(this.isInheritable());
         cateAttrInfo.setNullable(this.isNullable());
         cateAttrInfo.setOrderNo(this.getOrderNo());
-        if(this.getCategory()!=null)
+        if (this.getCategory() != null)
             cateAttrInfo.setSourceCateId(this.getCategory().getId());
         return cateAttrInfo;
     }
 
-    public CateAttrEntity parse(CateAttrInfo info){
+    public CateAttrEntity parse(CateAttrInfo info) {
         info.cloneAttribute(this);
         this.setId(null);
         this.setDefaultValue(info.getDefaultValue());

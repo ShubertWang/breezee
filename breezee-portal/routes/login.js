@@ -38,9 +38,9 @@ router.post('/', function(req, res, next){
             throw error;
         //判断body
         if(body && body.id > 0){
-            req.session.username=bodyData.code;
+            req.session.userCode=bodyData.code;
             req.session.userId=body.id;
-            req.session.userCaption=body.name;
+            req.session.userName=body.name;
             req.session.userOrg=body.orgId;
             req.session.userRoles=body.roles;
             res.send({success : true});
