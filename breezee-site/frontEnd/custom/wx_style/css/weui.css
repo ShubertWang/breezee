@@ -296,6 +296,9 @@ input.weui_btn_mini {
 .weui_btn_warn {
   background-color: #D8050E;
 }
+.weui_btn_warn span {
+	font-size:.75em;
+}
 .weui_btn_warn:not(.weui_btn_disabled):visited {
   color: #FFFFFF;
 }
@@ -358,7 +361,7 @@ input.weui_btn_plain_default {
   display: none;
 }
 .weui_cells {
-  margin-top: 1.17647059em;
+  margin-top: .5em;
   background-color: #FFFFFF;
   line-height: 1.41176471;
   font-size: 17px;
