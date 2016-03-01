@@ -5,23 +5,21 @@
     <title>餐厅列表</title>
     <% include ../common/public.ejs %>
 </head>
-<body ontouchstart class="bg_zi">
+<body ontouchstart>
 <article>
     <ul class="nr_list">
         <% for(var i = 0; i < body.length; i++){ %>
-        <li class="bh li_ct restaurantId" data-id="<%= body[i].code %>">
-            <div class="img time_yy">
-                <div><a href="javascript:void(0)" class="restaurantLink"><img src="/custom/wx_style/images/<%= body[i].image %>.png"></a></div>
-                <div class="ms"><%= body[i].time %></div>
+        <li class="bh li_ct evaluate_param" data-id="<%= body[i].id %>">
+            <div class="img">
+                <div><a href="javascript:void(0)" class="restaurantLink"><img src="/custom/wx_style/images/<%= body[i].image || 'icon_ct_mr' %>.png"></a></div>
             </div>
             <div class="text_ct bh">
                 <h2><a href="javascript:void(0)" class="restaurantLink"><%= body[i].name %></a></h2>
-                <div class="f_pj bh">
-                    <div class="float_l">
-                        <%- global.htmlRender.renderStar(body[i].point, 5)%>
-                    </div>
-                    <span class=" float_l">( <%= body[i].comment %>评价 )</span></div>
                 <div class="icon_ty like"><s> </s><a href="tel:<%= body[i].phone %>"><%= body[i].phone %></a></div>
+                <div class="clear bh">
+                    <div class="icon_ty dzh" onclick="__evaluat(this, true)"><s> </s><a href="javascript:void(0)" class="__count"><%= (body[i].comment && body[i].comment.yes) || '0' %></a></div>
+                    <div class="icon_ty dw" onclick="__evaluat(this, false)"><s> </s><a href="javascript:void(0)" class="__count"><%= (body[i].comment && body[i].comment.no) || '0' %></a></div>
+                </div>
             </div>
         </li>
         <% } %>

@@ -5,30 +5,35 @@
     <title>点餐</title>
     <% include ../common/public.ejs %>
     <style>
-        .footer_box{
+        .footer_box {
             position: relative;
-            height:0;
+            height: 0;
         }
-        .cartInfo{
+
+        .cartInfo {
             display: none;
         }
-        .weui_mask .footer_box{
+
+        .weui_mask .footer_box {
             position: fixed;
-            height:auto;
+            height: auto;
         }
-        .weui_mask .cartInfo{
+
+        .weui_mask .cartInfo {
             display: block;
         }
-        .foodType.nav_box{
-            width:130%;
+
+        .foodType.nav_box {
+            width: 130%;
         }
-        #boxscroll .nav_box.foodType .nav_icon{
-            width:14%;
+
+        #boxscroll .nav_box.foodType .nav_icon {
+            width: 14%;
         }
     </style>
 </head>
 <body ontouchstart class="bg_b">
-<% var i;%>
+<% var i; %>
 <article>
     <div class="tab_list bh bg_zi">
         <ul id="headTab">
@@ -40,17 +45,18 @@
     <div class="pagePanel" id="order_food">
         <div id="boxscroll">
             <div class="nav_box bh bg_zi1 foodType">
-                <% for(i = 0; i <body.data.length; i++){%>
-                <div class="nav_icon" data-food-type-id="<%= body.data[i].id %>" data-food-type-name="<%= body.data[i].name %>">
-                    <div><img src="/custom/wx_style/images/nav_<%= body.data[i].icon %>.png"></div>
-                    <div><%= body.data[i].name %></div>
+                <% for(i = 0; i < body.food.length; i++){ %>
+                <div class="nav_icon" data-food-type-id="<%= body.food[i].id %>"
+                     data-food-type-name="<%= body.food[i].name %>">
+                    <div><img src="/custom/wx_style/images/nav_n_<%= body.food[i].imageCode %>.png"></div>
+                    <div><%= body.food[i].name %></div>
                 </div>
                 <% } %>
             </div>
         </div>
 
         <div class="ty_bt_title">
-            <h3><span class="icon_tj1">&nbsp;</span><span id="foodTypeName">今日推荐</span></h3>
+            <h3><span class="icon_tj1">&nbsp;</span><span id="foodTypeName"><%= body.food[0].name %></span></h3>
         </div>
 
         <% for(i = 0; i < body.data.length; i++){%>
@@ -60,13 +66,13 @@
             <% food = body.data[i].products[j]; %>
             <div class="list bh foodData" data-food-id="<%= food.id %>" data-food-price="<%= food.basePrice.value %>" data-food-name="<%= food.name %>">
                 <div class="text foodDetail"><a href="#"><%= food.name %></a></div>
-                <div class="img foodDetail"><img src="/custom/wx_style/images/<%= food.productData.imageCode || 'img_cp1' %>.png"></div>
+                <div class="img foodDetail"><img src="/custom/wx_style/images/<%= food.image %>.png"></div>
                 <div class="bh">
 
                     <div class="btn_gm">
-                        <div class="icon_jh icon_jhh"> </div>
-                        <div class="sz"  style=" display:none;">5</div>
-                        <div class="icon_jh1" style=" display:none;"> </div>
+                        <div class="icon_jh icon_jhh"></div>
+                        <div class="sz" style=" display:none;">5</div>
+                        <div class="icon_jh1" style=" display:none;"></div>
                     </div>
                     <div class="jg_b"><span>￥</span><%= food.basePrice.value || 18 %></div>
                 </div>
@@ -78,72 +84,26 @@
 
     <div class="pagePanel" id="restaurant_info" style="display: none;">
         <ul class="nr_list">
-            <li class="bh li_ct" data-id="<%= body.messhall.id %>">
-                <div class="img time_yy">
-                    <div><a href="#"><img src="/custom/wx_style/images/<%= body.messhall.image %>.png"></a></div>
-                    <div class="ms"><%= body.messhall.businessHours %></div>
+            <li class="bh li_ct evaluate_param" data-id="<%= body.id %>">
+                <div class="img">
+                    <div><a href="javascript:void(0)"><img src="/custom/wx_style/images/<%= body.image || 'icon_ct_mr' %>.png"></a></div>
                 </div>
                 <div class="text_ct bh">
-                    <h2><a href="#"><%= body.messhall.name %></a></h2>
-                    <div class="f_pj bh">
-                        <div class="float_l">
-                            <%- global.htmlRender.renderStar(body.messhall.point, 5)%>
-                        </div>
-                        <span class=" float_l">( <%= body.messhall.commentLength %>评价 )</span></div>
-                    <div class="icon_ty like"><s> </s><a href="tel:<%= body.messhall.phone %>"><%= body.messhall.phone %></a></div>
+                    <h2><a href="javascript:void(0)"><%= body.name %></a></h2>
+                    <div class="icon_ty like"><s> </s><a href="tel:<%= body.phone %>"><%= body.phone %></a></div>
+                    <div class="clear bh">
+                        <div class="icon_ty dzh" onclick="__evaluat(this, true)"><s> </s><a href="javascript:void(0)" class="__count"><%= (body.comment && body.comment.yes) || '0' %></a></div>
+                        <div class="icon_ty dw" onclick="__evaluat(this, false)"><s> </s><a href="javascript:void(0)" class="__count"><%= (body.comment && body.comment.yes) || '0' %></a></div>
+                    </div>
                 </div>
+                <div class="icon_ty ctdz"><s> </s><a href="tel:62549984">餐厅地址 ：<%= body.address %></a></div>
             </li>
         </ul>
 
         <div>
-            <div class="ty_bt_title">
-                <h3><span class="icon_gg">&nbsp;</span>餐厅公告</h3>
-                <h5 class="ty_bt_box"><%- body.messhall.notice %></h5>
-            </div>
-            <div class="weui_cells" style="margin-top:0;">
-
-                <div class=" weui_cells_access">
-                    <a class="weui_cell" href="javascript:;">
-                        <div class="weui_cell_bd weui_cell_primary">
-                            <p><%= body.messhall.name %></p>
-                        </div>
-                        <div class="weui_cell_ft"> </div>
-                    </a>
-                </div>
-            </div>
-            <div class="div_ddlist">
-                <div class="ddmx">
-                    <ul class="list-group" style="margin-top:0;">
-                        <li class=" bh">
-                            <div class="title_b">餐厅地址 ：</div>
-                            <div class="title_b_text"><%= body.messhall.address %></div>
-                        </li>
-
-                        <li class=" bh">
-                            <div class="title_b">营业时间 ：</div>
-                            <div class="title_b_text"><%= body.messhall.businessDate %> <%= body.messhall.businessHours %></div>
-                        </li>
-                        <li class=" bh">
-                            <div class="title_b">联系方式 ：</div>
-                            <div class="title_b_text"><%= body.messhall.phone %></div>
-                        </li>
-                    </ul>
-                </div>
-            </div>
             <div class="ty_bt_title" style="background:none;">
                 <h3><span class="icon_ct">&nbsp;</span>餐厅简介</h3>
-                <h5 class="ty_bt_box"><%- body.messhall.remark %></h5>
-            </div>
-            <div class="ty_bt_title">
-                <h3><span class="icon_pj">&nbsp;</span>餐厅评价</h3>
-                <h5 class="ty_bt_box">
-
-                    <div class="div_mddp">
-                        <ul class=" bh">
-                            <li> <% include ../common/evaluate.ejs %></li>
-                        </ul>
-                    </div>
-                </h5>
+                <h5 class="ty_bt_box"><%- body.remark %></h5>
             </div>
         </div>
     </div>
@@ -155,12 +115,12 @@
                 <div class="text_bth" name="name"></div>
                 <div class="bh">
                     <div class="btn_gm">
-                        <div class="icon_jh food_detail_button"> </div>
+                        <div class="icon_jh food_detail_button"></div>
                         <div class="sz" name="number"></div>
-                        <div class="icon_jh1 food_detail_button" > </div>
+                        <div class="icon_jh1 food_detail_button"></div>
                     </div>
                     <div class="jg">￥<span name="price"></span></div>
-                    <div class="ty_bt_titleh" >
+                    <div class="ty_bt_titleh">
                         <h3><span class="icon_cp1">&nbsp;</span>菜品简介</h3>
                         <h5 class="ty_bt_box" name="desc"></h5>
                     </div>

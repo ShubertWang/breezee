@@ -1,4 +1,4 @@
-Dolphin.defaults.mockFlag = false;
+Dolphin.defaults.mockFlag = true;
 $(function () {
     $('#submit').click(function () {
         var data = Dolphin.form.getValue('form');
@@ -7,9 +7,9 @@ $(function () {
             type : Dolphin.requestMethod.PUT,
             data : Dolphin.json2string(data),
             onSuccess : function (reData) {
-                Dolphin.alert(reData.msg || '新增成功', {
+                Dolphin.alert(reData.msg || '提交成功', {
                     callback : function () {
-                        Dolphin.goHistory();
+                        Dolphin.goUrl("/account/address?pickFlag=" + !!REQUEST_MAP.data.pickFlag);
                     }
                 });
             }
