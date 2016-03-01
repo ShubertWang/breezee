@@ -28,6 +28,8 @@ public class ProductEntity extends BaseInfo {
 
     private String currencyCode;
 
+    private boolean recommend;
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "PRODUCT_ID", unique = true, nullable = false)
@@ -69,6 +71,10 @@ public class ProductEntity extends BaseInfo {
         return updateTime;
     }
 
+    public String getRemark() {
+        return remark;
+    }
+
     @ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
     @JoinColumn(name = "CATE_ID", referencedColumnName = "CATE_ID")
     public CategoryEntity getCategory() {
@@ -104,25 +110,41 @@ public class ProductEntity extends BaseInfo {
         this.currencyCode = currencyCode;
     }
 
+    public boolean isRecommend() {
+        return recommend;
+    }
+
+    public void setRecommend(boolean recommend) {
+        this.recommend = recommend;
+    }
+
     public ProductInfo toInfo() {
-        ProductInfo info = (ProductInfo) this.clone();
-        if (this.getCategory() != null)
+        ProductInfo info = new ProductInfo();
+        cloneAttribute(info);
+        if (this.getCategory() != null) {
             info.setCateId(this.getCategory().getId());
-        if(this.getData()!=null&&this.getData().size()>0){
-            this.getData().forEach(a->{
-                info.getValues().put(a.getAttribute().getCode(),a.getAttrValue());
+            info.setCateName(this.getCategory().getName());
+        }
+        if (this.getData() != null && this.getData().size() > 0) {
+            this.getData().forEach(a -> {
+                info.getProductData().put(a.getAttribute().getId().toString(), a.getAttrValue());
             });
         }
-        info.setBasePrice(new Amount(this.currencyCode,this.basePrice));
+        info.setBasePrice(new Amount(this.currencyCode, this.basePrice));
+        info.setRecommend(this.recommend);
         return info;
     }
 
     public ProductEntity parse(ProductInfo info) {
         info.cloneAttribute(this);
-        if(info.getBasePrice()!=null) {
+        if (info.getBasePrice() != null) {
             this.setBasePrice(info.getBasePrice().getValue());
-            this.setCurrencyCode(info.getBasePrice().getCurrencyCode());
+            if (info.getBasePrice().getCurrencyCode() != null)
+                this.setCurrencyCode(info.getBasePrice().getCurrencyCode());
+            else
+                this.setCurrencyCode("RMB");
         }
+        this.setRecommend(info.isRecommend());
         return this;
     }
 }

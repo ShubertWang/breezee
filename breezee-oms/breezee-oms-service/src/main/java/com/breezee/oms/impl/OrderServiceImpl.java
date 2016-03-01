@@ -15,6 +15,8 @@ import com.breezee.oms.api.domain.OrderInfo;
 import com.breezee.oms.entity.OrderEntity;
 import com.breezee.oms.repository.OrderRepository;
 import com.breezee.oms.api.service.IOrderService;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
@@ -32,9 +34,6 @@ public class OrderServiceImpl implements IOrderService {
     private OrderRepository orderRepository;
 
     @Resource
-    private ITaskService taskService;
-
-    @Resource
     private IWorkflowService workflowService;
 
     @Override
@@ -43,7 +42,7 @@ public class OrderServiceImpl implements IOrderService {
         entity.setIssueDate(new Date());
         orderRepository.save(entity);
         //启动流程
-        if(orderInfo.getTaskId()==null || orderInfo.getTaskId()<0) {
+       /*if(orderInfo.getTaskId()==null || orderInfo.getTaskId()<0) {
             Map<String, Object> m = new HashMap<>();
 //            m.put("dueDate", entity.getIssueDate());
             m.put("creator", entity.getCreator());
@@ -53,7 +52,14 @@ public class OrderServiceImpl implements IOrderService {
             taskService.autoComplete(Long.parseLong(prcsInsInfo.getProcessInstanceId()), m);
         } else {
             taskService.complete(orderInfo.getTaskId().toString());
+        }*/
+        if(orderInfo.getTaskId()==null || orderInfo.getTaskId()<0) {
+            Map<String,Object> vars = Maps.newConcurrentMap();
+            //注意第一次保存启动流程orderInfo的ProcDefId和code一定要有值
+            vars.put("foodLineRole",orderInfo.getStoreName());
+            workflowService.startProcessInstanceById(orderInfo.getProcDefId(), entity.getCode(),vars);
         }
+
         //TODO:减库存
         return SuccessInfo.build(OrderInfo.class);
     }
@@ -79,7 +85,41 @@ public class OrderServiceImpl implements IOrderService {
 
     @Override
     public PageResult<OrderInfo> pageAll(Map<String, Object> m, PageInfo pageInfo) {
+        if(m.get("username") != null){
+            m.remove("username");
+        }
         Page<OrderEntity> page = orderRepository.findAll(DynamicSpecifications.createSpecification(m),pageInfo);
         return new PageResult<>(page, OrderInfo.class, (orderEntity, orderInfo) -> orderEntity.toInfo());
     }
+
+
+
+
+    @Override
+    public OrderInfo findOrderInfoByCode(String code){
+        OrderEntity entity;
+        List<OrderEntity> entityList = orderRepository.findByCode(code);
+        if(entityList==null){
+            return ErrorInfo.build(OrderInfo.class);
+        }else{
+            entity = entityList.get(0);
+        }
+        return entity.toInfo();
+    }
+
+    @Override
+    public List<OrderInfo> findOrderInfoListByCodes(Collection<String> codes){
+        List<OrderInfo> orderInfoList = Lists.newArrayList();
+        List<OrderEntity> entityList = orderRepository.findByCodeIn(codes);
+        if(entityList==null){
+            orderInfoList.add(ErrorInfo.build(OrderInfo.class));
+        }else{
+            for(OrderEntity item : entityList){
+                orderInfoList.add(item.toInfo());
+            }
+        }
+        return orderInfoList;
+    }
+
+
 }

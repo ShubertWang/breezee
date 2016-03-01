@@ -84,6 +84,14 @@ public class CategoryServiceImpl implements ICategoryService {
     }
 
     @Override
+    public CategoryInfo findByCode(String code) {
+        CategoryEntity en = categoryRepository.findByCode(code);
+        if(en==null)
+            return ErrorInfo.build(CategoryInfo.class);
+        return en.toInfo(false);
+    }
+
+    @Override
     public CategoryInfo saveInfo(CategoryInfo categoryInfo) {
         CategoryEntity entity = categoryRepository.findByCode(categoryInfo.getCode());
         if (categoryInfo.getId() == null && entity != null) {
@@ -122,5 +130,10 @@ public class CategoryServiceImpl implements ICategoryService {
     @Override
     public PageResult<CategoryInfo> pageAll(Map<String, Object> m, PageInfo pageInfo) {
         return null;
+    }
+
+    @Override
+    public void updateStatus(Long id, int status) {
+
     }
 }

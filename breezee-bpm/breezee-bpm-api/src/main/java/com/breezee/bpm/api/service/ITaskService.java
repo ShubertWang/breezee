@@ -9,10 +9,8 @@ import com.breezee.bpm.api.domain.TaskInfo;
 import com.breezee.common.PageInfo;
 import com.breezee.common.PageResult;
 
-import javax.ws.rs.PUT;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
+import javax.ws.rs.*;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import java.util.Collection;
 import java.util.Date;
@@ -25,8 +23,7 @@ import java.util.Map;
  *
  * Created by Silence on 2016/2/2.
  */
-@Path("/bpm-task")
-@Produces(MediaType.APPLICATION_JSON)
+@Path("/bpmTask")
 public interface ITaskService {
 
     /**
@@ -203,12 +200,20 @@ public interface ITaskService {
      * @param TaskInfo
      * @return
      */
-    PageResult<TaskInfo> findUndoTasks(TaskInfo TaskInfo, PageInfo pageInfo);
+    @Path("/findUndoTasks")
+    @POST
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    PageResult<TaskInfo> findUndoTasks(Map<String,Object> m, PageInfo pageInfo);
 
     /**
      * 获取已办任务
      * @param TaskInfo
      * @return
      */
-    PageResult<TaskInfo> findFinishedTasks(TaskInfo TaskInfo, PageInfo pageInfo);
+    @Path("/findFinishedTasks")
+    @POST
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    PageResult<TaskInfo> findFinishedTasks(Map<String,Object> m, PageInfo pageInfo);
 }

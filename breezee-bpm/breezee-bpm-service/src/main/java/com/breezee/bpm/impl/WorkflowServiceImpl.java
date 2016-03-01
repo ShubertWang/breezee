@@ -12,6 +12,7 @@ import com.breezee.common.PageResult;
 import org.activiti.engine.RuntimeService;
 import org.activiti.engine.runtime.ProcessInstance;
 import org.springframework.beans.BeanUtils;
+import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
@@ -22,6 +23,7 @@ import java.util.Map;
 /**
  * Created by Silence on 2016/2/2.
  */
+@Service
 public class WorkflowServiceImpl implements IWorkflowService {
 
     @Resource
@@ -34,7 +36,7 @@ public class WorkflowServiceImpl implements IWorkflowService {
 
     @Override
     public ProcsInsInfo startProcessInstanceById(String processDefinitionId, String businessKey, Map<String, Object> variables) {
-        ProcessInstance processInstance = runtimeService.startProcessInstanceById(processDefinitionId, businessKey, variables);
+        ProcessInstance processInstance = runtimeService.startProcessInstanceByKey(processDefinitionId, businessKey, variables);
         return this.populator(processInstance);
     }
 

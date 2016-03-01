@@ -17,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -60,7 +61,8 @@ public class MesshallServiceImpl implements IMesshallService {
         List<MesshallEntity> l = messhallRepository.findAll(DynamicSpecifications.createSpecification(m));
         return new InfoList<>(l, (Callback<MesshallEntity, MesshallInfo>) (messhallEntity, messhallInfo) -> {
             MesshallInfo info = messhallEntity.toInfo();
-            info.setOrgName(organizationService.findInfoById(info.getOrgId()).getName());
+            if(info.getOrgId()!=null)
+                info.setOrgName(organizationService.findInfoById(info.getOrgId()).getName());
             return info;
         });
     }
@@ -70,9 +72,19 @@ public class MesshallServiceImpl implements IMesshallService {
         Page<MesshallEntity> page = messhallRepository.findAll(DynamicSpecifications.createSpecification(m),pageInfo);
         return new PageResult<>(page, MesshallInfo.class, (messhallEntity, messhallInfo) -> {
             MesshallInfo info = messhallEntity.toInfo();
-            info.setOrgName(organizationService.findInfoById(info.getOrgId()).getName());
-            info.setDutyName(accountService.findInfoById(info.getDutyPerson()).getName());
+            if(info.getOrgId()!=null)
+                info.setOrgName(organizationService.findInfoById(info.getOrgId()).getName());
+            if(info.getDutyPerson()!=null)
+                info.setDutyName(accountService.findInfoById(info.getDutyPerson()).getName());
             return info;
         });
     }
+
+    @Override
+    public List<MesshallInfo> findAll() {
+        return listAll(new HashMap<>());
+    }
+
+    @Override
+    public void updateStatus(Long id, int status){}
 }

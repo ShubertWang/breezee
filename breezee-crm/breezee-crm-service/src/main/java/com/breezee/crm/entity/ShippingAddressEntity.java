@@ -213,7 +213,8 @@ public class ShippingAddressEntity extends BaseInfo {
     }
 
     public ShippingAddressInfo toInfo() {
-        ShippingAddressInfo info = (ShippingAddressInfo) this.clone();
+        ShippingAddressInfo info = new ShippingAddressInfo();
+        cloneAttribute(info);
         info.setCity(this.getCity());
         info.setConsigneeAddress(this.getConsigneeAddress());
         info.setConsigneeAlias(this.getConsigneeAlias());

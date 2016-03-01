@@ -10,7 +10,7 @@ router.post('/', function(req, res, next) {
     console.log('upload start');
     var form = new formidable.IncomingForm();   //创建上传表单
     form.encoding = 'utf-8';		//设置编辑
-    form.uploadDir = global.config.upload.uploadDir;	 //设置上传目录
+    form.uploadDir = "D:\\mywork\\workspace0\\breezee\\breezee-portal\\public\\uploadFiles\\images\\";	 //设置上传目录
     form.keepExtensions = true;	 //保留后缀
     form.maxFieldsSize = 2 * 1024 * 1024;   //文件大小
 
@@ -20,15 +20,24 @@ router.post('/', function(req, res, next) {
         if (err) {
             console.log('error')
         }
-        console.log(++count);
-        var avatarName = uuid.v1();
-        var newPath = form.uploadDir + avatarName;
-
+        //var avatarName = uuid.v1();
+        //var newPath = form.uploadDir + avatarName;
+        var fileName = files.upfile.path.replace(/D:\\mywork\\workspace0\\breezee\\breezee-portal\\public\\uploadFiles\\images\\/g,'');
         console.log(files);
         console.log("===========================================================================");
         console.log(fields);
-        fs.renameSync(files.file.path, newPath);  //重命名
-        res.send({success : true, fileId : avatarName});
+        //fs.renameSync(files.upfile.path, newPath);  //重命名
+        var result = "{\"name\":\""+ fileName +"\", \"originalName\": \""+ fileName +"\", \"size\": "+ files.upfile.size +", \"state\": \"SUCCESS\", \"type\": \""+ files.upfile.type +"\", \"url\": \"/uploadFiles/images/"+fileName+"\"}";
+        //var result = {
+        //    name:fileName,
+        //    originalName:fileName,
+        //    size:files.upfile.size,
+        //    state:"SUCCESS",
+        //    type:files.upfile.type,
+        //    url:'/uploadFiles/images/icon_tx.png'
+        //};
+        res.set('Content-Type', 'text/html;charset=utf-8');
+        res.send(result);
     });
 });
 

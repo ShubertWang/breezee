@@ -10,24 +10,27 @@ $(function () {
         columns: [{
             code: 'code',
             title: '餐厅编码',
-            formatter:function(val,data){
-                return "<a href='messhallDetail?id="+data.id+"'>"+val+"</a>";
-            }
+            width:'90px'
         }, {
             code: 'name',
             title: '餐厅名称'
         }, {
+            code: 'address',
+            title: '地址'
+        },{
             code: 'orgName',
-            title: '所属组织'
+            title: '所属组织',
+            width:'170px'
         },{
-            code: 'startTime',
-            title: '营业时间'
+            code: 'telephone',
+            width:'180px',
+            title: '联系电话'
         },{
-            code: 'endTime',
-            title: '结束时间'
-        },{
-            code: 'dutyName',
-            title: '负责人'
+            code:'setting',
+            title:'设置',
+            formatter:function(val,data){
+                return "<a href='messhallDetail?id="+data.id+"'>设置</a>";
+            }
         }],
         multiple : false,
         ajaxType:'post',

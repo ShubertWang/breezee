@@ -16,7 +16,7 @@ import java.util.Date;
  * Created by Silence on 2016/2/13.
  */
 @Entity
-@Table(name = "PRJ_TD_MESSHALL")
+@Table(name = "SDX_TD_MESSHALL")
 public class MesshallEntity extends MesshallInfo {
 
     @Id
@@ -82,6 +82,30 @@ public class MesshallEntity extends MesshallInfo {
 
     public Long getDutyPerson() {
         return dutyPerson;
+    }
+
+    public String getImageCode() {
+        return imageCode;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public String getNotice() {
+        return notice;
+    }
+
+    public String getTimeType() {
+        return timeType;
+    }
+
+    public String getTelephone() {
+        return telephone;
+    }
+
+    public String getRemark() {
+        return remark;
     }
 
     public MesshallInfo toInfo(){

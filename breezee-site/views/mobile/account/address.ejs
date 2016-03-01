@@ -13,10 +13,10 @@
             <li class="<%= body[i].defaultFlag?"list-group-item_edit":"list-group-item_edit_b" %> bh">
                 <a href="<%= (data.pickFlag?"/view/order/orderConfirm?addressId=":"/view/account/addAddress?id=") + body[i].id %>">
                     <div class="bh">
-                        <div class="title_a_h"><%= body[i].addressee %></div>
-                        <div class="title_c_h"><%= body[i].phone %></div>
+                        <div class="title_a_h"><%= body[i].consigneeName %></div>
+                        <div class="title_c_h"><%= body[i].consigneeMobile %></div>
                     </div>
-                    <div class="mr"><%= body[i].address %></div>
+                    <div class="mr"><%= body[i].consigneeAddress %></div>
                 </a>
             </li>
             <% } %>

@@ -1,10 +1,10 @@
-Dolphin.defaults.mockFlag = true;
+Dolphin.defaults.mockFlag = false;
 $(function () {
     var page = {};
 
     page.connect = {
         undoList : {
-            url : '/data/workspace/undoList'
+            url : '/data/bpm/bpmTask/findUndoTasks'
         }
     };
 
@@ -20,10 +20,10 @@ $(function () {
         this.undoList = new Dolphin.LIST({
             panel : '#list',
             url : _this.connect.undoList.url,
-            queryParams : Dolphin.form.getValue('queryForm'),
+            ajaxType:'post',
             title : '待办列表',
             columns : [{
-                code: 'id',
+                code: 'businessKey',
                 title: '订单号',
                 formatter : function(val, row, index){
                     var link = $('<a>').html(val);
@@ -37,16 +37,13 @@ $(function () {
                 code:'processDefinitionId',
                 title:'流程名称'
             },{
-                code:'description',
-                title:'任务标题'
-            },{
                 code: 'assignee',
                 title: '当前处理人'
             },{
                 code:'name',
                 title:'节点名称'
             }, {
-                code:'owner',
+                code:'userId',
                 title:'下单人'
             },{
                 code: 'createTime',
@@ -54,6 +51,15 @@ $(function () {
                 formatter:function(val){
                     return Dolphin.longDate2string(val);
                 }
+            },{
+                code: 'paymentAmount',
+                title: '支付金额'
+            },{
+                code: 'shippingMethod',
+                title: '支付方式'
+            },{
+                code: 'subTotal',
+                title: '商品总额'
             }]
         });
     };
@@ -61,7 +67,7 @@ $(function () {
     page.initEvent = function () {
         var _this = this;
         $("#query").click(function () {
-            this.undoList.query(Dolphin.form.getValue("#queryForm"));
+            _this.undoList.query(Dolphin.form.getValue("#queryForm"));
         });
         $("#conditionReset").click(function () {
             Dolphin.form.empty("#queryForm")

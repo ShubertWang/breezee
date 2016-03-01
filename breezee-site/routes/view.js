@@ -12,8 +12,8 @@ router.get('*', function(req, res, next) {
         var url, endType, userInfo,
             queryData;
 
-        userInfo = true;
-        //userInfo = req.session.username;
+        //userInfo = true;
+        userInfo = req.session.userId;
         //endType = /mobile|Mobile/.test(req.headers['user-agent'])?"/mobile":"/desktop";
         endType = "/mobile";
 

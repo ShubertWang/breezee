@@ -48,4 +48,6 @@ public interface IAccountService extends IServiceLayer<AccountInfo> {
     @Path("/checkPassword")
     @POST
     AccountInfo checkPassword(AccountInfo info);
+
+    AccountInfo findByCode(String code);
 }

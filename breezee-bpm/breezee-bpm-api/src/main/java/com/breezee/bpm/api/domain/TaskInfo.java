@@ -33,6 +33,61 @@ public final class TaskInfo extends BaseInfo {
     protected String parentTaskId;
     protected Date startTime;
     protected Date endTime;
+    protected String username;
+    protected String businessKey;   //订单号
+    protected Long userId;          //下单人
+    protected String paymentAmount; //支付金额
+    protected String shippingMethod; //支付方式
+    protected String subTotal;       //总额
+    protected Date issueDate;        //下单时间
+
+    public String getBusinessKey() {
+        return businessKey;
+    }
+
+    public void setBusinessKey(String businessKey) {
+        this.businessKey = businessKey;
+    }
+
+    public Long getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Long userId) {
+        this.userId = userId;
+    }
+
+    public String getPaymentAmount() {
+        return paymentAmount;
+    }
+
+    public void setPaymentAmount(String paymentAmount) {
+        this.paymentAmount = paymentAmount;
+    }
+
+    public String getShippingMethod() {
+        return shippingMethod;
+    }
+
+    public void setShippingMethod(String shippingMethod) {
+        this.shippingMethod = shippingMethod;
+    }
+
+    public String getSubTotal() {
+        return subTotal;
+    }
+
+    public void setSubTotal(String subTotal) {
+        this.subTotal = subTotal;
+    }
+
+    public Date getIssueDate() {
+        return issueDate;
+    }
+
+    public void setIssueDate(Date issueDate) {
+        this.issueDate = issueDate;
+    }
 
     public String getOwner() {
         return owner;
@@ -176,5 +231,15 @@ public final class TaskInfo extends BaseInfo {
 
     public void setEndTime(Date endTime) {
         this.endTime = endTime;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+        if(this.assignee == null)
+            this.assignee = username;
     }
 }

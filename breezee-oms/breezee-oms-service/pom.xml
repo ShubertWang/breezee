@@ -30,6 +30,11 @@
             <artifactId>breezee-bpm-api</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
+        <dependency>
+            <groupId>com.breezee</groupId>
+            <artifactId>breezee-pcm-api</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
     </dependencies>
 
     <build>

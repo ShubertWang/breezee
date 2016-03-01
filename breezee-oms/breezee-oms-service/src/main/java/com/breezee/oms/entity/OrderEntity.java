@@ -52,6 +52,11 @@ public class OrderEntity extends BaseInfo {
         return code;
     }
 
+    @Column(name = "ORDER_NAME", unique = true, updatable = false, nullable = false, length = 64)
+    public String getName() {
+        return name;
+    }
+
     public String getRemark() {
         return remark;
     }
@@ -186,7 +191,8 @@ public class OrderEntity extends BaseInfo {
     }
 
     public OrderInfo toInfo(){
-        OrderInfo info = (OrderInfo) this.clone();
+        OrderInfo info = new OrderInfo();
+        cloneAttribute(info);
         info.setUserId(this.getUserId());
         info.setIssueDate(this.getIssueDate());
         info.setPaymentAmount(new Amount(this.getCurrencyCode(),this.getPaymentAmount()));
@@ -216,7 +222,7 @@ public class OrderEntity extends BaseInfo {
         this.setPaymentAmount(info.getPaymentAmount().getValue());
         this.setPaymentType(info.getPaymentType());
         this.setPriority(info.getPriority());
-        this.setShippingPrice(info.getShippingPrice().getValue());
+        this.setShippingPrice(info.getShippingPrice() == null ? new Amount("CNY",new Double(0)).getValue() : info.getShippingPrice().getValue());
         this.setSubTotal(info.getSubTotal().getValue());
         this.setUserId(info.getUserId());
         if(info.getOrderLines().size()>0){

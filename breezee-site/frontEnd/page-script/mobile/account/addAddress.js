@@ -3,7 +3,7 @@ $(function () {
     $('#submit').click(function () {
         var data = Dolphin.form.getValue('form');
         Dolphin.ajax({
-            url : '/data/account/addAddress',
+            url : '/data/crm/user/shippingAddress',
             type : Dolphin.requestMethod.PUT,
             data : Dolphin.json2string(data),
             onSuccess : function (reData) {

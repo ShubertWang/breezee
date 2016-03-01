@@ -38,7 +38,7 @@ public class AccountInfo extends BaseInfo {
     private Long orgId;
     String orgName;
 
-    private List<Long> roles = new ArrayList<>();
+    private List<String> roles = new ArrayList<>();
 
     public String getPassword() {
         return password;
@@ -128,15 +128,15 @@ public class AccountInfo extends BaseInfo {
         this.orgId = orgId;
     }
 
-    public List<Long> getRoles() {
+    public List<String> getRoles() {
         return roles;
     }
 
-    public void setRoles(List<Long> roles) {
+    public void setRoles(List<String> roles) {
         this.roles = roles;
     }
 
-    public void addRole(Long roleId){
+    public void addRole(String roleId){
         this.roles.add(roleId);
     }
 

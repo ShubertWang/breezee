@@ -9,12 +9,16 @@ import com.breezee.bpm.api.domain.TaskInfo;
 import com.breezee.bpm.api.service.ITaskService;
 import com.breezee.common.PageInfo;
 import com.breezee.common.PageResult;
+import com.breezee.oms.api.domain.OrderInfo;
+import com.breezee.oms.api.service.IOrderService;
 import org.activiti.engine.HistoryService;
+import org.activiti.engine.RuntimeService;
 import org.activiti.engine.TaskService;
 import org.activiti.engine.history.HistoricTaskInstance;
 import org.activiti.engine.history.HistoricTaskInstanceQuery;
+import org.activiti.engine.runtime.ProcessInstance;
+import org.activiti.engine.task.NativeTaskQuery;
 import org.activiti.engine.task.Task;
-import org.activiti.engine.task.TaskQuery;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -33,6 +37,12 @@ public class TaskServiceImpl implements ITaskService {
 
     @Resource
     private HistoryService historyService;
+
+    @Resource
+    private RuntimeService runtimeService;
+
+    @Resource
+    private IOrderService orderService;
 
     @Override
     public TaskInfo newTask() {
@@ -205,16 +215,79 @@ public class TaskServiceImpl implements ITaskService {
     }
 
     @Override
-    public PageResult<TaskInfo> findUndoTasks(TaskInfo TaskInfo, PageInfo pageInfo) {
-        TaskQuery taskQuery = taskService.createTaskQuery().taskCandidateOrAssigned(TaskInfo.getAssignee()).active();
-        long count = taskQuery.count();
-        List<Task> l = taskQuery.listPage(pageInfo.getPageNumber(), pageInfo.getPageSize());
-        return convert(l, count);
+    public PageResult<TaskInfo> findUndoTasks(Map<String,Object> m, PageInfo pageInfo) {
+        if(pageInfo==null){
+            pageInfo = new PageInfo(Integer.valueOf(m.get("pageNumber").toString()),Integer.valueOf(m.get("pageSize").toString()));
+        }
+
+        StringBuffer sql = new StringBuffer();
+        sql.append(" SELECT DISTINCT RES.*  FROM ACT_RU_TASK RES   WHERE RES.ASSIGNEE_ = #{userId}  AND RES.SUSPENSION_STATE_ = 1 ");
+        sql.append(" OR (RES.ASSIGNEE_ IS NULL AND  RES.ID_ IN (SELECT I.TASK_ID_   FROM ACT_RU_IDENTITYLINK I  WHERE I.TYPE_ = 'candidate'  ");
+        sql.append(" AND (I.USER_ID_ = #{userId} OR  I.GROUP_ID_ IN ( ");
+        sql.append(" SELECT G.ID_ FROM ACT_ID_GROUP G, ACT_ID_MEMBERSHIP MEMBERSHIP  WHERE G.ID_ = MEMBERSHIP.GROUP_ID_ AND MEMBERSHIP.USER_ID_ = #{userId})))) ");
+        sql.append(" ORDER BY RES.CREATE_TIME_ DESC ");
+        NativeTaskQuery allTask = taskService.createNativeTaskQuery().sql(sql.toString()).parameter("userId", m.get("username").toString());
+        List<Task> l = allTask.listPage(pageInfo.getPageNumber(), pageInfo.getPageSize());
+        long count = l.size();
+        PageResult<TaskInfo> pageResult = convert(l,count);
+
+        Iterator it = pageResult.getContent().iterator();
+        while(it.hasNext()){
+//        for (int i = 0; i < pageResult.getContent().size() ; i++) {
+            TaskInfo task = (TaskInfo)it.next();
+            Boolean flag = false;
+            ProcessInstance processInstance = runtimeService.createProcessInstanceQuery().processInstanceId(task.getProcessInstanceId()).singleResult();
+            OrderInfo orderInfo = orderService.findOrderInfoByCode(processInstance.getBusinessKey());
+            if(!StringUtils.isEmpty(m.get("name")) || !StringUtils.isEmpty(m.get("code"))){
+                if(orderInfo.getName().equals(m.get("name"))){
+                    flag = true;
+                }else if(orderInfo.getCode().equals(m.get("code"))){
+                    flag = true;
+                }else{
+                    it.remove();
+                    count--;
+                }
+            }else{
+                flag = true;
+            }
+
+            if(flag){
+                task.setBusinessKey(processInstance.getBusinessKey());
+                task.setUserId(orderInfo.getUserId());
+                task.setIssueDate(orderInfo.getIssueDate());
+                task.setSubTotal(orderInfo.getSubTotal().getValue().toString());
+                task.setShippingMethod(orderInfo.getShippingMethod());
+                task.setPaymentAmount(orderInfo.getPaymentAmount().getValue().toString());
+            }
+        }
+
+        pageResult.setTotal(count);
+
+        /*for(TaskInfo task : pageResult.getContent()){
+            ProcessInstance processInstance = runtimeService.createProcessInstanceQuery().processInstanceId(task.getProcessInstanceId()).singleResult();
+            OrderInfo orderInfo = orderService.findOrderInfoByCode(processInstance.getBusinessKey());
+            if(m.get("name") != null){
+                orderInfo.getName().equals(m.get("name"))
+            }
+
+            task.setBusinessKey(processInstance.getBusinessKey());
+            task.setUserId(orderInfo.getUserId());
+            task.setIssueDate(orderInfo.getIssueDate());
+            task.setSubTotal(orderInfo.getSubTotal().getValue().toString());
+            task.setShippingMethod(orderInfo.getShippingMethod());
+            task.setPaymentAmount(orderInfo.getPaymentAmount().getValue().toString());
+
+        }*/
+
+        return pageResult;
     }
 
     @Override
-    public PageResult<TaskInfo> findFinishedTasks(TaskInfo TaskInfo, PageInfo pageInfo) {
-        HistoricTaskInstanceQuery hquery = historyService.createHistoricTaskInstanceQuery().taskAssignee(TaskInfo.getAssignee()).finished();
+    public PageResult<TaskInfo> findFinishedTasks(Map<String,Object> m, PageInfo pageInfo) {
+        if(pageInfo==null){
+            pageInfo = new PageInfo(Integer.valueOf(m.get("pageNumber").toString()),Integer.valueOf(m.get("pageSize").toString()));
+        }
+        HistoricTaskInstanceQuery hquery = historyService.createHistoricTaskInstanceQuery().taskAssignee(m.get("username").toString()).finished();
         long count = hquery.count();
         List<HistoricTaskInstance> l = hquery.listPage(pageInfo.getPageNumber(), pageInfo.getPageSize());
         return convert(l, count);

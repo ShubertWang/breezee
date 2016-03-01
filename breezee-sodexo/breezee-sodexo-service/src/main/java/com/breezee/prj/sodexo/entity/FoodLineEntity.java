@@ -17,7 +17,7 @@ import java.util.Date;
  * Created by Silence on 2016/2/13.
  */
 @Entity
-@Table(name = "PRJ_TD_FOODLINE")
+@Table(name = "SDX_TD_FOODLINE")
 public class FoodLineEntity extends FoodLineInfo {
 
     protected String currencyCode;
@@ -81,8 +81,36 @@ public class FoodLineEntity extends FoodLineInfo {
         return owner;
     }
 
-    public boolean isPayment() {
-        return payment;
+    public String getStartTime() {
+        return startTime;
+    }
+
+    public String getEndTime() {
+        return endTime;
+    }
+
+    public String getCloseTime() {
+        return closeTime;
+    }
+
+    public Integer getShiftNum() {
+        return shiftNum;
+    }
+
+    public String getPayType() {
+        return payType;
+    }
+
+    public Integer getTurnTime() {
+        return turnTime;
+    }
+
+    public Long getOrgId() {
+        return orgId;
+    }
+
+    public String getSite() {
+        return site;
     }
 
     public String getCurrencyCode() {
@@ -101,10 +129,6 @@ public class FoodLineEntity extends FoodLineInfo {
         this.shippingPriceE = shippingPriceE;
     }
 
-    public Double getTurnTime() {
-        return turnTime;
-    }
-
     public FoodLineInfo toInfo(){
         FoodLineInfo info = new FoodLineInfo();
         BeanUtils.copyProperties(this,info);
@@ -114,8 +138,10 @@ public class FoodLineEntity extends FoodLineInfo {
 
     public FoodLineEntity parse(FoodLineInfo info){
         BeanUtils.copyProperties(info,this);
-        this.setCurrencyCode(info.getShippingPrice().getCurrencyCode());
-        this.setShippingPriceE(info.getShippingPrice().getValue());
+        if(info.getShippingPrice()!=null) {
+            this.setCurrencyCode(info.getShippingPrice().getCurrencyCode());
+            this.setShippingPriceE(info.getShippingPrice().getValue());
+        }
         return this;
     }
 }

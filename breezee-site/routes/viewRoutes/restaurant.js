@@ -4,10 +4,14 @@ var route = {};
 
 route.restaurantList = function (queryData, res, callback) {
     global.myUtil.request({
-        method : 'get',
-        uri : '/restaurant/',
+        method : 'post',
+        uri : 'http://127.0.0.1:10250/services/messhall/list',
         mockData : '/restaurant/restaurantList',
-        form : queryData
+        json:{},
+        headers: {
+            "Content-Type": "application/json",
+            "Accept": "application/json"
+        }
     }, function(error, response, body){
         if(error){
             throw error;

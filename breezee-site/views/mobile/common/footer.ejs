@@ -22,3 +22,13 @@
 
 <!--page script-->
 <script src="/page-script<%=path %>.js"></script>
+
+<script>
+    Dolphin.ajax({
+        url: '/wechat?code='+REQUEST_MAP.data.code,
+        type: Dolphin.requestMethod.GET,
+        onSuccess: function (reData) {
+            REQUEST_MAP.data.openId = reData.openId;
+        }
+    });
+</script>

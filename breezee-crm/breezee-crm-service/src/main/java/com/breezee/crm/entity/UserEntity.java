@@ -55,6 +55,10 @@ public class UserEntity extends BaseInfo {
 
     protected String email;
 
+    protected String orgId;
+
+    protected String accountId;
+
     protected Set<ShippingAddressEntity> shippingAddresses;
 
     @Id
@@ -202,6 +206,22 @@ public class UserEntity extends BaseInfo {
         this.email = email;
     }
 
+    public String getOrgId() {
+        return orgId;
+    }
+
+    public void setOrgId(String orgId) {
+        this.orgId = orgId;
+    }
+
+    public String getAccountId() {
+        return accountId;
+    }
+
+    public void setAccountId(String accountId) {
+        this.accountId = accountId;
+    }
+
     @OneToMany(mappedBy = "user", cascade = CascadeType.DETACH, fetch = FetchType.LAZY)
     @OrderBy(value = "updateTime DESC")
     public Set<ShippingAddressEntity> getShippingAddresses() {
@@ -235,6 +255,8 @@ public class UserEntity extends BaseInfo {
         info.setTag(this.getTag());
         info.setType(this.getType());
         info.setWechat(this.getWechat());
+        info.setOrgId(this.getOrgId());
+        info.setAccountId(this.getAccountId());
         if (this.getShippingAddresses()!=null && this.getShippingAddresses().size()>0){
             this.getShippingAddresses().forEach(a->{
                 info.addShippingAddressInfo(a.toInfo());
@@ -258,6 +280,8 @@ public class UserEntity extends BaseInfo {
         this.setTag(info.getTag());
         this.setType(info.getType());
         this.setWechat(info.getWechat());
+        this.setOrgId(info.getOrgId());
+        this.setAccountId(info.getAccountId());
         if(info.getShippingAddressInfos()!=null && info.getShippingAddressInfos().size()>0) {
             info.getShippingAddressInfos().forEach(a->{
                 this.addShippingAddress(new ShippingAddressEntity().parse(a));

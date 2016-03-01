@@ -25,7 +25,7 @@ public class MesshallInfo extends BaseInfo {
     protected String orgName;
 
     /**
-     * 餐厅电话
+     * 联系方式
      */
     protected String telephone;
 
@@ -50,11 +50,35 @@ public class MesshallInfo extends BaseInfo {
     protected Date openDate;
 
     /**
+     * 工作日，无休
+     */
+    protected String timeType;
+
+    /**
+     * 公告
+     */
+    protected String notice;
+
+    /**
+     * 地址
+     */
+    protected String address;
+
+    /**
      * 负责人
      */
     protected Long dutyPerson;
 
     protected String dutyName;
+
+    protected String imageCode;
+
+    /**
+     * 评分，按5颗星算起
+     */
+    protected String point = "3";
+
+    protected Long commentCount = 0L;
 
     public Long getOrgId() {
         return orgId;
@@ -126,5 +150,53 @@ public class MesshallInfo extends BaseInfo {
 
     public void setDutyName(String dutyName) {
         this.dutyName = dutyName;
+    }
+
+    public String getImageCode() {
+        return imageCode;
+    }
+
+    public void setImageCode(String imageCode) {
+        this.imageCode = imageCode;
+    }
+
+    public String getPoint() {
+        return point;
+    }
+
+    public void setPoint(String point) {
+        this.point = point;
+    }
+
+    public Long getCommentCount() {
+        return commentCount;
+    }
+
+    public void setCommentCount(Long commentCount) {
+        this.commentCount = commentCount;
+    }
+
+    public String getTimeType() {
+        return timeType;
+    }
+
+    public void setTimeType(String timeType) {
+        this.timeType = timeType;
+    }
+
+    public String getNotice() {
+        return notice;
+    }
+
+    public void setNotice(String notice) {
+        this.notice = notice;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
     }
 }

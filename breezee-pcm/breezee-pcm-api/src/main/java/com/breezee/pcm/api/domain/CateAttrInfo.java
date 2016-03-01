@@ -47,6 +47,8 @@ public class CateAttrInfo extends BaseInfo {
 
     private String enumCode;
 
+    private String unitCode;
+
     public Long getAttrId() {
         return attrId;
     }
@@ -117,5 +119,13 @@ public class CateAttrInfo extends BaseInfo {
 
     public void setEnumCode(String enumCode) {
         this.enumCode = enumCode;
+    }
+
+    public String getUnitCode() {
+        return unitCode;
+    }
+
+    public void setUnitCode(String unitCode) {
+        this.unitCode = unitCode;
     }
 }
