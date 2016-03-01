@@ -21,7 +21,7 @@ var data = {
             id : 0,
             name : "今日推荐",
             code : "today",
-            imageCode : "today",
+            imageCode : "02",
             children : [{
                 id : '1',
                 name : '牛蛙煲仔饭',
@@ -58,7 +58,7 @@ var data = {
             id : 1,
             name : "荤菜",
             code : "meatDish",
-            imageCode : "meatDish",
+            imageCode : "14",
             children : [{
                 id : '1',
                 name : '牛蛙煲仔饭',
@@ -94,7 +94,7 @@ var data = {
             id : 2,
             name : "素菜",
             code : "vegetablePlate",
-            imageCode : "vegetablePlate",
+            imageCode : "27",
             children : [{
                 id : '7',
                 name : '蔬菜色拉',
@@ -125,7 +125,7 @@ var data = {
             id : 3,
             name : "汤",
             code : "soup",
-            imageCode : "soup",
+            imageCode : "23",
             children : [{
                 id : '12',
                 name : '排骨汤',
@@ -156,7 +156,7 @@ var data = {
             id : 4,
             name : "甜品",
             code : "sweetmeats",
-            imageCode : "sweetmeats",
+            imageCode : "25",
             children : [{
                 id : '17',
                 name : '提拉米苏',
@@ -182,7 +182,7 @@ var data = {
             id : 5,
             name : "饮料",
             code : "drink",
-            imageCode : "drink",
+            imageCode : "26",
             children : [{
                 id : '21',
                 name : '可乐',

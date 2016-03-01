@@ -6,12 +6,6 @@
     <% include ../common/public.ejs %>
 </head>
 <body ontouchstart>
-<% if((session.user && session.user.userType) == 'employee'){ %> <!--TODO 从session中判断当前用户是否为管理人员，决定button是否可见-->
-<footer>
-    <div class=""><a href="/view/order/employeeOrder" class="weui_btn weui_btn_warn">进入管理页面</a></div>
-</footer>
-<% } %>
-
 <% if(body.length > 0 ){%>
     <% include ./myOrderByPage.ejs %>
 <% }else{ %>
