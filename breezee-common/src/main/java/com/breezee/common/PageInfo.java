@@ -34,23 +34,25 @@ public class PageInfo implements Pageable, Serializable {
     public PageInfo(Map<String, Object> m) {
         if (m != null) {
             Object a = m.get("pageNumber");
+            System.out.print(a+"--------");
             if (a == null || a.toString().equals("null")) {
                 a = "0";
             }
             Object b = m.get("pageSize");
+            System.out.print(a+"--------");
             if (b == null || b.toString().equals("null"))
                 b = "5";
-            new PageInfo(Integer.parseInt(a.toString()),
-                    Integer.parseInt(b.toString()));
-        } else {
-            new PageInfo();
+            this.pageNumber = Integer.parseInt(a.toString());
+            this.pageSize = Integer.parseInt(b.toString());
         }
     }
 
     public PageInfo(PageInfo page, Map<String, Object> m) {
-        if (page == null)
-            page = new PageInfo(m);
-        new PageInfo(page.getPageNumber(), page.getPageSize());
+        this(m);
+        if (page != null){
+            this.pageNumber = page.pageNumber;
+            this.pageSize = page.pageSize;
+        }
     }
 
     public PageInfo(int pageNumber, int pageSize, Sort sort) {
@@ -146,6 +148,10 @@ public class PageInfo implements Pageable, Serializable {
         result = prime * result + pageNumber;
         result = prime * result + pageSize;
         return result;
+    }
+
+    public String toString(){
+        return "{\"pageNumber\":"+this.pageNumber+",\"pageSize\":"+this.pageSize+"}";
     }
 
 }

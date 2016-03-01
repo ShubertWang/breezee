@@ -59,4 +59,39 @@ myUtil.dateFormatter = function (date, format) {
     return format;
 };
 
+/**
+ * 客户信息的获取
+ * @param url
+ * @param callback
+ */
+myUtil.customerInfo = function(url, callback){
+    request({
+        method: 'post',
+        //uri: global.config.service['crm']+'/user/code/'+openId,
+        uri: url,
+        json: {},
+        headers: {
+            "Content-Type": "application/json",
+            "Accept": "application/json"
+        }
+    }, function (error, response, body) {
+        if(error)
+            throw error;
+        //判断body
+        if(body && body.id > 0){
+            var userData = {};
+            userData.userType = body.type;
+            userData.siteId = body.company;
+            userData.userId = body.id;
+            userData.userCode = openId;
+            userData.userName = body.name;
+            userData.addressCount = body.addressCount;
+            if(body.defaultAddress) {
+                userData.defaultAddress = body.defaultAddress;
+            }
+            callback(userData);
+        }
+    });
+};
+
 module.exports = myUtil;
