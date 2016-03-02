@@ -17,7 +17,6 @@ import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Sort;
-import org.springframework.jdbc.support.incrementer.MySQLMaxValueIncrementer;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -42,14 +41,13 @@ public class OrderServiceImpl implements IOrderService, InitializingBean {
     @Autowired
     private DataSource dataSource;
 
-    private MySQLMaxValueIncrementer valueIncrementer;
-
     @Override
     public OrderInfo saveInfo(OrderInfo orderInfo) {
         if(orderInfo.getId()==null)
-            orderInfo.setCode(1+valueIncrementer.nextStringValue().replace("-", ""));
+            orderInfo.setCode(Long.valueOf(System.currentTimeMillis()).toString());
         OrderEntity entity = new OrderEntity().parse(orderInfo);
         entity.setIssueDate(new Date());
+        entity.setName(orderInfo.getCode());
         orderRepository.save(entity);
         //启动流程
        /*if(orderInfo.getTaskId()==null || orderInfo.getTaskId()<0) {
@@ -69,9 +67,8 @@ public class OrderServiceImpl implements IOrderService, InitializingBean {
 //            vars.put("foodLineRole",orderInfo.getStoreName());
 //            workflowService.startProcessInstanceById(orderInfo.getProcDefId(), entity.getCode(),vars);
 //        }
-
         //TODO:减库存
-        return SuccessInfo.build(OrderInfo.class);
+        return SuccessInfo.build(orderInfo);
     }
 
     @Override
@@ -95,15 +92,13 @@ public class OrderServiceImpl implements IOrderService, InitializingBean {
 
     @Override
     public PageResult<OrderInfo> pageAll(Map<String, Object> m, PageInfo pageInfo) {
+        pageInfo = new PageInfo(m);
         if(m.get("username") != null){
             m.remove("username");
         }
-        Page<OrderEntity> page = orderRepository.findAll(DynamicSpecifications.createSpecification(m),new PageInfo(pageInfo,m));
+        Page<OrderEntity> page = orderRepository.findAll(DynamicSpecifications.createSpecification(m),pageInfo);
         return new PageResult<>(page, OrderInfo.class, (orderEntity, orderInfo) -> orderEntity.toInfo());
     }
-
-
-
 
     @Override
     public OrderInfo findOrderInfoByCode(String code){
@@ -143,9 +138,7 @@ public class OrderServiceImpl implements IOrderService, InitializingBean {
 
     @Override
     public void afterPropertiesSet() throws Exception {
-        valueIncrementer = new MySQLMaxValueIncrementer(dataSource,"pcm_tf_product_seq","SEQ_ID");
-        valueIncrementer.setCacheSize(1);
-        valueIncrementer.setPaddingLength(8);
+
     }
 
 }

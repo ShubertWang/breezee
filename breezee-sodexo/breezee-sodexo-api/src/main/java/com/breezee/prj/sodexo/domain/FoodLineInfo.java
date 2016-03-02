@@ -8,6 +8,8 @@ package com.breezee.prj.sodexo.domain;
 import com.breezee.common.BaseInfo;
 import com.breezee.common.types.Amount;
 
+import java.util.HashMap;
+
 /**
  * 领域对象 -- 餐线
  * Created by Silence on 2016/2/13.
@@ -77,6 +79,14 @@ public class FoodLineInfo extends BaseInfo {
      * 服务线翻台时间
      */
     protected Integer turnTime;
+
+    protected String telphone;
+
+    protected String imageCode = "icon_ct_mr";
+
+    public FoodLineInfo(){
+        this.properties = new HashMap<>();
+    }
 
     public Long getMesshallId() {
         return messhallId;
@@ -188,5 +198,21 @@ public class FoodLineInfo extends BaseInfo {
 
     public void setSite(String site) {
         this.site = site;
+    }
+
+    public String getTelphone() {
+        return telphone;
+    }
+
+    public void setTelphone(String telphone) {
+        this.telphone = telphone;
+    }
+
+    public String getImageCode() {
+        return imageCode;
+    }
+
+    public void setImageCode(String imageCode) {
+        this.imageCode = imageCode;
     }
 }

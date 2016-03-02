@@ -88,7 +88,8 @@ public class AccountServiceImpl implements IAccountService {
 
     @Override
     public PageResult<AccountInfo> pageAll(Map<String, Object> m, PageInfo pageInfo) {
-        Page<AccountEntity> page = accountRepository.findAll(DynamicSpecifications.createSpecification(m), new PageInfo(pageInfo,m));
+        pageInfo = new PageInfo(m);
+        Page<AccountEntity> page = accountRepository.findAll(DynamicSpecifications.createSpecification(m), pageInfo);
         return new PageResult<>(page, AccountInfo.class, (accountEntity, accountInfo) -> accountEntity.toInfo());
     }
 

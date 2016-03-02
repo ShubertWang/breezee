@@ -2,7 +2,7 @@
 <html>
 <head>
     <% include ../common/meta.ejs %>
-    <title>订位</title>
+    <title>其他服务请求</title>
     <% include ../common/public.ejs %>
 </head>
 <body ontouchstart>
@@ -14,8 +14,10 @@
                     <div class="weui_cell_bd weui_cell_primary">
                         <select class="weui_select" name="select1">
                             <option selected="" value="0">请选择服务类型</option>
-                            <% for(var i = 0; i < body.serviceType.length; i++){%>
-                            <option value="<%= body.serviceType[i].value %>"><%= body.serviceType[i].text %></option>
+                            <% for(var i = 0; i < body.serviceType.length; i++){ %>
+                            <option value="<%= body.serviceType[i].code %>">
+                                <%= body.serviceType[i].value %>
+                            </option>
                             <% } %>
                         </select>
                     </div>

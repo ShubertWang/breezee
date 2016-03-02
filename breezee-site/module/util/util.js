@@ -1,4 +1,5 @@
 var request = require('request');
+var extend = require('extend');
 
 var myUtil = {};
 
@@ -11,7 +12,15 @@ myUtil.request = function (param, callback) {
             callback(e, null, data);
         }
     }else{
-        request(param, callback);
+        defaultParam = {
+            json : {},
+            headers: {
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            }
+        };
+        var _param = extend(true, {}, defaultParam, param);
+        request(_param, callback);
     }
 };
 
@@ -66,7 +75,7 @@ myUtil.dateFormatter = function (date, format) {
  */
 myUtil.customerInfo = function(url, callback){
     request({
-        method: 'post',
+        method: 'get',
         //uri: global.config.service['crm']+'/user/code/'+openId,
         uri: url,
         json: {},
@@ -83,7 +92,7 @@ myUtil.customerInfo = function(url, callback){
             userData.userType = body.type;
             userData.siteId = body.company;
             userData.userId = body.id;
-            userData.userCode = openId;
+            userData.userCode = body.code;
             userData.userName = body.name;
             userData.addressCount = body.addressCount;
             if(body.defaultAddress) {

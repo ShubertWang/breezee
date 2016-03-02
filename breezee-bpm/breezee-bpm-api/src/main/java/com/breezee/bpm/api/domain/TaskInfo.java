@@ -8,7 +8,10 @@ package com.breezee.bpm.api.domain;
 import com.breezee.common.BaseInfo;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
 
 /**
  * Created by Silence on 2016/2/2.
@@ -35,11 +38,11 @@ public final class TaskInfo extends BaseInfo {
     protected Date endTime;
     protected String username;
     protected String businessKey;   //订单号
-    protected Long userId;          //下单人
-    protected String paymentAmount; //支付金额
-    protected String shippingMethod; //支付方式
-    protected String subTotal;       //总额
-    protected Date issueDate;        //下单时间
+    protected List<ActionInfo> actionInfos=new ArrayList<>();
+
+    public TaskInfo(){
+        this.properties = new HashMap<>();
+    }
 
     public String getBusinessKey() {
         return businessKey;
@@ -47,46 +50,6 @@ public final class TaskInfo extends BaseInfo {
 
     public void setBusinessKey(String businessKey) {
         this.businessKey = businessKey;
-    }
-
-    public Long getUserId() {
-        return userId;
-    }
-
-    public void setUserId(Long userId) {
-        this.userId = userId;
-    }
-
-    public String getPaymentAmount() {
-        return paymentAmount;
-    }
-
-    public void setPaymentAmount(String paymentAmount) {
-        this.paymentAmount = paymentAmount;
-    }
-
-    public String getShippingMethod() {
-        return shippingMethod;
-    }
-
-    public void setShippingMethod(String shippingMethod) {
-        this.shippingMethod = shippingMethod;
-    }
-
-    public String getSubTotal() {
-        return subTotal;
-    }
-
-    public void setSubTotal(String subTotal) {
-        this.subTotal = subTotal;
-    }
-
-    public Date getIssueDate() {
-        return issueDate;
-    }
-
-    public void setIssueDate(Date issueDate) {
-        this.issueDate = issueDate;
     }
 
     public String getOwner() {
@@ -241,5 +204,13 @@ public final class TaskInfo extends BaseInfo {
         this.username = username;
         if(this.assignee == null)
             this.assignee = username;
+    }
+
+    public List<ActionInfo> getActionInfos() {
+        return actionInfos;
+    }
+
+    public void setActionInfos(List<ActionInfo> actionInfos) {
+        this.actionInfos = actionInfos;
     }
 }

@@ -57,6 +57,7 @@ public class SeatOrderServiceImpl implements ISeatOrderService {
 
     @Override
     public PageResult<SeatOrderInfo> pageAll(Map<String, Object> m, PageInfo pageInfo) {
+        pageInfo = new PageInfo(m);
         Page<SeatOrderEntity> page = seatOrderRepository.findAll(DynamicSpecifications.createSpecification(m),pageInfo);
         return new PageResult<>(page, SeatOrderInfo.class, (seatOrderEntity, info) -> seatOrderEntity.toInfo());
     }

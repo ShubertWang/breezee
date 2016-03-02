@@ -216,17 +216,14 @@ public class TaskServiceImpl implements ITaskService {
 
     @Override
     public PageResult<TaskInfo> findUndoTasks(Map<String,Object> m, PageInfo pageInfo) {
-        if(pageInfo==null){
-            pageInfo = new PageInfo(Integer.valueOf(m.get("pageNumber").toString()),Integer.valueOf(m.get("pageSize").toString()));
-        }
-
+        pageInfo = new PageInfo(m);
         StringBuffer sql = new StringBuffer();
         sql.append(" SELECT DISTINCT RES.*  FROM ACT_RU_TASK RES   WHERE RES.ASSIGNEE_ = #{userId}  AND RES.SUSPENSION_STATE_ = 1 ");
         sql.append(" OR (RES.ASSIGNEE_ IS NULL AND  RES.ID_ IN (SELECT I.TASK_ID_   FROM ACT_RU_IDENTITYLINK I  WHERE I.TYPE_ = 'candidate'  ");
         sql.append(" AND (I.USER_ID_ = #{userId} OR  I.GROUP_ID_ IN ( ");
         sql.append(" SELECT G.ID_ FROM ACT_ID_GROUP G, ACT_ID_MEMBERSHIP MEMBERSHIP  WHERE G.ID_ = MEMBERSHIP.GROUP_ID_ AND MEMBERSHIP.USER_ID_ = #{userId})))) ");
         sql.append(" ORDER BY RES.CREATE_TIME_ DESC ");
-        NativeTaskQuery allTask = taskService.createNativeTaskQuery().sql(sql.toString()).parameter("userId", m.get("username").toString());
+        NativeTaskQuery allTask = taskService.createNativeTaskQuery().sql(sql.toString()).parameter("userId", m.get("userId").toString());
         List<Task> l = allTask.listPage(pageInfo.getPageNumber(), pageInfo.getPageSize());
         long count = l.size();
         PageResult<TaskInfo> pageResult = convert(l,count);
@@ -253,11 +250,7 @@ public class TaskServiceImpl implements ITaskService {
 
             if(flag){
                 task.setBusinessKey(processInstance.getBusinessKey());
-                task.setUserId(orderInfo.getUserId());
-                task.setIssueDate(orderInfo.getIssueDate());
-                task.setSubTotal(orderInfo.getSubTotal().getValue().toString());
-                task.setShippingMethod(orderInfo.getShippingMethod());
-                task.setPaymentAmount(orderInfo.getPaymentAmount().getValue().toString());
+                task.getProperties().put("orderInfo",orderInfo);
             }
         }
 
@@ -278,7 +271,6 @@ public class TaskServiceImpl implements ITaskService {
             task.setPaymentAmount(orderInfo.getPaymentAmount().getValue().toString());
 
         }*/
-
         return pageResult;
     }
 

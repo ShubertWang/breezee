@@ -20,7 +20,7 @@ import java.util.List;
  * Created by Silence on 2016/2/11.
  */
 @Path("/order")
-public interface IOrderService extends IServiceLayer<OrderInfo>{
+public interface IOrderService extends IServiceLayer<OrderInfo> {
 
     OrderInfo findOrderInfoByCode(String code);
 

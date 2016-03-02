@@ -25,10 +25,14 @@ router.post('/', function (req, res, next) {
         redirect, url;
     if (bodyData.id) {
         req.session.openId = bodyData.id;
+        console.log(global.config.service['crm']+'/user/code/'+bodyData.id);
         myUtil.customerInfo(global.config.service['crm']+'/user/code/'+bodyData.id, function (data) {
             req.session.userData = data;
+            if(data.userId>0)
+                res.send({success : true});
+            else
+                res.send({success : false});
         });
-        res.send({success : true});
     } else {
         res.send({success: false, msg: "openId不能为空"});
     }

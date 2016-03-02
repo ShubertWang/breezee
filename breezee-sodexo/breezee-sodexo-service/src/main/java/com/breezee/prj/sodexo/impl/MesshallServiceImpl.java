@@ -7,6 +7,7 @@ package com.breezee.prj.sodexo.impl;
 
 import com.breezee.common.*;
 import com.breezee.common.util.Callback;
+import com.breezee.common.util.ContextUtil;
 import com.breezee.prj.sodexo.domain.MesshallInfo;
 import com.breezee.prj.sodexo.entity.MesshallEntity;
 import com.breezee.prj.sodexo.repository.MesshallRepository;
@@ -38,7 +39,14 @@ public class MesshallServiceImpl implements IMesshallService {
 
     @Override
     public MesshallInfo saveInfo(MesshallInfo messhallInfo) {
-        messhallRepository.save(new MesshallEntity().parse(messhallInfo));
+        MesshallEntity entity = messhallRepository.findByCode(messhallInfo.getCode());
+        //如果新增的账号已经存在，则返回错误信息
+        if (messhallInfo.getId() == null && entity != null) {
+            return ErrorInfo.build(messhallInfo, ContextUtil.getMessage("duplicate.key", new String[]{messhallInfo.getCode()}));
+        }
+        if (entity == null)
+            entity = new MesshallEntity();
+        messhallRepository.save(entity.parse(messhallInfo));
         return SuccessInfo.build(MesshallInfo.class);
     }
 
@@ -69,6 +77,7 @@ public class MesshallServiceImpl implements IMesshallService {
 
     @Override
     public PageResult<MesshallInfo> pageAll(Map<String, Object> m, PageInfo pageInfo) {
+        pageInfo = new PageInfo(m);
         Page<MesshallEntity> page = messhallRepository.findAll(DynamicSpecifications.createSpecification(m),pageInfo);
         return new PageResult<>(page, MesshallInfo.class, (messhallEntity, messhallInfo) -> {
             MesshallInfo info = messhallEntity.toInfo();
@@ -83,6 +92,14 @@ public class MesshallServiceImpl implements IMesshallService {
     @Override
     public List<MesshallInfo> findAll() {
         return listAll(new HashMap<>());
+    }
+
+    @Override
+    public MesshallInfo findByCode(String code) {
+        MesshallEntity entity = messhallRepository.findByCode(code);
+        if (entity == null)
+            return ErrorInfo.build(MesshallInfo.class);
+        return entity.toInfo();
     }
 
     @Override

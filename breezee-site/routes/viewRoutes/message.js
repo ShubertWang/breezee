@@ -15,12 +15,7 @@ route.message = function (queryData, res, callback) {
 route.news = function (queryData, res, callback) {
     global.myUtil.request({
         method : 'post',
-        uri : 'http://127.0.0.1:10250/services/article/modelCode/'+queryData.modelCode,
-        json:{},
-        headers: {
-            "Content-Type": "application/json",
-            "Accept": "application/json"
-        }
+        uri : 'http://127.0.0.1:10250/services/article/modelCode/'+queryData.modelCode
     }, function(error, response, body){
         callback(body.content);
     });
@@ -29,12 +24,7 @@ route.newsDetail = function (queryData, res, callback) {
     global.myUtil.request({
         method : 'get',
         uri : 'http://127.0.0.1:10250/services/article/'+queryData.id,
-        mockData : '/message/newsDetail',
-        json:{},
-        headers: {
-            "Content-Type": "application/json",
-            "Accept": "application/json"
-        }
+        mockData : '/message/newsDetail'
     }, function(error, response, body){
         callback(body);
     });
@@ -55,6 +45,6 @@ route.messageLuckyMoney = function (queryData, res, callback) {
 };
 
 route.warningMessage = function(queryData, res, callback){
-
+    callback({});
 }
 module.exports = route;

@@ -1,4 +1,4 @@
-Dolphin.defaults.mockFlag = false;
+Dolphin.defaults.mockFlag = true;
 $(function () {
     $('#submit').click(function () {
         var data = Dolphin.form.getValue('form');

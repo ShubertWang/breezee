@@ -9,6 +9,7 @@ import com.breezee.common.BaseInfo;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
 import java.util.Date;
+import java.util.HashMap;
 
 /**
  * 领域对象 -- 餐厅
@@ -73,12 +74,9 @@ public class MesshallInfo extends BaseInfo {
 
     protected String imageCode;
 
-    /**
-     * 评分，按5颗星算起
-     */
-    protected String point = "3";
-
-    protected Long commentCount = 0L;
+    public MesshallInfo(){
+        this.properties = new HashMap<>();
+    }
 
     public Long getOrgId() {
         return orgId;
@@ -160,22 +158,6 @@ public class MesshallInfo extends BaseInfo {
         this.imageCode = imageCode;
     }
 
-    public String getPoint() {
-        return point;
-    }
-
-    public void setPoint(String point) {
-        this.point = point;
-    }
-
-    public Long getCommentCount() {
-        return commentCount;
-    }
-
-    public void setCommentCount(Long commentCount) {
-        this.commentCount = commentCount;
-    }
-
     public String getTimeType() {
         return timeType;
     }
@@ -199,4 +181,5 @@ public class MesshallInfo extends BaseInfo {
     public void setAddress(String address) {
         this.address = address;
     }
+
 }

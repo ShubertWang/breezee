@@ -139,6 +139,7 @@ public class UserServiceImpl implements IUserService {
 
     @Override
     public PageResult<UserInfo> pageAll(Map<String, Object> m, PageInfo pageInfo) {
+        pageInfo = new PageInfo(m);
         Page<UserEntity> page = userRepository.findAll(DynamicSpecifications.createSpecification(m),pageInfo);
         return new PageResult<>(page, UserInfo.class, (userEntity, userInfo) -> userEntity.toInfo());
     }

@@ -5,30 +5,31 @@
     <title>订单详情</title>
     <% include ../common/public.ejs %>
     <style>
-        .weui_cell:before{
-            left : 0;
+        .weui_cell:before {
+            left: 0;
         }
     </style>
 </head>
 <body ontouchstart>
 <%
-    var i, totalPrice=0;
+var i, totalPrice = 0;
 %>
 <% if(cookie.orderType == "wm"){ %>
 <div>
     <ul class="list-group">
         <% for(i = 0; i < body.address.length; i++){ %>
         <% if((data.addressId == null && body.address[i].defaultAddress) || data.addressId == body.address[i].id){ %>
-        <li class="<%= body.address[i].defaultAddress?"list-group-item_edit":"list-group-item_edit_b" %> bh">
+        <li class="<%= body.address[i].defaultAddress ? "list-group-item_edit" : "list-group-item_edit_b" %> bh">
             <a href="/view/account/address?pickFlag=true&restId=<%= data.restId %>&userId=<%= data.userId %>">
                 <div class="bh">
-                    <div id="addressSel" addressId="<%= body.address[i].id %>" class="title_a_h"><%= body.address[i].consigneeName %></div>
+                    <div id="addressSel" addressId="<%= body.address[i].id %>"
+                         class="title_a_h"><%= body.address[i].consigneeName %></div>
                     <div class="title_c_h"><%= body.address[i].consigneeMobile %></div>
                 </div>
                 <div class="mr"><%= body.address[i].consigneeAddress %></div>
             </a>
         </li>
-        <% break;%>
+        <% break; %>
         <% } %>
         <% } %>
     </ul>
@@ -37,16 +38,18 @@
 
 <div>
     <div class="weui_cells weui_cells_radio">
-        <label class="weui_cell weui_check_label" for="x11" style="display: <%= body.payType.wepay?"block":"none" %>;">
+        <label class="weui_cell weui_check_label" for="x11"
+               style="display: <%= body.payType.wepay ? "block" : "none" %>;">
             <div class="weui_cell_bd weui_cell_primary">
                 <p>微信支付<span>仅支持微信4.2及上版本</span></p>
             </div>
             <div class="weui_cell_ft">
-                <input type="radio" class="weui_check" name="payType" id="x11">
+                <input type="radio" class="weui_check" name="payType" id="wepay_now">
                 <span class="weui_icon_checked"></span>
             </div>
         </label>
-        <label class="weui_cell weui_check_label" for="x12" style="display: <%= body.payType.cardpay?"block":"none" %>;">
+        <label class="weui_cell weui_check_label" for="x12"
+               style="display: <%= body.payType.cardpay ? "block" : "none" %>;">
 
             <div class="weui_cell_bd weui_cell_primary">
                 <p>员工卡支付<span>从员工卡中在线扣款</span></p>
@@ -56,7 +59,8 @@
                 <span class="weui_icon_checked"></span>
             </div>
         </label>
-        <label class="weui_cell weui_check_label" for="x13" style="display: <%= body.payType.cash?"block":"none" %>;">
+        <label class="weui_cell weui_check_label" for="x13"
+               style="display: <%= body.payType.cash ? "block" : "none" %>;">
 
             <div class="weui_cell_bd weui_cell_primary">
                 <p>就餐时支付<span>只支持持有员工卡的公司员工使用</span></p>
@@ -73,7 +77,7 @@
         <div class=" weui_cells_access">
             <a class="weui_cell" href="javascript:;">
                 <div class="weui_cell_bd weui_cell_primary">
-                    <p><%= cookie.orderType=="wm"?"送达时间":"取餐时间/就餐时间" %></p>
+                    <p><%= cookie.orderType == "wm" ? "送达时间" : "取餐时间/就餐时间" %></p>
                 </div>
 
                 <div class="">
@@ -112,7 +116,8 @@
         </div>
         <div class="weui_cell">
             <div class="weui_cell_bd weui_cell_primary">
-                <textarea class="weui_textarea __remark" placeholder="如有特殊要求请留言" rows="3" id="remark" name="remark"></textarea>
+                <textarea class="weui_textarea __remark" placeholder="如有特殊要求请留言" rows="3" id="remark"
+                          name="remark"></textarea>
                 <div class="weui_textarea_counter"><span class="__remarkLength">0</span>/200</div>
             </div>
         </div>
@@ -138,9 +143,10 @@
 </div>
 <article>
     <div class="btn_box bh">
-        <div class="fkjg">总计：<strong id="totalPrice" data-total-price="<%= totalPrice %>">￥<%= totalPrice.toFixed(2) %></strong></div>
+        <div class="fkjg">总计：<strong id="totalPrice"
+                                     data-total-price="<%= totalPrice %>">￥<%= totalPrice.toFixed(2) %></strong></div>
         <div class="bd">
-            <a href="javascript:;" id="confirmOrder" class="weui_btn weui_btn_warn">确认</a>
+            <a href="javascript:;" id="confirmOrder" class="weui_btn weui_btn_warn">立即结算</a>
         </div>
     </div>
 
@@ -160,7 +166,7 @@
     });
 
     var orderInfo = {};
-    orderInfo.subTotal = {value:"<%= totalPrice.toFixed(2) %>"};
+    orderInfo.subTotal = {value: "<%= totalPrice.toFixed(2) %>"};
     orderInfo.storeName = REQUEST_MAP.data.restId;
     orderInfo.userId = REQUEST_MAP.data.userId;
 
@@ -175,20 +181,20 @@
     var orderLines = [];
     <% for(i = 0; i < body.foodList.length; i++){ %>
     orderLines.push({
-        skuId:"<%= body.foodList[i].id %>",
-        note:"<%= body.foodList[i].name %>",
-        quantity : {value:"<%= body.foodList[i].number %>"},
-        unitPrice:{value:"<%= body.foodList[i].price.toFixed(2) %>"}
+        skuId: "<%= body.foodList[i].id %>",
+        note: "<%= body.foodList[i].name %>",
+        quantity: {value: "<%= body.foodList[i].number %>"},
+        unitPrice: {value: "<%= body.foodList[i].price.toFixed(2) %>"}
     });
-    <% }%>
+    <% } %>
 
     orderInfo.orderLines = orderLines;
     <% if(cookie.orderType == "wm"){ %>
-        orderInfo.shippingAddressId = $("#addressSel").attr("addressId");
+    orderInfo.shippingAddressId = $("#addressSel").attr("addressId");
     <% } %>
     orderInfo.shippingMethod = "<%= cookie.orderType %>";
 
-    $("#confirmOrder").click(function(){
+    $("#confirmOrder").click(function () {
         //userId
         //subTotal
         //storeName 服务线
@@ -198,12 +204,20 @@
             type: Dolphin.requestMethod.PUT,
             data: Dolphin.json2string(orderInfo),
             onSuccess: function (reData) {
-                Dolphin.alert(reData.msg || '保存成功', {
-                    callback: function () {
-                        //判断支付情况
-                        Dolphin.goUrl("/order/myOrder");
-                    }
-                })
+//                console.log(reData);
+                Dolphin.goUrl("/order/wepay?id=4");
+                return;
+                //判断支付情况
+                if (reData.paymentType == 'wepay') {
+                    Dolphin.goUrl("/order/pay");
+                } else {
+                    Dolphin.alert(reData.msg || '保存成功', {
+                        callback: function () {
+                            Dolphin.goUrl("/order/myOrder");
+
+                        }
+                    });
+                }
             }
         })
     });

@@ -10,6 +10,7 @@ import com.breezee.prj.sodexo.domain.MesshallInfo;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import java.util.List;
 
 /**
@@ -21,4 +22,8 @@ public interface IMesshallService extends IServiceLayer<MesshallInfo> {
     @Path("/list/all")
     @GET
     List<MesshallInfo> findAll();
+
+    @Path("/code/{code}")
+    @GET
+    MesshallInfo findByCode(@PathParam("code") String code);
 }

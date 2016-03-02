@@ -34,7 +34,7 @@ $(function () {
             }, {
                 code : 'recommend',
                 title : '推荐菜品',
-                width:'75px',
+                width:'90px',
                 formatter:function(val,data){
                     return '<input type="checkbox" value="'+val+'" ' +
                         'id="recoslideThree" onchange="updateRecommend(this,'+data.id+')" name="check" '+ (val?'checked':'')+' />';
@@ -60,7 +60,7 @@ $(function () {
             },{
                 code : 'status',
                 title : '是否上架',
-                width:'75px',
+                width:'90px',
                 formatter:function(val,data){
                     return '<input type="checkbox" value="'+val+'" ' +
                     'onchange="updateStatus(this,'+data.id+')" name="check'+data.id+'" '+ (val?'checked':'')+' />';

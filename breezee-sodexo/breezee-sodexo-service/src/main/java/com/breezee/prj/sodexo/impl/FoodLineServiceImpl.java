@@ -79,6 +79,7 @@ public class FoodLineServiceImpl implements IFoodLineService {
 
     @Override
     public PageResult<FoodLineInfo> pageAll(Map<String, Object> m, PageInfo pageInfo) {
+        pageInfo = new PageInfo(m);
         Page<FoodLineEntity> page = foodLineRepository.findAll(DynamicSpecifications.createSpecification(m), pageInfo);
         return new PageResult<>(page, FoodLineInfo.class, (foodLineEntity, foodLineInfo) -> foodLineEntity.toInfo());
     }

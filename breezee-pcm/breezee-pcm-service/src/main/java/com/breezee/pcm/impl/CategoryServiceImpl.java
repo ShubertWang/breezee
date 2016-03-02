@@ -114,7 +114,7 @@ public class CategoryServiceImpl implements ICategoryService {
             categoryInfo.setId(-100L);
             categoryInfo.setCode("today");
             categoryInfo.setName("今日推荐");
-            categoryInfo.setIcon("today");
+            categoryInfo.setIcon("nav_n_27.png");
             categoryInfo.setProducts(productService.findRecomProductByCateId(code));
             ret.add(categoryInfo);
         }

@@ -34,12 +34,10 @@ public class PageInfo implements Pageable, Serializable {
     public PageInfo(Map<String, Object> m) {
         if (m != null) {
             Object a = m.get("pageNumber");
-            System.out.print(a+"--------");
             if (a == null || a.toString().equals("null")) {
                 a = "0";
             }
             Object b = m.get("pageSize");
-            System.out.print(a+"--------");
             if (b == null || b.toString().equals("null"))
                 b = "5";
             this.pageNumber = Integer.parseInt(a.toString());

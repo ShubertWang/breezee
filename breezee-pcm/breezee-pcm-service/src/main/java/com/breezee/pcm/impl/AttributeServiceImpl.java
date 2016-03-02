@@ -62,6 +62,7 @@ public class AttributeServiceImpl implements IAttributeService {
 
     @Override
     public PageResult<AttributeInfo> pageAll(Map<String, Object> m, PageInfo pageInfo) {
+        pageInfo = new PageInfo(m);
         Page<AttributeEntity> page = attributeRepository.findAll(DynamicSpecifications.createSpecification(m), pageInfo);
         return new PageResult<>(page, AttributeInfo.class, (attributeEntity, attributeInfo) -> attributeEntity.toInfo());
     }

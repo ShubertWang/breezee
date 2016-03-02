@@ -206,10 +206,8 @@ public class ProductServiceImpl implements IProductService, InitializingBean {
 
     @Override
     public PageResult<ProductInfo> pageAll(Map<String, Object> m, PageInfo pageInfo) {
-        System.out.println(m);
-        System.out.println(pageInfo);
-        Page<ProductEntity> page = productRepository.findAll(DynamicSpecifications.createSpecification(m),new PageInfo(pageInfo,m));
-        System.out.println(new PageInfo(pageInfo,m));
+        pageInfo = new PageInfo(pageInfo,m);
+        Page<ProductEntity> page = productRepository.findAll(DynamicSpecifications.createSpecification(m),pageInfo);
         return new PageResult<>(page, ProductInfo.class, (productEntity, productInfo) -> {
             ProductInfo info = productEntity.toInfo();
             return setStock(info);
