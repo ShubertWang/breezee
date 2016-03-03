@@ -34,7 +34,7 @@ public class DictDetailEntity extends BaseInfo {
         return name;
     }
 
-    @Column(name = "DETAIL_CODE", unique = true, updatable = false, nullable = false, length = 64)
+    @Column(name = "DETAIL_CODE", length = 64)
     public String getCode() {
         return code;
     }

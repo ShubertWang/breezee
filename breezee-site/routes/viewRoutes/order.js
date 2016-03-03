@@ -8,7 +8,7 @@ route.restaurantList = function (queryData, res, callback) {
         mockData: '/restaurant/restaurantList'
     }, function (error, response, body) {
         body = body || [];
-        callback(body);
+        callback(body,3);
     });
 };
 
@@ -21,7 +21,7 @@ route.restaurantDetail = function (queryData, res, callback) {
         if (error) {
             throw error;
         }
-        callback(body);
+        callback(body,'site');
     });
 };
 
@@ -35,7 +35,7 @@ route.orderFood = function (queryData, res, callback) {
             var ret = {};
             ret.data = body || [];
             ret.messhall = messhall;
-            callback(ret);
+            callback(ret,'site');
         });
     });
 };

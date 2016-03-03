@@ -119,6 +119,17 @@ $(function () {
 
         editWin.modal('show');
     });
+    deleteOptions.click(function(){
+        var item = optionList.getChecked()[0];
+        Dolphin.ajax({
+            url : '/data/sym/dict/detail/'+item.id,
+            type : Dolphin.requestMethod.DELETE,
+            loading : true,
+            onSuccess : function (reData) {
+                list.reload();
+            }
+        });
+    });
 
     //==================================================================== modal win
     var editWin;

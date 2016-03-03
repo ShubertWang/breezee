@@ -87,8 +87,8 @@ myUtil.customerInfo = function(url, callback){
         if(error)
             throw error;
         //判断body
+        var userData = {};
         if(body && body.id > 0){
-            var userData = {};
             userData.userType = body.type;
             userData.siteId = body.company;
             userData.userId = body.id;
@@ -98,8 +98,8 @@ myUtil.customerInfo = function(url, callback){
             if(body.defaultAddress) {
                 userData.defaultAddress = body.defaultAddress;
             }
-            callback(userData);
         }
+        callback(userData);
     });
 };
 

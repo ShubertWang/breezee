@@ -3,6 +3,19 @@ var extend = require('extend');
 var router = express.Router();
 
 var viewRoutes = {
+
+    _checkUser : {
+        public:1,
+        site:2,
+        employee:3
+    },
+
+    /**
+     * 获取客户端的IP地址
+     * @param req
+     * @returns {*}
+     * @private
+     */
     _getClientIp: function (req) {
         return req.headers['x-forwarded-for'] ||
             req.connection.remoteAddress ||
@@ -31,6 +44,7 @@ var viewRoutes = {
         var routerPath = url.split('?')[0].split('/');
         var fun = _this;
         for (var i = 2; i < routerPath.length; i++) {
+
             fun = fun[routerPath[i]];
             if (fun == null) {
                 break;
@@ -39,7 +53,11 @@ var viewRoutes = {
         if (fun == null) {
             res.render(url.substring(1), rendParam);
         } else {
-            fun(queryData, res, function (body) {
+            fun(queryData, res, function (body, checkUser) {
+                //1: public 2: site 3: employee
+                if(checkUser && _this._checkUser[checkUser] < _this._checkUser[req.session.userData.userType]) {
+                    url='/mobile/noAccess';
+                }
                 rendParam.body = body;
                 res.render(url.substring(1), extend({body: body}, rendParam))
             });
@@ -70,10 +88,11 @@ router.get('*', function (req, res, next) {
                         req.session.userData = userData;
                         req.session.userData.remoteIp = viewRoutes._getClientIp(req);
                         req.session.userData.openId = openId;
+                        //我们在获取用户成功后获取token
+                        global.weChatUtil.validateToken();
                         viewRoutes._render_(url, req, res);
                     });
-                    //我们在获取用户成功后获取token
-                    global.weChatUtil.validateToken();
+
                 } else {
                     res.send({success: false, msg: "无法获取您的OpenId，请确认是在微信菜单中打开本网页！"});
                 }

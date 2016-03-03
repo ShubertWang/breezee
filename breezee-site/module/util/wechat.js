@@ -45,7 +45,7 @@ weChatUtil.getOpenId = function(code,callback){
     var _this = this;
     request({
         method: 'get',
-        uri: _this.access_token_url,
+        uri: _this.token_url,
         form: extend({code:code,grant_type:'authorization_code'},_this.config)
     }, function (error, response, body) {
         if (error)
@@ -150,7 +150,7 @@ weChatUtil.preOrder = function(obj, callback){
     params['mch_id'] = this.config.mch_id;
     params['device_info']='WEB';
     params['nonce_str'] = obj.nonce_str;
-    params['body'] = 'No body';
+    params['body'] = 'Nobody';
     params['out_trade_no'] = obj.nonce_str;
     params['total_fee'] = obj.amount;
     params['spbill_create_ip'] = obj.remoteIp;
