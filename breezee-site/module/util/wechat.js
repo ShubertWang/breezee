@@ -13,11 +13,12 @@ var weChatUtil = {
     config:{
         appId:'wx5fb7696767080dbb',
         mch_id:'1316675801',
-        secret:'9837eb6f6b6ca07dedd08db4c4531b5a'
+        secret:'9837eb6f6b6ca07dedd08db4c4531b5a',
+        key:'vc8fhbrmUaE9Z1EMuI48usyLeyNJ0201'
     },
     tokenTime:7000000, //jsapi_ticket的有效期为7200秒，我们在这里提前2s
     tokenCache : {
-        tokenId:'',
+        tokenId:'tokenId',
         tokenTime:0
     }
 };
@@ -160,18 +161,19 @@ weChatUtil.preOrder = function(obj, callback){
 
     var key=[];
     key.push("appid="+params['appid']);
-    key.push("body"+params['body']);
-    key.push("device_info"+params['device_info']);
-    key.push("mch_id"+params['mch_id']);
-    key.push("nonce_str"+params['nonce_str']);
-    key.push("notify_url"+params['notify_url']);
-    key.push("openid"+params['openid']);
-    key.push("out_trade_no"+params['out_trade_no']);
-    key.push("spbill_create_ip"+params['out_trade_no']);
-    key.push("total_fee"+params['total_fee']);
-    key.push("trade_type"+params['trade_type']);
-
-    var sign = md5(key.join("&"));
+    key.push("body="+params['body']);
+    key.push("device_info="+params['device_info']);
+    key.push("mch_id="+params['mch_id']);
+    key.push("nonce_str="+params['nonce_str']);
+    key.push("notify_url="+params['notify_url']);
+    key.push("openid="+params['openid']);
+    key.push("out_trade_no="+params['out_trade_no']);
+    key.push("spbill_create_ip="+params['spbill_create_ip']);
+    key.push("total_fee="+params['total_fee']);
+    key.push("trade_type="+params['trade_type']);
+    var tmp = key.join("&")+"&key="+_this.config.key;
+    var sign = md5(tmp);
+    sign = sign.toUpperCase();
     params['sign'] = sign;
     var xml = js2xmlparser("xml",params);
     console.log(xml);
@@ -192,7 +194,7 @@ weChatUtil.preOrder = function(obj, callback){
             ret[children[i].name]=children[i].content;
         }
         callback(ret);
-        console.log("weChatUtil.unifiedorder:@" + ret+"@");
+        console.log("weChatUtil.unifiedorder:@", ret, "@");
     });
 };
 

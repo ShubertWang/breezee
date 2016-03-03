@@ -174,25 +174,25 @@ route.wepay = function(queryData, res, callback){
             nonce_str:body.code,
             amount:1,
             remoteIp:queryData.remoteIp,
-            openid:queryData.openId
+            openid:queryData.userCode
         },function(ret){
             if(ret.return_code=='SUCCESS'){
-                var key = [],n = new Date().getTime();
+                var key = [],n = body.issueDate;
                 key.push("jsapi_ticket="+global.weChatUtil.tokenCache.tokenId);
-                key.push("noncestr="+body.code);
+                key.push("noncestr="+ret.nonce_str);
                 key.push("timestamp="+n);
                 key.push("url=http://weixin.sodexo-cn.com/wepay?id="+body.id);
                 var str = sha1(key.join("&"));
-                console.log("str:"+key.join("&")+",signature:"+str);
-                callback(global.myUtil.extend(true,{},{
-                    appId:global.weChatUtil.config.appId,
+                console.log("str:",key.join("&"),",signature:",str);
+                callback({
+                    appId:ret.appid,
                     timestamp:n,
-                    nonceStr: body.code,
+                    nonceStr: ret.nonce_str,
                     signature: str,
                     signType:'MD5',
                     paySign:ret.sign,
                     package:ret.prepay_id
-                }));
+                });
             } else {
                 callback({
                     code:ret.return_msg

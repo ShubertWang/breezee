@@ -19,5 +19,5 @@
                    protocol="dubbo,rest"/>
 
     <dubbo:reference interface="com.breezee.oms.api.service.InventoryService"
-                     id="inventoryService" protocol="dubbo" check="false" />
+                     id="inventoryService" protocol="dubbo" check="true" />
 </beans>

@@ -21,15 +21,15 @@
         <br/>
         <span id="Span1" style="color: Red;">订单编号：<%= body.code %></span>
         <br/>
-        <%= body.timestamp %>
+        时间戳:<%= body.timestamp %>
         <br/>
-        <%= body.nonceStr %>
+        统一支付后的随机串：<%= body.nonceStr %>
         <br/>
-        <%= body.package %>
+        预支付ID：<%= body.package %>
         <br/>
-        <%= body.signType %>
+        统一签名类型：<%= body.signType %>
         <br/>
-        <%= body.paySign %>
+        统一签名：<%= body.paySign %>
     </div>
     <div style="margin-top: 200px; text-align: right;">
         <span style="font-size: 12px; color: #CCC;">测试微信支付 </span>
@@ -74,6 +74,7 @@
             signType: "<%= body.signType %>", // 签名方式，'MD5'
             paySign: "<%= body.paySign %>", // 支付签名
             success: function (res) {
+                alert(res);
                 if (res.err_msg == "get_brand_wcpay_request:ok") {
                     alert("支付成功");
                     // 使用以上方式判断前端返回,微信团队郑重提示：res.err_msg将在用户支付成功后返回ok，但并不保证它绝对可靠。
@@ -81,41 +82,9 @@
             }
         });
 
-        var shareData = {
-            title: '微信支付测试',
-            desc: '都被这傻X玩意整哭了-.-',
-            link: 'http://***/wxpay/pay.aspx',
-            imgUrl: 'http://***/wxshare.jpg',
-            trigger: function (res) {
-                //alert('用户点击发送给朋友');
-            },
-            success: function (res) {
-                //alert('已分享');
-            },
-            cancel: function (res) {
-                //alert('已取消');
-            },
-            fail: function (res) {
-                //alert(JSON.stringify(res));
-            }
-        };
-
-        //监听“分享给朋友”，按钮点击、自定义分享内容及分享结果接口
-        wx.onMenuShareAppMessage(shareData);
-        //监听“分享到朋友圈”按钮点击、自定义分享内容及分享结果接口
-        wx.onMenuShareTimeline(shareData);
-        //获取用户网络状态
-        wx.getNetworkType({
-            success: function (res) {
-                $(".int").html(res.networkType);
-                document.getElementById("int").innerHTML = res.networkType;
-            },
-            fail: function (res) {
-                alert(JSON.stringify(res));
-            }
-        });
         //监听错误事件 出现'invalid signature' AJAX刷新ticket,并刷新当前页面
         wx.error(function (res) {
+            console.log(res,'-----------------------');
             if (res.errMsg.indexOf("invalid signature") > 0) {
                 alert("无效的签名，需要更新");
             }

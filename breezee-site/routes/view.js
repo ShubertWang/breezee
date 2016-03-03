@@ -4,10 +4,10 @@ var router = express.Router();
 
 var viewRoutes = {
 
-    _checkUser : {
-        public:1,
-        site:2,
-        employee:3
+    _checkUser: {
+        public: 1,
+        site: 2,
+        employee: 3
     },
 
     /**
@@ -17,10 +17,16 @@ var viewRoutes = {
      * @private
      */
     _getClientIp: function (req) {
-        return req.headers['x-forwarded-for'] ||
+        var ip = req.headers['x-forwarded-for'] ||
             req.connection.remoteAddress ||
             req.socket.remoteAddress ||
             req.connection.socket.remoteAddress;
+        //::ffff:127.0.0.1
+        ip = ip || "127.0.0.1";
+        var ind = ip.lastIndexOf(":");
+        if(ind>-1)
+            ip = ip.substring(ind+1);
+        return ip;
     },
 
     /**
@@ -40,7 +46,7 @@ var viewRoutes = {
                 userData: req.session.userData || {},
                 cookie: req.cookies
             };
-        extend(queryData, req.session.userData);
+        extend(true, queryData, req.session.userData, {remoteIp: _this._getClientIp(req)});
         var routerPath = url.split('?')[0].split('/');
         var fun = _this;
         for (var i = 2; i < routerPath.length; i++) {
@@ -55,8 +61,8 @@ var viewRoutes = {
         } else {
             fun(queryData, res, function (body, checkUser) {
                 //1: public 2: site 3: employee
-                if(checkUser && _this._checkUser[checkUser] < _this._checkUser[req.session.userData.userType]) {
-                    url='/mobile/noAccess';
+                if (checkUser && _this._checkUser[checkUser] < _this._checkUser[req.session.userData.userType]) {
+                    url = '/mobile/noAccess';
                 }
                 rendParam.body = body;
                 res.render(url.substring(1), extend({body: body}, rendParam))
@@ -86,8 +92,6 @@ router.get('*', function (req, res, next) {
                     req.session.openId = openId;
                     myUtil.customerInfo(global.config.service['crm'] + '/user/code/' + openId, function (userData) {
                         req.session.userData = userData;
-                        req.session.userData.remoteIp = viewRoutes._getClientIp(req);
-                        req.session.userData.openId = openId;
                         //我们在获取用户成功后获取token
                         global.weChatUtil.validateToken();
                         viewRoutes._render_(url, req, res);
