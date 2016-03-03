@@ -12,7 +12,6 @@ var view = require('./routes/view');
 var data = require('./routes/data');
 var login = require('./routes/login');
 var verifyToken = require('./routes/verifyToken');
-var wechat = require('./routes/wechat');
 
 //config
 global.config = require('./config/config.js');
@@ -22,6 +21,7 @@ console.log("///////////////////////////////////////////////////////////////");
 
 //common util
 global.myUtil = require('./module/util/util.js');
+global.weChatUtil = require('./module/util/wechat.js');
 global.htmlRender = require('./module/util/htmlRender.js');
 
 var app = express();
@@ -51,7 +51,6 @@ app.use('/view', view);
 app.use('/data', data);
 app.use('/login', login);
 app.use('/verifyToken',verifyToken);
-app.use('/wechat',wechat);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

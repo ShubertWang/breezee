@@ -33,7 +33,7 @@
     </style>
 </head>
 <body ontouchstart class="bg_b">
-<% var i; %>
+<% var i; console.log(body); %>
 <article>
     <div class="tab_list bh bg_zi">
         <ul id="headTab">
@@ -45,30 +45,28 @@
     <div class="pagePanel" id="order_food">
         <div id="boxscroll">
             <div class="nav_box bh bg_zi1 foodType">
-                <% for(i = 0; i < body.food.length; i++){ %>
-                <div class="nav_icon" data-food-type-id="<%= body.food[i].id %>"
-                     data-food-type-name="<%= body.food[i].name %>">
-                    <div><img src="/custom/wx_style/images/nav_n_<%= body.food[i].imageCode %>.png"></div>
-                    <div><%= body.food[i].name %></div>
+                <% for(i = 0; i < body.data.length; i++){ %>
+                <div class="nav_icon" data-food-type-id="<%= body.data[i].id %>"
+                     data-food-type-name="<%= body.data[i].name %>">
+                    <div><img src="/custom/wx_style/images/<%= body.data[i].icon || "nav_n_15.png" %>"></div>
+                    <div><%= body.data[i].name %></div>
                 </div>
                 <% } %>
             </div>
         </div>
 
         <div class="ty_bt_title">
-            <h3><span class="icon_tj1">&nbsp;</span><span id="foodTypeName"><%= body.food[0].name %></span></h3>
+            <h3><span class="icon_tj1">&nbsp;</span><span id="foodTypeName"><%= body.data[0].name %></span></h3>
         </div>
 
-        <% for(i = 0; i < body.food.length; i++){ %>
-        <div class="div_listtz foodTypeList foodTypeList_<%= body.food[i].id %>"
-             style="<%= i == 0 ? '' : 'display:none;' %>">
-            <% var food = null; %>
-            <% for(var j = 0; j < body.food[i].children.length; j++){ %>
-            <% food = body.food[i].children[j]; %>
-            <div class="list bh foodData" data-food-id="<%= food.id %>" data-food-price="<%= food.price %>"
-                 data-food-name="<%= food.name %>">
+        <% for(i = 0; i < body.data.length; i++){%>
+        <div class="div_listtz foodTypeList foodTypeList_<%= body.data[i].id %>" style="<%= i==0?'':'display:none;'%>">
+            <% var food = null;%>
+            <% for(var j = 0; j < body.data[i].products.length; j++){%>
+            <% food = body.data[i].products[j]; %>
+            <div class="list bh foodData" data-food-id="<%= food.id %>" data-food-price="<%= food.basePrice.value %>" data-food-name="<%= food.name %>">
                 <div class="text foodDetail"><a href="#"><%= food.name %></a></div>
-                <div class="img foodDetail"><img src="/custom/wx_style/images/<%= food.image %>.png"></div>
+                <div class="img foodDetail"><img src="/custom/wx_style/images/<%= food.image || "img_cp1.png" %>"></div>
                 <div class="bh">
 
                     <div class="btn_gm">
@@ -76,7 +74,7 @@
                         <div class="sz" style=" display:none;">5</div>
                         <div class="icon_jh1" style=" display:none;"></div>
                     </div>
-                    <div class="jg_b"><span>￥</span><%= food.price %></div>
+                    <div class="jg_b"><span>￥</span><%= food.basePrice.value || 18 %></div>
                 </div>
             </div>
             <% } %>
@@ -86,26 +84,26 @@
 
     <div class="pagePanel" id="restaurant_info" style="display: none;">
         <ul class="nr_list">
-            <li class="bh li_ct evaluate_param" data-id="<%= body.id %>">
+            <li class="bh li_ct evaluate_param" data-id="<%= body.messhall.id %>">
                 <div class="img">
-                    <div><a href="javascript:void(0)"><img src="/custom/wx_style/images/<%= body.image || 'icon_ct_mr' %>.png"></a></div>
+                    <div><a href="javascript:void(0)"><img src="/custom/wx_style/images/<%= body.image || 'icon_ct_mr.png' %>"></a></div>
                 </div>
                 <div class="text_ct bh">
-                    <h2><a href="javascript:void(0)"><%= body.name %></a></h2>
-                    <div class="icon_ty like"><s> </s><a href="tel:<%= body.phone %>"><%= body.phone %></a></div>
+                    <h2><a href="javascript:void(0)"><%= body.messhall.name %></a></h2>
+                    <div class="icon_ty like"><s> </s><a href="tel:<%= body.messhall.telephone %>"><%= body.messhall.telephone %></a></div>
                     <div class="clear bh">
-                        <div class="icon_ty dzh" onclick="__evaluat(this, true)"><s> </s><a href="javascript:void(0)" class="__count"><%= (body.comment && body.comment.yes) || '0' %></a></div>
-                        <div class="icon_ty dw" onclick="__evaluat(this, false)"><s> </s><a href="javascript:void(0)" class="__count"><%= (body.comment && body.comment.yes) || '0' %></a></div>
+                        <div class="icon_ty dzh" onclick="__evaluat(this, true)"><s> </s><a href="javascript:void(0)" class="__count"><%= (body.messhall.properties && body.messhall.properties.good) || '0' %></a></div>
+                        <div class="icon_ty dw" onclick="__evaluat(this, false)"><s> </s><a href="javascript:void(0)" class="__count"><%= (body.messhall.properties && body.messhall.properties.bad) || '0' %></a></div>
                     </div>
                 </div>
-                <div class="icon_ty ctdz"><s> </s><a href="tel:62549984">餐厅地址 ：<%= body.address %></a></div>
+                <div class="icon_ty ctdz"><s> </s><a href="javascript:void(0)">餐厅地址 ：<%= body.messhall.address %></a></div>
             </li>
         </ul>
 
         <div>
             <div class="ty_bt_title" style="background:none;">
                 <h3><span class="icon_ct">&nbsp;</span>餐厅简介</h3>
-                <h5 class="ty_bt_box"><%- body.remark %></h5>
+                <h5 class="ty_bt_box"><%- body.messhall.remark %></h5>
             </div>
         </div>
     </div>
@@ -151,22 +149,23 @@
                 <div class="div_gwc" id="cartIcon"><span id="cartTotalNumber">0</span></div>
                 <div class="fkjg"><strong>￥<span id="cartTotalPrice">0.00</span></strong></div>
                 <form name="form" id="form">
-                    <input type="hidden" name="foodList" id="foodList"/>
+                    <input type="hidden" name="foodList" id="foodList" />
                     <a href="javascript:void(0);" class="weui_btn weui_btn_warn" id="submit">去结算</a>
                 </form>
                 <% if(cookie.orderType == 'wm'){ %>
-                <div class="fkjg1">配送费 <strong><%= body.deliveryFee %></strong> 元</div>
+                <!--<div class="fkjg1">配送费 <strong><%= body.deliveryFee%></strong> 元</div>-->
                 <% } %>
             </div>
         </div>
     </div>
 </article>
 
+
 <% include ../common/footer.ejs %>
 <script>
-    //    $(document).ready(function() {
-    //        var nicesx = $("#boxscroll").niceScroll("#boxscroll div",{touchbehavior:true,cursorcolor:"#FF00FF",cursoropacitymax:0.6,cursorwidth:24,usetransition:true,hwacceleration:true,autohidemode:"hidden"});
-    //    });
+//    $(document).ready(function() {
+//        var nicesx = $("#boxscroll").niceScroll("#boxscroll div",{touchbehavior:true,cursorcolor:"#FF00FF",cursoropacitymax:0.6,cursorwidth:24,usetransition:true,hwacceleration:true,autohidemode:"hidden"});
+//    });
 </script>
 </body>
 </html>

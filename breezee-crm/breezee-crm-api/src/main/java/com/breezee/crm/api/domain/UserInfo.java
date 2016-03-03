@@ -50,9 +50,11 @@ public class UserInfo extends BaseInfo {
 
     protected double balance = 0.00;
 
-    protected Integer addressCount;
+    protected Integer addressCount=0;
 
     protected boolean accountAble;
+
+    protected ShippingAddressInfo defaultAddress;
 
     protected List<ShippingAddressInfo> shippingAddressInfos = new ArrayList<>();
 
@@ -203,5 +205,15 @@ public class UserInfo extends BaseInfo {
         return shippingAddressInfos!=null?shippingAddressInfos.size():0;
     }
 
+    public boolean isAccountAble() {
+        return accountId!=null?true:false;
+    }
 
+    public ShippingAddressInfo getDefaultAddress() {
+        return defaultAddress;
+    }
+
+    public void setDefaultAddress(ShippingAddressInfo defaultAddress) {
+        this.defaultAddress = defaultAddress;
+    }
 }

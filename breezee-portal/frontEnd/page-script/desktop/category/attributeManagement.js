@@ -110,6 +110,11 @@ $(function () {
                 $("#extendInfo").empty();
                 $('<hr/><div class="form-group"><label>单位</label><input type="text" class="form-control"  name="unitCode"></div>').appendTo($("#extendInfo"));
                 break;
+            case 'string':
+                $("#extendInfo").show();
+                $("#extendInfo").empty();
+                $('<hr/><div class="form-group"><label>文本类型</label><select class="form-control" name="arguments.textType" dol-validate="required"><option value="input" selected>单行文本</option><option value="textArea">多行文本</option></select></div>').appendTo($("#extendInfo"));
+                break;
             default:
                 $("#extendInfo").empty();
                 $("#extendInfo").hide();

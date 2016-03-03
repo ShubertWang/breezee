@@ -5,8 +5,9 @@
 
 package com.breezee.oms.repository;
 
-import com.breezee.oms.entity.InventoryEntity;
 import com.breezee.oms.entity.OrderEntity;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Repository;
@@ -24,4 +25,6 @@ public interface OrderRepository extends PagingAndSortingRepository<OrderEntity,
     List<OrderEntity> findByCode(String code);
 
     List<OrderEntity> findByCodeIn(Collection<String> codes);
+
+    Page<OrderEntity> findByUserId(Long userId, Pageable pageable);
 }

@@ -1,4 +1,5 @@
 var request = require('request');
+var extend = require('extend');
 
 var myUtil = {};
 
@@ -11,7 +12,15 @@ myUtil.request = function (param, callback) {
             callback(e, null, data);
         }
     }else{
-        request(param, callback);
+        defaultParam = {
+            json : {},
+            headers: {
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            }
+        };
+        var _param = extend(true, {}, defaultParam, param);
+        request(_param, callback);
     }
 };
 
@@ -57,6 +66,41 @@ myUtil.dateFormatter = function (date, format) {
         }
     }
     return format;
+};
+
+/**
+ * 客户信息的获取
+ * @param url
+ * @param callback
+ */
+myUtil.customerInfo = function(url, callback){
+    request({
+        method: 'get',
+        //uri: global.config.service['crm']+'/user/code/'+openId,
+        uri: url,
+        json: {},
+        headers: {
+            "Content-Type": "application/json",
+            "Accept": "application/json"
+        }
+    }, function (error, response, body) {
+        if(error)
+            throw error;
+        //判断body
+        var userData = {};
+        if(body && body.id > 0){
+            userData.userType = body.type;
+            userData.siteId = body.company;
+            userData.userId = body.id;
+            userData.userCode = body.code;
+            userData.userName = body.name;
+            userData.addressCount = body.addressCount;
+            if(body.defaultAddress) {
+                userData.defaultAddress = body.defaultAddress;
+            }
+        }
+        callback(userData);
+    });
 };
 
 module.exports = myUtil;

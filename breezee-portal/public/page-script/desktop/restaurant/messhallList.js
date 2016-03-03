@@ -29,7 +29,7 @@ $(function () {
             code:'setting',
             title:'设置',
             formatter:function(val,data){
-                return "<a href='messhallDetail?id="+data.id+"'>设置</a>";
+                return "<a href='messhallDetail?id="+data.id+"&code="+data.orgId+"'>设置</a>";
             }
         }],
         multiple : false,

@@ -101,10 +101,11 @@ public class DictEntity extends BaseInfo {
     public DictEntity parse(DictInfo info) {
         info.cloneAttribute(this);
         if (info.getDetailInfos().size() > 0) {
-            if (this.dictDetails == null)
-                this.dictDetails = new HashSet<>();
+            this.dictDetails = new HashSet<>();
             info.getDetailInfos().forEach(a -> {
-                this.addDictDetail(new DictDetailEntity().parse(a));
+                DictDetailEntity de = new DictDetailEntity().parse(a);
+                de.setId(null);
+                this.addDictDetail(de);
             });
         }
         return this;

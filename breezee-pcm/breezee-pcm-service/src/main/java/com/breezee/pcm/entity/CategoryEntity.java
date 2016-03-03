@@ -21,6 +21,8 @@ import java.util.Set;
 @Table(name = "PCM_TD_CATEGORY")
 public class CategoryEntity extends BaseInfo {
 
+    protected String icon;
+
     protected CategoryEntity parent;
 
     protected Set<CategoryEntity> children;
@@ -114,6 +116,14 @@ public class CategoryEntity extends BaseInfo {
         this.children = children;
     }
 
+    public String getIcon() {
+        return icon;
+    }
+
+    public void setIcon(String icon) {
+        this.icon = icon;
+    }
+
     /**
      * 实体映射到领域对象上
      * @param loadChild
@@ -136,11 +146,13 @@ public class CategoryEntity extends BaseInfo {
             this.getParent().cloneAttribute(pInfo);
             info.setParent(pInfo);
         }
+        info.setIcon(this.getIcon());
         return info;
     }
 
     public CategoryEntity parse(CategoryInfo categoryInfo){
         categoryInfo.cloneAttribute(this);
+        this.setIcon(categoryInfo.getIcon());
         return this;
     }
 }

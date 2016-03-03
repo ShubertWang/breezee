@@ -24,6 +24,10 @@ public interface IOrganizationService extends IServiceLayer<OrganizationInfo> {
     @GET
     List<OrganizationInfo> findOrganizationsByParentId(@PathParam("id")Long id);
 
+    @Path("/pCode/{id}")
+    @GET
+    List<OrganizationInfo> findOrganizationsByParentCode(@PathParam("id")String id);
+
     @Path("/acntRel")
     @PUT
     void updateOrganizationAccount(OrganizationInfo organizationInfo);

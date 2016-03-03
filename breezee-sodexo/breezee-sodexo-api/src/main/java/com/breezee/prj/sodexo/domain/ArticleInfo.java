@@ -4,6 +4,8 @@ import com.breezee.common.BaseInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
+import java.util.Date;
+
 /**
  * Created by Silence on 2016/2/27.
  */
@@ -39,6 +41,10 @@ public class ArticleInfo extends BaseInfo {
     protected String site;
 
     protected Long modelId;
+
+    protected String modelName;
+
+    protected Long updateTimeLong;
 
     protected String uedit;
 
@@ -104,5 +110,17 @@ public class ArticleInfo extends BaseInfo {
 
     public void setUedit(String uedit) {
         this.content = uedit;
+    }
+
+    public String getModelName() {
+        return modelName;
+    }
+
+    public void setModelName(String modelName) {
+        this.modelName = modelName;
+    }
+
+    public Long getUpdateTimeLong() {
+        return this.getUpdateTime()!=null?this.getUpdateTime().getTime():new Date().getTime();
     }
 }

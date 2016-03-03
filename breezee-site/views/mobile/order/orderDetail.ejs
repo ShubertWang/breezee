@@ -8,8 +8,8 @@
 <body ontouchstart>
 <% var i;%>
 <div class="div_ddcg">
-    <div class="zt" data-code="<%= body.status %>"><%= body.status == "1"?'订单待确认':'订单已确认' %></div> <!--TODO 接枚举，siteOrderStatus-->
-    <div class="time"><%= body.createTime %></div>
+    <div class="zt" data-code="<%= body.status %>"><%= body.status <= "1"?'订单待确认':'订单已确认' %></div> <!--TODO 接枚举，siteOrderStatus-->
+    <div class="time"><%= body.issueDate %></div>
 </div>
 <div>
     <div class="zt_phone bh">
@@ -68,7 +68,7 @@
         <div class=" weui_cells_access">
             <a class="weui_cell" href="javascript:;">
                 <div class="weui_cell_bd weui_cell_primary">
-                    <p><%= body.restaurant.name %></p>
+                    <p><%= body.restaurantName %></p>
                 </div>
                 <div class="weui_cell_ft"></div>
             </a>
@@ -79,30 +79,22 @@
     <div class="div_ddlist">
         <div class="ddmx">
             <ul class="list-group" style="margin-top:0;">
-                <% for(i = 0; i < body.food.length; i++){%>
-                <li class="bh <%= i==(body.food.length-1)?'line_bot_p5':''%>">
-                    <div class="title_a"><%= body.food[i].food.name %></div>
-                    <div class="title_ad"> × <%= body.food[i].number %></div>
-                    <div class="title_c_text">￥<%= body.food[i].price %></div>
-                </li>
-                <% } %>
-                <% for(i = 0; i < body.otherCost.length; i++){%>
-                <li class="bh">
-                    <div class="title_a"><%= body.otherCost[i].name %></div>
-                    <div class="title_ad"> × <%= body.otherCost[i].number %></div>
-                    <div class="title_c_text">￥<%= body.otherCost[i].price %></div>
+                <% for(i = 0; i < body.orderLines.length; i++){%>
+                <li class="bh <%= i==(body.orderLines.length-1)?'line_bot_p5':''%>">
+                    <div class="title_a"><%= body.orderLines[i].note %></div>
+                    <div class="title_ad"> × <%= body.orderLines[i].quantity.value %></div>
+                    <div class="title_c_text">￥<%= body.orderLines[i].unitPrice.value %></div>
                 </li>
                 <% } %>
             </ul>
             <ul class="list-group">
                 <li class=" bh">
-                    <div class="title_d_text">合计：<span class="total_red">￥<%= body.price %></span></div>
+                    <div class="title_d_text">合计：<span class="total_red">￥<%= body.subTotal.value %></span></div>
                 </li>
             </ul>
         </div>
     </div>
     <% } %>
-
     <div class="weui_cells">
         <div class="weui_cell">
             <div class="weui_cell_bd weui_cell_primary">

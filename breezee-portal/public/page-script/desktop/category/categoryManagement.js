@@ -13,6 +13,7 @@ $(function () {
 
     //categoryTree
     var categoryTree = new Dolphin.TREE({
+        defaultId:1,
         panel : '#categoryTree',
         url : '/data/pcm/category/p/{id}',
         mockPathData : ['id'],
@@ -54,7 +55,6 @@ $(function () {
             code:'sourceCateId',
             title:'来源',
             formatter:function(val,dat){
-                console.log(val);
                 if(val==selectNode.id){
                     return "自身";
                 } else {
@@ -194,7 +194,8 @@ $(function () {
     $('#multipleUpdateAttr').click(function () {
         categoryPanel.slideToggle(300, function () {
             attributePanel.slideToggle(300);
-            unselectedList.load('/data/pcm/attribute/excludeCate/'+selectNode.id);
+            //unselectedList.load('/data/pcm/attribute/excludeCate/'+selectNode.id);
+            unselectedList.load('/data/pcm/attribute/list');
             selectedList.loadData(attrList.data);
         });
     });
@@ -245,8 +246,6 @@ $(function () {
                 targetList.addRowWithData($.extend({attrId:checkedData[i].id}, checkedData[i]));
             }
         }
-        console.log('------------');
-        console.log(targetList.data.rows);
     });
     $('#confirm').click(function () {
         var data = {id:selectNode.id,cateAttrInfos:[]}, attrData,
@@ -259,7 +258,6 @@ $(function () {
                 });
             }
         }
-        console.log(data);
         Dolphin.ajax({
             url : '/data/pcm/category/categoryAttr',
             type : Dolphin.requestMethod.PUT,

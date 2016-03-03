@@ -28,6 +28,10 @@
                     删除
                 </button>
             </div>
+            <button type="button" class="btn btn-info" id="cancelSel">
+                <span class="glyphicon glyphicon-upload"></span>
+                取消
+            </button>
         </div>
     </div>
 
@@ -111,7 +115,7 @@
                                 <label>
                                     所属组织
                                 </label>
-                                <select class="form-control" options optionUrl="/data/sym/organization/p/1"
+                                <select class="form-control" options optionUrl="/data/sym/organization/p/<%= data.code %>"
                                         codeField="id" name="orgId"></select>
                             </div>
                             <div class="form-group">
@@ -129,8 +133,8 @@
                                 <table>
                                     <tr>
                                         <td><input type="text" class="form-control" name="closeTime"></td>
-                                        <td>提前量</td>
-                                        <td><input type="text" class="form-control" name="shiftNum"></td>
+                                        <td style="width: 30px;">提前</td>
+                                        <td><input type="text" class="form-control" name="shiftNum" placeholder="分钟"></td>
                                     </tr>
                                 </table>
                             </div>
@@ -142,19 +146,19 @@
                                 <label>支付方式</label>
                                 <div class="checkbox">
                                     <label class="checkbox-inline">
-                                        <input type="checkbox" id="inlineCheckbox1" value="cash">到付
+                                        <input type="checkbox" id="cash" checked name="payType" value="cash">到付
                                     </label>
                                     <label class="checkbox-inline">
-                                        <input type="checkbox" id="inlineCheckbox2" value="wepay">微信支付
+                                        <input type="checkbox" id="wepay" name="payType" value="wepay">微信支付
                                     </label>
                                     <label class="checkbox-inline">
-                                        <input type="checkbox" id="inlineCheckbox3" value="cardpay">餐卡支付
+                                        <input type="checkbox" id="cardpay" name="payType" value="cardpay">餐卡支付
                                     </label>
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label>翻台时间</label>
-                                <input type="text" class="form-control" name="turnTime" dol-validate="required">
+                                <input type="text" class="form-control" name="turnTime" dol-validate="required" placeholder="分钟">
                             </div>
                             <div class="form-buttons">
                                 <button type="button" class="btn btn-primary" id="save">保存</button>

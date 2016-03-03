@@ -7,6 +7,7 @@ package com.breezee.oms.api.domain;
 
 import com.breezee.common.BaseInfo;
 import com.breezee.common.types.Amount;
+import com.fasterxml.jackson.annotation.JsonInclude;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -16,7 +17,10 @@ import java.util.List;
  * 订单信息对象
  * Created by Silence on 2016/2/11.
  */
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class OrderInfo extends BaseInfo {
+
+    //-1未付款, 0: 已提交, 1,已付款， 2，已确认， 3，已制作， 4，已发货， 5，已完成
 
     private Long userId;
     private Date issueDate;
@@ -37,12 +41,22 @@ public class OrderInfo extends BaseInfo {
      */
     private Amount subTotal;
 
+    private String needTime;
+
     /**
      * 下面的流程定义的字段从界面上传递过来，而不是从数据库取出来的
      */
     private Long taskId;
     private String procDefId;
     private Long procsInsId;
+
+    private String statusName;
+
+    private String restaurantName;
+
+    private String restaurantImage;
+
+    private boolean payNow;
 
     public Date getIssueDate() {
         return issueDate;
@@ -159,5 +173,44 @@ public class OrderInfo extends BaseInfo {
 
     public void setProcsInsId(Long procsInsId) {
         this.procsInsId = procsInsId;
+    }
+
+    public String getNeedTime() {
+        return needTime;
+    }
+
+    public void setNeedTime(String needTime) {
+        this.needTime = needTime;
+    }
+
+    public String getStatusName() {
+        return statusName;
+    }
+
+    public void setStatusName(String statusName) {
+        this.statusName = statusName;
+    }
+
+    public String getRestaurantName() {
+        return restaurantName;
+    }
+
+    public void setRestaurantName(String restaurantName) {
+        this.restaurantName = restaurantName;
+    }
+
+    public String getRestaurantImage() {
+        return restaurantImage==null?"image_cp":restaurantImage;
+    }
+
+    public void setRestaurantImage(String restaurantImage) {
+        this.restaurantImage = restaurantImage;
+    }
+
+    public boolean isPayNow() {
+        if(this.paymentType.equals("wepay") && this.status==0){
+            payNow = true;
+        }
+        return payNow;
     }
 }

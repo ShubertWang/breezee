@@ -28,6 +28,10 @@ public interface IProductService extends IServiceLayer<ProductInfo> {
      */
     List<ProductInfo> findProductsByCateId(Long cateId, boolean rec);
 
+    @Path("/cateCode/{cateCode}")
+    @GET
+    List<ProductInfo> findProductsByCateCode(@PathParam("cateCode")String cateCode);
+
     @Path("/code/{code}")
     @GET
     ProductInfo findByCode(@PathParam("code") String code);
@@ -39,4 +43,8 @@ public interface IProductService extends IServiceLayer<ProductInfo> {
     @Path("/recommend/{id}/{recommend}")
     @GET
     void updateRecommend(@PathParam("id") Long id, @PathParam("recommend") boolean recommend);
+
+    @Path("/recommendproduct/{cateId}")
+    @GET
+    List<ProductInfo> findRecomProductByCateId(@PathParam("cateId") String cateId);
 }

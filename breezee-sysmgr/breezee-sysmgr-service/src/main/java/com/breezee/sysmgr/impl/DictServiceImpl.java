@@ -68,6 +68,7 @@ public class DictServiceImpl implements IDictService {
 
     @Override
     public PageResult<DictInfo> pageAll(Map<String, Object> m, PageInfo pageInfo) {
+        pageInfo = new PageInfo(m);
         Page<DictEntity> page = dictRepository.findAll(pageInfo);
         return new PageResult<>(page, DictInfo.class, (dictEntity, dictInfo) -> dictEntity.toInfo());
     }

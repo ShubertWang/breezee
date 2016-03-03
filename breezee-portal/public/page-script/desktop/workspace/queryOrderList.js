@@ -20,8 +20,8 @@ $(function () {
         this.orderList = new Dolphin.LIST({
             panel : '#list',
             url : _this.connect.orderList.url,
-            queryParams : Dolphin.form.getValue('queryForm'),
             ajaxType:'post',
+            queryParams : Dolphin.form.getValue('queryForm'),
             title : '订单列表',
             columns : [{
                 code: 'code',
@@ -41,7 +41,6 @@ $(function () {
                 code: 'paymentAmount',
                 title: '支付金额',
                 formatter : function(val, row, index){
-
                     return val.value;
                 }
             },{

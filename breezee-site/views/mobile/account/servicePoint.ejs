@@ -8,15 +8,17 @@
 <body ontouchstart>
 <article>
     <div class="bh">
+        <form id="editForm">
         <div class="weui_cells weui_cells_form">
             <div class="weui_cell">
-
+                <input type="hidden" name="id" value="<%= userData.userId %>" />
                 <div class="weui_cell_bd weui_cell_primary">
-                    <input class="weui_input" type="tel" placeholder="请输入服务网点编号" name="servicePoint"/>
+                    <input class="weui_input" type="text" placeholder="请输入服务网点编号" name="company"/>
                 </div>
             </div>
 
         </div>
+        </form>
         <div class="div_msxx">* 如果您不知道服务网点编号，可咨询索迪斯工作人员。</div>
     </div>
 </article>

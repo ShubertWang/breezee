@@ -34,21 +34,20 @@ router.post('/', function(req, res, next){
             "Accept": "application/json"
         }
     }, function (error, response, body) {
-        if(error)
-            throw error;
         //判断body
         if(body && body.id > 0){
-            req.session.username=bodyData.code;
+            req.session.userCode=bodyData.code;
             req.session.userId=body.id;
-            req.session.userCaption=body.name;
+            req.session.userName=body.name;
             req.session.userOrg=body.orgId;
             req.session.userRoles=body.roles;
+            req.session.job=body.job;
+
             res.send({success : true});
         }else{
             res.send({success : false, msg : body.remark});
         }
     });
-
 });
 
 router.get('/logout', function(req, res, next) {

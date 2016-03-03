@@ -10,7 +10,6 @@ import com.breezee.common.PageInfo;
 import com.breezee.common.PageResult;
 
 import javax.ws.rs.*;
-import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import java.util.Collection;
 import java.util.Date;
@@ -197,7 +196,7 @@ public interface ITaskService {
 
     /**
      * 获取待办任务
-     * @param TaskInfo
+     * @param m
      * @return
      */
     @Path("/findUndoTasks")
@@ -208,7 +207,7 @@ public interface ITaskService {
 
     /**
      * 获取已办任务
-     * @param TaskInfo
+     * @param m
      * @return
      */
     @Path("/findFinishedTasks")

@@ -104,6 +104,8 @@ public class MesshallEntity extends MesshallInfo {
         return telephone;
     }
 
+    @Lob
+    @Column(name = "REMARK")
     public String getRemark() {
         return remark;
     }

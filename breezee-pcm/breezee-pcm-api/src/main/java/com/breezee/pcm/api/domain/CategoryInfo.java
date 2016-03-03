@@ -19,6 +19,10 @@ public class CategoryInfo extends TreeObject<CategoryInfo> {
 
     protected String type="leaf";
 
+    protected String icon;
+
+    protected List<ProductInfo> products;
+
     public CategoryInfo() {
     }
 
@@ -43,5 +47,21 @@ public class CategoryInfo extends TreeObject<CategoryInfo> {
 
     public void setCateAttrInfos(List<CateAttrInfo> cateAttrInfos) {
         this.cateAttrInfos = cateAttrInfos;
+    }
+
+    public String getIcon() {
+        return icon;
+    }
+
+    public void setIcon(String icon) {
+        this.icon = icon;
+    }
+
+    public List<ProductInfo> getProducts() {
+        return products;
+    }
+
+    public void setProducts(List<ProductInfo> products) {
+        this.products = products;
     }
 }

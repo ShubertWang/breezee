@@ -138,7 +138,8 @@ public class OrderLineEntity extends BaseInfo {
     }
 
     public OrderLineInfo toInfo(){
-        OrderLineInfo info = (OrderLineInfo) this.clone();
+        OrderLineInfo info = new OrderLineInfo();
+        cloneAttribute(info);
         info.setLocation(this.getLocation());
         info.setNote(this.getNote());
         info.setOrderId(this.getOrder().getId());

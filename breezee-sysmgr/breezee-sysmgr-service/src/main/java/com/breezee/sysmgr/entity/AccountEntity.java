@@ -177,7 +177,7 @@ public class AccountEntity extends BaseInfo {
     }
 
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinTable(name = "AUTH_TF_ACNT_ORG",
+    @JoinTable(name = "SYM_TF_ACNT_ORG",
             joinColumns = @JoinColumn(name = "ACNT_ID", referencedColumnName = "ACNT_ID"),
             inverseJoinColumns = @JoinColumn(name = "ORG_ID", referencedColumnName = "ORG_ID"))
     @NotFound(action= NotFoundAction.IGNORE)

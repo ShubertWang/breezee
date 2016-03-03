@@ -14,20 +14,17 @@ route.message = function (queryData, res, callback) {
 };
 route.news = function (queryData, res, callback) {
     global.myUtil.request({
-        method : 'get',
-        uri : '/message/message',
-        mockData : '/message/news',
-        form : queryData
+        method : 'post',
+        uri : 'http://127.0.0.1:10250/services/article/modelCode/'+queryData.modelCode
     }, function(error, response, body){
-        callback(body);
+        callback(body.content);
     });
 };
 route.newsDetail = function (queryData, res, callback) {
     global.myUtil.request({
         method : 'get',
-        uri : '/message/message',
-        mockData : '/message/newsDetail',
-        form : queryData
+        uri : 'http://127.0.0.1:10250/services/article/'+queryData.id,
+        mockData : '/message/newsDetail'
     }, function(error, response, body){
         callback(body);
     });
@@ -47,4 +44,7 @@ route.messageLuckyMoney = function (queryData, res, callback) {
     });
 };
 
+route.warningMessage = function(queryData, res, callback){
+    callback({});
+}
 module.exports = route;

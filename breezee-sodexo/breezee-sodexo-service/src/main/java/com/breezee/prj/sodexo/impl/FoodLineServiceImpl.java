@@ -14,6 +14,7 @@ import com.breezee.prj.sodexo.domain.FoodLineInfo;
 import com.breezee.prj.sodexo.entity.FoodLineEntity;
 import com.breezee.prj.sodexo.repository.FoodLineRepository;
 import com.breezee.prj.sodexo.service.IFoodLineService;
+import com.breezee.prj.sodexo.service.IMesshallService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
@@ -33,6 +34,9 @@ public class FoodLineServiceImpl implements IFoodLineService {
 
     @Resource
     private ICategoryService categoryService;
+
+    @Resource
+    private IMesshallService messhallService;
 
     @Override
     public FoodLineInfo saveInfo(FoodLineInfo foodLineInfo) {
@@ -79,6 +83,7 @@ public class FoodLineServiceImpl implements IFoodLineService {
 
     @Override
     public PageResult<FoodLineInfo> pageAll(Map<String, Object> m, PageInfo pageInfo) {
+        pageInfo = new PageInfo(m);
         Page<FoodLineEntity> page = foodLineRepository.findAll(DynamicSpecifications.createSpecification(m), pageInfo);
         return new PageResult<>(page, FoodLineInfo.class, (foodLineEntity, foodLineInfo) -> foodLineEntity.toInfo());
     }
@@ -95,5 +100,31 @@ public class FoodLineServiceImpl implements IFoodLineService {
     @Override
     public List<FoodLineInfo> findBySite(String site) {
         return new InfoList<>(foodLineRepository.findBySite(site), (Callback<FoodLineEntity, FoodLineInfo>) (FoodLineEntity, FoodLineInfo) -> FoodLineEntity.toInfo());
+    }
+
+    @Override
+    public List<FoodLineInfo> findBySiteAndShipping(String site, String shipping) {
+        List<FoodLineEntity> l = foodLineRepository.findBySiteAndShipping(site,shipping);
+        return new InfoList<>(l, (Callback<FoodLineEntity, FoodLineInfo>) (FoodLineEntity, FoodLineInfo) -> FoodLineEntity.toInfo());
+    }
+
+    @Override
+    public FoodLineInfo findByOrgId(Long orgId) {
+        FoodLineEntity entity = foodLineRepository.findByOrgId(orgId);
+        if (entity == null)
+            return ErrorInfo.build(FoodLineInfo.class);
+        return entity.toInfo();
+    }
+
+    @Override
+    public FoodLineInfo findByCode(String code) {
+        FoodLineEntity entity = foodLineRepository.findByCode(code);
+        if (entity == null)
+            return ErrorInfo.build(FoodLineInfo.class);
+        FoodLineInfo info = entity.toInfo();
+        if(info.getMesshallId()!=null){
+            info.setMesshallInfo(messhallService.findInfoById(info.getMesshallId()));
+        }
+        return info;
     }
 }

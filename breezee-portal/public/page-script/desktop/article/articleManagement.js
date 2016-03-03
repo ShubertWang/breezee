@@ -48,7 +48,10 @@ $(function () {
             title: '更新人'
         }, {
             code: 'updateTime',
-            title: '更新时间'
+            title: '更新时间',
+            formatter:function(val){
+                return Dolphin.longDate2string(val);
+            }
         }, {
             code: 'content',
             title: '详情',

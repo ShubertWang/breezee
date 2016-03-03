@@ -1,0 +1,42 @@
+<% for(var i = 0; i < body.length; i++){ %>
+<div class="weui_cells weui_cells_access">
+    <a class="weui_cell" href="javascript:;">
+        <div class="weui_cell_bd weui_cell_primary">
+            <p>订单号：<%= body[i].businessKey %></p>
+        </div>
+        <div class="weui_cell_ft"><%= body[i].taskDefinitionKey %></div>
+    </a>
+
+    <div class="wdlist"><!--TODO 根据orderStatus判断已完成订单 -->
+        <div>
+            <div class="wddd_ddlist bh" data-order-id="<%= body[i].properties.id %>">
+                <div class="cpxq bh">
+                    <div class="text">
+                        <h1><%= body[i].properties.restaurantName %></h1>
+                        <div class="wddd_list"><%= body[i].properties.issueDate %> </div>
+                    </div>
+                    <div class="jg">
+                        <span><%= body[i].properties.subTotal || body[i].properties.subTotal.value %> </span>元
+                    </div>
+                </div>
+            </div>
+            <div class="wddd_money bg_<%= body[i].properties.shippingMethod %>">
+                <%= body[i].properties.shippingMethod == "wm" ? "外送订单" : "堂吃订单" %><!--TODO 枚举-->
+                <% for(var i = 0; i < body.actionInfos.length; i++){ %>
+                <input type="button" value="<%= body.actionInfos[i].name %>" id="<%= body.actionInfos[i].code %>"
+                       class="btnred">
+                <% } %>
+            </div>
+        </div>
+    </div>
+</div>
+<% } %>
+<% if(body.length == 20){ %> <!--当返回数据等于20条时，显示更多button-->
+<div class="orderListPanel">
+    <article>
+        <div class=" tybtn_box"><a href="javascript:void(0);"
+                                   onclick='moreOrder(this,"<%= data.pageNumber + 1 || 2 %>")'
+                                   class="weui_btn weui_btn_mini weui_btn_default1">点击加载更多</a></div>
+    </article>
+</div>
+<% } %>

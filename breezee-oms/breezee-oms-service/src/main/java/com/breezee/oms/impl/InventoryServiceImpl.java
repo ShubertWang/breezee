@@ -102,6 +102,7 @@ public class InventoryServiceImpl implements InventoryService {
 
     @Override
     public PageResult<InventoryInfo> pageAll(Map<String, Object> m, PageInfo pageInfo) {
+        pageInfo = new PageInfo(m);
         Page<InventoryEntity> page = inventoryRepository.findAll(DynamicSpecifications.createSpecification(m), pageInfo);
         return new PageResult<>(page, InventoryInfo.class, (inventoryEntity, inventoryInfo) -> inventoryEntity.toInfo());
     }

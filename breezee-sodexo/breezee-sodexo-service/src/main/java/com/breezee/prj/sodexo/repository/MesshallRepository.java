@@ -16,4 +16,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface MesshallRepository extends PagingAndSortingRepository<MesshallEntity,Long>,
         JpaSpecificationExecutor<MesshallEntity> {
+
+    MesshallEntity findByCode(String code);
 }

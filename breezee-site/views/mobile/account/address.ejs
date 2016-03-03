@@ -11,7 +11,7 @@
         <ul class="list-group">
             <% for(var i = 0; i < body.length; i++){ %>
             <li class="<%= body[i].defaultFlag?"list-group-item_edit":"list-group-item_edit_b" %> bh">
-                <a href="<%= (data.pickFlag?"/view/order/orderConfirm?addressId=":"/view/account/addAddress?id=") + body[i].id %>">
+                <a href="<%= (data.pickFlag?"/view/order/orderConfirm?restId="+data.restId+"&userId="+userData.userId+"&addressId=":"/view/account/addAddress?id=") + body[i].id %>">
                     <div class="bh">
                         <div class="title_a_h"><%= body[i].consigneeName %></div>
                         <div class="title_c_h"><%= body[i].consigneeMobile %></div>

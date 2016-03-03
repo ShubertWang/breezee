@@ -2,6 +2,7 @@ package com.breezee.common;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.Map;
 
 /**
  * 领域对象的基本信息
@@ -32,6 +33,8 @@ public class BaseInfo implements Serializable {
     protected Date updateTime;
 
     protected String tenantId;
+
+    protected Map<String,Object> properties;
 
     public Long getId() {
         return id;
@@ -111,6 +114,14 @@ public class BaseInfo implements Serializable {
 
     public void setRemark(String remark) {
         this.remark = remark;
+    }
+
+    public Map<String, Object> getProperties() {
+        return properties;
+    }
+
+    public void setProperties(Map<String, Object> properties) {
+        this.properties = properties;
     }
 
     /**

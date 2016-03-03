@@ -33,6 +33,9 @@ public class DynamicSpecifications {
     public static <T> Specification<T> createSpecification(Class<T> cla, final Map<String, Object> map) {
         map.remove("pageNumber");
         map.remove("pageSize");
+        map.remove("creator");
+        map.remove("updator");
+        map.remove("properties");
         return (root, query, cb) -> {
             List<Predicate> predicate = new ArrayList<>();
             map.forEach((key, val) -> {
@@ -84,7 +87,11 @@ public class DynamicSpecifications {
                             e.printStackTrace();
                         }
                     } else {
-                        predicate.add(cb.equal(root.get(key).as(val.getClass()), val));
+                        try {
+                            predicate.add(cb.equal(root.get(key).as(val.getClass()), val));
+                        } catch (Exception e) {
+//                            e.printStackTrace();
+                        }
                     }
                 }
             });

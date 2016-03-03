@@ -17,4 +17,6 @@
                    protocol="dubbo,rest" />
     <dubbo:service interface="com.breezee.sysmgr.api.service.IOrganizationService" ref="organizationService"
                    protocol="dubbo,rest" />
+
+    <dubbo:reference interface="com.breezee.prj.sodexo.service.IFoodLineService" id="foodLineService" protocol="dubbo" check="false"/>
 </beans>

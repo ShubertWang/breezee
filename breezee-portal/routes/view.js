@@ -31,7 +31,9 @@ router.get('*', function(req, res, next) {
             res.render(url.substring(1), {
                 path : url,
                 data : queryData,
-                session:{username:userInfo,userId:userInfo}
+                //body : body,
+                session:req.session,
+                cookie : req.cookies
             });
         }
     }catch(e){

@@ -3,18 +3,19 @@ var request = require('request');
 var accountRoute = {};
 
 accountRoute.myAccount = function (queryData, res, callback) {
-    global.myUtil.request({
-        method : 'get',
-        uri : 'http://127.0.0.1:10248/services/user/'+queryData.userId,
-        mockData : '/account/myAccount',
-        json:{},
-        headers: {
-            "Content-Type": "application/json",
-            "Accept": "application/json"
-        }
-    }, function(error, response, body){
-        callback(body);
-    });
+    //global.myUtil.request({
+    //    method : 'get',
+    //    uri : 'http://127.0.0.1:10248/services/user/'+queryData.userId,
+    //    mockData : '/account/myAccount',
+    //    json:{},
+    //    headers: {
+    //        "Content-Type": "application/json",
+    //        "Accept": "application/json"
+    //    }
+    //}, function(error, response, body){
+    //    callback(body);
+    //});
+    callback({});
 };
 accountRoute.account = function (queryData, res, callback) {
     global.myUtil.request({
@@ -30,31 +31,29 @@ accountRoute.address = function (queryData, res, callback) {
     global.myUtil.request({
         method : 'get',
         uri : 'http://127.0.0.1:10248/services/user/shippingAddress/user/'+queryData.userId,
-        mockData : '/account/address',
-        json:{},
-        headers: {
-            "Content-Type": "application/json",
-            "Accept": "application/json"
-        }
+        mockData : '/account/address'
     }, function(error, response, body){
+        body = body || [];
         callback(body);
     });
 };
-accountRoute.addAddress = function (queryData, res, callback) {
-    if(queryData.id){
-        global.myUtil.request({
-            method : 'get',
-            uri : 'http://127.0.0.1:10248/services/user/'+'/account/address',
-            mockData : '/account/addAddress',
-            form : queryData
-        }, function(error, response, body){
-            callback(body);
-        });
-    }else{
-        callback({});
-    }
 
-};
+//accountRoute.addAddress = function (queryData, res, callback) {
+//    if(queryData.id){
+//        global.myUtil.request({
+//            method : 'get',
+//            uri : 'http://127.0.0.1:10248/services/user/'+'/account/address',
+//            mockData : '/account/addAddress',
+//            form : queryData
+//        }, function(error, response, body){
+//            callback(body);
+//        });
+//    }else{
+//        callback({});
+//    }
+//
+//};
+
 accountRoute.accountBalance = function (queryData, res, callback) {
     global.myUtil.request({
         method : 'get',

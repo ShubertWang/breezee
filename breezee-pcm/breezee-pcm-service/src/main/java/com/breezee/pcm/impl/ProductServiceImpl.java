@@ -78,6 +78,21 @@ public class ProductServiceImpl implements IProductService, InitializingBean {
     }
 
     @Override
+    public List<ProductInfo> findProductsByCateCode(String cateCode) {
+        CategoryEntity categoryEntity = categoryRepository.findByCode(cateCode);
+        List<ProductEntity> l = new ArrayList<>();
+        Set<ProductEntity> s = categoryEntity.getProducts();
+        if(s != null && s.size()>0){
+            l.addAll(s);
+        }
+        List<ProductInfo> ll = new ArrayList<>();
+        l.forEach(a->{
+            ll.add(a.toInfo());
+        });
+        return ll;
+    }
+
+    @Override
     public ProductInfo findByCode(String code) {
         ProductEntity entity = productRepository.findByCode(code);
         if(entity==null)
@@ -111,9 +126,38 @@ public class ProductServiceImpl implements IProductService, InitializingBean {
     }
 
     @Override
+    public List<ProductInfo> findRecomProductByCateId(String cateId) {
+        CategoryEntity en = categoryRepository.findByCode(cateId);
+        if(en == null){
+            return new ArrayList<>();
+        }
+        Set<CategoryEntity> ch = en.getChildren();
+        List<ProductEntity> l = new ArrayList<>();
+        if(ch!=null){
+            ch.forEach(a->{
+                l.addAll(productRepository.findRecom(a));
+            });
+        }
+        return new InfoList<>(l, (Callback<ProductEntity, ProductInfo>) (productEntity, productInfo) -> {
+            ProductInfo info = productEntity.toInfo();
+           return setStock(info);
+        });
+    }
+
+    private ProductInfo setStock(ProductInfo info){
+        List<InventoryInfo> l1 = inventoryService.findInventoryBySkuId(info.getCode());
+        int sum = 0;
+        for (InventoryInfo a : l1) {
+            sum = sum+a.getQuantity().getValue();
+        }
+        info.setQuantity(new Quantity("",sum));
+        return info;
+    }
+
+    @Override
     public ProductInfo saveInfo(ProductInfo productInfo) {
         if(productInfo.getId()==null) {
-            productInfo.setCode(valueIncrementer.nextStringValue().replace("-", ""));
+            productInfo.setCode(Long.valueOf(System.currentTimeMillis()).toString());
         }
         ProductEntity entity = productRepository.findByCode(productInfo.getCode());
         //如果新增的账号已经存在，则返回错误信息
@@ -162,16 +206,11 @@ public class ProductServiceImpl implements IProductService, InitializingBean {
 
     @Override
     public PageResult<ProductInfo> pageAll(Map<String, Object> m, PageInfo pageInfo) {
+        pageInfo = new PageInfo(pageInfo,m);
         Page<ProductEntity> page = productRepository.findAll(DynamicSpecifications.createSpecification(m),pageInfo);
         return new PageResult<>(page, ProductInfo.class, (productEntity, productInfo) -> {
             ProductInfo info = productEntity.toInfo();
-            List<InventoryInfo> l = inventoryService.findInventoryBySkuId(info.getCode());
-            int sum = 0;
-            for (InventoryInfo a : l) {
-                sum = sum+a.getQuantity().getValue();
-            }
-            info.setQuantity(new Quantity("",sum));
-            return info;
+            return setStock(info);
         });
     }
 
@@ -186,7 +225,7 @@ public class ProductServiceImpl implements IProductService, InitializingBean {
 
     @Override
     public void afterPropertiesSet() throws Exception {
-        valueIncrementer = new MySQLMaxValueIncrementer(dataSource,"pcm_tf_product_seq","SEQ_ID");
+        valueIncrementer = new MySQLMaxValueIncrementer(dataSource,"pcm_tf_product_data","DATA_ID");
         valueIncrementer.setCacheSize(1);
         valueIncrementer.setPaddingLength(6);
     }
