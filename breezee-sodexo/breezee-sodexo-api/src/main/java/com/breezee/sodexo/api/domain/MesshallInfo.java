@@ -3,7 +3,7 @@
  * Breezee.com All Rights Reserved.
  */
 
-package com.breezee.prj.sodexo.domain;
+package com.breezee.sodexo.api.domain;
 
 import com.breezee.common.BaseInfo;
 import com.fasterxml.jackson.annotation.JsonInclude;

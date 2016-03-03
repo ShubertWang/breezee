@@ -3,10 +3,10 @@
  * Breezee.com All Rights Reserved.
  */
 
-package com.breezee.prj.sodexo.service;
+package com.breezee.sodexo.api.service;
 
 import com.breezee.common.IServiceLayer;
-import com.breezee.prj.sodexo.domain.MesshallInfo;
+import com.breezee.sodexo.api.domain.MesshallInfo;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;

@@ -1,4 +1,4 @@
-package com.breezee.prj.sodexo.domain;
+package com.breezee.sodexo.api.domain;
 
 import com.breezee.common.TreeObject;
 

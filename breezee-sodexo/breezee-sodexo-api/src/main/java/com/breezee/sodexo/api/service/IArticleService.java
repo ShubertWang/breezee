@@ -1,9 +1,9 @@
-package com.breezee.prj.sodexo.service;
+package com.breezee.sodexo.api.service;
 
 import com.breezee.common.IServiceLayer;
 import com.breezee.common.PageInfo;
 import com.breezee.common.PageResult;
-import com.breezee.prj.sodexo.domain.ArticleInfo;
+import com.breezee.sodexo.api.domain.ArticleInfo;
 
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;

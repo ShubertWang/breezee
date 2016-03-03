@@ -3,7 +3,7 @@
  * Breezee.com All Rights Reserved.
  */
 
-package com.breezee.prj.sodexo;
+package com.breezee.sodexo;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;

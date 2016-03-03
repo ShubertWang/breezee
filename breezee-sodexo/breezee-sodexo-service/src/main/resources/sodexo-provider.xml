@@ -9,19 +9,23 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans
        http://www.springframework.org/schema/beans/spring-beans.xsd http://code.alibabatech.com/schema/dubbo http://code.alibabatech.com/schema/dubbo/dubbo.xsd">
 
-    <dubbo:service interface="com.breezee.prj.sodexo.service.IMesshallService"
+    <dubbo:service interface="com.breezee.sodexo.api.service.IMesshallService"
                    ref="messhallService" protocol="dubbo,rest" />
-    <dubbo:service interface="com.breezee.prj.sodexo.service.IFoodLineService"
+    <dubbo:service interface="com.breezee.sodexo.api.service.IFoodLineService"
                    ref="foodLineService" protocol="dubbo,rest" />
 
-    <dubbo:service interface="com.breezee.prj.sodexo.service.IModelService"
+    <dubbo:service interface="com.breezee.sodexo.api.service.IModelService"
                    ref="modelService" protocol="dubbo,rest" />
-    <dubbo:service interface="com.breezee.prj.sodexo.service.IArticleService"
+    <dubbo:service interface="com.breezee.sodexo.api.service.IArticleService"
                    ref="articleService" protocol="dubbo,rest" />
+    <dubbo:service interface="com.breezee.sodexo.api.service.ICommentService"
+                   ref="commentService" protocol="dubbo,rest" />
 
-
-    <dubbo:reference interface="com.breezee.sysmgr.api.service.IOrganizationService" id="organizationService" protocol="dubbo" check="false" />
-    <dubbo:reference interface="com.breezee.sysmgr.api.service.IAccountService" id="accountService" protocol="dubbo" check="false" />
-    <dubbo:reference interface="com.breezee.pcm.api.service.ICategoryService" id="categoryService" protocol="dubbo" check="false" />
+    <dubbo:reference interface="com.breezee.sysmgr.api.service.IOrganizationService"
+                     id="organizationService" protocol="dubbo" check="false" />
+    <dubbo:reference interface="com.breezee.sysmgr.api.service.IAccountService"
+                     id="accountService" protocol="dubbo" check="false" />
+    <dubbo:reference interface="com.breezee.pcm.api.service.ICategoryService"
+                     id="categoryService" protocol="dubbo" check="false" />
 
 </beans>

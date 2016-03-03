@@ -44,7 +44,7 @@ var i, totalPrice = 0;
                 <p>微信支付<span>仅支持微信4.2及上版本</span></p>
             </div>
             <div class="weui_cell_ft">
-                <input type="radio" class="weui_check" name="payType" id="wepay_now">
+                <input type="radio" class="weui_check" value="wepay" name="payType" id="wepay_now">
                 <span class="weui_icon_checked"></span>
             </div>
         </label>
@@ -55,7 +55,7 @@ var i, totalPrice = 0;
                 <p>员工卡支付<span>从员工卡中在线扣款</span></p>
             </div>
             <div class="weui_cell_ft">
-                <input type="radio" name="payType" class="weui_check" id="x12" checked="checked">
+                <input type="radio" name="payType" class="weui_check" value="cardpay" id="x12">
                 <span class="weui_icon_checked"></span>
             </div>
         </label>
@@ -66,7 +66,7 @@ var i, totalPrice = 0;
                 <p>就餐时支付<span>只支持持有员工卡的公司员工使用</span></p>
             </div>
             <div class="weui_cell_ft">
-                <input type="radio" name="payType" class="weui_check" id="x13">
+                <input type="radio" name="payType" value="cash" class="weui_check" id="x13">
                 <span class="weui_icon_checked"></span>
             </div>
         </label>
@@ -165,36 +165,35 @@ var i, totalPrice = 0;
         });
     });
 
-    var orderInfo = {};
-    orderInfo.subTotal = {value: "<%= totalPrice.toFixed(2) %>"};
-    orderInfo.storeName = REQUEST_MAP.data.restId;
-    orderInfo.userId = REQUEST_MAP.data.userId;
-
-    $("input[name='payType']").each(function () {
-        if ($(this).is(':checked')) {
-            orderInfo.paymentType = $(this).val();
-        }
-    });
-    orderInfo.needTime = document.getElementById("needTime").value;
-    orderInfo.remark = document.getElementById("remark").value;
-
-    var orderLines = [];
-    <% for(i = 0; i < body.foodList.length; i++){ %>
-    orderLines.push({
-        skuId: "<%= body.foodList[i].id %>",
-        note: "<%= body.foodList[i].name %>",
-        quantity: {value: "<%= body.foodList[i].number %>"},
-        unitPrice: {value: "<%= body.foodList[i].price.toFixed(2) %>"}
-    });
-    <% } %>
-
-    orderInfo.orderLines = orderLines;
-    <% if(cookie.orderType == "wm"){ %>
-    orderInfo.shippingAddressId = $("#addressSel").attr("addressId");
-    <% } %>
-    orderInfo.shippingMethod = "<%= cookie.orderType %>";
-
     $("#confirmOrder").click(function () {
+        var orderInfo = {};
+        orderInfo.subTotal = {value: "<%= totalPrice.toFixed(2) %>"};
+        orderInfo.storeName = REQUEST_MAP.data.restId;
+        orderInfo.userId = REQUEST_MAP.data.userId;
+
+        $("input[name='payType']").each(function () {
+            if ($(this).is(':checked')) {
+                orderInfo.paymentType = $(this).val();
+            }
+        });
+        orderInfo.needTime = document.getElementById("needTime").value;
+        orderInfo.remark = document.getElementById("remark").value;
+
+        var orderLines = [];
+        <% for(i = 0; i < body.foodList.length; i++){ %>
+        orderLines.push({
+            skuId: "<%= body.foodList[i].id %>",
+            note: "<%= body.foodList[i].name %>",
+            quantity: {value: "<%= body.foodList[i].number %>"},
+            unitPrice: {value: "<%= body.foodList[i].price.toFixed(2) %>"}
+        });
+        <% } %>
+
+        orderInfo.orderLines = orderLines;
+        <% if(cookie.orderType == "wm"){ %>
+        orderInfo.shippingAddressId = $("#addressSel").attr("addressId");
+        <% } %>
+        orderInfo.shippingMethod = "<%= cookie.orderType %>";
         //userId
         //subTotal
         //storeName 服务线
@@ -204,9 +203,6 @@ var i, totalPrice = 0;
             type: Dolphin.requestMethod.PUT,
             data: Dolphin.json2string(orderInfo),
             onSuccess: function (reData) {
-//                console.log(reData);
-                Dolphin.goUrl("/order/wepay?id=4");
-                return;
                 //判断支付情况
                 if (reData.paymentType == 'wepay') {
                     Dolphin.goUrl("/order/pay");
@@ -219,9 +215,8 @@ var i, totalPrice = 0;
                     });
                 }
             }
-        })
+        });
     });
-
 </script>
 </body>
 </html>
