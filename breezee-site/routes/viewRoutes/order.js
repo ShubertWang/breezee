@@ -15,7 +15,7 @@ route.restaurantList = function (queryData, res, callback) {
 route.restaurantDetail = function (queryData, res, callback) {
     global.myUtil.request({
         method: 'get',
-        uri: 'http://127.0.0.1:10250/services/messhall/code/' + queryData.code,
+        uri: 'http://127.0.0.1:10250/services/foodLine/code/' + queryData.code,
         mockData: '/restaurant/restaurantDetail'
     }, function (error, response, body) {
         if (error) {
@@ -31,10 +31,10 @@ route.orderFood = function (queryData, res, callback) {
         url: 'http://127.0.0.1:10246/services/category/pCode/' + queryData.restId,
         mockData: '/restaurant/restaurantDetail'
     }, function (error, response, body) {
-        route.restaurantDetail({code: queryData.restId}, null, function (messhall) {
+        route.restaurantDetail({code: queryData.restId}, null, function (foodLine) {
             var ret = {};
             ret.data = body || [];
-            ret.messhall = messhall;
+            ret.messhall = foodLine.messhallInfo;
             callback(ret,'site');
         });
     });
@@ -166,7 +166,7 @@ route.otherService = function (queryData, res, callback) {
 route.wepay = function(queryData, res, callback){
     global.myUtil.request({
         method: 'get',
-        uri: 'http://127.0.0.1:10247/services/order/4',
+        uri: 'http://127.0.0.1:10247/services/order/'+queryData.id,
         mockData: '/restaurant/restaurantList'
     }, function (error, response, body) {
         body = body || {};

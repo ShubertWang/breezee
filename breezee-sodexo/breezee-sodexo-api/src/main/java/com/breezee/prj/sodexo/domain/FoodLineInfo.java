@@ -84,6 +84,8 @@ public class FoodLineInfo extends BaseInfo {
 
     protected String imageCode = "icon_ct_mr";
 
+    protected MesshallInfo messhallInfo;
+
     public FoodLineInfo(){
         this.properties = new HashMap<>();
     }
@@ -214,5 +216,13 @@ public class FoodLineInfo extends BaseInfo {
 
     public void setImageCode(String imageCode) {
         this.imageCode = imageCode;
+    }
+
+    public MesshallInfo getMesshallInfo() {
+        return messhallInfo;
+    }
+
+    public void setMesshallInfo(MesshallInfo messhallInfo) {
+        this.messhallInfo = messhallInfo;
     }
 }
