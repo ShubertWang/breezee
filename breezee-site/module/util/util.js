@@ -84,8 +84,6 @@ myUtil.customerInfo = function(url, callback) {
             "Accept": "application/json"
         }
     }, function (error, response, body) {
-        if(error)
-            throw error;
         //判断body
         var userData = {};
         if(body && body.id > 0){

@@ -34,7 +34,7 @@ route.orderFood = function (queryData, res, callback) {
         route.restaurantDetail({code: queryData.restId}, null, function (foodLine) {
             var ret = {};
             ret.data = body || [];
-            ret.messhall = foodLine.messhallInfo;
+            ret.messhall = foodLine.messhallInfo || {};
             callback(ret,'site');
         });
     });
