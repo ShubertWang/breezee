@@ -18,6 +18,7 @@ global.config = require('./config/config.js');
 console.log("/-------------------------系统配置信息-------------------------/");
 console.log(global.config);
 console.log("///////////////////////////////////////////////////////////////");
+global.weChatUtil = require('./module/util/wechat.js');
 
 var app = express();
 

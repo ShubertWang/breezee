@@ -7,6 +7,24 @@ router.get('/', function(req, res, next) {
     res.render('index', { title: 'Express' });
 });
 
+router.get('/wechat/menu', function (req, res, next) {
+    global.weChatUtil.getMenu(function (menu) {
+        res.send({
+            success : true,
+            value : menu
+        });
+    });
+});
+router.post('/wechat/menu', function (req, res, next) {
+    var menuData = {"button" : req.body};
+    global.weChatUtil.updateMenu(menuData, function (result) {
+        res.send({
+            success : (result.errcode === 0)?true:false,
+            msg : "errmsg:"+result.errmsg + ",errcode:"+result.errcode
+        });
+    });
+});
+
 router.use('/test/*', function(req, res, next) {
     var options, queryData, bodyData;
 

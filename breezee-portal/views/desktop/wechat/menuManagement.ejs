@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <% include ../common/meta.ejs %>
+    <title>管理平台</title>
+    <% include ../common/public.ejs %>
+    <style>
+        #finish-node{
+            color: blue;
+        }
+    </style>
+</head>
+<body>
+<% include ../common/header.ejs %>
+<div class="container">
+    <!--title-->
+    <div class="page-header">
+        <h1>公众号菜单管理</h1>
+
+        <div class="operationButton">
+            <div class="btn-group" role="group">
+                <button type="button" class="btn btn-primary" id="save">
+                    <span class="glyphicon glyphicon-save"></span>
+                    保存
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div class="panel panel-primary">
+        <div class="panel-heading">
+            <h3 class="panel-title">菜单信息</h3>
+        </div>
+        <table class="table table-bordered">
+            <thead class="centerHeader">
+                <tr>
+                    <th rowspan="2" style="width:130px;">一级菜单</th>
+                    <th colspan="3">二级菜单</th>
+                </tr>
+                <tr>
+                    <th style="width:130px;">菜单名称</th>
+                    <th style="width:130px;">菜单类型</th>
+                    <th>请求内容</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% for(var i = 0; i < 3; i++){ %>
+                    <% for(var j = 0; j < 5; j++){ %>
+                    <tr>
+                        <% if(j == 0){ %>
+                        <td rowspan="5" style="vertical-align: middle;">
+                            <input type="text" class="form-control" menu_level_1="<%= i %>" name="_name" />
+                        </td>
+                        <% } %>
+                        <td style="width:130px;">
+                            <input type="text" class="form-control" menu_level_1="<%= i %>" menu_level_2="<%= j %>" name="name" />
+                        </td>
+                        <td>
+                            <!--<input type="text" class="form-control" menu_level_1="<%= i %>" menu_level_2="<%= j %>" name="type" />-->
+                            <select class="form-control" menu_level_1="<%= i %>" menu_level_2="<%= j %>" name="type" >
+                                <option value="">--请选择--</option>
+                                <option value="view">页面</option>
+                            </select>
+                        </td>
+                        <td>
+                            <input type="text" class="form-control" menu_level_1="<%= i %>" menu_level_2="<%= j %>" name="content" />
+                        </td>
+                    </tr>
+                    <% } %>
+                <% } %>
+            </tbody>
+        </table>
+    </div>
+</div>
+<% include ../common/footer.ejs %>
+</body>
+</html>
