@@ -11,4 +11,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface CommentRepository extends PagingAndSortingRepository<CommentEntity,Long>,
         JpaSpecificationExecutor<CommentEntity> {
+
+    CommentEntity findByUserIdAndObjectIdAndCommentTime(String userId,String objectId,String commentTime);
 }

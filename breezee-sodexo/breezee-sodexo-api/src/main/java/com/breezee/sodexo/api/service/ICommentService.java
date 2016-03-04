@@ -10,4 +10,7 @@ import javax.ws.rs.Path;
  */
 @Path("/comment")
 public interface ICommentService extends IServiceLayer<CommentInfo> {
+
+
+
 }

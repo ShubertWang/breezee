@@ -11,7 +11,7 @@ var weChatUtil = {
     message_url:'https://api.weixin.qq.com/cgi-bin/message/template/send',
     preorder_url:'https://api.mch.weixin.qq.com/pay/unifiedorder',
     config:{
-        appId:'wx5fb7696767080dbb',
+        appid:'wx5fb7696767080dbb',
         mch_id:'1316675801',
         secret:'9837eb6f6b6ca07dedd08db4c4531b5a',
         key:'vc8fhbrmUaE9Z1EMuI48usyLeyNJ0201'
@@ -46,8 +46,7 @@ weChatUtil.getOpenId = function(code,callback){
     var _this = this;
     request({
         method: 'get',
-        uri: _this.token_url,
-        form: extend({code:code,grant_type:'authorization_code'},_this.config)
+        uri: _this.open_id_url+"?appid="+_this.config.appid+"&secret="+_this.config.secret+"&code="+code+"&grant_type=authorization_code"
     }, function (error, response, body) {
         if (error)
             throw error;
@@ -69,8 +68,7 @@ weChatUtil.getToken = function(callback){
     var _this = this;
     request({
         method: 'get',
-        uri: _this.token_url,
-        form: extend({grant_type:'client_credential'},_this.config)
+        uri: _this.token_url+"?appid="+_this.config.appid+"&secret="+_this.config.secret+"&grant_type=client_credential"
     }, function (error, response, body) {
         if (error)
             throw error;
@@ -94,8 +92,7 @@ weChatUtil.getUserInfo = function (openId, calback) {
     _this.getToken(function(tokenId){
         request({
             method: 'get',
-            uri: _this.user_info_url,
-            form: {access_token:tokenId,openid:openId,lang:'zh_CN'}
+            uri: _this.user_info_url+"?access_token="+tokenId+"&openid="+openId+"&lang=zh_CN"
         }, function (error, response, body) {
             if (error)
                 throw error;
@@ -147,7 +144,7 @@ weChatUtil.templateMessage = function(message){
 weChatUtil.preOrder = function(obj, callback){
     var _this = this;
     var params = {};
-    params['appid'] = this.config.appId;
+    params['appid'] = this.config.appid;
     params['mch_id'] = this.config.mch_id;
     params['device_info']='WEB';
     params['nonce_str'] = obj.nonce_str;

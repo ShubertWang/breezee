@@ -23,6 +23,11 @@ public class CommentInfo extends BaseInfo{
      */
     protected String operType;
 
+    /**
+     * 20150101
+     */
+    protected String commentTime;
+
     public String getUserId() {
         return userId;
     }
@@ -69,5 +74,13 @@ public class CommentInfo extends BaseInfo{
 
     public void setOperType(String operType) {
         this.operType = operType;
+    }
+
+    public String getCommentTime() {
+        return commentTime;
+    }
+
+    public void setCommentTime(String commentTime) {
+        this.commentTime = commentTime;
     }
 }

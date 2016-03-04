@@ -3,15 +3,14 @@ package com.breezee.sodexo.entity;
 import com.breezee.sodexo.api.domain.CommentInfo;
 import org.springframework.beans.BeanUtils;
 
-import javax.persistence.Column;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.util.Date;
 
 /**
  * Created by Silence on 2016/3/3.
  */
+@Entity
+@Table(name = "SDX_TD_COMMENTS")
 public class CommentEntity extends CommentInfo {
 
     @Id
@@ -23,6 +22,10 @@ public class CommentEntity extends CommentInfo {
 
     public String getTenantId() {
         return tenantId;
+    }
+
+    public String getRemark() {
+        return remark;
     }
 
     public String getCreator() {
@@ -59,6 +62,10 @@ public class CommentEntity extends CommentInfo {
 
     public String getOperType() {
         return operType;
+    }
+
+    public String getCommentTime() {
+        return commentTime;
     }
 
     public CommentInfo toInfo(){

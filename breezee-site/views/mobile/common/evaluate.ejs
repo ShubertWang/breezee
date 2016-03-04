@@ -9,12 +9,17 @@
         var param_panel = _this.closest(".evaluate_param");
         if(param_panel.length > 0){
             param = param_panel.data();
-        }else{
-            param = {
-                id : REQUEST_MAP.body.id
-            };
         }
-
+        Dolphin.ajax({
+            url:'/data/sdx/comment',
+            data:param,
+            onSuccess:function(ret){
+                if(ret.id<0){
+                    alert(ret.remark);
+                    return;
+                }
+            }
+        });
         console.log(flag);
         console.log(param);
         /*ajax*/

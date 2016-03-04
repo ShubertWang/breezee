@@ -2,14 +2,17 @@ package com.breezee.sodexo.impl;
 
 import com.breezee.common.*;
 import com.breezee.common.util.Callback;
+import com.breezee.common.util.ContextUtil;
 import com.breezee.sodexo.api.domain.CommentInfo;
+import com.breezee.sodexo.api.service.ICommentService;
 import com.breezee.sodexo.entity.CommentEntity;
 import com.breezee.sodexo.repository.CommentRepository;
-import com.breezee.sodexo.api.service.ICommentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -19,12 +22,22 @@ import java.util.Map;
 @Service("commentService")
 public class CommentServiceImpl implements ICommentService {
 
+    private final static SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMdd");
+
     @Autowired
     private CommentRepository commentRepository;
 
     @Override
     public CommentInfo saveInfo(CommentInfo info) {
-        return commentRepository.save(new CommentEntity().parse(info));
+        //evaluate, read, order
+        if (info.getObjectType().equals("evaluate")) {
+            CommentEntity entity = commentRepository.findByUserIdAndObjectIdAndCommentTime(info.getUserId(), info.getObjectId(), formatter.format(new Date()));
+            if (entity != null) {
+                return ErrorInfo.build(info, ContextUtil.getMessage("comment.once.error"));
+            }
+        }
+        commentRepository.save(new CommentEntity().parse(info));
+        return SuccessInfo.build(CommentInfo.class);
     }
 
     @Override
@@ -36,7 +49,7 @@ public class CommentServiceImpl implements ICommentService {
     @Override
     public CommentInfo findInfoById(Long id) {
         CommentEntity entity = commentRepository.findOne(id);
-        if(entity==null)
+        if (entity == null)
             return ErrorInfo.build(CommentInfo.class);
         return entity.toInfo();
     }
@@ -50,7 +63,7 @@ public class CommentServiceImpl implements ICommentService {
     @Override
     public PageResult<CommentInfo> pageAll(Map<String, Object> m, PageInfo pageInfo) {
         pageInfo = new PageInfo(m);
-        Page<CommentEntity> page = commentRepository.findAll(DynamicSpecifications.createSpecification(m),pageInfo);
+        Page<CommentEntity> page = commentRepository.findAll(DynamicSpecifications.createSpecification(m), pageInfo);
         return new PageResult<>(page, CommentInfo.class, (commentEntity, info) -> commentEntity.toInfo());
     }
 }

@@ -73,7 +73,7 @@ myUtil.dateFormatter = function (date, format) {
  * @param url
  * @param callback
  */
-myUtil.customerInfo = function(url, callback){
+myUtil.customerInfo = function(url, callback) {
     request({
         method: 'get',
         //uri: global.config.service['crm']+'/user/code/'+openId,
