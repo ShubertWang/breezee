@@ -22,7 +22,6 @@ import com.breezee.pcm.repository.ProductRepository;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.jdbc.support.incrementer.MySQLMaxValueIncrementer;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -52,25 +51,23 @@ public class ProductServiceImpl implements IProductService, InitializingBean {
     @Autowired
     private DataSource dataSource;
 
-    private MySQLMaxValueIncrementer valueIncrementer;
-
     @Override
-    public List<ProductInfo> findProductsByCateId(Long cateId, boolean rec){
+    public List<ProductInfo> findProductsByCateId(Long cateId, boolean rec) {
         CategoryEntity categoryEntity = categoryRepository.findOne(cateId);
         List<ProductEntity> l = new ArrayList<>();
         Set<ProductEntity> s = categoryEntity.getProducts();
-        if(s != null && s.size()>0){
+        if (s != null && s.size() > 0) {
             l.addAll(s);
         }
         List<ProductInfo> ll = new ArrayList<>();
-        l.forEach(a->{
+        l.forEach(a -> {
             ll.add(a.toInfo());
         });
-        if(rec){
+        if (rec) {
             Set<CategoryEntity> ss = categoryEntity.getChildren();
-            if(ss != null && ss.size()>0){
-                ss.forEach(a->{
-                    ll.addAll(findProductsByCateId(a.getId(),true));
+            if (ss != null && ss.size() > 0) {
+                ss.forEach(a -> {
+                    ll.addAll(findProductsByCateId(a.getId(), true));
                 });
             }
         }
@@ -82,11 +79,11 @@ public class ProductServiceImpl implements IProductService, InitializingBean {
         CategoryEntity categoryEntity = categoryRepository.findByCode(cateCode);
         List<ProductEntity> l = new ArrayList<>();
         Set<ProductEntity> s = categoryEntity.getProducts();
-        if(s != null && s.size()>0){
+        if (s != null && s.size() > 0) {
             l.addAll(s);
         }
         List<ProductInfo> ll = new ArrayList<>();
-        l.forEach(a->{
+        l.forEach(a -> {
             ll.add(a.toInfo());
         });
         return ll;
@@ -95,7 +92,7 @@ public class ProductServiceImpl implements IProductService, InitializingBean {
     @Override
     public ProductInfo findByCode(String code) {
         ProductEntity entity = productRepository.findByCode(code);
-        if(entity==null)
+        if (entity == null)
             return ErrorInfo.build(ProductInfo.class);
         return entity.toInfo();
     }
@@ -107,7 +104,7 @@ public class ProductServiceImpl implements IProductService, InitializingBean {
         ProductEntity entity;
         for (InventoryInfo inventoryInfo : l) {
             entity = productRepository.findByCode(inventoryInfo.getSkuId());
-            if (entity!=null){
+            if (entity != null) {
                 ProductInfo productInfo = entity.toInfo();
                 productInfo.setQuantity(inventoryInfo.getQuantity());
                 ll.add(productInfo);
@@ -119,7 +116,7 @@ public class ProductServiceImpl implements IProductService, InitializingBean {
     @Override
     public void updateRecommend(Long id, boolean recommend) {
         ProductEntity entity = productRepository.findOne(id);
-        if(entity!=null){
+        if (entity != null) {
             entity.setRecommend(recommend);
             productRepository.save(entity);
         }
@@ -128,35 +125,35 @@ public class ProductServiceImpl implements IProductService, InitializingBean {
     @Override
     public List<ProductInfo> findRecomProductByCateId(String cateId) {
         CategoryEntity en = categoryRepository.findByCode(cateId);
-        if(en == null){
+        if (en == null) {
             return new ArrayList<>();
         }
         Set<CategoryEntity> ch = en.getChildren();
         List<ProductEntity> l = new ArrayList<>();
-        if(ch!=null){
-            ch.forEach(a->{
+        if (ch != null) {
+            ch.forEach(a -> {
                 l.addAll(productRepository.findRecom(a));
             });
         }
         return new InfoList<>(l, (Callback<ProductEntity, ProductInfo>) (productEntity, productInfo) -> {
             ProductInfo info = productEntity.toInfo();
-           return setStock(info);
+            return setStock(info);
         });
     }
 
-    private ProductInfo setStock(ProductInfo info){
+    private ProductInfo setStock(ProductInfo info) {
         List<InventoryInfo> l1 = inventoryService.findInventoryBySkuId(info.getCode());
         int sum = 0;
         for (InventoryInfo a : l1) {
-            sum = sum+a.getQuantity().getValue();
+            sum = sum + a.getQuantity().getValue();
         }
-        info.setQuantity(new Quantity("",sum));
+        info.setQuantity(new Quantity("", sum));
         return info;
     }
 
     @Override
     public ProductInfo saveInfo(ProductInfo productInfo) {
-        if(productInfo.getId()==null) {
+        if (productInfo.getId() == null) {
             productInfo.setCode(Long.valueOf(System.currentTimeMillis()).toString());
         }
         ProductEntity entity = productRepository.findByCode(productInfo.getCode());
@@ -171,14 +168,14 @@ public class ProductServiceImpl implements IProductService, InitializingBean {
         entity.setCategory(categoryRepository.findOne(productInfo.getCateId()));
         Set<ProductDataEntity> set = new HashSet<>();
         final ProductEntity finalEntity = entity;
-        productInfo.getProductData().forEach((a, b)->{
+        productInfo.getProductData().forEach((a, b) -> {
             ProductDataEntity e = new ProductDataEntity();
             e.setAttribute(attributeRepository.findOne(Long.parseLong(a)));
             e.setAttrValue(b.toString());
             e.setProduct(finalEntity);
             set.add(e);
         });
-        if(entity.getData()==null)
+        if (entity.getData() == null)
             entity.setData(set);
         else
             entity.getData().addAll(set);
@@ -206,8 +203,8 @@ public class ProductServiceImpl implements IProductService, InitializingBean {
 
     @Override
     public PageResult<ProductInfo> pageAll(Map<String, Object> m, PageInfo pageInfo) {
-        pageInfo = new PageInfo(pageInfo,m);
-        Page<ProductEntity> page = productRepository.findAll(DynamicSpecifications.createSpecification(m),pageInfo);
+        pageInfo = new PageInfo(pageInfo, m);
+        Page<ProductEntity> page = productRepository.findAll(DynamicSpecifications.createSpecification(m), pageInfo);
         return new PageResult<>(page, ProductInfo.class, (productEntity, productInfo) -> {
             ProductInfo info = productEntity.toInfo();
             return setStock(info);
@@ -215,9 +212,9 @@ public class ProductServiceImpl implements IProductService, InitializingBean {
     }
 
     @Override
-    public void updateStatus(@PathParam("id") Long id, @PathParam("status") int status){
+    public void updateStatus(@PathParam("id") Long id, @PathParam("status") int status) {
         ProductEntity entity = productRepository.findOne(id);
-        if(entity!=null){
+        if (entity != null) {
             entity.setStatus(status);
             productRepository.save(entity);
         }
@@ -225,8 +222,6 @@ public class ProductServiceImpl implements IProductService, InitializingBean {
 
     @Override
     public void afterPropertiesSet() throws Exception {
-        valueIncrementer = new MySQLMaxValueIncrementer(dataSource,"pcm_tf_product_data","DATA_ID");
-        valueIncrementer.setCacheSize(1);
-        valueIncrementer.setPaddingLength(6);
+
     }
 }
