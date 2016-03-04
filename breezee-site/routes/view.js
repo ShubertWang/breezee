@@ -67,7 +67,8 @@ var viewRoutes = {
                 if (checkUser && _this._checkUser[checkUser] < _this._checkUser[req.session.userData.userType]) {
                     url = '/mobile/noAccess';
                 }
-                res.render(url.substring(1), extend(true, {}, {body: body}, rendParam))
+                rendParam.body = body;
+                res.render(url.substring(1), extend({body: body}, rendParam));
             });
         }
     }
