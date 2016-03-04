@@ -20,7 +20,7 @@ router.get('*', function(req, res, next) {
             });
         }else{
             endType = /mobile/.test(req.headers['user-agent'])?"/mobile":"/desktop";
-            url = endType + req.url;
+            url = endType + (req.url == '/'?"/index":req.url);
             queryData = req.query;
 
             if(url.indexOf("?") >= 0){
