@@ -87,7 +87,7 @@ router.get('*', function (req, res, next) {
             userInfo = req.session.openId;
         //endType = /mobile|Mobile/.test(req.headers['user-agent'])?"/mobile":"/desktop";
         endType = "/mobile";
-        url = endType + req.url;
+        url = endType + (req.url == '/'?"/index":req.url);
         if (userInfo == null) {
             if (global.config.production) {
                 global.weChatUtil.getOpenId(req.query.code, function (openId) {
