@@ -1,0 +1,103 @@
+{
+  "button": [
+    {
+      "name": "最新动态",
+      "sub_button": [
+        {
+          "type": "view",
+          "name": "关于索记",
+          "url": "https:\/\/open.weixin.qq.com\/connect\/oauth2\/authorize?appid=wx5fb7696767080dbb&redirect_uri=http%3a%2f%2fweixin.sodexo-cn.com%2fview%2fmessage%2fnews%3fmodelCode%3dsodexo&response_type=code&scope=snsapi_base&state=1002#wechat_redirect",
+          "sub_button": []
+        },
+        {
+          "type": "view",
+          "name": "健康又美丽",
+          "url": "https:\/\/open.weixin.qq.com\/connect\/oauth2\/authorize?appid=wx5fb7696767080dbb&redirect_uri=http%3a%2f%2fweixin.sodexo-cn.com%2fview%2fmessage%2fnews%3fmodelCode%3dwellness%0a&response_type=code&scope=snsapi_base&state=1002#wechat_redirect",
+          "sub_button": []
+        },
+        {
+          "type": "view",
+          "name": "当季好味道",
+          "url": "https:\/\/open.weixin.qq.com\/connect\/oauth2\/authorize?appid=wx5fb7696767080dbb&redirect_uri=http%3a%2f%2fweixin.sodexo-cn.com%2fview%2fmessage%2fnews%3fmodelCode%3devent%0a&response_type=code&scope=snsapi_base&state=1002#wechat_redirect",
+          "sub_button": []
+        },
+        {
+          "type": "view",
+          "name": "上班不无趣",
+          "url": "https:\/\/open.weixin.qq.com\/connect\/oauth2\/authorize?appid=wx5fb7696767080dbb&redirect_uri=http%3a%2f%2fweixin.sodexo-cn.com%2fview%2fmessage%2fnews%3fmodelCode%3dfun%0a&response_type=code&scope=snsapi_base&state=1002#wechat_redirect",
+          "sub_button": []
+        },
+        {
+          "type": "view",
+          "name": "一周菜单",
+          "url": "https:\/\/open.weixin.qq.com\/connect\/oauth2\/authorize?appid=wx5fb7696767080dbb&redirect_uri=http%3a%2f%2fweixin.sodexo-cn.com%2fview%2fmessage%2fnews%3fmodelCode%3dmenu%0a&response_type=code&scope=snsapi_base&state=1002#wechat_redirect",
+          "sub_button": []
+        }
+      ]
+    },
+    {
+      "name": "订购服务",
+      "sub_button": [
+        {
+          "type": "view",
+          "name": "餐饮外送",
+          "url": "https:\/\/open.weixin.qq.com\/connect\/oauth2\/authorize?appid=wx5fb7696767080dbb&redirect_uri=http%3a%2f%2fweixin.sodexo-cn.com%2fview%2forder%2frestaurantList%3forderType%3dwm&response_type=code&scope=snsapi_base&state=1002#wechat_redirect",
+          "sub_button": []
+        },
+        {
+          "type": "view",
+          "name": "餐饮预订",
+          "url": "https:\/\/open.weixin.qq.com\/connect\/oauth2\/authorize?appid=wx5fb7696767080dbb&redirect_uri=http%3a%2f%2fweixin.sodexo-cn.com%2fview%2forder%2frestaurantList%3forderType%3dtc&response_type=code&scope=snsapi_base&state=1002#wechat_redirect",
+          "sub_button": []
+        },
+        {
+          "type": "view",
+          "name": "餐厅订位",
+          "url": "https:\/\/open.weixin.qq.com\/connect\/oauth2\/authorize?appid=wx5fb7696767080dbb&redirect_uri=http%3a%2f%2fweixin.sodexo-cn.com%2fview%2forder%2fbookSite&response_type=code&scope=snsapi_base&state=1002#wechat_redirect",
+          "sub_button": []
+        },
+        {
+          "type": "view",
+          "name": "其它服务",
+          "url": "https:\/\/open.weixin.qq.com\/connect\/oauth2\/authorize?appid=wx5fb7696767080dbb&redirect_uri=http%3a%2f%2fweixin.sodexo-cn.com%2fview%2forder%2fotherService%0a&response_type=code&scope=snsapi_base&state=1002#wechat_redirect",
+          "sub_button": []
+        }
+      ]
+    },
+    {
+      "name": "我",
+      "sub_button": [
+        {
+          "type": "view",
+          "name": "账户一览",
+          "url": "https:\/\/open.weixin.qq.com\/connect\/oauth2\/authorize?appid=wx5fb7696767080dbb&redirect_uri=http%3a%2f%2fweixin.sodexo-cn.com%2fview%2faccount%2fmyAccount&response_type=code&scope=snsapi_base&state=1002#wechat_redirect",
+          "sub_button": []
+        },
+        {
+          "type": "view",
+          "name": "我的订单",
+          "url": "https:\/\/open.weixin.qq.com\/connect\/oauth2\/authorize?appid=wx5fb7696767080dbb&redirect_uri=http%3a%2f%2fweixin.sodexo-cn.com%2fview%2forder%2fmyOrder&response_type=code&scope=snsapi_base&state=1002#wechat_redirect",
+          "sub_button": []
+        },
+        {
+          "type": "view",
+          "name": "余额查询",
+          "url": "https:\/\/open.weixin.qq.com\/connect\/oauth2\/authorize?appid=wx5fb7696767080dbb&redirect_uri=http%3a%2f%2fweixin.sodexo-cn.com%2fview%2faccount%2faccountBalance%0a&response_type=code&scope=snsapi_base&state=1002#wechat_redirect",
+          "sub_button": []
+        },
+        {
+          "type": "view",
+          "name": "消费查询",
+          "url": "https:\/\/open.weixin.qq.com\/connect\/oauth2\/authorize?appid=wx5fb7696767080dbb&redirect_uri=http%3a%2f%2fweixin.sodexo-cn.com%2fview%2faccount%2faccountDetail&response_type=code&scope=snsapi_base&state=1002#wechat_redirect",
+          "sub_button": []
+        },
+        {
+          "type": "view",
+          "name": "账户充值",
+          "url": "https:\/\/open.weixin.qq.com\/connect\/oauth2\/authorize?appid=wx5fb7696767080dbb&redirect_uri=http%3a%2f%2fweixin.sodexo-cn.com%2fview%2faccount%2faccountCharge&response_type=code&scope=snsapi_base&state=1002#wechat_redirect",
+          "sub_button": []
+        }
+      ]
+    }
+  ]
+}
