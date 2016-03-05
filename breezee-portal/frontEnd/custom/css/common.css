@@ -1,7 +1,8 @@
 /************************************ overwrite bootstrap start ******************************/
 #pageHeader{
-    border-bottom: 1px solid;
+    border-bottom: 1px solid #000000;
     box-shadow: 0 0 5px 0 blue;
+    background-color: #fff;
 }
 
 /************************************ overwrite bootstrap end ******************************/

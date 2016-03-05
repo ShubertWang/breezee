@@ -1,6 +1,6 @@
 Dolphin.defaults.mockFlag = false;
 $(function () {
-    menu.select('orderManagement');
+    menu.select('undoList');
     var page = {};
 
     page.connect = {
