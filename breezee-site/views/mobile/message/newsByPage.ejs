@@ -1,0 +1,51 @@
+<% var i=0;%>
+<% if(body.length == 1){ %>
+    <div class="news_dd">
+        <ul>
+            <li class="name"><a href="/view/message/newsDetail?id=<%= body[i].id %>"><%- body[i].name %></a></li>
+            <li class="rq"><%= body[i]._date %></li>
+            <li class="img"><a href="/view/message/newsDetail?id=<%= body[i].id %>"><img src="<%= body[i].subTitle %>"></a></li>
+            <li><%- body[i].remark %></li>
+            <li class="more"><a href="/view/message/newsDetail?id=<%= body[i].id %>">阅读全文</a></li>
+        </ul>
+    </div>
+    <div class="listPanel">
+        <article>
+            <div class=" tybtn_box"><a href="javascript:void(0);"
+                                       onclick='moreMessage(this,"<%= data.weekNumber?(data.weekNumber-0+1):2 %>")'
+                                       class="weui_btn weui_btn_mini weui_btn_default1">点击加载更多</a></div>
+        </article>
+    </div>
+<% }else if(body.length > 1){ %>
+    <div class="news">
+        <ul class="bh">
+            <% for(i = 0; i < body.length; i++){ %>
+                <% if(i == 0){ %>
+                <li class="img">
+                    <a href="/view/message/newsDetail?id=<%= body[i].id %>">
+                        <img src="<%= body[i].subTitle %>">
+                    </a>
+                    <div class="img_text"><%- body[i].name %></div>
+                </li>
+                <% }else{ %>
+                <li class="line_gray bh">
+                    <div class="name">
+                        <div>
+                            <a href="/view/message/newsDetail?id=<%= body[i].id %>"><%- body[i].name %></a>
+                        </div>
+                    </div>
+                    <div class="ms_img"><img src="<%= body[i].subTitle %>" ></div>
+                </li>
+                <% } %>
+            <% } %>
+        </ul>
+    </div>
+    <div class="listPanel">
+        <article>
+            <div class=" tybtn_box"><a href="javascript:void(0);"
+                                       onclick='moreMessage(this,"<%= data.weekNumber?(data.weekNumber-0+1):2 %>")'
+                                       class="weui_btn weui_btn_mini weui_btn_default1">点击加载更多</a></div>
+        </article>
+    </div>
+<% } %>
+

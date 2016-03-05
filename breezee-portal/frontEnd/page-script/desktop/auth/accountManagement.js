@@ -7,6 +7,7 @@
  * Created by Shubert.Wang on 2016/1/27.
  */
 $(function () {
+    menu.select('accountManagement');
     Dolphin.form.parse();
 
     var list = new Dolphin.LIST({

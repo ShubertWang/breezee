@@ -1,4 +1,4 @@
-<nav class="navbar navbar-inverse navbar-static-top">
+<nav class="navbar navbar-default navbar-static-top" id="pageHeader">
     <div class="container">
         <div class="navbar-header">
             <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
@@ -7,43 +7,45 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="#">系统LOGO</a>
+            <a class="navbar-brand" href="/view/index" style="padding:0;">
+                <img src="/custom/images/icon/LOGO.png" style="height:50px;"/>
+            </a>
         </div>
         <div id="navbar" class="navbar-collapse collapse">
             <ul class="nav navbar-nav">
-                <li class="active"><a href="#">首页</a></li>
+                <li menuCode="index"><a href="/view/index">首页</a></li>
                 <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">订单管理<span class="caret"></span></a>
                     <ul class="dropdown-menu">
-                        <li><a href="/view/workspace/undoList">我的待办</a></li>
-                        <li><a href="/view/workspace/queryOrderList">订单查询</a></li>
+                        <li menuCode="undoList"><a href="/view/workspace/undoList">我的待办</a></li>
+                        <li menuCode="queryOrderList"><a href="/view/workspace/queryOrderList">订单查询</a></li>
                     </ul>
                 </li>
                 <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">商品管理<span class="caret"></span></a>
                     <ul class="dropdown-menu">
                         <!--<li><a href="/view/product/catalogManagement">目录维护</a></li>-->
-                        <li><a href="/view/category/categoryManagement">品类维护</a></li>
-                        <li><a href="/view/category/attributeManagement">属性维护</a></li>
-                        <li><a href="/view/product/productList">菜品维护</a></li>
+                        <li menuCode="categoryManagement"><a href="/view/category/categoryManagement">品类维护</a></li>
+                        <li menuCode="attributeManagement"><a href="/view/category/attributeManagement">属性维护</a></li>
+                        <li menuCode="productList"><a href="/view/product/productList">菜品维护</a></li>
                     </ul>
                 </li>
-                <li><a href="/view/crm/customerManagement">客户管理</a></li>
+                <li menuCode="customerManagement"><a href="/view/crm/customerManagement">客户管理</a></li>
                 <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">系统管理<span class="caret"></span></a>
                     <ul class="dropdown-menu">
-                        <li><a href="/view/auth/accountManagement">账号管理</a></li>
-                        <li><a href="/view/auth/organizationManagement">组织管理</a></li>
-                        <li><a href="/view/auth/roleManagement">角色管理</a></li>
+                        <li menuCode="accountManagement"><a href="/view/auth/accountManagement">账号管理</a></li>
+                        <li menuCode="organizationManagement"><a href="/view/auth/organizationManagement">组织管理</a></li>
+                        <li menuCode="roleManagement"><a href="/view/auth/roleManagement">角色管理</a></li>
                         <li role="separator" class="divider"></li>
-                        <li><a href="/view/restaurant/messhallList">餐厅管理</a></li>
+                        <li menuCode="messhallList"><a href="/view/restaurant/messhallList">餐厅管理</a></li>
                         <li role="separator" class="divider"></li>
-                        <li><a href=n"/view/dict/dict">枚举维护</a></li>
+                        <li menuCode="dict"><a href=n"/view/dict/dict">枚举维护</a></li>
                         <li role="separator" class="divider"></li>
-                        <li><a href="/view/wechat/menuManagement">公众号菜单</a></li>
+                        <li menuCode="menuManagement"><a href="/view/wechat/menuManagement">公众号菜单管理</a></li>
                     </ul>
                 </li>
-                <li><a href="/view/article/articleManagement">新闻管理</a></li>
+                <li menuCode="articleManagement"><a href="/view/article/articleManagement">新闻管理</a></li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
                 <li class="dropdown">

@@ -1,4 +1,5 @@
 $(function () {
+    menu.select('articleManagement');
     Dolphin.form.parse();
 
     var infoPanel = $('#infoPanel'),

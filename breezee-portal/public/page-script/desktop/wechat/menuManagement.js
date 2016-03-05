@@ -1,4 +1,6 @@
 $(function () {
+    menu.select('menuManagement');
+
     Dolphin.ajax({
         url : '/wechat/menu',
         onSuccess : function (reData) {

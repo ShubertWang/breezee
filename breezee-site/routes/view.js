@@ -64,11 +64,11 @@ var viewRoutes = {
         } else {
             fun(queryData, res, function (body, checkUser) {
                 //1: public 2: site 3: employee
-                if (checkUser && _this._checkUser[checkUser] < _this._checkUser[req.session.userData.userType]) {
+                if (!global.config.mockFlag && checkUser && _this._checkUser[checkUser] < _this._checkUser[req.session.userData.userType]) {
                     url = '/mobile/noAccess';
                 }
                 rendParam.body = body;
-                res.render(url.substring(1), extend({body: body}, rendParam));
+                res.render(url.substring(1), extend({}, rendParam, {body: body}));
             });
         }
     }
@@ -83,11 +83,15 @@ viewRoutes.order = require('./viewRoutes/order.js');
 router.get('*', function (req, res, next) {
     try {
         var url, endType, userInfo,
-        //userInfo = true;
-            userInfo = req.session.openId;
+        userInfo = req.session.openId;
         //endType = /mobile|Mobile/.test(req.headers['user-agent'])?"/mobile":"/desktop";
         endType = "/mobile";
         url = endType + (req.url == '/'?"/index":req.url);
+
+        if(global.config.mockFlag){
+            userInfo = true;
+        }
+
         if (userInfo == null) {
             if (global.config.production) {
                 global.weChatUtil.getOpenId(req.query.code, function (openId) {

@@ -1,5 +1,6 @@
 Dolphin.defaults.mockFlag = false;
 $(function () {
+    menu.select('queryOrderList');
     var page = {};
 
     page.connect = {

@@ -2486,6 +2486,7 @@
 		id : null,											//随机id
 		panel : "#planList",								//生成区别，遵循jQuery选择器规则
 		columns : null,									//列属性，[{code:"", title:"", width:"", formatter:function(val, row, index){}}]
+		hideHeader : false,								//是否隐藏表头
 		striped : true,									//是否隔行变色
 		bordered : true,									//是否有边框
 		hover : true,										//是否鼠标移上时变色
@@ -2592,6 +2593,9 @@
 			if(this.opts.height){
 				div.css('height', this.opts.height);
 			}
+			if(this.opts.maxHeight){
+				div.css('max-height', this.opts.maxHeight);
+			}
 			if(this.opts.striped){
 				table.addClass('table-striped');
 			}
@@ -2649,7 +2653,11 @@
 		initTheader : function(tablePanel){
 			var table = tablePanel || $(this.opts.panel).find('table');
 			var thead = '', thisList = this;
-			thead += '<thead>';
+			thead += '<thead';
+			if(this.opts.hideHeader){
+				thead += ' style="display:none;"';
+			}
+			thead += '>';
 			thead += '	<tr>';
 			if(this.opts.checkbox){
 				thead += '	<th class="checkboxTh" >';
@@ -3011,12 +3019,11 @@
 					col.addClass('hiddenCol');
 				}
 
-				if(column.code.indexOf('.') > 0){
+				if(typeof column.code == "string" && column.code.indexOf('.') > 0){
 					valueArr = column.code.split('.');
 					value = data;
 					for(level = 0; level < valueArr.length; level++){
-						if(value)
-							value = value[valueArr[level]];
+						value = value[valueArr[level]];
 					}
 				}else{
 					value = data[column.code];

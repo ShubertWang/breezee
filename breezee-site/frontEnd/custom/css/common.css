@@ -1,10 +1,29 @@
-/*overwrite*/
+/*============================ overwrite start ===================================*/
 .list-group-item_edit .mr,.list-group-item_edit_b .mr{
     color : #333333;
 }
 .zt_phone .m_10{
     margin:0 4% 0 4%;
 }
+/*order food Responsive*/
+.div_listtz .btn_gm{
+    width: 76px;
+}
+.div_listtz .text{
+    height: 24px;
+    margin-top: 60px;
+    padding-top: 30px;
+}
+.div_listtz .img{
+    height: 115px;
+    margin-bottom: 5px;
+    background: #ddd;
+}
+.div_listtz .img img{
+    width:auto;
+    height: 115px;
+}
+/*============================ overwrite end ===================================*/
 
 .evaluate_box {
     width:100%;

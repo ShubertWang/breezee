@@ -9,6 +9,7 @@
 $(function () {
     var accountPanel = $("#accountPanel"),rolePanel=$("#rolePanel"), selectNode;
 
+    menu.select('roleManagement');
     Dolphin.form.parse();
 
     var list = new Dolphin.LIST({

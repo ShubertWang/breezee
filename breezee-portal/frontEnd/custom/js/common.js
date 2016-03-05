@@ -29,3 +29,21 @@ function parseCheckbox(name, checked){
     var label = $('<label>').attr('for', id).appendTo(div);
     return div;
 }
+
+function passwordChecker(password){
+    var result = {
+        success : true,
+        msg : ""
+    };
+
+    if(/\d/.test(password) && /[a-zA-Z]/.test(password && password.length >= 8)){
+        error('密码中必须含有字母和数字，且长度至少为8位');
+    }
+
+    return result;
+
+    function error(msg){
+        result.success = false;
+        result.msg = msg;
+    }
+}
