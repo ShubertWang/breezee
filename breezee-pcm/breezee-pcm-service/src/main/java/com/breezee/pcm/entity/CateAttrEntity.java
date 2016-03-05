@@ -143,7 +143,7 @@ public class CateAttrEntity extends BaseInfo {
 
     public CateAttrInfo toInfo() {
         CateAttrInfo cateAttrInfo = new CateAttrInfo();
-        cloneAttribute(cateAttrInfo);
+        cloneAttributeTo(cateAttrInfo);
         if (this.getAttribute() != null) {
             cateAttrInfo.setAttrId(this.getAttribute().getId());
             cateAttrInfo.setCode(this.getAttribute().getCode());
@@ -169,7 +169,7 @@ public class CateAttrEntity extends BaseInfo {
     }
 
     public CateAttrEntity parse(CateAttrInfo info) {
-        info.cloneAttribute(this);
+        info.cloneAttributeTo(this);
         this.setId(null);
         this.setDefaultValue(info.getDefaultValue());
         this.setDisplay(info.isDisplay());

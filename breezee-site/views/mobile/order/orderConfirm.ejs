@@ -168,10 +168,13 @@ var i, totalPrice = 0;
     $("#confirmOrder").click(function () {
         var orderInfo = {};
         orderInfo.subTotal = {value: "<%= totalPrice.toFixed(2) %>"};
-        orderInfo.storeName = REQUEST_MAP.data.restId;
-        orderInfo.userId = REQUEST_MAP.data.userId;
+        orderInfo.storeName = '<%= data.restId %>';
+        orderInfo.userId = '<%= userData.userId %>';
+        orderInfo.userMobile = '<%= userData.userMobile %>';
+        orderInfo.userName = '<%= userData.userName %>';
 
         $("input[name='payType']").each(function () {
+            console.log($(this).is(':checked'), $(this).val());
             if ($(this).is(':checked')) {
                 orderInfo.paymentType = $(this).val();
             }
@@ -205,14 +208,9 @@ var i, totalPrice = 0;
             onSuccess: function (reData) {
                 //判断支付情况
                 if (reData.paymentType == 'wepay') {
-                    Dolphin.goUrl("/order/pay");
+                    Dolphin.goUrl("/order/wepay");
                 } else {
-                    Dolphin.alert(reData.msg || '保存成功', {
-                        callback: function () {
-                            Dolphin.goUrl("/order/myOrder");
-
-                        }
-                    });
+                    Dolphin.goUrl("/order/myOrder");
                 }
             }
         });

@@ -89,13 +89,13 @@ public class RoleEntity extends BaseInfo {
 
     public RoleInfo toInfo(){
         RoleInfo roleInfo = new RoleInfo();
-        cloneAttribute(roleInfo);
+        cloneAttributeTo(roleInfo);
         roleInfo.setPermits(this.getPermits());
         return roleInfo;
     }
 
     public RoleEntity parse(RoleInfo info){
-        info.cloneAttribute(this);
+        info.cloneAttributeTo(this);
         this.setPermits(info.getPermits());
         return this;
     }

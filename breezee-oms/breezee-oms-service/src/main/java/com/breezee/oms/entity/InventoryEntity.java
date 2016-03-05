@@ -92,7 +92,7 @@ public class InventoryEntity extends BaseInfo {
 
     public InventoryInfo toInfo(){
         InventoryInfo info = new InventoryInfo();
-        cloneAttribute(info);
+        cloneAttributeTo(info);
         info.setSkuId(this.getSkuId());
         info.setLocationId(this.getLocationId());
         info.setQuantity(new Quantity(this.getUnitCode(),this.getQuantity()));
@@ -100,7 +100,7 @@ public class InventoryEntity extends BaseInfo {
     }
 
     public InventoryEntity parse(InventoryInfo info){
-        info.cloneAttribute(this);
+        info.cloneAttributeTo(this);
         this.setLocationId(info.getLocationId());
         this.setSkuId(info.getSkuId());
         this.setUnitCode(info.getQuantity().getUnitCode());

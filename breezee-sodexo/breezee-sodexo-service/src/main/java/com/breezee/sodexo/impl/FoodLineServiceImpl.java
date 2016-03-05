@@ -99,7 +99,8 @@ public class FoodLineServiceImpl implements IFoodLineService {
 
     @Override
     public List<FoodLineInfo> findBySite(String site) {
-        return new InfoList<>(foodLineRepository.findBySite(site), (Callback<FoodLineEntity, FoodLineInfo>) (FoodLineEntity, FoodLineInfo) -> FoodLineEntity.toInfo());
+        List<FoodLineEntity> l = foodLineRepository.findBySite(site);
+        return new InfoList<>(l, (Callback<FoodLineEntity, FoodLineInfo>) (FoodLineEntity, FoodLineInfo) -> FoodLineEntity.toInfo());
     }
 
     @Override

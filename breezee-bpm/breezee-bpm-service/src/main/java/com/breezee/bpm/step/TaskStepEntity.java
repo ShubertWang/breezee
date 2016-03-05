@@ -4,6 +4,9 @@
  */
 package com.breezee.bpm.step;
 
+import com.breezee.bpm.api.domain.TaskStepInfo;
+import org.springframework.beans.BeanUtils;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
@@ -30,9 +33,9 @@ public class TaskStepEntity implements Serializable {
 
     private String optUser;
 
-    private Long procInstId;
+    private String procInstId;
 
-    private Long workItemId;
+    private String workItemId;
 
     private String updateBy;
 
@@ -107,19 +110,19 @@ public class TaskStepEntity implements Serializable {
         this.optUser = optUser;
     }
 
-    public Long getProcInstId() {
+    public String getProcInstId() {
         return procInstId;
     }
 
-    public void setProcInstId(Long procInstId) {
+    public void setProcInstId(String procInstId) {
         this.procInstId = procInstId;
     }
 
-    public Long getWorkItemId() {
+    public String getWorkItemId() {
         return workItemId;
     }
 
-    public void setWorkItemId(Long workItemId) {
+    public void setWorkItemId(String workItemId) {
         this.workItemId = workItemId;
     }
 
@@ -177,5 +180,10 @@ public class TaskStepEntity implements Serializable {
 
     public void setDeleteFlag(Integer deleteFlag) {
         this.deleteFlag = deleteFlag;
+    }
+
+    public TaskStepEntity parse(TaskStepInfo stepVo){
+        BeanUtils.copyProperties(this,stepVo);
+        return this;
     }
 }

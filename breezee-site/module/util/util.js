@@ -92,6 +92,7 @@ myUtil.customerInfo = function(url, callback) {
             userData.userId = body.id;
             userData.userCode = body.code;
             userData.userName = body.name;
+            userData.userMobile = body.phone;
             userData.addressCount = body.addressCount;
             if(body.defaultAddress) {
                 userData.defaultAddress = body.defaultAddress;

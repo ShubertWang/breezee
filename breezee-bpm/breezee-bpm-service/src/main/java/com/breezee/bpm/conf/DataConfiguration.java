@@ -39,7 +39,7 @@ public class DataConfiguration {
     @PostConstruct
     public void init() {
         LOGGER.info("Initializing process definitions");
-//        initProcessDefinitions();
+        initProcessDefinitions();
     }
 
     /**

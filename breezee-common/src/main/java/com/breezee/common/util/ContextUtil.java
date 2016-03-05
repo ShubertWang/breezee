@@ -41,7 +41,7 @@ public final class ContextUtil implements ApplicationContextAware {
     }
 
     public static String getMessage(String code) {
-        return current.getMessage(code, null, LocaleContextHolder.getLocale());
+        return current.getMessage(code, null, code,LocaleContextHolder.getLocale());
     }
 
     public static String getMessage(String code, Object[] params) {

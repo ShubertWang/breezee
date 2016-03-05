@@ -89,7 +89,7 @@ public class DictEntity extends BaseInfo {
      */
     public DictInfo toInfo() {
         DictInfo info = new DictInfo();
-        cloneAttribute(info);
+        cloneAttributeTo(info);
         if (this.getDictDetails() != null && this.getDictDetails().size() > 0) {
             this.getDictDetails().forEach(a -> {
                 info.getDetailInfos().add(a.toInfo());
@@ -99,7 +99,7 @@ public class DictEntity extends BaseInfo {
     }
 
     public DictEntity parse(DictInfo info) {
-        info.cloneAttribute(this);
+        info.cloneAttributeTo(this);
         if (info.getDetailInfos().size() > 0) {
             this.dictDetails = new HashSet<>();
             info.getDetailInfos().forEach(a -> {

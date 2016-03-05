@@ -1,6 +1,5 @@
 package com.breezee.bpm.identity;
 
-import com.breezee.sysmgr.api.domain.AccountInfo;
 import com.breezee.sysmgr.api.service.IAccountService;
 import org.activiti.engine.identity.Group;
 import org.activiti.engine.impl.GroupQueryImpl;
@@ -8,7 +7,6 @@ import org.activiti.engine.impl.Page;
 import org.activiti.engine.impl.persistence.entity.GroupEntity;
 import org.activiti.engine.impl.persistence.entity.GroupEntityManager;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -24,21 +22,25 @@ public class MyGroupManager extends GroupEntityManager {
 
     @Override
     public List<Group> findGroupsByUser(String userId) {
-        AccountInfo accountInfo = accountService.findByCode(userId);
-        List<String> l = accountInfo.getRoles();
-        List<Group> ll = new ArrayList<>();
-        if (l != null) {
-            l.forEach(a->{
-                ll.add(convertGroup(a));
-            });
-        }
-        return ll;
+        //获取用户的组织，作为groupId.
+        //TODO:如果需要对相应的角色做代办控制的话，应该在这里来做
+        //就是用户应该同时具备组织和角色都复合条件的才返回
+//        AccountInfo accountInfo;
+//        if (StringUtils.isNumeric(userId))
+//            accountInfo = accountService.findInfoById(Long.parseLong(userId));
+//        else
+//            accountInfo = accountService.findByCode(userId);
+//        List<Group> ll = new ArrayList<>();
+//        if (accountInfo!=null && accountInfo.getOrgCode() != null)
+//            ll.add(convertGroup(accountInfo.getOrgCode()));
+//        return ll;
+        return super.findGroupsByUser(userId);
     }
 
-    public Group convertGroup(String roleId) {
+    public Group convertGroup(String code) {
         GroupEntity ge = new GroupEntity();
-        ge.setName(roleId);
-        ge.setId(roleId);
+        ge.setName(code);
+        ge.setId(code);
         ge.setType("1");
         ge.setRevision(1);
         return ge;

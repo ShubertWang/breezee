@@ -5,20 +5,21 @@
 
 package com.breezee.sodexo.impl;
 
-import com.breezee.common.InfoList;
-import com.breezee.common.ErrorInfo;
-import com.breezee.common.PageInfo;
-import com.breezee.common.PageResult;
+import com.breezee.bpm.api.service.IWorkflowService;
+import com.breezee.common.*;
 import com.breezee.common.util.Callback;
-import com.breezee.common.DynamicSpecifications;
 import com.breezee.sodexo.api.domain.SeatOrderInfo;
 import com.breezee.sodexo.entity.SeatOrderEntity;
 import com.breezee.sodexo.repository.SeatOrderRepository;
 import com.breezee.sodexo.api.service.ISeatOrderService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -29,11 +30,33 @@ import java.util.Map;
 public class SeatOrderServiceImpl implements ISeatOrderService {
 
     @Autowired
+    private Environment environment;
+
+    @Autowired
     private SeatOrderRepository seatOrderRepository;
 
+    @Resource
+    private IWorkflowService workflowServiceImpl;
+
     @Override
-    public SeatOrderInfo saveInfo(SeatOrderInfo seatOrderInfo) {
-        return seatOrderRepository.save(new SeatOrderEntity().parse(seatOrderInfo));
+    public SeatOrderInfo saveInfo(SeatOrderInfo orderInfo) {
+        if (orderInfo.getId() == null)
+            orderInfo.setCode(String.format("%05d", orderInfo.getUserId()) + Long.valueOf(System.currentTimeMillis()-1457000000000L).toString());
+        SeatOrderEntity entity = new SeatOrderEntity().parse(orderInfo);
+        entity.setIssueDate(new Date());
+        entity.setName(orderInfo.getCode());
+        seatOrderRepository.save(entity);
+        //启动流程
+        if (orderInfo.getTaskId() == null || orderInfo.getTaskId() < 0) {
+            Map<String, Object> vars = new HashMap<>();
+            //注意第一次保存启动流程orderInfo的ProcDefId和code一定要有值
+            vars.put("seatLineRole", environment.getProperty("seat.service.line","seatServiceLine"));
+            vars.put("startUser", entity.getUserId());
+            vars.put("orderId", entity.getId());
+            workflowServiceImpl.startProcessInstanceById(orderInfo.getProcDefId(), entity.getId().toString(), vars);
+        }
+        orderInfo.setId(entity.getId());
+        return SuccessInfo.build(orderInfo);
     }
 
     @Override

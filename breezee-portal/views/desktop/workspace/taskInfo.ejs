@@ -14,20 +14,53 @@
 <% include ../common/header.ejs %>
 <div class="container">
     <div class="dolphin-row">
-        <div class="dolphin-col-19">
+        <div class="dolphin-col-24">
             <div class="page-content">
-                <div class="dolphin-row">
-                    <div class="dolphin-col-19">
-                        <img id="traceChart" src="">
+                <!--title-->
+                <div class="page-header">
+                    <h1>订单处理</h1>
+                    <div class="operationButton">
+                        <%
+                        var render = [];
+                        var tmp = body.formKey.split('|');
+                        for (var i = 0; i < tmp.length; i++) {
+                            render.push("<button onclick='taskComplete(this," + data.id + "," + data.businessKey + ")' id='" + tmp[i] + "'>" + tmp[i] + "</button>");
+                        } %>
+                        <%- render %>
+                        <button type="button" class="btn btn-default dol-goBack" id="cancel">
+                            <span class="glyphicon glyphicon-share-alt dolphin-flipx"></span>
+                            返回
+                        </button>
                     </div>
+                </div>
+                <!--list-->
+                <div id="list">
+
                 </div>
             </div>
         </div>
-        <div class="dolphin-col-5">
-            <% include ./workspaceMenu.ejs %>
+        <div class="dolphin-col-24"  id="image">
         </div>
     </div>
 </div>
 <% include ../common/footer.ejs %>
+<script>
+    wfHistory();
+</script>
+<script src="${ctx }/public/custom/js/parent-workflow.js"></script>
+<script>
+    if (REQUEST_MAP.data.processInstanceId) {
+//        graphTrace(
+//                {
+//                    imageUrl    :   '',
+//                    dataUrl     :   '',
+//                    prcsDefId   :   REQUEST_MAP.data.processDefinitionId.split(":")[0]
+//                },
+//                REQUEST_MAP.data.processInstanceId
+//        );
+        graphTrace(null, REQUEST_MAP.data.processInstanceId, REQUEST_MAP.data.processDefinitionId.split(":")[0], 'image');
+    }
+
+</script>
 </body>
 </html>

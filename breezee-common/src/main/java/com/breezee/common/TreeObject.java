@@ -146,7 +146,7 @@ public class TreeObject<T> extends BaseInfo {
 
     public TreeObject clone() {
         TreeObject to = new TreeObject();
-        cloneAttribute(to);
+        cloneAttributeTo(to);
         return to;
     }
 }

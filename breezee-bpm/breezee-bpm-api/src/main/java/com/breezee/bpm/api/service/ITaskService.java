@@ -6,6 +6,7 @@
 package com.breezee.bpm.api.service;
 
 import com.breezee.bpm.api.domain.TaskInfo;
+import com.breezee.bpm.api.domain.TaskStepInfo;
 import com.breezee.common.PageInfo;
 import com.breezee.common.PageResult;
 
@@ -36,9 +37,7 @@ public interface ITaskService {
      * 创建一个指定Id的无指定流程的新任务，一般用来做任务分配使用
      * @return
      */
-    @Path("/{taskId}")
-    @PUT
-    TaskInfo newTask(@PathParam("taskId") String taskId);
+    TaskInfo newTask(String taskId);
 
     /**
      * 自动驱动刚启动的流程往下一个节点流转
@@ -51,14 +50,16 @@ public interface ITaskService {
      * 完成指定任务
      * @param taskId
      */
-    void complete(String taskId);
+    void complete(@PathParam("taskId") String taskId);
 
     /**
      * 完成指定任务，设置动态变量
      * @param taskId
      * @param variables
      */
-    void complete(String taskId, Map<String, Object> variables);
+    @Path("/{taskId}")
+    @POST
+    void complete(@PathParam("taskId")String taskId, Map<String, Object> variables);
 
     void complete(String taskId, Map<String, Object> variables, boolean localScope);
 
@@ -215,4 +216,6 @@ public interface ITaskService {
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
     PageResult<TaskInfo> findFinishedTasks(Map<String,Object> m, PageInfo pageInfo);
+
+    void saveStep(TaskStepInfo stepInfo);
 }

@@ -541,7 +541,8 @@
 					valueArr = column.code.split('.');
 					value = data;
 					for(level = 0; level < valueArr.length; level++){
-						value = value[valueArr[level]];
+						if(value)
+							value = value[valueArr[level]];
 					}
 				}else{
 					value = data[column.code];

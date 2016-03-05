@@ -15,7 +15,7 @@ var config = {
         cookie: {"maxAge": 1800000 }                     //设置maxAge是1800000ms，即30min后session和相应的cookie失效过期
     },
     production:false,
-    mockFlag : true,
+    mockFlag : false,
     publicPath : ""
 };
 
