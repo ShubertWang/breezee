@@ -17,6 +17,8 @@ $(function () {
 
     page.initPage = function () {
         var _this = this;
+
+        menu.select('workspace-queryOrderList');
         this.orderList = new Dolphin.LIST({
             panel : '#list',
             url : _this.connect.orderList.url,

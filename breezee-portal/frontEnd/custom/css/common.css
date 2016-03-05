@@ -1,3 +1,10 @@
+/************************************ overwrite bootstrap start ******************************/
+#pageHeader{
+    border-bottom: 1px solid;
+    box-shadow: 0 0 5px 0 blue;
+}
+
+/************************************ overwrite bootstrap end ******************************/
 /*common*/
 body{
     background: #eee;
@@ -103,6 +110,12 @@ body .page-content{
 .workspaceMenuPanel > ul > li a:hover{
     color: #777;
     text-decoration: underline;
+}
+.workspaceMenuPanel a.active{
+    color : blue;
+}
+.workspaceMenuPanel a.active:hover{
+    color : blue;
 }
 
 /* .slideThree */

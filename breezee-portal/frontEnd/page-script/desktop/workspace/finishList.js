@@ -1,5 +1,6 @@
 Dolphin.defaults.mockFlag = false;
 $(function () {
+    menu.select('orderManagement');
     var page = {};
 
     page.connect = {

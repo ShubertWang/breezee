@@ -17,6 +17,8 @@ $(function () {
 
     page.initPage = function () {
         var _this = this;
+
+        menu.select('workspace-undoList');
         this.undoList = new Dolphin.LIST({
             panel : '#list',
             url : _this.connect.undoList.url,
