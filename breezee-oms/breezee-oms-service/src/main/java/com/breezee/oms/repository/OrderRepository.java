@@ -22,7 +22,7 @@ import java.util.List;
 public interface OrderRepository extends PagingAndSortingRepository<OrderEntity,Long>,
         JpaSpecificationExecutor<OrderEntity> {
 
-    List<OrderEntity> findByCode(String code);
+    OrderEntity findByCode(String code);
 
     List<OrderEntity> findByCodeIn(Collection<String> codes);
 

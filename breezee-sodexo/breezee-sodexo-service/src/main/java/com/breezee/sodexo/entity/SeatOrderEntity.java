@@ -78,6 +78,22 @@ public class SeatOrderEntity extends SeatOrderInfo {
         return phone;
     }
 
+    public Long getUserId() {
+        return userId;
+    }
+
+    public String getUserMobile() {
+        return userMobile;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public Date getIssueDate() {
+        return issueDate;
+    }
+
     public SeatOrderInfo toInfo() {
         SeatOrderInfo info = new SeatOrderInfo();
         BeanUtils.copyProperties(this, info);

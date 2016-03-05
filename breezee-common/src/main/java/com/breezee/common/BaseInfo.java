@@ -132,7 +132,7 @@ public class BaseInfo implements Serializable {
     @Override
     public BaseInfo clone() {
         BaseInfo bi = new BaseInfo();
-        cloneAttribute(bi);
+        cloneAttributeTo(bi);
         return bi;
     }
 
@@ -140,7 +140,7 @@ public class BaseInfo implements Serializable {
      * 将当前值赋予给指定的对象上
      * @param info
      */
-    public void cloneAttribute(BaseInfo info) {
+    public void cloneAttributeTo(BaseInfo info) {
         if(this.code!=null) info.setCode(this.code);
         if(this.id!=null) info.setId(this.id);
         if(this.name!=null) info.setName(this.name);

@@ -22,6 +22,8 @@ import java.util.Set;
 public class OrderEntity extends BaseInfo {
 
     private Long userId;
+    private String userMobile;
+    private String userName;
     private Date issueDate;
     private Set<OrderLineEntity> orderLines;
     /**
@@ -100,6 +102,22 @@ public class OrderEntity extends BaseInfo {
 
     public void setIssueDate(Date issueDate) {
         this.issueDate = issueDate;
+    }
+
+    public String getUserMobile() {
+        return userMobile;
+    }
+
+    public void setUserMobile(String userMobile) {
+        this.userMobile = userMobile;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
@@ -201,7 +219,7 @@ public class OrderEntity extends BaseInfo {
 
     public OrderInfo toInfo(){
         OrderInfo info = new OrderInfo();
-        cloneAttribute(info);
+        cloneAttributeTo(info);
         info.setUserId(this.getUserId());
         info.setIssueDate(this.getIssueDate());
         info.setPaymentAmount(new Amount(this.getCurrencyCode(),this.getPaymentAmount()));
@@ -218,11 +236,13 @@ public class OrderEntity extends BaseInfo {
             });
         }
         info.setNeedTime(this.getNeedTime());
+        info.setUserMobile(this.getUserMobile());
+        info.setUserName(this.getUserName());
         return info;
     }
 
     public OrderEntity parse(OrderInfo info){
-        info.cloneAttribute(this);
+        info.cloneAttributeTo(this);
         this.setStoreName(info.getStoreName());
         this.setShippingMethod(info.getShippingMethod());
         this.setShippingAddressId(info.getShippingAddressId());
@@ -241,6 +261,8 @@ public class OrderEntity extends BaseInfo {
                 this.addOrderLine(new OrderLineEntity().parse(a));
             });
         }
+        this.setUserMobile(info.getUserMobile());
+        this.setUserName(info.getUserName());
         return this;
     }
 

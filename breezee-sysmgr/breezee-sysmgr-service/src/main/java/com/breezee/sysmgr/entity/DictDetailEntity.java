@@ -75,12 +75,12 @@ public class DictDetailEntity extends BaseInfo {
 
     public DictDetailInfo toInfo(){
         DictDetailInfo info = new DictDetailInfo();
-        cloneAttribute(info);
+        cloneAttributeTo(info);
         return info;
     }
 
     public DictDetailEntity parse(DictDetailInfo info){
-        info.cloneAttribute(this);
+        info.cloneAttributeTo(this);
         this.orderNo = info.getOrderNo();
         return this;
     }

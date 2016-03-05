@@ -120,7 +120,7 @@ public class ProductEntity extends BaseInfo {
 
     public ProductInfo toInfo() {
         ProductInfo info = new ProductInfo();
-        cloneAttribute(info);
+        cloneAttributeTo(info);
         if (this.getCategory() != null) {
             info.setCateId(this.getCategory().getId());
             info.setCateName(this.getCategory().getName());
@@ -136,7 +136,7 @@ public class ProductEntity extends BaseInfo {
     }
 
     public ProductEntity parse(ProductInfo info) {
-        info.cloneAttribute(this);
+        info.cloneAttributeTo(this);
         if (info.getBasePrice() != null) {
             this.setBasePrice(info.getBasePrice().getValue());
             if (info.getBasePrice().getCurrencyCode() != null)

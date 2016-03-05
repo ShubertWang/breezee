@@ -2,12 +2,12 @@
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
   <process id="seatProcess" name="Seat process" isExecutable="true" activiti:candidateStarterUsers="root">
     <startEvent id="startevent1" name="Start"></startEvent>
-    <userTask id="seatConfirm" name="Seat Confirm" activiti:candidateUsers="root" activiti:candidateGroups="${foodLineRole},${admin}"></userTask>
+    <userTask id="seatConfirm" name="Seat Confirm" activiti:candidateUsers="root" activiti:candidateGroups="${foodLineRole},${admin}" activiti:formKey="orderConfirm"></userTask>
     <endEvent id="endevent1" name="End"></endEvent>
-    <serviceTask id="seatUpdate" name="Seat Update" activiti:delegateExpression="${seatComplete}"></serviceTask>
+    <serviceTask id="seatUpdate" name="Seat Update" activiti:delegateExpression="${orderComplete}"></serviceTask>
     <sequenceFlow id="flow2" sourceRef="startevent1" targetRef="seatConfirm"></sequenceFlow>
     <sequenceFlow id="flow4" sourceRef="seatUpdate" targetRef="endevent1"></sequenceFlow>
-    <userTask id="seatAssgin" name="Seat Assign" activiti:candidateUsers="root" activiti:candidateGroups="${foodLineRole},${admin}"></userTask>
+    <userTask id="seatAssgin" name="Seat Assign" activiti:candidateUsers="root" activiti:candidateGroups="${foodLineRole},${admin}" activiti:formKey="orderComplete"></userTask>
     <sequenceFlow id="flow5" sourceRef="seatConfirm" targetRef="seatAssgin"></sequenceFlow>
     <sequenceFlow id="flow6" sourceRef="seatAssgin" targetRef="seatUpdate"></sequenceFlow>
   </process>

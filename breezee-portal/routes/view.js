@@ -16,7 +16,8 @@ router.get('*', function(req, res, next) {
                 endType : "",
                 title : '登录',
                 redirect : req.url,
-                data:{}
+                data:{},
+                session:{}
             });
         }else{
             endType = /mobile/.test(req.headers['user-agent'])?"/mobile":"/desktop";

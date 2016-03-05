@@ -214,7 +214,7 @@ public class ShippingAddressEntity extends BaseInfo {
 
     public ShippingAddressInfo toInfo() {
         ShippingAddressInfo info = new ShippingAddressInfo();
-        cloneAttribute(info);
+        cloneAttributeTo(info);
         info.setCity(this.getCity());
         info.setConsigneeAddress(this.getConsigneeAddress());
         info.setConsigneeAlias(this.getConsigneeAlias());
@@ -231,7 +231,7 @@ public class ShippingAddressEntity extends BaseInfo {
     }
 
     public ShippingAddressEntity parse(ShippingAddressInfo info) {
-        info.cloneAttribute(this);
+        info.cloneAttributeTo(this);
         this.setCity(info.getCity());
         this.setConsigneeAddress(info.getConsigneeAddress());
         this.setConsigneeAlias(info.getConsigneeAlias());

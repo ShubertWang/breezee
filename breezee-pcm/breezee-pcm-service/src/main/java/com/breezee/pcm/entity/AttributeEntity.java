@@ -119,7 +119,7 @@ public class AttributeEntity extends BaseInfo {
 
     public AttributeInfo toInfo(){
         AttributeInfo info = new AttributeInfo();
-        cloneAttribute(info);
+        cloneAttributeTo(info);
         info.setArguments(this.getArguments());
         info.setFieldType(this.getFieldType());
         info.setOrderNo(this.getOrderNo());
@@ -128,7 +128,7 @@ public class AttributeEntity extends BaseInfo {
     }
 
     public AttributeEntity parse(AttributeInfo info){
-        info.cloneAttribute(this);
+        info.cloneAttributeTo(this);
         this.setUnitCode(info.getUnitCode());
         this.setOrderNo(info.getOrderNo());
         this.setArguments(info.getArguments());

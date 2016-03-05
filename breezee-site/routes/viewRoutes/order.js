@@ -163,6 +163,15 @@ route.otherService = function (queryData, res, callback) {
     });
 };
 
+route.bookSite = function(queryData, res, callback){
+    //获取餐厅列表
+    callback({});
+};
+
+route.seatDetail = function(queryData, res, callback){
+    callback({});
+};
+
 route.wepay = function(queryData, res, callback){
     global.myUtil.request({
         method: 'get',

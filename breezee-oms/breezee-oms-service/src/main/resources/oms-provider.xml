@@ -21,4 +21,7 @@
 
     <dubbo:reference interface="com.breezee.pcm.api.service.IProductService" id="productService"
                      protocol="dubbo" check="false" />
+
+    <dubbo:reference interface="com.breezee.crm.api.service.IUserService" id="userService"
+                     protocol="dubbo" check="false" />
 </beans>

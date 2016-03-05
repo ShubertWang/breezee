@@ -5,7 +5,7 @@
 
 package com.breezee.bpm.api.service;
 
-import com.breezee.bpm.api.domain.TraceInfo;
+import com.breezee.bpm.api.domain.WfHistoryInfo;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
@@ -13,6 +13,7 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 流程跟踪服务
@@ -24,12 +25,19 @@ public interface IWorkflowTraceService {
 
     /**
      * 流程跟踪节点
-     *
      * @param processInstanceId 流程实例ID
      * @return
      * @throws Exception
      */
-    List<TraceInfo> traceProcess(String processInstanceId) throws Exception;
+    List<Map<String, Object>> traceProcess(String processInstanceId) throws Exception;
+
+    /**
+     * 子流程列表
+     * @param processInstanceId
+     * @return
+     * @throws Exception
+     */
+    List<Map<String, Object>> traceProcess4Sub(String processInstanceId) throws Exception;
 
     /**
      * 流程跟踪图
@@ -41,4 +49,11 @@ public interface IWorkflowTraceService {
     @GET
     @Produces(MediaType.APPLICATION_OCTET_STREAM)
     byte[] processInstanceChart(@PathParam("procsInsId") String processInstanceId);
+
+    /**
+     * 流程实例的履历
+     * @param processInstanceId
+     * @return
+     */
+    List<WfHistoryInfo> processHistory(String processInstanceId);
 }

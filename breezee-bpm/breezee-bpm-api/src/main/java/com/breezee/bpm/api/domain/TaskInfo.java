@@ -8,10 +8,7 @@ package com.breezee.bpm.api.domain;
 import com.breezee.common.BaseInfo;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 /**
  * Created by Silence on 2016/2/2.
@@ -204,6 +201,12 @@ public final class TaskInfo extends BaseInfo {
         this.username = username;
         if(this.assignee == null)
             this.assignee = username;
+    }
+
+    public Map<String, Object> getProperties() {
+        if(properties==null)
+            properties = new HashMap<>();
+        return properties;
     }
 
     public List<ActionInfo> getActionInfos() {
