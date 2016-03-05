@@ -87,7 +87,7 @@ route.employeeOrder = function (queryData, res, callback) {
     global.myUtil.request({
         method: 'post',
         uri: 'http://127.0.0.1:10249/services/bpmTask/findUndoTasks',
-        mockData: '/order/myOrder_dfd',
+        mockData: '/order/employeeOrderList',
         json:{userId:queryData.userId}
         //form: queryData
     }, function (error, response, body) {
@@ -97,12 +97,15 @@ route.employeeOrder = function (queryData, res, callback) {
         callback(body);
     });
 };
+route.employeeOrderByPage = function (queryData, res, callback) {
+    route.employeeOrder(queryData, res, callback);
+};
 
 route.employeeOrderDetail = function (queryData, res, callback) {
     global.myUtil.request({
         method: 'get',
         uri: '/order/',
-        mockData: '/order/orderDetail_1',
+        mockData: '/order/orderDetail_' + queryData.id,
         form: queryData
     }, function (error, response, body) {
         if (error) {

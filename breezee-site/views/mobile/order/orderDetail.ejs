@@ -7,8 +7,19 @@
 </head>
 <body ontouchstart>
 <% var i;%>
+<%
+var orderStatus = {
+    "-1" : "用户已取消",
+    "0" : "订单待支付",
+    "1" : "订单已创建",
+    "2" : "订单已确认",
+    "3" : "订单已制作",
+    "4" : "订单已完成",
+    "5" : "订单已拒绝"
+};
+%>
 <div class="div_ddcg">
-    <div class="zt" data-code="<%= body.status %>"><%= body.status <= "1"?'订单待确认':'订单已确认' %></div> <!--TODO 接枚举，siteOrderStatus-->
+    <div class="zt" data-code="<%= body.status %>"><%= orderStatus[body.status] %></div> <!--TODO 接枚举，siteOrderStatus-->
     <div class="time"><%= body.issueDate %></div>
 </div>
 <div>
@@ -18,12 +29,12 @@
             <p> 订单已提交
             </p></div>
         <div class="icon"><img src="/custom/wx_style/images/<%= body.status > 1?'0426':'0426_1'%>.png">
-            <p>订单已确认</p>
+            <p><%= body.status == 5?"订单已拒绝":"订单已确认" %></p>
         </div>
-        <div class="icon"><img src="/custom/wx_style/images/<%= body.status > 2?'0589':'0589_1'%>.png">
+        <div class="icon"><img src="/custom/wx_style/images/<%= (body.status > 2 && body.status < 5)?'0589':'0589_1'%>.png">
             <p>已制作</p>
         </div>
-        <div class="icon"><img src="/custom/wx_style/images/<%= body.status > 3?'0414':'0414_1'%>.png">
+        <div class="icon"><img src="/custom/wx_style/images/<%= body.status == 4?'0414':'0414_1'%>.png">
             <p>已结单</p>
         </div>
         <% }else if(body.type == 'site'){ %>
@@ -31,12 +42,12 @@
             <p> 订位已提交
             </p></div>
         <div class="icon"><img src="/custom/wx_style/images/<%= body.status > 1?'0426':'0426_1'%>.png">
-            <p>订位已确认</p>
+            <p><%= body.status == 5?"订位已拒绝":"订位已确认" %></p>
         </div>
-        <div class="icon"><img src="/custom/wx_style/images/<%= body.status > 2?'0589':'0589_1'%>.png">
+        <div class="icon"><img src="/custom/wx_style/images/<%= (body.status > 2 && body.status < 5)?'0589':'0589_1'%>.png">
             <p>座位已分配</p>
         </div>
-        <div class="icon"><img src="/custom/wx_style/images/<%= body.status > 3?'0414':'0414_1'%>.png">
+        <div class="icon"><img src="/custom/wx_style/images/<%= body.status == 4?'0414':'0414_1'%>.png">
             <p>订单已完成</p>
         </div>
         <% } %>
@@ -163,11 +174,6 @@
         </div>
     </div>
     <!--END dialog1-->
-</article>
-<% } %>
-<% if(body.status == 5){%>
-<article>
-    <div class=" tybtn_box"><a href="javascript:;" class="weui_btn weui_btn_warn">评价</a></div>
 </article>
 <% } %>
 <% include ../common/footer.ejs %>

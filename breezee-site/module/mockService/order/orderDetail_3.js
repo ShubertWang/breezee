@@ -1,15 +1,16 @@
 var data = {
-    id : "3",
-    status : "2",
-    type : 'DineIn',
+    id : "1",
+    status : "3",
+    type : 'takeout',
     createTime : 1451534400000,
-    code : 'A34',
     restaurant : {
         id : "1",
         name : "索迪斯微软食堂一号"
     },
     name : '赵小姐',
     phone : '18688883456',
+    address : '天天小区40号101',
+    payType : 'wx',
     time : 1451534400000,
     price : '108.00',
     food : [
