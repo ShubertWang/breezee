@@ -1,6 +1,6 @@
 var data = {
     id : "1",
-    status : "2",
+    status : "4",
     type : 'takeout',
     createTime : 1451534400000,
     restaurant : {

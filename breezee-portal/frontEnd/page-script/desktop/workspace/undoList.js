@@ -14,7 +14,7 @@ $(function () {
         orderReject:5,
         orderMake:3,
         orderComplete:4
-    }
+    };
 
     page.init = function () {
         this.initPage();

@@ -16,15 +16,15 @@
                         <div class="wddd_list"><%= body[i].properties.issueDate %> </div>
                     </div>
                     <div class="jg">
-                        <span><%= body[i].properties.subTotal || body[i].properties.subTotal.value %> </span>元
+                        <span><%= body[i].properties.subTotal && body[i].properties.subTotal.value %> </span>元
                     </div>
                 </div>
             </div>
             <div class="wddd_money bg_<%= body[i].properties.shippingMethod %>">
                 <%= body[i].properties.shippingMethod == "wm" ? "外送订单" : "堂吃订单" %><!--TODO 枚举-->
-                <% for(var i = 0; i < body.actionInfos.length; i++){ %>
-                <input type="button" value="<%= body.actionInfos[i].name %>" id="<%= body.actionInfos[i].code %>"
-                       class="btnred">
+                <% var buttonList = body[i].formKey.split('|'); %>
+                <% for(var j = 0; j < buttonList.length; j++){ %>
+                <input type="button" value="<%= buttonList[j] %>" id="<%= buttonList[j] %>" class="btnred" onclick="taskComplete(this, '<%= body[i].id %>', '<%= body[i].businessKey %>')" />
                 <% } %>
             </div>
         </div>
