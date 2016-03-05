@@ -28,4 +28,9 @@
     <dubbo:reference interface="com.breezee.pcm.api.service.ICategoryService"
                      id="categoryService" protocol="dubbo" check="false" />
 
+    <dubbo:reference interface="com.breezee.bpm.api.service.ITaskService" id="taskServiceImpl"
+                     protocol="dubbo" check="false" />
+    <dubbo:reference interface="com.breezee.bpm.api.service.IWorkflowService" id="workflowServiceImpl"
+                     protocol="dubbo" check="false" />
+
 </beans>

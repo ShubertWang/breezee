@@ -242,7 +242,7 @@ public class UserEntity extends BaseInfo {
 
     public UserInfo toInfo() {
         UserInfo info = new UserInfo();
-        cloneAttribute(info);
+        cloneAttributeTo(info);
         info.setAddress(this.getAddress());
         info.setCompany(this.getCompany());
         info.setDn(this.getDn());
@@ -274,7 +274,7 @@ public class UserEntity extends BaseInfo {
     }
 
     public UserEntity parse(UserInfo info) {
-        info.cloneAttribute(this);
+        info.cloneAttributeTo(this);
         this.setAddress(info.getAddress());
         this.setCompany(info.getCompany());
         this.setDn(info.getDn());

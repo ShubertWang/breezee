@@ -211,7 +211,7 @@ public class AccountEntity extends BaseInfo {
 
     public AccountInfo toInfo(){
         AccountInfo info = new AccountInfo();
-        cloneAttribute(info);
+        cloneAttributeTo(info);
         info.setAddress(this.getAddress());
         info.setEmail(this.getEmail());
         info.setJob(this.getJob());
@@ -225,6 +225,7 @@ public class AccountEntity extends BaseInfo {
         if(this.getOrganization()!=null) {
             info.setOrgId(this.getOrganization().getId());
             info.setOrgName(this.getOrganization().getName());
+            info.setOrgCode(this.getOrganization().getCode());
         }
         if(this.getRoles()!=null && this.getRoles().size()>0){
             this.getRoles().forEach(a->{
@@ -235,7 +236,7 @@ public class AccountEntity extends BaseInfo {
     }
 
     public AccountEntity parse(AccountInfo info){
-        info.cloneAttribute(this);
+        info.cloneAttributeTo(this);
         this.setAddress(info.getAddress());
         this.setEmail(info.getEmail());
         this.setJob(info.getJob());

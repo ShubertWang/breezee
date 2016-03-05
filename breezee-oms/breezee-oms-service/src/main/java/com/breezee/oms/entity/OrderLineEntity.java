@@ -139,7 +139,7 @@ public class OrderLineEntity extends BaseInfo {
 
     public OrderLineInfo toInfo(){
         OrderLineInfo info = new OrderLineInfo();
-        cloneAttribute(info);
+        cloneAttributeTo(info);
         info.setLocation(this.getLocation());
         info.setNote(this.getNote());
         info.setOrderId(this.getOrder().getId());
@@ -150,7 +150,7 @@ public class OrderLineEntity extends BaseInfo {
     }
 
     public OrderLineEntity parse(OrderLineInfo info){
-        info.cloneAttribute(this);
+        info.cloneAttributeTo(this);
         this.setSkuId(info.getSkuId());
         this.setNote(info.getNote());
         this.setCurrencyCode(info.getUnitPrice().getCurrencyCode());

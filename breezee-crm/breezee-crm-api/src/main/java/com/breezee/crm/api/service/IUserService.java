@@ -47,6 +47,8 @@ public interface IUserService extends IServiceLayer<UserInfo> {
     @POST
     UserInfo registerSite(UserInfo info);
 
-    ShippingAddressInfo findShippingAddressById(Long id);
+    @Path("/shippingAddress/{id}")
+    @GET
+    ShippingAddressInfo findShippingAddressById(@PathParam("id")Long id);
 
 }

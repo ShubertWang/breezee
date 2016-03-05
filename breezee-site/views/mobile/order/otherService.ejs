@@ -6,40 +6,61 @@
     <% include ../common/public.ejs %>
 </head>
 <body ontouchstart>
-<article id="form">
-    <div class="bh">
-        <div class="weui_cells weui_cells_form">
-            <div class="">
-                <div class="weui_cell weui_cell_select">
+<article>
+    <form id="editForm">
+        <div class="bh">
+            <div class="weui_cells weui_cells_form">
+                <div class="">
+                    <div class="weui_cell weui_cell_select">
+                        <div class="weui_cell_bd weui_cell_primary">
+                            <select class="weui_select" name="name">
+                                <option selected="" value="0">请选择服务类型</option>
+                                <% for(var i = 0; i < body.serviceType.length; i++){ %>
+                                <option value="<%= body.serviceType[i].code %>">
+                                    <%= body.serviceType[i].value %>
+                                </option>
+                                <% } %>
+                            </select>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <div class="weui_cells weui_cells_form">
+                <div class="weui_cell">
                     <div class="weui_cell_bd weui_cell_primary">
-                        <select class="weui_select" name="select1">
-                            <option selected="" value="0">请选择服务类型</option>
-                            <% for(var i = 0; i < body.serviceType.length; i++){ %>
-                            <option value="<%= body.serviceType[i].code %>">
-                                <%= body.serviceType[i].value %>
-                            </option>
-                            <% } %>
-                        </select>
+                        <textarea class="weui_textarea __remark" name="remark"
+                                  placeholder="如有特殊要求请留言">如有特殊要求请留言</textarea>
+                        <div class="weui_textarea_counter"><span>0</span>/200</div>
                     </div>
                 </div>
-
             </div>
         </div>
-        <div class="weui_cells weui_cells_form">
-            <div class="weui_cell">
-                <div class="weui_cell_bd weui_cell_primary">
-                    <textarea class="weui_textarea __remark" placeholder="如有特殊要求请留言">如有特殊要求请留言</textarea>
-                    <div class="weui_textarea_counter"><span>0</span>/200</div>
-                </div>
-            </div>
-        </div>
-    </div>
+    </form>
 </article>
-
 <footer>
     <div class="footer_box"><a href="javascript:void(0);" id="submit" class="weui_btn weui_btn_warn">确定</a></div>
 </footer>
-
 <% include ../common/footer.ejs %>
+<script>
+
+    $("#submit").click(function () {
+        var orderInfo = Dolphin.form2json("editForm");
+        orderInfo.userId = '<%= userData.userId %>';
+        orderInfo.userMobile = '<%= userData.userMobile %>';
+        orderInfo.userName = '<%= userData.userName %>';
+        //reservedTime缺少
+        Dolphin.ajax({
+            url: '/data/sdx/otherRequest/',
+            type: Dolphin.requestMethod.PUT,
+            data: Dolphin.json2string(orderInfo),
+            onSuccess: function (reData) {
+                //判断支付情况
+                Dolphin.goUrl("/order/seatDetail");
+            }
+        });
+    });
+
+</script>
 </body>
 </html>

@@ -7,22 +7,26 @@ package com.breezee.crm.impl;
 
 import com.breezee.common.*;
 import com.breezee.common.util.Callback;
-import com.breezee.common.DynamicSpecifications;
 import com.breezee.common.util.ContextUtil;
 import com.breezee.crm.api.domain.ShippingAddressInfo;
 import com.breezee.crm.api.domain.UserInfo;
+import com.breezee.crm.api.service.IUserService;
 import com.breezee.crm.entity.EncodeEntity;
 import com.breezee.crm.entity.ShippingAddressEntity;
 import com.breezee.crm.entity.UserEntity;
 import com.breezee.crm.repository.EncodeRepository;
 import com.breezee.crm.repository.ShippingAddressRepository;
 import com.breezee.crm.repository.UserRepository;
-import com.breezee.crm.api.service.IUserService;
 import org.apache.commons.codec.digest.Md5Crypt;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 
+import javax.mail.MessagingException;
+import javax.mail.internet.MimeMessage;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -35,6 +39,12 @@ import java.util.Map;
 public class UserServiceImpl implements IUserService {
 
     @Autowired
+    private JavaMailSender javaMailSender;
+
+    @Autowired
+    private SimpleMailMessage templateMessage;
+
+    @Autowired
     private UserRepository userRepository;
 
     @Autowired
@@ -44,23 +54,24 @@ public class UserServiceImpl implements IUserService {
     private EncodeRepository encodeRepository;
 
     @Override
-    public Map<String,Object> saveShippingAddress(ShippingAddressInfo addressInfo) {
+    public Map<String, Object> saveShippingAddress(ShippingAddressInfo addressInfo) {
         UserEntity u = userRepository.findOne(addressInfo.getUserId());
         //TODO:throw user not found exception
         ShippingAddressEntity se = new ShippingAddressEntity().parse(addressInfo);
         se.setUser(u);
         shippingAddressRepository.save(se);
 
-        Map<String,Object> m = new HashMap<>();
-        m.put("callback",true);
-        m.put("value",se.toInfo());
+        //供前端使用
+        Map<String, Object> m = new HashMap<>();
+        m.put("callback", true);
+        m.put("value", se.toInfo());
         return m;
     }
 
     @Override
     public UserInfo findByCode(String code) {
         UserEntity ue = userRepository.findByCode(code);
-        if(ue == null)
+        if (ue == null)
             return ErrorInfo.build(UserInfo.class);
         return ue.toInfo();
     }
@@ -68,7 +79,7 @@ public class UserServiceImpl implements IUserService {
     @Override
     public List<ShippingAddressInfo> findShippingAddress(Long userId) {
         UserEntity u = userRepository.findOne(userId);
-        if(u != null){
+        if (u != null) {
             UserInfo ui = u.toInfo();
             return ui.getShippingAddressInfos();
         }
@@ -77,9 +88,9 @@ public class UserServiceImpl implements IUserService {
 
     @Override
     public UserInfo employeeValidate(UserInfo info) {
-        String key = Md5Crypt.md5Crypt((info.getDn()+info.getName()+info.getIdCard()).getBytes());
-        EncodeEntity en = encodeRepository.findBySiteAndCode(info.getCompany(),key);
-        if(en == null)
+        String key = Md5Crypt.md5Crypt((info.getDn() + info.getName() + info.getIdCard()).getBytes());
+        EncodeEntity en = encodeRepository.findBySiteAndCode(info.getCompany(), key);
+        if (en == null)
             return ErrorInfo.build(UserInfo.class);
         return SuccessInfo.build(info);
     }
@@ -87,10 +98,12 @@ public class UserServiceImpl implements IUserService {
     @Override
     public UserInfo registerSite(UserInfo info) {
         UserEntity entity = userRepository.findOne(info.getId());
-        if(entity!=null){
+        if (entity != null) {
             entity.setCompany(info.getCompany());
             entity.setType("site");
             userRepository.save(entity);
+
+            sendMail(entity);
             return SuccessInfo.build(info);
         }
         return ErrorInfo.build(UserInfo.class);
@@ -99,7 +112,7 @@ public class UserServiceImpl implements IUserService {
     @Override
     public ShippingAddressInfo findShippingAddressById(Long id) {
         ShippingAddressEntity entity = shippingAddressRepository.findOne(id);
-        if(entity!=null)
+        if (entity != null)
             return entity.toInfo();
         return ErrorInfo.build(ShippingAddressInfo.class);
     }
@@ -115,6 +128,7 @@ public class UserServiceImpl implements IUserService {
             entity = new UserEntity();
         entity.parse(userInfo);
         userRepository.save(new UserEntity().parse(userInfo));
+        sendMail(entity);
         return SuccessInfo.build(UserInfo.class);
     }
 
@@ -126,7 +140,7 @@ public class UserServiceImpl implements IUserService {
     @Override
     public UserInfo findInfoById(Long id) {
         UserEntity ue = userRepository.findOne(id);
-        if(ue == null)
+        if (ue == null)
             return ErrorInfo.build(UserInfo.class);
         return ue.toInfo();
     }
@@ -140,12 +154,37 @@ public class UserServiceImpl implements IUserService {
     @Override
     public PageResult<UserInfo> pageAll(Map<String, Object> m, PageInfo pageInfo) {
         pageInfo = new PageInfo(m);
-        Page<UserEntity> page = userRepository.findAll(DynamicSpecifications.createSpecification(m),pageInfo);
+        Page<UserEntity> page = userRepository.findAll(DynamicSpecifications.createSpecification(m), pageInfo);
         return new PageResult<>(page, UserInfo.class, (userEntity, userInfo) -> userEntity.toInfo());
     }
 
     @Override
     public void updateStatus(Long id, int status) {
+        UserEntity entity = userRepository.findOne(id);
+        if (entity != null) {
+            entity.setStatus(status);
+            userRepository.save(entity);
+        }
+    }
 
+    /**
+     * 发送邮件
+     * @param entity
+     * @throws MessagingException
+     */
+    private void sendMail(UserEntity entity) {
+        try {
+            MimeMessage mimeMessage = javaMailSender.createMimeMessage();
+            MimeMessageHelper messageHelper = new MimeMessageHelper(mimeMessage);
+            messageHelper.setFrom(this.templateMessage.getFrom());
+            messageHelper.setSubject(this.templateMessage.getSubject());
+            messageHelper.setTo(entity.getEmail());
+            messageHelper.setText("Dear " + entity.getName()
+                    + ", thank you for register. " +
+                    "<a href='http://weixin.sodexo-cn.com/view/account/accountVerify?id=" + entity.getId() + "&status=3'>验证</a> ",true);
+            javaMailSender.send(mimeMessage);
+        } catch (MessagingException e) {
+            e.printStackTrace();
+        }
     }
 }

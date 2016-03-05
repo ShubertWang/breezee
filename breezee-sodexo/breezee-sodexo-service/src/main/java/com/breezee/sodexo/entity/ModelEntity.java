@@ -99,7 +99,7 @@ public class ModelEntity extends BaseInfo {
 
     public ModelInfo toInfo(boolean loadChild){
         ModelInfo info = new ModelInfo();
-        cloneAttribute(info);
+        cloneAttributeTo(info);
         if(this.getChildren()!=null && this.getChildren().size()>0){
             if(loadChild) {
                 info.setChildren(new ArrayList<>());
@@ -111,14 +111,14 @@ public class ModelEntity extends BaseInfo {
         }
         if(this.getParent()!=null){
             ModelInfo pInfo = new ModelInfo();
-            this.getParent().cloneAttribute(pInfo);
+            this.getParent().cloneAttributeTo(pInfo);
             info.setParent(pInfo);
         }
         return info;
     }
 
     public ModelEntity parse(ModelInfo info){
-        info.cloneAttribute(this);
+        info.cloneAttributeTo(this);
         return this;
     }
 }

@@ -7,28 +7,33 @@
 </head>
 <body ontouchstart>
 <article>
+    <form id="editForm">
+    <input type="hidden" name="id" value="<%= userData.userId %>" />
     <div class="bh">
         <div class="weui_cells weui_cells_form">
             <div class="weui_cell">
-
                 <div class="weui_cell_bd weui_cell_primary">
-                    <input class="weui_input" type="tel" placeholder="员工编号" name="code"/>
+                    <input class="weui_input" type="text" placeholder="员工编号" name="code" disabled value="<%= userData.userCode %>"/>
                 </div>
             </div>
             <div class="weui_cell">
-
                 <div class="weui_cell_bd weui_cell_primary">
-                    <input class="weui_input" type="tel" placeholder="员工姓名" name="name"/>
+                    <input class="weui_input" type="text" placeholder="营运站点" name="company" disabled value="<%= userData.siteId %>"/>
                 </div>
             </div>
             <div class="weui_cell">
-
                 <div class="weui_cell_bd weui_cell_primary">
-                    <input class="weui_input" type="tel" placeholder="证件后四位字符" name="cardId"/>
+                    <input class="weui_input" type="text" placeholder="员工姓名" name="name" disabled value="<%= userData.userName %>"/>
+                </div>
+            </div>
+            <div class="weui_cell">
+                <div class="weui_cell_bd weui_cell_primary">
+                    <input class="weui_input" type="email" placeholder="邮箱地址" name="email" value="<%= userData.email %>"/>
                 </div>
             </div>
         </div>
     </div>
+    </form>
 </article>
 
 <footer>

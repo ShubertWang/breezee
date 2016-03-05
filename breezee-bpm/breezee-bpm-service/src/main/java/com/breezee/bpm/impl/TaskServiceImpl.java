@@ -6,10 +6,12 @@
 package com.breezee.bpm.impl;
 
 import com.breezee.bpm.api.domain.TaskInfo;
+import com.breezee.bpm.api.domain.TaskStepInfo;
 import com.breezee.bpm.api.service.ITaskService;
+import com.breezee.bpm.step.TaskStepEntity;
+import com.breezee.bpm.step.TaskStepRepository;
 import com.breezee.common.PageInfo;
 import com.breezee.common.PageResult;
-import com.breezee.oms.api.domain.OrderInfo;
 import com.breezee.oms.api.service.IOrderService;
 import org.activiti.engine.HistoryService;
 import org.activiti.engine.RuntimeService;
@@ -17,9 +19,10 @@ import org.activiti.engine.TaskService;
 import org.activiti.engine.history.HistoricTaskInstance;
 import org.activiti.engine.history.HistoricTaskInstanceQuery;
 import org.activiti.engine.runtime.ProcessInstance;
-import org.activiti.engine.task.NativeTaskQuery;
 import org.activiti.engine.task.Task;
+import org.activiti.engine.task.TaskQuery;
 import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
@@ -44,6 +47,9 @@ public class TaskServiceImpl implements ITaskService {
     @Resource
     private IOrderService orderService;
 
+    @Autowired
+    private TaskStepRepository taskStepRepository;
+
     @Override
     public TaskInfo newTask() {
         return newTask(null);
@@ -62,9 +68,9 @@ public class TaskServiceImpl implements ITaskService {
     }
 
     @Override
-    public TaskInfo autoComplete(Long procInsId,Map<String,Object> m) {
+    public TaskInfo autoComplete(Long procInsId, Map<String, Object> m) {
         Task task = taskService.createTaskQuery().processInstanceId(procInsId.toString()).singleResult();
-        complete(task.getId().toString(),m);
+        complete(task.getId().toString(), m);
         return findTaskById(Long.parseLong(task.getId()));
     }
 
@@ -75,9 +81,15 @@ public class TaskServiceImpl implements ITaskService {
 
     @Override
     public void complete(String taskId, Map<String, Object> variables) {
-        if(variables.get("taskOwner")!=null)
+        Long orderId = Long.parseLong(variables.get("orderId").toString());
+        Integer orderStatus = Integer.parseInt(variables.get("orderStatus").toString());
+        variables.remove("orderId");
+        variables.remove("orderStatus");
+        if (variables.get("taskOwner") != null)
             taskService.setOwner(taskId, variables.get("taskOwner").toString());
-        taskService.complete(taskId, variables);
+        if (variables.get("complete").toString().equals("true"))
+            taskService.complete(taskId, variables);
+        orderService.updateStatus(orderId, orderStatus);
     }
 
     @Override
@@ -101,7 +113,7 @@ public class TaskServiceImpl implements ITaskService {
     public TaskInfo findTaskById(Long taskId) {
         Task task = taskService.createTaskQuery().taskId(taskId.toString()).singleResult();
         TaskInfo info = new TaskInfo();
-        BeanUtils.copyProperties(task,info);
+        BeanUtils.copyProperties(task, info);
         return info;
     }
 
@@ -215,69 +227,20 @@ public class TaskServiceImpl implements ITaskService {
     }
 
     @Override
-    public PageResult<TaskInfo> findUndoTasks(Map<String,Object> m, PageInfo pageInfo) {
+    public PageResult<TaskInfo> findUndoTasks(Map<String, Object> m, PageInfo pageInfo) {
         pageInfo = new PageInfo(m);
-        StringBuffer sql = new StringBuffer();
-        sql.append(" SELECT DISTINCT RES.*  FROM ACT_RU_TASK RES   WHERE RES.ASSIGNEE_ = #{userId}  AND RES.SUSPENSION_STATE_ = 1 ");
-        sql.append(" OR (RES.ASSIGNEE_ IS NULL AND  RES.ID_ IN (SELECT I.TASK_ID_   FROM ACT_RU_IDENTITYLINK I  WHERE I.TYPE_ = 'candidate'  ");
-        sql.append(" AND (I.USER_ID_ = #{userId} OR  I.GROUP_ID_ IN ( ");
-        sql.append(" SELECT G.ID_ FROM ACT_ID_GROUP G, ACT_ID_MEMBERSHIP MEMBERSHIP  WHERE G.ID_ = MEMBERSHIP.GROUP_ID_ AND MEMBERSHIP.USER_ID_ = #{userId})))) ");
-        sql.append(" ORDER BY RES.CREATE_TIME_ DESC ");
-        NativeTaskQuery allTask = taskService.createNativeTaskQuery().sql(sql.toString()).parameter("userId", m.get("userId").toString());
-        List<Task> l = allTask.listPage(pageInfo.getPageNumber(), pageInfo.getPageSize());
-        long count = l.size();
-        PageResult<TaskInfo> pageResult = convert(l,count);
-
-        Iterator it = pageResult.getContent().iterator();
-        while(it.hasNext()){
-//        for (int i = 0; i < pageResult.getContent().size() ; i++) {
-            TaskInfo task = (TaskInfo)it.next();
-            Boolean flag = false;
-            ProcessInstance processInstance = runtimeService.createProcessInstanceQuery().processInstanceId(task.getProcessInstanceId()).singleResult();
-            OrderInfo orderInfo = orderService.findOrderInfoByCode(processInstance.getBusinessKey());
-            if(!StringUtils.isEmpty(m.get("name")) || !StringUtils.isEmpty(m.get("code"))){
-                if(orderInfo.getName().equals(m.get("name"))){
-                    flag = true;
-                }else if(orderInfo.getCode().equals(m.get("code"))){
-                    flag = true;
-                }else{
-                    it.remove();
-                    count--;
-                }
-            }else{
-                flag = true;
-            }
-
-            if(flag){
-                task.setBusinessKey(processInstance.getBusinessKey());
-                task.getProperties().put("orderInfo",orderInfo);
-            }
-        }
-
-        pageResult.setTotal(count);
-
-        /*for(TaskInfo task : pageResult.getContent()){
-            ProcessInstance processInstance = runtimeService.createProcessInstanceQuery().processInstanceId(task.getProcessInstanceId()).singleResult();
-            OrderInfo orderInfo = orderService.findOrderInfoByCode(processInstance.getBusinessKey());
-            if(m.get("name") != null){
-                orderInfo.getName().equals(m.get("name"))
-            }
-
-            task.setBusinessKey(processInstance.getBusinessKey());
-            task.setUserId(orderInfo.getUserId());
-            task.setIssueDate(orderInfo.getIssueDate());
-            task.setSubTotal(orderInfo.getSubTotal().getValue().toString());
-            task.setShippingMethod(orderInfo.getShippingMethod());
-            task.setPaymentAmount(orderInfo.getPaymentAmount().getValue().toString());
-
-        }*/
+//        TaskQuery taskQuery = taskService.createTaskQuery().taskCandidateUser(m.get("userId").toString()).active().orderByTaskCreateTime().desc();
+        TaskQuery taskQuery = taskService.createTaskQuery().taskCandidateGroup(m.get("userJob").toString()).active().orderByTaskCreateTime().desc();
+        long count = taskQuery.count();
+        List<Task> l = taskQuery.listPage(pageInfo.getPageNumber(), pageInfo.getPageSize());
+        PageResult<TaskInfo> pageResult = convert(l, count);
         return pageResult;
     }
 
     @Override
-    public PageResult<TaskInfo> findFinishedTasks(Map<String,Object> m, PageInfo pageInfo) {
-        if(pageInfo==null){
-            pageInfo = new PageInfo(Integer.valueOf(m.get("pageNumber").toString()),Integer.valueOf(m.get("pageSize").toString()));
+    public PageResult<TaskInfo> findFinishedTasks(Map<String, Object> m, PageInfo pageInfo) {
+        if (pageInfo == null) {
+            pageInfo = new PageInfo(Integer.valueOf(m.get("pageNumber").toString()), Integer.valueOf(m.get("pageSize").toString()));
         }
         HistoricTaskInstanceQuery hquery = historyService.createHistoricTaskInstanceQuery().taskAssignee(m.get("username").toString()).finished();
         long count = hquery.count();
@@ -285,11 +248,23 @@ public class TaskServiceImpl implements ITaskService {
         return convert(l, count);
     }
 
+    @Override
+    public void saveStep(TaskStepInfo stepInfo) {
+        taskStepRepository.save(new TaskStepEntity().parse(stepInfo));
+    }
+
     private <T extends org.activiti.engine.task.TaskInfo> PageResult<TaskInfo> convert(List<T> l, long count) {
         List<TaskInfo> ll = new ArrayList<>(l.size());
         l.forEach(a -> {
             TaskInfo vo = new TaskInfo();
+            vo.setId(Long.parseLong(a.getId()));
             BeanUtils.copyProperties(a, vo);
+            ProcessInstance pi = runtimeService.createProcessInstanceQuery().processInstanceId(a.getProcessInstanceId()).singleResult();
+            if (pi != null && pi.getBusinessKey() != null) {
+                vo.getProperties().put("orderInfo", orderService.findInfoById(Long.parseLong(pi.getBusinessKey())));
+                vo.setProcessDefinitionName(pi.getProcessDefinitionName());
+                vo.setBusinessKey(pi.getBusinessKey());
+            }
             ll.add(vo);
         });
         PageResult<TaskInfo> pageResult = new PageResult<>();

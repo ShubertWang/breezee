@@ -23,13 +23,15 @@ public class OrderInfo extends BaseInfo {
     //-1未付款, 0: 已提交, 1,已付款， 2，已确认， 3，已制作， 4，已发货， 5，已完成
 
     private Long userId;
+    private String userMobile;
+    private String userName;
     private Date issueDate;
     private List<OrderLineInfo> orderLines = new ArrayList<>();
     /**
      * 需要支付的价格
      */
     private Amount paymentAmount;
-    private String paymentType;
+    private String paymentType = "wepay";
     private String priority;
     private Long shippingAddressId;
     private Amount shippingPrice;
@@ -47,7 +49,7 @@ public class OrderInfo extends BaseInfo {
      * 下面的流程定义的字段从界面上传递过来，而不是从数据库取出来的
      */
     private Long taskId;
-    private String procDefId;
+    private String procDefId = "orderProcess";
     private Long procsInsId;
 
     private String statusName;
@@ -57,6 +59,12 @@ public class OrderInfo extends BaseInfo {
     private String restaurantImage;
 
     private boolean payNow;
+
+    protected String consigneeName;
+
+    protected String consigneeAddress;
+
+    protected String consigneeMobile;
 
     public Date getIssueDate() {
         return issueDate;
@@ -191,6 +199,22 @@ public class OrderInfo extends BaseInfo {
         this.statusName = statusName;
     }
 
+    public String getUserMobile() {
+        return userMobile;
+    }
+
+    public void setUserMobile(String userMobile) {
+        this.userMobile = userMobile;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
     public String getRestaurantName() {
         return restaurantName;
     }
@@ -208,9 +232,33 @@ public class OrderInfo extends BaseInfo {
     }
 
     public boolean isPayNow() {
-        if(this.paymentType.equals("wepay") && this.status==0){
+        if(this.paymentType!=null && this.paymentType.equals("wepay") && this.status==0){
             payNow = true;
         }
         return payNow;
+    }
+
+    public String getConsigneeName() {
+        return consigneeName;
+    }
+
+    public void setConsigneeName(String consigneeName) {
+        this.consigneeName = consigneeName;
+    }
+
+    public String getConsigneeAddress() {
+        return consigneeAddress;
+    }
+
+    public void setConsigneeAddress(String consigneeAddress) {
+        this.consigneeAddress = consigneeAddress;
+    }
+
+    public String getConsigneeMobile() {
+        return consigneeMobile;
+    }
+
+    public void setConsigneeMobile(String consigneeMobile) {
+        this.consigneeMobile = consigneeMobile;
     }
 }

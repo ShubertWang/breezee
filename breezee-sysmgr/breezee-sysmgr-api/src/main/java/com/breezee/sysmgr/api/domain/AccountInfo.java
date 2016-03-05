@@ -36,7 +36,8 @@ public class AccountInfo extends BaseInfo {
     private String address;
 
     private Long orgId;
-    String orgName;
+    private String orgName;
+    private String orgCode;
 
     private List<String> roles = new ArrayList<>();
 
@@ -154,5 +155,13 @@ public class AccountInfo extends BaseInfo {
 
     public void setOldPassword(String oldPassword) {
         this.oldPassword = oldPassword;
+    }
+
+    public String getOrgCode() {
+        return orgCode;
+    }
+
+    public void setOrgCode(String orgCode) {
+        this.orgCode = orgCode;
     }
 }

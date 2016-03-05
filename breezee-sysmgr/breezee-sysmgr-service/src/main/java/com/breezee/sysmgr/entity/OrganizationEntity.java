@@ -104,7 +104,7 @@ public class OrganizationEntity extends BaseInfo{
 
     public OrganizationInfo toInfo(boolean loadChild){
         OrganizationInfo info = new OrganizationInfo();
-        cloneAttribute(info);
+        cloneAttributeTo(info);
         if(this.getChildren()!=null && this.getChildren().size()>0){
             if(loadChild) {
                 info.setChildren(new ArrayList<>());
@@ -116,14 +116,14 @@ public class OrganizationEntity extends BaseInfo{
         }
         if(this.getParent()!=null){
             OrganizationInfo pInfo = new OrganizationInfo();
-            this.getParent().cloneAttribute(pInfo);
+            this.getParent().cloneAttributeTo(pInfo);
             info.setParent(pInfo);
         }
         return info;
     }
 
     public OrganizationEntity parse(OrganizationInfo info){
-        info.cloneAttribute(this);
+        info.cloneAttributeTo(this);
         return this;
     }
 }

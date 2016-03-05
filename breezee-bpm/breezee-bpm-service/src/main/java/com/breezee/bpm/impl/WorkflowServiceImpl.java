@@ -6,11 +6,15 @@
 package com.breezee.bpm.impl;
 
 import com.breezee.bpm.api.domain.ProcsInsInfo;
+import com.breezee.bpm.api.domain.TaskStepInfo;
+import com.breezee.bpm.api.service.ITaskService;
 import com.breezee.bpm.api.service.IWorkflowService;
 import com.breezee.common.PageInfo;
 import com.breezee.common.PageResult;
 import org.activiti.engine.RuntimeService;
+import org.activiti.engine.TaskService;
 import org.activiti.engine.runtime.ProcessInstance;
+import org.activiti.engine.task.Task;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
@@ -29,6 +33,12 @@ public class WorkflowServiceImpl implements IWorkflowService {
     @Resource
     private RuntimeService runtimeService;
 
+    @Resource
+    private TaskService taskService;
+
+    @Resource
+    private ITaskService taskServiceImpl;
+
     @Override
     public ProcsInsInfo startProcessInstanceById(String processDefinitionId, String businessKey) {
         return startProcessInstanceById(processDefinitionId, businessKey, Collections.emptyMap());
@@ -37,6 +47,20 @@ public class WorkflowServiceImpl implements IWorkflowService {
     @Override
     public ProcsInsInfo startProcessInstanceById(String processDefinitionId, String businessKey, Map<String, Object> variables) {
         ProcessInstance processInstance = runtimeService.startProcessInstanceByKey(processDefinitionId, businessKey, variables);
+        String processInstanceId = processInstance.getId();
+        Task task = taskService.createTaskQuery().processInstanceId(processInstanceId).singleResult();
+//        task.setFormKey(businessKey);
+//        taskService.saveTask(task);
+        if (variables.get("startUser") != null) {
+            TaskStepInfo vo = new TaskStepInfo();
+            vo.setOptUser(variables.get("startUser").toString());
+            vo.setProcInstId(processInstanceId);
+            vo.setOptReason(task.getName());
+            vo.setOptReason("流程启动");
+            vo.setWorkItemId(task.getId());
+            vo.setOptType("start");
+            taskServiceImpl.saveStep(vo);
+        }
         return this.populator(processInstance);
     }
 

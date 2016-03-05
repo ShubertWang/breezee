@@ -131,7 +131,7 @@ public class CategoryEntity extends BaseInfo {
      */
     public CategoryInfo toInfo(boolean loadChild){
         CategoryInfo info = new CategoryInfo();
-        cloneAttribute(info);
+        cloneAttributeTo(info);
         if(this.getChildren()!=null && this.getChildren().size()>0){
             if(loadChild) {
                 info.setChildren(new ArrayList<>());
@@ -143,7 +143,7 @@ public class CategoryEntity extends BaseInfo {
         }
         if(this.getParent()!=null){
             CategoryInfo pInfo = new CategoryInfo();
-            this.getParent().cloneAttribute(pInfo);
+            this.getParent().cloneAttributeTo(pInfo);
             info.setParent(pInfo);
         }
         info.setIcon(this.getIcon());
@@ -151,7 +151,7 @@ public class CategoryEntity extends BaseInfo {
     }
 
     public CategoryEntity parse(CategoryInfo categoryInfo){
-        categoryInfo.cloneAttribute(this);
+        categoryInfo.cloneAttributeTo(this);
         this.setIcon(categoryInfo.getIcon());
         return this;
     }
