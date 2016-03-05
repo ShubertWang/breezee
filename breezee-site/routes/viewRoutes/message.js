@@ -15,10 +15,17 @@ route.message = function (queryData, res, callback) {
 route.news = function (queryData, res, callback) {
     global.myUtil.request({
         method : 'post',
-        uri : 'http://127.0.0.1:10250/services/article/modelCode/'+queryData.modelCode
+        uri : 'http://127.0.0.1:10250/services/article/modelCode/'+queryData.modelCode,
+        mockData : '/message/news'
     }, function(error, response, body){
+        for(var i = 0; i < body.content.length; i++){
+            body.content[i]._date = global.myUtil.dateFormatter(new Date(body.content[i].date), "MM月dd日");
+        }
         callback(body.content);
     });
+};
+route.newsByPage = function (queryData, res, callback) {
+    route.news(queryData, res, callback);
 };
 route.newsDetail = function (queryData, res, callback) {
     global.myUtil.request({

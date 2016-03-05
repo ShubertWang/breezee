@@ -6,29 +6,11 @@
     <% include ../common/public.ejs %>
 </head>
 <body ontouchstart>
-<% var i, j; %>
-
-<div class="news">
-    <ul class="bh">
-        <% for(i = 0; i < body.length; i++){ %>
-        <% if(i == 0) { %>
-        <li class="img"><a href="/view/message/newsDetail?id=<%= body[i].id %>"><img src="<%= body[i].subtitle %>"></a>
-            <div class="img_text"><%= body[i].name %></div>
-        </li>
-        <% } else { %>
-        <li class="line_gray bh">
-            <div class="name">
-                <a href="/view/message/newsDetail?id=<%= body[i].id %>">
-                    <%- body[i].name %>
-                    <br/>
-                    <span style="font-size: 0.875em;color: #333333;"><%- body[i].remark || '' %></span>
-                </a>
-            </div>
-            <div class="ms_img"><img src="<%= body[i].subtitle %>"></div>
-        </li>
-        <% }} %>
-    </ul>
-</div>
+<% if(body.length == 0){ %>
+暂无消息
+<% }else{%>
+<% include ./newsByPage.ejs %>
+<% } %>
 <% include ../common/footer.ejs %>
 </body>
 </html>

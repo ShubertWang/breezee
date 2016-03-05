@@ -1167,3 +1167,22 @@ background:url(/custom/wx_style/images/bg_cd.png) no-repeat left top;  backgroun
 .news_xq .rq span{ margin-left:10px; color:#1c64a1;}
 .news_xq img{ margin:10px 0; clear:both; width:100%; display:inline-table; text-align:center;}
 .news_xq p{ line-height:1.5em;}
+
+/* 活动列表页_单个新闻 */
+.news_dd{
+	margin:4%;
+	padding:15px;
+	border:solid 1px #c7c7c7;
+    border-radius:0.75em;
+    -moz-border-radius:0.75em; /* Old Firefox */
+	background:#fff;
+	color:#858585;
+}
+.news_dd .name a{ font: 1.5em/1.25em Helvetica, Arial, sans-serif, "微软雅黑","幼圆","黑体"; text-decoration:none; color:#333; display:block; clear:both;}
+.news_dd .rq{text-decoration:none;font-size: 0.875em; line-height:1.5em; padding:10px 0;}
+.news_dd .ms{color:#D3D0C9; text-decoration:none; padding:5px 0;font-size: 0.85em;line-height:1.5em;}
+.news .msh{color:#D3D0C9; text-decoration:none;font-size: 0.85em; line-height:1.25em;}
+.news_dd .img{ padding-bottom:5px;width:100%; display:inline-table; text-align:center;}
+.news_dd .img img{width:100%;}
+.news_dd .more{ border-top:solid 1px #e2e2e2; padding-top:10px; margin-top:15px; background: url(/custom/wx_style/images/icon_jt_r.gif) no-repeat right bottom; line-height:25px; cursor:pointer; background-size:7%; }
+.news_dd .more a{ text-decoration:none; color:#333;}

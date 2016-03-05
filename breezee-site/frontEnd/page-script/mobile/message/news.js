@@ -9,3 +9,6 @@ $(function () {
         }
     })*/
 });
+function moreMessage(thisObj, weekNumber){
+    $(thisObj).closest('.listPanel').load('/view/message/newsByPage?weekNumber='+weekNumber);
+}
