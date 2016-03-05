@@ -1,4 +1,5 @@
 $(function () {
+    menu.select('organizationManagement');
     Dolphin.form.parse();
 
     var infoPanel = $('#infoPanel'),

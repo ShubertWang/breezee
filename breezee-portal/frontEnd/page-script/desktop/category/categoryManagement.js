@@ -4,6 +4,7 @@
 Dolphin.defaults.mockFlag = false;
 $(function () {
     Dolphin.form.parse();
+    menu.select('categoryManagement');
 
     var infoPanel = $('#infoPanel'),
         categoryPanel = $('#categoryPanel'),

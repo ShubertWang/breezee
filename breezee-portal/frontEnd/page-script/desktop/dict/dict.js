@@ -2,6 +2,7 @@
  * Created by Shubert.Wang on 2016/1/27.
  */
 $(function () {
+    menu.select('dict');
     Dolphin.form.parse();
 
     var enableOptions = $('#enableOptions'),

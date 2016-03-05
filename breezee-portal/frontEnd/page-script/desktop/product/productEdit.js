@@ -1,5 +1,6 @@
 Dolphin.defaults.mockFlag = false;
 $(function () {
+    menu.select('productList');
     Dolphin.form.parse();
 
     var page = {

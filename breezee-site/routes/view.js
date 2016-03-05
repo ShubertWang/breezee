@@ -83,8 +83,8 @@ viewRoutes.order = require('./viewRoutes/order.js');
 router.get('*', function (req, res, next) {
     try {
         var url, endType, userInfo,
-        userInfo = true;
-        //userInfo = req.session.openId;
+        //userInfo = true;
+        userInfo = req.session.openId;
         //endType = /mobile|Mobile/.test(req.headers['user-agent'])?"/mobile":"/desktop";
         endType = "/mobile";
         url = endType + (req.url == '/'?"/index":req.url);

@@ -7,8 +7,8 @@ router.get('*', function(req, res, next) {
         var url, endType, userInfo,
             queryData;
 
-        //userInfo = true;
-        userInfo = req.session.userId;
+        userInfo = true;
+        //userInfo = req.session.userId;
 
         if(userInfo == null){
             res.render('login', {
