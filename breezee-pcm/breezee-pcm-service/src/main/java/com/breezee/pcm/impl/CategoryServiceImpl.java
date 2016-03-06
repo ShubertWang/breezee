@@ -24,10 +24,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 /**
  * 品类服务实现类
@@ -60,6 +57,7 @@ public class CategoryServiceImpl implements ICategoryService {
         l.forEach(a -> {
             _l.add(a.toInfo(false));
         });
+        _l.sort((o1, o2) -> o1.getOrderNo()-o2.getOrderNo());
         return _l;
     }
 

@@ -6,12 +6,15 @@
 package com.breezee.common;
 
 import com.breezee.common.util.Callback;
+import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.data.domain.Page;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 分页的查询结果
@@ -26,6 +29,8 @@ public class PageResult<V> implements Serializable {
     private List<V> content;
 
     private Long total;
+
+    private transient Map<String,Object> properties;
 
     public PageResult() {
     }
@@ -76,4 +81,14 @@ public class PageResult<V> implements Serializable {
         return page.toString();
     }
 
+    @JsonAnyGetter
+    public Map<String, Object> getProperties() {
+        if(this.properties==null)
+            this.properties=new HashMap<>();
+        return properties;
+    }
+
+    public void setProperties(Map<String, Object> properties) {
+        this.properties = properties;
+    }
 }

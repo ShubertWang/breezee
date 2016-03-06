@@ -13,6 +13,8 @@ import com.breezee.bpm.step.TaskStepRepository;
 import com.breezee.common.PageInfo;
 import com.breezee.common.PageResult;
 import com.breezee.oms.api.service.IOrderService;
+import com.breezee.sodexo.api.service.IOtherRequestService;
+import com.breezee.sodexo.api.service.ISeatOrderService;
 import org.activiti.engine.HistoryService;
 import org.activiti.engine.RuntimeService;
 import org.activiti.engine.TaskService;
@@ -46,6 +48,12 @@ public class TaskServiceImpl implements ITaskService {
 
     @Resource
     private IOrderService orderService;
+
+    @Resource
+    private ISeatOrderService seatOrderService;
+
+    @Resource
+    private IOtherRequestService otherRequestService;
 
     @Autowired
     private TaskStepRepository taskStepRepository;
@@ -277,15 +285,16 @@ public class TaskServiceImpl implements ITaskService {
             BeanUtils.copyProperties(a, vo);
             ProcessInstance pi = runtimeService.createProcessInstanceQuery().processInstanceId(a.getProcessInstanceId()).singleResult();
             if (pi != null && pi.getBusinessKey() != null) {
+                vo.setProcessDefinitionKey(pi.getProcessDefinitionKey());
                 if(pi.getProcessDefinitionKey().equals("orderProcess")) {
                     vo.getProperties().put("orderInfo", orderService.findInfoById(Long.parseLong(pi.getBusinessKey())));
-                    vo.setProcessDefinitionName(pi.getProcessDefinitionName());
-                    vo.setBusinessKey(pi.getBusinessKey());
                 } else if(pi.getProcessDefinitionKey().equals("seatProcess")){
-
+                    vo.getProperties().put("seatInfo",seatOrderService.findInfoById(Long.parseLong(pi.getBusinessKey())));
                 } else if(pi.getProcessDefinitionKey().equals("requestProcess")){
-
+                    vo.getProperties().put("requestInfo",otherRequestService.findInfoById(Long.parseLong(pi.getBusinessKey())));
                 }
+                vo.setProcessDefinitionName(pi.getProcessDefinitionName());
+                vo.setBusinessKey(pi.getBusinessKey());
             }
             ll.add(vo);
         });

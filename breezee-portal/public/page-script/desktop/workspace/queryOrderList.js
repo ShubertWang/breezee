@@ -6,6 +6,12 @@ $(function () {
     page.connect = {
         orderList : {
             url : '/data/oms/order/page'
+        },
+        seatList: {
+            url : '/data/sdx/seatOrder/page'
+        },
+        requestList:{
+            url : '/data/sdx/otherRequest/page'
         }
     };
 

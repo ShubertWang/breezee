@@ -59,6 +59,7 @@ router.get('/logout', function(req, res, next) {
         endType : "",
         title : '登录',
         redirect : '',
+        session:{},
         data:{}
     });
 });

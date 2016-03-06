@@ -23,6 +23,8 @@ public class CategoryEntity extends BaseInfo {
 
     protected String icon;
 
+    protected int orderNo;
+
     protected CategoryEntity parent;
 
     protected Set<CategoryEntity> children;
@@ -124,6 +126,14 @@ public class CategoryEntity extends BaseInfo {
         this.icon = icon;
     }
 
+    public int getOrderNo() {
+        return orderNo;
+    }
+
+    public void setOrderNo(int orderNo) {
+        this.orderNo = orderNo;
+    }
+
     /**
      * 实体映射到领域对象上
      * @param loadChild
@@ -147,12 +157,14 @@ public class CategoryEntity extends BaseInfo {
             info.setParent(pInfo);
         }
         info.setIcon(this.getIcon());
+        info.setOrderNo(this.getOrderNo());
         return info;
     }
 
     public CategoryEntity parse(CategoryInfo categoryInfo){
         categoryInfo.cloneAttributeTo(this);
         this.setIcon(categoryInfo.getIcon());
+        this.setOrderNo(categoryInfo.getOrderNo());
         return this;
     }
 }
