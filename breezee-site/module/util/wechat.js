@@ -21,22 +21,12 @@ var weChatUtil = {
     tokenCache: {
         tokenId: 'tokenId',
         tokenTime: 0
+    },
+    ticketCache: {
+        ticketId: 'ticketId',
+        ticketTime:0
     }
 };
-
-/**
- * 验证token
- */
-weChatUtil.validateToken = function () {
-    var _this = this;
-    var n = new Date().getTime();
-    if (n - _this.tokenCache.tokenTime > _this.tokenTime) {
-        _this.getToken(function (token) {
-            _this.tokenCache.tokenId = token;
-            _this.tokenCache.tokenTime = n;
-        })
-    }
-}
 
 /**
  * 根据code获取openid
@@ -61,11 +51,25 @@ weChatUtil.getOpenId = function (code, callback) {
     });
 };
 
+weChatUtil.getToken = function(callback){
+    var _this = this;
+    var n = new Date().getTime();
+    if (n - _this.tokenCache.tokenTime > _this.tokenTime) {
+        _this._getToken(function (token) {
+            _this.tokenCache.tokenId = token;
+            _this.tokenCache.tokenTime = n;
+            callback(token);
+        })
+    } else {
+        callback(_this.tokenCache.tokenId);
+    }
+}
+
 /**
  * 获取token
  * @param callback
  */
-weChatUtil.getToken = function (callback) {
+weChatUtil._getToken = function (callback) {
     var _this = this;
     request({
         method: 'get',
@@ -90,17 +94,19 @@ weChatUtil.getToken = function (callback) {
  */
 weChatUtil.getUserInfo = function (openId, calback) {
     var _this = this;
-    request({
-        method: 'get',
-        uri: _this.user_info_url + "?access_token=" + _this.tokenCache.tokenId + "&openid=" + openId + "&lang=zh_CN"
-    }, function (error, response, body) {
-        if (error)
-            throw error;
-        console.log("weChatUtil.getUserInfo:@" + body + "@");
-        var retData = JSON.parse(body);
-        calback(retData);
-        //req.session.userData.headimgurl = retData.headimgurl;
-        //req.session.userData.nickname = retData.nickname;
+    _this.getToken(function(tokenId){
+        request({
+            method: 'get',
+            uri: _this.user_info_url + "?access_token=" + tokenId + "&openid=" + openId + "&lang=zh_CN"
+        }, function (error, response, body) {
+            if (error)
+                throw error;
+            console.log("weChatUtil.getUserInfo:@" + body + "@");
+            var retData = JSON.parse(body);
+            calback(retData);
+            //req.session.userData.headimgurl = retData.headimgurl;
+            //req.session.userData.nickname = retData.nickname;
+        });
     });
 };
 
@@ -122,38 +128,56 @@ weChatUtil.templateMessage = function (message) {
     //    keyword2: {value: "aa", color: "#173177"},
     //    remark: {value: "aa", color: "#173177"}
     //}
-    request({
-        method: 'post',
-        uri: _this.message_url + "?access_token=" + _this.tokenCache.tokenId,
-        //form: message
-        body: JSON.stringify(message),
-        headers: {
-            "Content-Type": "application/x-www-form-urlencoded"
-        }
-    }, function (error, response, body) {
-        if (error) {
-            console.log(error);
-        }
-        console.log("weChatUtil.templateMessage:@" + body + "@");
+    _this.getToken(function(tokenId){
+        request({
+            method: 'post',
+            uri: _this.message_url + "?access_token=" + tokenId,
+            //form: message
+            body: JSON.stringify(message),
+            headers: {
+                "Content-Type": "application/x-www-form-urlencoded"
+            }
+        }, function (error, response, body) {
+            if (error) {
+                console.log(error);
+            }
+            console.log("weChatUtil.templateMessage:@" + body + "@");
+        });
     });
+
 };
 
-weChatUtil.getTicket = function (callback) {
+weChatUtil.getTicket = function(callback){
     var _this = this;
-    request({
-        method: 'get',
-        uri: _this.ticket_url + "?access_token=" + _this.tokenCache.tokenId + "&type=jsapi"
-    }, function (error, response, body) {
-        if (error)
-            throw error;
-        console.log("weChatUtil.getTicket:@", body, "@");
-        var retData = JSON.parse(body);
-        console.log(retData);
-        if (retData.ticket) {
-            callback(retData.ticket);
-        } else {
-            console.log("fetch ticket error!");
-        }
+    var n = new Date().getTime();
+    if (n - _this.ticketCache.ticketTime > _this.tokenTime) {
+        _this._getTicket(function (ticketId) {
+            _this.ticketCache.ticketId = ticketId;
+            _this.ticketCache.ticketTime = n;
+            callback(ticketId);
+        })
+    } else {
+        callback(_this.ticketCache.ticketId);
+    }
+}
+
+weChatUtil._getTicket = function (callback) {
+    var _this = this;
+    _this.getToken(function(tokenId){
+        request({
+            method: 'get',
+            uri: _this.ticket_url + "?access_token=" + tokenId + "&type=jsapi"
+        }, function (error, response, body) {
+            if (error)
+                throw error;
+            console.log("weChatUtil.getTicket:@", body, "@");
+            var retData = JSON.parse(body);
+            if (retData.ticket) {
+                callback(retData.ticket);
+            } else {
+                console.log("fetch ticket error!");
+            }
+        });
     });
 }
 

@@ -1,4 +1,3 @@
-Dolphin.defaults.mockFlag = false;
 $(function () {
     $('#submit').click(function () {
         var data = Dolphin.form.getValue('editForm');

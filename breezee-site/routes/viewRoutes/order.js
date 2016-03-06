@@ -202,6 +202,23 @@ route.seatDetail = function(queryData, res, callback){
     });
 };
 
+route.orderMessage = function(queryData, res, callback){
+    global.weChatUtil.templateMessage({
+        touser:queryData.userCode,
+        template_id: "UdFYzwb7GdGH25-kx69vkbz4wOBwHuWWjocmJF34HYM",
+        url:"http://weixin.sodexo-cn.com/site/view/order/employeeOrderDetail?id="+queryData.orderId,
+        topcolor: "#FF0000",
+        data:{
+            title: {value: "有新的订单来临，请及时处理", color: "#173177"},
+            keyword1: {value: "订单号"+queryData.orderCode, color: "#173177"},
+            keyword2: {value: global.myUtil.dateFormatter(new Date(), "yyyy-MM-dd HH:mm:ss"), color: "#173177"},
+            remark: {value: "详情请点击查看。", color: "#173177"}
+        }
+    });
+
+    callback({});
+}
+
 route.wepay = function(queryData, res, callback){
     global.myUtil.request({
         method: 'get',

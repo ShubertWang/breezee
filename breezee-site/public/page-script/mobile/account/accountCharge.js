@@ -1,4 +1,3 @@
-Dolphin.defaults.mockFlag = true;
 $(function () {
     $('#chargeAmount .add_mk').click(function (e) {
         $('#chargeAmount .add_xz').removeClass('add_xz');

@@ -6,6 +6,9 @@
     <% include ../common/public.ejs %>
 </head>
 <body ontouchstart>
+<% if(userData.userJob) { %>
+<div><a href="employeeOrder" style="padding:10px;line-height: 3em">订单管理</a></div>
+<% } %>
 <% if(body.length > 0 ){%>
     <% include ./myOrderByPage.ejs %>
 <% }else{ %>

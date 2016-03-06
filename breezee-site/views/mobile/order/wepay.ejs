@@ -11,34 +11,12 @@
     </style>
 </head>
 <body ontouchstart>
-<%
-console.log("wepay body:", body);
-%>
 <div style="text-align: center; margin-top: 50px;" id="errorMsg"></div>
-<!--<div style="text-align: center;">-->
-    <!--当前网络环境： <span class="int"></span>-->
-    <!--<br/>-->
-    <!--<br/>-->
-    <!--<span id="payMsg" style="color: Red;">微信支付：0.01 元</span>-->
-    <!--<br/>-->
-    <!--<span id="Span1" style="color: Red;">订单编号：<%= body.code %></span>-->
-    <!--<br/>-->
-    时间戳:<%= body.timestamp %>
-    <!--<br/>-->
-    统一支付后的随机串：<%= body.nonceStr %>
-    <!--<br/>-->
-    预支付ID：<%= body.package %>
-    <!--<br/>-->
-    统一签名类型：<%= body.signType %>
-    <!--<br/>-->
-    统一签名：<%= body.signature %>
-<!--</div>-->
-
 <script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js" type="text/javascript"></script>
 <% include ../common/footer.ejs %>
 <script type="text/javascript">
     wx.config({
-        debug: true,
+        debug: false,
         appId: "<%= body.appId %>", // 必填，公众号的唯一标识
         timestamp: "<%= body.timestamp %>",
         nonceStr: "<%= body.nonceStr %>",
@@ -61,10 +39,11 @@ console.log("wepay body:", body);
                 if (res.err_msg.indexOf("ok") > -1) {
                     // 使用以上方式判断前端返回,微信团队郑重提示：res.err_msg将在用户支付成功后返回ok，但并不保证它绝对可靠。
                     Dolphin.ajax({
-                        url: '/data/oms/order/status/<%= body.orderId %>/1',
+                        url: '/data/oms/order/orderPay/<%= body.orderId %>?payId=<%= body.package %>',
                         type: Dolphin.requestMethod.GET,
                         onSuccess: function (reData) {
-                            Dolphin.goUrl("/order/myOrder");
+                            //发送通知消息
+                            Dolphin.goUrl("/order/orderMessage?orderId=<%= body.package %>&orderCode=<%= body.nonceStr%>");
                         }
                     });
                 } else {
@@ -82,7 +61,5 @@ console.log("wepay body:", body);
         });
     });
 </script>
-
-
 </body>
 </html>

@@ -99,7 +99,7 @@ router.get('*', function (req, res, next) {
             if (global.config.production) {
                 global.weChatUtil.getOpenId(req.query.code, function (openId) {
                     if (openId) {   //如果可以获取到openId的话，则获取用户信息
-                        global.weChatUtil.validateToken();
+                        global.weChatUtil.getToken(function(token){});
                         req.session.openId = openId;
                         myUtil.customerInfo(global.config.service['crm'] + '/user/code/' + openId, function (userData) {
                             req.session.userData = userData;
@@ -122,6 +122,9 @@ router.get('*', function (req, res, next) {
                 });
             }
         } else {
+            if (global.config.production) {
+                global.weChatUtil.getToken(function(token){});
+            }
             viewRoutes._render_(url, req, res);
         }
     } catch (e) {
