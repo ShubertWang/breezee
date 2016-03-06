@@ -19,4 +19,7 @@
     <dubbo:service interface="com.breezee.crm.api.service.IUserService" ref="userService"
                    protocol="dubbo,rest"/>
 
+    <dubbo:reference interface="com.breezee.sysmgr.api.service.IOrganizationService"
+                     id="organizationService" protocol="dubbo" check="false" />
+
 </beans>

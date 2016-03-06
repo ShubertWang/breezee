@@ -40,8 +40,11 @@ var viewRoutes = {
             url = url.substring(0, url.indexOf("?"));
         }
         var _this = this, fun,
-            queryData = req.query,
-            rendParam = {
+            queryData = req.query;
+
+        extend(true, queryData, req.session.userData, {remoteIp: _this._getClientIp(req)});
+        queryData.openId = req.session.openId;
+        var rendParam = {
                 path: url,
                 data: queryData,
                 body: {},
@@ -50,7 +53,7 @@ var viewRoutes = {
                 redirect:"",
                 cookie: req.cookies
             };
-        extend(true, queryData, req.session.userData, {remoteIp: _this._getClientIp(req)});
+
         var routerPath = url.split('/');
         var fun = _this;
         for (var i = 2; i < routerPath.length; i++) {
@@ -96,11 +99,11 @@ router.get('*', function (req, res, next) {
             if (global.config.production) {
                 global.weChatUtil.getOpenId(req.query.code, function (openId) {
                     if (openId) {   //如果可以获取到openId的话，则获取用户信息
+                        global.weChatUtil.validateToken();
                         req.session.openId = openId;
                         myUtil.customerInfo(global.config.service['crm'] + '/user/code/' + openId, function (userData) {
                             req.session.userData = userData;
                             //我们在获取用户成功后获取token
-                            global.weChatUtil.validateToken();
                             viewRoutes._render_(url, req, res);
                         });
                     } else {

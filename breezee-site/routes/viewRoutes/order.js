@@ -50,6 +50,8 @@ route.myOrder = function (queryData, res, callback) {
         if (error) {
             throw error;
         }
+        body = body || {content:[]};
+        body.content = body.content || [];
         callback(body.content);
     });
 };

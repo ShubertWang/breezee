@@ -123,4 +123,12 @@ public class OrganizationServiceImpl implements IOrganizationService {
         if(l.size()>0)
             jdbcTemplate.batchUpdate(insertSql, l);
     }
+
+    @Override
+    public OrganizationInfo findByCode(String code) {
+        OrganizationEntity en = organizationRepository.findByCode(code);
+        if (en == null)
+            return ErrorInfo.build(OrganizationInfo.class);
+        return en.toInfo(false);
+    }
 }

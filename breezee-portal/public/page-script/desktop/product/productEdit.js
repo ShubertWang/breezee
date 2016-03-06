@@ -188,7 +188,7 @@ $(function () {
                     input.attr('name', attr.id);
                     $("#fileupload").attr('attrCode',attr.code);
                     $('#fileupload').fileupload({
-                        url: '/file/',
+                        url: REQUEST_MAP.contextPath+REQUEST_MAP.viewPrefix+'/file/',
                         dataType: 'json',
                         done: function (e, data) {
                             $("#"+$("#fileupload").attr("attrCode")).val(data.result.name);

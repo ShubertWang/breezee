@@ -16,11 +16,12 @@ accountRoute.myAccount = function (queryData, res, callback) {
     //    callback(body);
     //});
 
-    global.weChatUtil.getUserInfo(queryData.code,function(wechatUser){
+    global.weChatUtil.getUserInfo(queryData.openId,function(wechatUser){
         callback(wechatUser);
     });
 
 };
+
 accountRoute.account = function (queryData, res, callback) {
     global.myUtil.request({
         method : 'get',
@@ -31,6 +32,7 @@ accountRoute.account = function (queryData, res, callback) {
         callback(body);
     });
 };
+
 accountRoute.address = function (queryData, res, callback) {
     global.myUtil.request({
         method : 'get',
@@ -41,6 +43,12 @@ accountRoute.address = function (queryData, res, callback) {
         callback(body);
     });
 };
+
+accountRoute.servicePoint = function(queryData, res, callback){
+    delete req.session.openId;
+    callback({});
+
+}
 
 //accountRoute.addAddress = function (queryData, res, callback) {
 //    if(queryData.id){
@@ -68,6 +76,7 @@ accountRoute.accountBalance = function (queryData, res, callback) {
         callback(body);
     });
 };
+
 accountRoute.accountDetail = function (queryData, res, callback) {
     global.myUtil.request({
         method : 'get',

@@ -17,6 +17,8 @@ import com.breezee.crm.entity.UserEntity;
 import com.breezee.crm.repository.EncodeRepository;
 import com.breezee.crm.repository.ShippingAddressRepository;
 import com.breezee.crm.repository.UserRepository;
+import com.breezee.sysmgr.api.domain.OrganizationInfo;
+import com.breezee.sysmgr.api.service.IOrganizationService;
 import org.apache.commons.codec.digest.Md5Crypt;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -25,6 +27,7 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 import java.util.ArrayList;
@@ -52,6 +55,9 @@ public class UserServiceImpl implements IUserService {
 
     @Autowired
     private EncodeRepository encodeRepository;
+
+    @Resource
+    private IOrganizationService organizationService;
 
     @Override
     public Map<String, Object> saveShippingAddress(ShippingAddressInfo addressInfo) {
@@ -119,6 +125,11 @@ public class UserServiceImpl implements IUserService {
 
     @Override
     public UserInfo saveInfo(UserInfo userInfo) {
+        //检查网点编号
+        OrganizationInfo org = organizationService.findByCode(userInfo.getCompany());
+        if(org.getId()<0)
+            return ErrorInfo.build(userInfo,ContextUtil.getMessage("site.exist.error",new Object[]{userInfo.getCompany()}));
+
         UserEntity entity = userRepository.findByCode(userInfo.getCode());
         //如果新增的账号已经存在，则返回错误信息
         if (userInfo.getId() == null && entity != null) {
@@ -127,8 +138,10 @@ public class UserServiceImpl implements IUserService {
         if (entity == null)
             entity = new UserEntity();
         entity.parse(userInfo);
-        userRepository.save(new UserEntity().parse(userInfo));
-        sendMail(entity);
+        entity.setWechat(userInfo.getCode());
+        userRepository.save(entity.parse(userInfo));
+        if(userInfo.getId()!=null && userInfo.getId()>0)
+            sendMail(entity);
         return SuccessInfo.build(UserInfo.class);
     }
 
