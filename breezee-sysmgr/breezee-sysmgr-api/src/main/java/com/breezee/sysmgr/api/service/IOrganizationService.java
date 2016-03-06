@@ -31,4 +31,6 @@ public interface IOrganizationService extends IServiceLayer<OrganizationInfo> {
     @Path("/acntRel")
     @PUT
     void updateOrganizationAccount(OrganizationInfo organizationInfo);
+
+    OrganizationInfo findByCode(String code);
 }

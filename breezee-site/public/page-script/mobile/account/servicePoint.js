@@ -2,15 +2,15 @@ $(function () {
     $('#submit').click(function () {
         var data = Dolphin.form.getValue('editForm', '"');
         Dolphin.ajax({
-            url: '/data/crm/user/registerSite',
-            type: Dolphin.requestMethod.POST,
+            url: '/data/crm/user/',
+            type: Dolphin.requestMethod.PUT,
             data: Dolphin.json2string(data),
             onSuccess: function (reData) {
-                Dolphin.alert(reData.msg || '保存成功', {
-                    callback: function () {
-                        Dolphin.goHistory();
-                    }
-                })
+                if(reData.value && reData.value.id){
+                    alert("注册成功。")
+                }else {
+                    alert("注册失败。"+reData.value.remark);
+                }
             }
         })
     });

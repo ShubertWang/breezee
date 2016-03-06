@@ -12,6 +12,10 @@
         <div class="weui_cells weui_cells_form">
             <div class="weui_cell">
                 <input type="hidden" name="id" value="<%= userData.userId %>" />
+                <input type="hidden" name="code" value="<%= data.openId %>" />
+                <input type="hidden" name="name" value="weChatUser" />
+                <input type="hidden" name="type" value="site" />
+
                 <div class="weui_cell_bd weui_cell_primary">
                     <input class="weui_input" type="text" placeholder="请输入服务网点编号" name="company"/>
                 </div>

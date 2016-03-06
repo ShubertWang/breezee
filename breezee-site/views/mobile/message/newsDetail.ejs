@@ -7,7 +7,7 @@
 </head>
 <body ontouchstart>
 
-<div class="news_xq evaluate_param" data-object-type="news" data-object-id="<%= body.id %>"  data-oper-type="evaluate">
+<div class="news_xq">
     <ul>
         <li class="name"><%- body.name %></li>
         <li class="rq"><%= body.userName %>  <%= global.myUtil.dateFormatter(new Date(body.updateTimeLong), "yyyy年MM月dd日") %><span><%= body.modelName %></span></li>
@@ -15,7 +15,9 @@
         <li><%- body.uedit %></li>
     </ul>
 </div>
+<div class="evaluate_param" data-object-type="news" data-object-id="<%= body.id %>"  data-oper-type="evaluate">
 <% include ../common/evaluate.ejs %>
+</div>
 <% include ../common/footer.ejs %>
 </body>
 </html>

@@ -27,7 +27,7 @@
             </div>
             <div class="weui_cell_ft"><%= userData.siteId?'已':'未' %>注册</div>
         </a>
-        <a class="weui_cell" href="<%= userData.userType=='employee'?'javascript:void(0);':(global.config.contextPath + global.config.viewPrefix + '/view/account/bindEmployeeInfo') %>">
+        <a class="weui_cell" href="<%= userData.userType=='employee'?'javascript:void(0);':(global.config.contextPath + global.config.viewPrefix + '/account/bindEmployeeInfo') %>">
             <div class="weui_cell_hd"><img src="/custom/wx_style/images/icon_50_ygk.png" alt="" style="width:60%;margin-right:5px;display:block"></div>
             <div class="weui_cell_bd weui_cell_primary">
                 <p>员工信息</p>
