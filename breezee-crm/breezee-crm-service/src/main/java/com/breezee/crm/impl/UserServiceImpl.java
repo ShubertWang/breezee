@@ -26,6 +26,7 @@ import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
 import javax.mail.MessagingException;
@@ -125,11 +126,13 @@ public class UserServiceImpl implements IUserService {
 
     @Override
     public UserInfo saveInfo(UserInfo userInfo) {
-        //检查网点编号
-        OrganizationInfo org = organizationService.findByCode(userInfo.getCompany());
-        if(org.getId()<0)
-            return ErrorInfo.build(userInfo,ContextUtil.getMessage("site.exist.error",new Object[]{userInfo.getCompany()}));
 
+        //检查网点编号
+        if(StringUtils.hasText(userInfo.getCompany())) {
+            OrganizationInfo org = organizationService.findByCode(userInfo.getCompany());
+            if (org.getId() < 0)
+                return ErrorInfo.build(userInfo, ContextUtil.getMessage("site.exist.error", new Object[]{userInfo.getCompany()}));
+        }
         UserEntity entity = userRepository.findByCode(userInfo.getCode());
         //如果新增的账号已经存在，则返回错误信息
         if (userInfo.getId() == null && entity != null) {
@@ -138,7 +141,6 @@ public class UserServiceImpl implements IUserService {
         if (entity == null)
             entity = new UserEntity();
         entity.parse(userInfo);
-        entity.setWechat(userInfo.getCode());
         userRepository.save(entity.parse(userInfo));
         if(userInfo.getId()!=null && userInfo.getId()>0)
             sendMail(entity);
@@ -147,7 +149,8 @@ public class UserServiceImpl implements IUserService {
 
     @Override
     public UserInfo deleteById(Long id) {
-        return null;
+        userRepository.delete(id);
+        return SuccessInfo.build(UserInfo.class);
     }
 
     @Override
@@ -176,6 +179,8 @@ public class UserServiceImpl implements IUserService {
         UserEntity entity = userRepository.findOne(id);
         if (entity != null) {
             entity.setStatus(status);
+            if(status==3)
+                entity.setType("employee");
             userRepository.save(entity);
         }
     }
@@ -194,9 +199,8 @@ public class UserServiceImpl implements IUserService {
             messageHelper.setFrom(this.templateMessage.getFrom());
             messageHelper.setSubject(this.templateMessage.getSubject());
             messageHelper.setTo(entity.getEmail());
-            messageHelper.setText("Dear " + entity.getName()
-                    + ", thank you for register. " +
-                    "<a href='http://weixin.sodexo-cn.com/view/account/accountVerify?id=" + entity.getId() + "&status=3'>验证</a> ",true);
+            messageHelper.setText("Dear " + entity.getName()+
+                    "<a href='http://weixin.sodexo-cn.com/portal/verify?id=" + entity.getId() + "&status=3'>点此链接</a>，验证您的员工身份！",true);
             javaMailSender.send(mimeMessage);
         } catch (MessagingException e) {
             e.printStackTrace();

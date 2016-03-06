@@ -15,9 +15,14 @@ public class CommentEntity extends CommentInfo {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "FDL_ID", unique = true, nullable = false)
+    @Column(name = "CMT_ID", unique = true, nullable = false)
     public Long getId() {
         return id;
+    }
+
+    @Column(name = "CMT_CODE", unique = true, updatable = false, nullable = false, length = 64)
+    public String getCode() {
+        return code;
     }
 
     public String getTenantId() {

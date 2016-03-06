@@ -18,7 +18,7 @@ $(function () {
             title: '登录名称'
         }, {
             code: 'name',
-            title: '账号名称'
+            title: '姓名'
         }, {
             code: 'type',
             title: '类型'

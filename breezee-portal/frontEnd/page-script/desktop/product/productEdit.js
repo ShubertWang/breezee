@@ -72,6 +72,9 @@ $(function () {
             var submitData = $.extend({}, _this.productInfo, Dolphin.form.getValue(_this.baseInfo), {
                 productData : Dolphin.form.getValue(_this.categoryAttrPanel)
             });
+            if($("#imageShowBody").attr("imgName")){
+                submitData.productData[$("#imageShowBody").attr("imgname")] = $("#imageShowBody").attr("src");
+            }
             submitData.recommend = $('#slideThree').is(':checked')?"true":"false";
             Dolphin.ajax($.extend({}, _this.connect.productSave, {
                 loading : true,
@@ -94,6 +97,9 @@ $(function () {
         _this.renderForm(data.cateId, function (reData) {
             Dolphin.form.setValue(data.productData, _this.categoryAttrPanel);
         });
+        if(data.productData['4']){
+            $("#imageShowBody").attr("src",data.productData['4']);
+        }
     };
 
     page.renderForm = function (id, callback) {
@@ -184,15 +190,14 @@ $(function () {
                     Dolphin.form.parseSelect(input);
                     break;
                 case "image":
-                    input = $('<input type="hidden" id="'+attr.code+'" class="form-control" />');
-                    input.attr('name', attr.id);
                     $("#fileupload").attr('attrCode',attr.code);
                     $('#fileupload').fileupload({
-                        url: '/file/',
+                        url: REQUEST_MAP.contextPath+'/file/',
                         dataType: 'json',
                         done: function (e, data) {
-                            $("#"+$("#fileupload").attr("attrCode")).val(data.result.name);
+                            $("#"+$("#fileupload").attr("attrCode")).val(data.result.url);
                             $("#imageShowBody").attr("src",data.result.url);
+                            $("#imageShowBody").attr("imgname",attr.id);
                         },
                         progressall: function (e, data) {
                         }
@@ -202,7 +207,8 @@ $(function () {
                     input = $('<input type="text" class="form-control" />');
                     input.attr('name', attr.id);
             }
-            input.appendTo(inputPanel)
+            if(input)
+                input.appendTo(inputPanel)
         }
     };
 

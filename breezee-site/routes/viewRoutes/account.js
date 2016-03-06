@@ -45,9 +45,9 @@ accountRoute.address = function (queryData, res, callback) {
 };
 
 accountRoute.servicePoint = function(queryData, res, callback){
-    delete req.session.openId;
-    callback({});
-
+    global.weChatUtil.getUserInfo(queryData.openId,function(userInfo){
+        callback(userInfo);
+    });
 }
 
 //accountRoute.addAddress = function (queryData, res, callback) {

@@ -107,23 +107,24 @@
                                 <label>
                                     所属组织
                                 </label>
-                                <select class="form-control" options optionUrl="/data/sym/organization/p/1" codeField="id" name="orgId"></select>
+                                <select class="form-control" options optionUrl="/data/sym/organization/p/1"
+                                        codeField="id" name="orgId"></select>
                             </div>
                             <div class="form-group">
                                 <label>联系方式</label>
                                 <input type="text" class="form-control" name="telephone">
                             </div>
                             <!--<div class="form-group">-->
-                                <!--<label>营业时间</label>-->
-                                <!--<table>-->
-                                    <!--<tr>-->
-                                        <!--<td><select style="width: 100px;" class="form-control" options="time_type"-->
-                                                    <!--name="timeType"></select></td>-->
-                                        <!--<td><input type="text" class="form-control" name="startTime"></td>-->
-                                        <!--<td>-</td>-->
-                                        <!--<td><input type="text" class="form-control" name="endTime"></td>-->
-                                    <!--</tr>-->
-                                <!--</table>-->
+                            <!--<label>营业时间</label>-->
+                            <!--<table>-->
+                            <!--<tr>-->
+                            <!--<td><select style="width: 100px;" class="form-control" options="time_type"-->
+                            <!--name="timeType"></select></td>-->
+                            <!--<td><input type="text" class="form-control" name="startTime"></td>-->
+                            <!--<td>-</td>-->
+                            <!--<td><input type="text" class="form-control" name="endTime"></td>-->
+                            <!--</tr>-->
+                            <!--</table>-->
                             <!--</div>-->
                             <div class="form-group">
                                 <label>地址</label>
@@ -132,6 +133,18 @@
                             <div class="form-group">
                                 <label>描述</label>
                                 <textarea class="form-control" name="remark" rows="1"></textarea>
+                            </div>
+                            <div class="form-group">
+                                <label><span class="btn btn-success fileinput-button"><i
+                                                class="glyphicon glyphicon-plus"></i>
+                                    <span>图片选择</span>
+                                    <input id="fileupload" type="file" name="upfile" multiple>
+                                    </span>
+                                </label>
+                                <div>
+                                    <img style="width: 90%;height: 90%;" id="imageShowBody" src="http://weixin.sodexo-cn.com/images/upload_b91089096acc5b7cc84da585ee9dcf06.jpg"/>
+                                </div>
+                                <input type="hidden" name="imageCode" id="imageCode" />
                             </div>
                             <div class="form-buttons">
                                 <button type="button" class="btn btn-primary" id="save">保存</button>

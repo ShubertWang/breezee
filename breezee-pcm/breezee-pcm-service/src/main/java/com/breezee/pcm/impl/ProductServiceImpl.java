@@ -23,6 +23,7 @@ import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
 import javax.sql.DataSource;
@@ -169,11 +170,13 @@ public class ProductServiceImpl implements IProductService, InitializingBean {
         Set<ProductDataEntity> set = new HashSet<>();
         final ProductEntity finalEntity = entity;
         productInfo.getProductData().forEach((a, b) -> {
-            ProductDataEntity e = new ProductDataEntity();
-            e.setAttribute(attributeRepository.findOne(Long.parseLong(a)));
-            e.setAttrValue(b.toString());
-            e.setProduct(finalEntity);
-            set.add(e);
+            if(StringUtils.hasText(b.toString())) {
+                ProductDataEntity e = new ProductDataEntity();
+                e.setAttribute(attributeRepository.findOne(Long.parseLong(a)));
+                e.setAttrValue(b.toString());
+                e.setProduct(finalEntity);
+                set.add(e);
+            }
         });
         if (entity.getData() == null)
             entity.setData(set);

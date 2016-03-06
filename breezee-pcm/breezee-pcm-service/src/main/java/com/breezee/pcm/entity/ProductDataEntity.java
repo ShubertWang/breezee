@@ -37,6 +37,7 @@ public class ProductDataEntity extends BaseInfo {
         this.dataId = dataId;
     }
 
+    @Lob
     public String getAttrValue() {
         return attrValue;
     }

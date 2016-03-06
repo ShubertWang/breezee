@@ -31,14 +31,15 @@ public class CommentServiceImpl implements ICommentService {
     public CommentInfo saveInfo(CommentInfo info) {
         //evaluate, read, order
         String time = formatter.format(new Date());
-        if (info.getObjectType().equals("evaluate")) {
-            CommentEntity entity = commentRepository.findByUserIdAndObjectIdAndCommentTime(info.getUserId(), info.getObjectId(), time);
-            if (entity != null) {
-                return ErrorInfo.build(info, ContextUtil.getMessage("comment.once.error"));
-            }
+        info.setCommentTime(time);
+        info.setCode(info.getUserId() + info.getOperType() + info.getObjectId() + time);
+        CommentEntity entity = commentRepository.findByCode(info.getCode());
+        System.out.println(entity + "-------------");
+        if (entity != null) {
+            return ErrorInfo.build(info, ContextUtil.getMessage("comment.once.error"));
+        } else {
+            entity = new CommentEntity();
         }
-        CommentEntity entity = new CommentEntity();
-        entity.setCommentTime(time);
         commentRepository.save(entity.parse(info));
         return SuccessInfo.build(CommentInfo.class);
     }
@@ -68,5 +69,10 @@ public class CommentServiceImpl implements ICommentService {
         pageInfo = new PageInfo(m);
         Page<CommentEntity> page = commentRepository.findAll(DynamicSpecifications.createSpecification(m), pageInfo);
         return new PageResult<>(page, CommentInfo.class, (commentEntity, info) -> commentEntity.toInfo());
+    }
+
+    @Override
+    public long countObject(String objectId, Integer value) {
+        return commentRepository.countObject(objectId, value);
     }
 }

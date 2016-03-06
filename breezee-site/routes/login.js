@@ -38,4 +38,9 @@ router.post('/', function (req, res, next) {
     }
 });
 
+router.get('/logout', function(req, res, next) {
+    delete req.session.userId;
+    res.send("<html><body ontouchstart><h1>请关闭页面后，重新打开本页面！</h1></body></html>");
+});
+
 module.exports = router;

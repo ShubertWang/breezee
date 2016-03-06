@@ -2,6 +2,7 @@ package com.breezee.common;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -117,6 +118,8 @@ public class BaseInfo implements Serializable {
     }
 
     public Map<String, Object> getProperties() {
+        if(properties==null)
+            this.properties = new HashMap<>();
         return properties;
     }
 

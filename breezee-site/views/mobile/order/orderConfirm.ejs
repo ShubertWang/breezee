@@ -70,6 +70,17 @@ var i, totalPrice = 0;
                 <span class="weui_icon_checked"></span>
             </div>
         </label>
+        <label class="weui_cell weui_check_label" for="x14"
+               style="display: <%= body.payType.popay ? "block" : "none" %>;">
+
+            <div class="weui_cell_bd weui_cell_primary">
+                <p>PO支付<span>使用PO号码支付</span></p>
+            </div>
+            <div class="weui_cell_ft">
+                <input type="radio" name="payType" class="weui_check" value="popay" id="x14">
+                <span class="weui_icon_checked"></span>
+            </div>
+        </label>
     </div>
 
     <div class="weui_cells">
