@@ -8,7 +8,3 @@ menu.select = function (code) {
         $('#pageHeader [menuCode="workspace"]').addClass('active');
     }
 };
-
-$(".navMenu").click(function(){
-    Dolphin.goUrl($(this).attr("link"));
-});
