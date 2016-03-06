@@ -538,6 +538,9 @@
 				if(column.width){
 					col.css('width', column.width);
 				}
+				if(column.textAlign){
+					col.css('text-align', column.textAlign);
+				}
 				if(column.wrap){
 					col.css('white-space', 'nowrap');
 				}

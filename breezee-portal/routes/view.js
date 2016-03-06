@@ -7,8 +7,8 @@ router.get('*', function(req, res, next) {
         var url, endType, userInfo,
             queryData;
 
-        userInfo = true;
-        //userInfo = req.session.userId;
+        //userInfo = true;
+        userInfo = req.session.userId;
 
         if(userInfo == null){
             res.render('login', {
@@ -27,13 +27,11 @@ router.get('*', function(req, res, next) {
             if(url.indexOf("?") >= 0){
                 url = url.substring(0, url.indexOf("?"));
             }
-            console.log(url);
-
             res.render(url.substring(1), {
                 path : url,
                 data : queryData,
                 //body : body,
-                session:req.session,
+                session:req.session || {},
                 cookie : req.cookies
             });
         }

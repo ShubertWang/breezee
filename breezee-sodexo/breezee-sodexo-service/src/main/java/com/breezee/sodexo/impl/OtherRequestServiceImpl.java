@@ -50,7 +50,6 @@ public class OtherRequestServiceImpl implements IOtherRequestService {
             workflowServiceImpl.startProcessInstanceById(orderInfo.getProcDefId(), entity.getId().toString(), vars);
         }
         orderInfo.setId(entity.getId());
-        //TODO:减库存
         return SuccessInfo.build(orderInfo);
     }
 

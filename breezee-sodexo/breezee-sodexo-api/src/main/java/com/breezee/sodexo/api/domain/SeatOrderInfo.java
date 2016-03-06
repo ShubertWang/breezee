@@ -28,7 +28,7 @@ public class SeatOrderInfo extends BaseInfo {
     /**
      * 预计到达时间
      */
-    protected Date reservedTime;
+    protected String reservedTime;
 
     /**
      * 人数
@@ -58,6 +58,8 @@ public class SeatOrderInfo extends BaseInfo {
 
     private String statusName;
 
+    private String restaurantName;
+
     public String getStoreName() {
         return storeName;
     }
@@ -66,11 +68,11 @@ public class SeatOrderInfo extends BaseInfo {
         this.storeName = storeName;
     }
 
-    public Date getReservedTime() {
+    public String getReservedTime() {
         return reservedTime;
     }
 
-    public void setReservedTime(Date reservedTime) {
+    public void setReservedTime(String reservedTime) {
         this.reservedTime = reservedTime;
     }
 
@@ -176,5 +178,13 @@ public class SeatOrderInfo extends BaseInfo {
 
     public void setSex(String sex) {
         this.sex = sex;
+    }
+
+    public String getRestaurantName() {
+        return restaurantName;
+    }
+
+    public void setRestaurantName(String restaurantName) {
+        this.restaurantName = restaurantName;
     }
 }

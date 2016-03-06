@@ -14,10 +14,11 @@
                     <div class="weui_cell_bd weui_cell_primary">
                         <p>请选择餐厅</p>
                     </div>
-                    <div class=""><select class="weui_select" name="storeName">
-                            <option value="1">索迪斯微软食堂一号</option>
-                            <option value="2">索迪斯微软食堂二号</option>
-                            <option value="3">索迪斯微软食堂三号</option>
+                    <div class="">
+                        <select class="weui_select" name="storeName">
+                            <% for(var i = 0;i < body.length;i++){ %>
+                            <option value="<%= body[i].code %>"><%= body[i].name %></option>
+                            <% } %>
                         </select></div>
                 </a>
             </div>
@@ -44,16 +45,22 @@
                         <p>拼桌</p>
                     </div>
                     <div class="<!--weui_cell_ft-->"><select class="weui_select" name="acceptShare">
-                            <option value="1" selected>愿意</option>
-                            <option value="2">不愿意</option>
+                            <option value="true" selected>愿意</option>
+                            <option value="false">不愿意</option>
                         </select></div>
                 </a>
-                <a class="weui_cell" href="javascript:;">
-                    <div class="weui_cell_bd weui_cell_primary">
-                        <p>时间</p>
+                <div class="weui_cells">
+                    <div class="weui_cell weui_cell_select weui_select_before">
+                        <div class="weui_cell_bd weui_cell_primary">
+                            <p>时间</p>
+                        </div>
+
+                        <div class="weui_cell_bd weui_cell_primary">
+                            <input class="weui_input weui_cell_ft" style="height: 2em;" type="text" placeholder="年月日，时分" name="reservedTime"
+                                   value="<%= data.userMobile %>"/>
+                        </div>
                     </div>
-                    <div class="weui_cell_ft">01月27日 明天12:00</div>
-                </a>
+                </div>
 
             </div>
         </div>
@@ -61,7 +68,8 @@
             <div class="weui_cell">
                 <div class="weui_cell_hd1"><label class="weui_label">联系人</label></div>
                 <div class="weui_cell_bd1 weui_cell_primary">
-                    <input class="weui_input" type="text" placeholder="您的姓名" name="contactPerson"/>
+                    <input class="weui_input" type="text" placeholder="您的姓名" name="contactPerson"
+                           value="<%= data.userName %>"/>
                 </div>
                 <div class=" weui_cells_radio">
                     <label class="weui_cell weui_check_label" for="s12">
@@ -87,16 +95,12 @@
             </div>
             <div class="weui_cells">
                 <div class="weui_cell weui_cell_select weui_select_before">
-                    <div class="weui_cell_hd">
-                        <select class="weui_select" name="select2">
-                            <option value="1">+86</option>
-                            <option value="2">+80</option>
-                            <option value="3">+84</option>
-                            <option value="4">+87</option>
-                        </select>
+                    <div class="weui_cell_bd weui_cell_primary">
+                        <p>联系手机</p>
                     </div>
                     <div class="weui_cell_bd weui_cell_primary">
-                        <input class="weui_input" type="tel" placeholder="请输入号码" name="phone" />
+                        <input class="weui_input" type="tel" placeholder="请输入号码" name="phone"
+                               value="<%= data.userMobile %>"/>
                     </div>
                 </div>
             </div>
@@ -124,14 +128,17 @@
         orderInfo.userId = '<%= userData.userId %>';
         orderInfo.userMobile = '<%= userData.userMobile %>';
         orderInfo.userName = '<%= userData.userName %>';
-        //reservedTime缺少
+        console.log(orderInfo);
         Dolphin.ajax({
             url: '/data/sdx/seatOrder/',
             type: Dolphin.requestMethod.PUT,
             data: Dolphin.json2string(orderInfo),
             onSuccess: function (reData) {
-                //判断支付情况
-                Dolphin.goUrl("/order/seatDetail");
+                console.log(reData);
+                if (reData.value.id)
+                    Dolphin.goUrl("/order/seatDetail?id=" + reData.value.id);
+                else
+                    alert("订位失败" + reData.value.remark);
             }
         });
     });

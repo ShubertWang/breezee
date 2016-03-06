@@ -60,6 +60,8 @@ public class WorkflowServiceImpl implements IWorkflowService {
             vo.setWorkItemId(task.getId());
             vo.setOptType("start");
             taskServiceImpl.saveStep(vo);
+
+            taskService.setOwner(task.getId(),variables.get("startUser").toString());
         }
         return this.populator(processInstance);
     }

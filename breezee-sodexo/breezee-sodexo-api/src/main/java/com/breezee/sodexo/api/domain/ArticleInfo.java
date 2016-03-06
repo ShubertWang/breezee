@@ -44,9 +44,15 @@ public class ArticleInfo extends BaseInfo {
 
     protected String modelName;
 
+    protected String userName;
+
     protected Long updateTimeLong;
 
     protected String uedit;
+
+    protected int orderNo;
+
+    protected Date activeTime;
 
     public String getTitle() {
         return title;
@@ -122,5 +128,29 @@ public class ArticleInfo extends BaseInfo {
 
     public Long getUpdateTimeLong() {
         return this.getUpdateTime()!=null?this.getUpdateTime().getTime():new Date().getTime();
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
+    public int getOrderNo() {
+        return orderNo;
+    }
+
+    public void setOrderNo(int orderNo) {
+        this.orderNo = orderNo;
+    }
+
+    public Date getActiveTime() {
+        return activeTime;
+    }
+
+    public void setActiveTime(Date activeTime) {
+        this.activeTime = activeTime;
     }
 }

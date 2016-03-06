@@ -173,6 +173,8 @@ public class UserServiceImpl implements IUserService {
      * @throws MessagingException
      */
     private void sendMail(UserEntity entity) {
+        if(entity.getEmail()==null)
+            return;
         try {
             MimeMessage mimeMessage = javaMailSender.createMimeMessage();
             MimeMessageHelper messageHelper = new MimeMessageHelper(mimeMessage);

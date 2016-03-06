@@ -40,6 +40,10 @@ public class ArticleEntity extends BaseInfo {
 
     protected ModelEntity model;
 
+    protected int orderNo;
+
+    protected Date activeTime;
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ARTC_ID", unique = true, nullable = false)
@@ -138,6 +142,22 @@ public class ArticleEntity extends BaseInfo {
 
     public void setSite(String site) {
         this.site = site;
+    }
+
+    public int getOrderNo() {
+        return orderNo;
+    }
+
+    public void setOrderNo(int orderNo) {
+        this.orderNo = orderNo;
+    }
+
+    public Date getActiveTime() {
+        return activeTime;
+    }
+
+    public void setActiveTime(Date activeTime) {
+        this.activeTime = activeTime;
     }
 
     public ArticleInfo toInfo(){

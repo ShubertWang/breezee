@@ -109,10 +109,12 @@ $(function () {
         });
     };
     page.addFood = function (data, number) {
+        console.log(data);
         var _this = this;
         var id = data.foodId,
             name = data.foodName,
-            price = data.foodPrice;
+            price = data.foodPrice
+            code = data.foodCode;
 
         if(_this.foodList[id]){
             if(number){
@@ -125,6 +127,7 @@ $(function () {
                 id : id,
                 name : name,
                 price : price,
+                code:code,
                 number : number==null?1:number
             }
         }

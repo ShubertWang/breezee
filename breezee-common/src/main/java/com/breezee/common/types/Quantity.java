@@ -13,12 +13,12 @@ import java.io.Serializable;
  */
 public class Quantity implements ValueType<Quantity>,Serializable {
     private String unitCode;
-    private int value;
+    private Integer value;
 
     public Quantity() {
     }
 
-    public Quantity(String unitCode, int value) {
+    public Quantity(String unitCode, Integer value) {
         this.unitCode = unitCode;
         this.value = value;
     }
@@ -31,11 +31,11 @@ public class Quantity implements ValueType<Quantity>,Serializable {
         this.unitCode = unitCode;
     }
 
-    public int getValue() {
+    public Integer getValue() {
         return value;
     }
 
-    public void setValue(int value) {
+    public void setValue(Integer value) {
         this.value = value;
     }
 }

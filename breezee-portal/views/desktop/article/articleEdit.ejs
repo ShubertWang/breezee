@@ -57,6 +57,22 @@
                     </div>
                     <div class="dolphin-col-12">
                         <div class="form-group">
+                            <label class="col-sm-4 control-label">生效时间</label>
+                            <div class="col-sm-8">
+                                <input type="text" class="form-control" name="activeTime"/>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="dolphin-col-12">
+                        <div class="form-group">
+                            <label class="col-sm-4 control-label">排序号</label>
+                            <div class="col-sm-8">
+                                <input type="text" class="form-control" name="orderNo" placeholder="大号优先"/>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="dolphin-col-12">
+                        <div class="form-group">
                             <label class="col-sm-4 control-label">摘要</label>
                             <div class="col-sm-8">
                                 <textarea name="remark" rows="2" class="form-control"></textarea>
@@ -92,9 +108,9 @@
         if (pkId) {
             Dolphin.ajax({
                 url: "/data/sdx/article/" + pkId,
-                onSuccess : function (reData) {
+                onSuccess: function (reData) {
                     Dolphin.form.setValue(reData.value, '#form');
-                    if(reData.value['uedit'])
+                    if (reData.value['uedit'])
                         um.setContent(reData.value['uedit']);
                 }
             });
@@ -108,9 +124,9 @@
             url: "/data/sdx/article/",
             type: Dolphin.requestMethod.PUT,
             data: Dolphin.json2string(data),
-            onSuccess : function (reData) {
+            onSuccess: function (reData) {
                 Dolphin.alert(reData.msg || '保存成功', {
-                    callback : function () {
+                    callback: function () {
                         Dolphin.goHistory();
                     }
                 })

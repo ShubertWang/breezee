@@ -9,6 +9,7 @@ import com.breezee.common.IServiceLayer;
 import com.breezee.oms.api.domain.InventoryInfo;
 
 import javax.ws.rs.GET;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import java.util.List;
@@ -31,5 +32,9 @@ public interface InventoryService extends IServiceLayer<InventoryInfo> {
     @Path("/skuId/{skuId}/{locationId}")
     @GET
     InventoryInfo findInventoryBySkuIdAndLocationId(@PathParam("skuId")String skuId,@PathParam("locationId")String locationId);
+
+    @Path("/updateInventory")
+    @PUT
+    void updateInventoryBySkuId(InventoryInfo inventoryInfo);
 
 }

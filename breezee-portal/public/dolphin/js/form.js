@@ -13,7 +13,8 @@
             codeField : 'code',
             nameField : 'name',
 			optionUrl : null,
-			optionParam : null
+			optionParam : null,
+			ajaxType:'get'
 		}
 	};
 
@@ -379,6 +380,7 @@
 					var thisSelect = this,opts = $.extend({}, thisForm.opts.select, param);
 					var options = null,
 						optionUrl = $(this).attr('optionUrl') || opts.optionUrl,
+						ajaxType = $(this).attr('ajaxType') || opts.ajaxType,
 						optionParam=$(this).attr('optionParam') || opts.optionParam,
 						codeField = $(this).attr('codeField') || opts.codeField,
 						nameField = $(this).attr('nameField') || opts.nameField,
@@ -394,7 +396,7 @@
 							//urgent, so just like this
 							optionUrl = optionUrl+"?"+optionParam;
 						}
-						options = thisTool.ajax({url : optionUrl, async : false, mockPathData: mockPathData});
+						options = thisTool.ajax({url : optionUrl, async : false, type:ajaxType, mockPathData: mockPathData});
 						if(dataFilter){
 							switch(typeof dataFilter){
 								case "string" :

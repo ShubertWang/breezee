@@ -56,7 +56,12 @@
             data: Dolphin.json2string(orderInfo),
             onSuccess: function (reData) {
                 //判断支付情况
-                Dolphin.goUrl("/order/seatDetail");
+                if(reData.value.id){
+                    alert("提交成功！");
+                    Dolphin.goHistory();
+                } else {
+                    alert("提交失败");
+                }
             }
         });
     });

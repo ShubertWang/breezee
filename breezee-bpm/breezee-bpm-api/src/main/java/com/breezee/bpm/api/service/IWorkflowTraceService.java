@@ -7,10 +7,7 @@ package com.breezee.bpm.api.service;
 
 import com.breezee.bpm.api.domain.WfHistoryInfo;
 
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
+import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import java.util.List;
 import java.util.Map;
@@ -29,7 +26,11 @@ public interface IWorkflowTraceService {
      * @return
      * @throws Exception
      */
-    List<Map<String, Object>> traceProcess(String processInstanceId) throws Exception;
+    @Path("/traceProcess/{processInstanceId}")
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    List<Map<String, Object>> traceProcess(@PathParam("processInstanceId") String processInstanceId) throws Exception;
 
     /**
      * 子流程列表
@@ -45,9 +46,10 @@ public interface IWorkflowTraceService {
      * @param processInstanceId
      * @return
      */
-    @Path("/chart/{procsInsId}")
+    @Path("/processGraph/{procsInsId}")
     @GET
-    @Produces(MediaType.APPLICATION_OCTET_STREAM)
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces("application/octet-stream")
     byte[] processInstanceChart(@PathParam("procsInsId") String processInstanceId);
 
     /**

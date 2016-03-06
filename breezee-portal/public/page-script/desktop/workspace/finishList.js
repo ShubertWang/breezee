@@ -1,5 +1,6 @@
 Dolphin.defaults.mockFlag = false;
 $(function () {
+    menu.select('orderManagement');
     var page = {};
 
     page.connect = {
@@ -17,8 +18,6 @@ $(function () {
 
     page.initPage = function () {
         var _this = this;
-
-        menu.select('workspace-finishList');
         this.undoList = new Dolphin.LIST({
             panel : '#list',
             url : _this.connect.undoList.url,
