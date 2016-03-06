@@ -17,6 +17,8 @@ var config = {
     upload : {
         uploadDir : 'D:\\mywork\\workspace0\\breezee\\breezee-portal\\public\\uploadFiles\\images\\'
     },
+    contextPath : '/',
+    viewPrefix : 'view',
     publicPath : ""
 };
 
