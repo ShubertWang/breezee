@@ -21,6 +21,8 @@ public class CategoryInfo extends TreeObject<CategoryInfo> {
 
     protected String icon;
 
+    protected int orderNo;
+
     protected List<ProductInfo> products;
 
     public CategoryInfo() {
@@ -63,5 +65,13 @@ public class CategoryInfo extends TreeObject<CategoryInfo> {
 
     public void setProducts(List<ProductInfo> products) {
         this.products = products;
+    }
+
+    public int getOrderNo() {
+        return orderNo;
+    }
+
+    public void setOrderNo(int orderNo) {
+        this.orderNo = orderNo;
     }
 }

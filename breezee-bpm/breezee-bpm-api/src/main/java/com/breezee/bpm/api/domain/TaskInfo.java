@@ -21,6 +21,7 @@ public final class TaskInfo extends BaseInfo {
     protected String processInstanceId;
     protected String processDefinitionId;
     protected String processDefinitionName;
+    protected String processDefinitionKey;
     protected String taskDefinitionKey;
     protected String title;
     protected int suspensionState;
@@ -201,6 +202,14 @@ public final class TaskInfo extends BaseInfo {
         this.username = username;
         if(this.assignee == null)
             this.assignee = username;
+    }
+
+    public String getProcessDefinitionKey() {
+        return processDefinitionKey;
+    }
+
+    public void setProcessDefinitionKey(String processDefinitionKey) {
+        this.processDefinitionKey = processDefinitionKey;
     }
 
     public Map<String, Object> getProperties() {

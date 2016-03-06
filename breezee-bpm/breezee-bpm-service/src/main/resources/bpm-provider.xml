@@ -26,4 +26,10 @@
     <dubbo:reference interface="com.breezee.oms.api.service.IOrderService"
                      id="orderService" protocol="dubbo" check="false" />
 
+    <dubbo:reference interface="com.breezee.sodexo.api.service.ISeatOrderService"
+                     id="seatOrderService" protocol="dubbo" check="false" />
+    <dubbo:reference interface="com.breezee.sodexo.api.service.IOtherRequestService"
+                     id="otherRequestService" protocol="dubbo" check="false" />
+
+
 </beans>

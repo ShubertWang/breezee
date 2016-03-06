@@ -21,79 +21,161 @@ $(function () {
         orderReject: '拒绝',
         orderMake: '已制作',
         orderComplete: "完成",
-        orderCancel:'已取消'
+        orderCancel: '已取消'
     };
 
     page.init = function () {
         this.initPage();
         this.initEvent();
 
-        this.undoList.query(Dolphin.form.getValue("#queryForm"));
         return this;
+    };
+
+    page.column = {
+        orderProcess: [{
+            code: 'properties.orderInfo.code',
+            title: '订单号',
+            formatter: function (val, row, index) {
+                var link = $('<a>').html(val);
+                link.attr('href', 'taskInfo?type=product&taskId=' + row.id + '&processInstanceId=' + row['processInstanceId'] + '&processDefinitionId=' + row['processDefinitionId'] + '&businessKey=' + row['businessKey'] + '&formKey=' + (row['formKey'] || ''));
+                return link;
+            }
+        }, {
+            code: 'name',
+            title: '当前节点'
+        }, {
+            code: 'properties.orderInfo.consigneeName',
+            title: '收货人'
+        }, {
+            code: 'properties.orderInfo.consigneeMobile',
+            title: '收货手机'
+        }, {
+            code: 'properties.orderInfo.issueDate',
+            title: '下单时间',
+            formatter: function (val) {
+                return Dolphin.longDate2string(val, 'yyyy-MM-dd hh:mm:ss');
+            }
+        }, {
+            code: 'properties.orderInfo.subTotal.value',
+            textAlign: 'right',
+            title: '订单金额'
+        }, {
+            code: 'properties.orderInfo.statusName',
+            title: '订单状态'
+        }, {
+            code: 'properties.orderInfo.shippingMethod',
+            title: '服务类型'
+        }, {
+            code: 'properties.orderInfo.needTime',
+            title: '送餐时间'
+        }],
+        seatProcess: [{
+            code: 'properties.seatInfo.code',
+            title: '订单号',
+            formatter: function (val, row, index) {
+                var link = $('<a>').html(val);
+                link.attr('href', 'taskInfo?type=seat&taskId=' + row.id + '&processInstanceId=' + row['processInstanceId'] + '&processDefinitionId=' + row['processDefinitionId'] + '&businessKey=' + row['businessKey'] + '&formKey=' + (row['formKey'] || ''));
+                return link;
+            }
+        }, {
+            code: 'name',
+            title: '当前节点'
+        }, {
+            code: 'properties.seatInfo.contactPerson',
+            title: '联系人'
+        }, {
+            code: 'properties.seatInfo.sex',
+            title: '性别'
+        }, {
+            code: 'properties.seatInfo.phone',
+            title: '联系手机'
+        }, {
+            code: 'properties.seatInfo.issueDate',
+            title: '下单时间',
+            formatter: function (val) {
+                return Dolphin.longDate2string(val, 'yyyy-MM-dd hh:mm:ss');
+            }
+        }, {
+            code: 'properties.seatInfo.reservedTime',
+            title: '预计时间'
+        }, {
+            code: 'properties.seatInfo.personNum',
+            title: '人数'
+        }, {
+            code: 'properties.seatInfo.statusName',
+            title: '订单状态'
+        }, {
+            code: 'properties.seatInfo.acceptShare',
+            title: '接受拼桌'
+        }],
+        requestProcess: [{
+            code: 'properties.seatInfo.code',
+            title: '订单号'
+        }, {
+            code: 'name',
+            title: '当前节点'
+        }, {
+            code: 'properties.requestInfo.userName',
+            title: '请求人'
+        }, {
+            code: 'properties.requestInfo.userMobile',
+            title: '联系手机'
+        }, {
+            code: 'properties.requestInfo.issueDate',
+            title: '下单时间',
+            formatter: function (val) {
+                return Dolphin.longDate2string(val, 'yyyy-MM-dd hh:mm:ss');
+            }
+        }, {
+            code: 'properties.requestInfo.name',
+            title: '请求类型'
+        }, {
+            code: 'properties.requestInfo.remark',
+            title: '请求内容'
+        }]
     };
 
     page.initPage = function () {
         var _this = this;
-        this.undoList = new Dolphin.LIST({
-            panel: '#list',
-            url: _this.connect.undoList.url,
-            ajaxType: 'post',
-            title: '待办列表',
-            data: {rows: []},
-            columns: [{
-                code: 'properties.orderInfo.code',
-                title: '订单号',
-                formatter: function (val, row, index) {
-                    var link = $('<a>').html(val);
-                    link.attr('href', 'taskInfo?taskId=' + row.id + '&processInstanceId=' + row['processInstanceId'] + '&processDefinitionId=' + row['processDefinitionId'] + '&businessKey=' + row['businessKey'] + '&formKey=' + (row['formKey'] || ''));
-                    return link;
-                }
-            }, {
-                code: 'name',
-                title: '当前节点'
-            }, {
-                code: 'properties.orderInfo.consigneeName',
-                title: '收货人'
-            }, {
-                code: 'properties.orderInfo.consigneeMobile',
-                title: '收货手机'
-            }, {
-                code: 'createTime',
-                title: '下单时间',
-                formatter: function (val) {
-                    return Dolphin.longDate2string(val, 'yyyy-MM-dd hh:mm:ss');
-                }
-            }, {
-                code: 'properties.orderInfo.subTotal.value',
-                textAlign:'right',
-                title: '订单金额'
-            }, {
-                code: 'properties.orderInfo.statusName',
-                title: '订单状态'
-            }, {
-                code: 'properties.orderInfo.shippingMethod',
-                title: '服务类型'
-            }, {
-                code: 'properties.orderInfo.needTime',
-                title: '送餐时间'
-            }, {
-                code: 'formKey',
-                title: '操作',
-                width:'150px',
-                formatter: function (val, data) {
-                    if (val) {
-                        var render = [];
-                        var tmp = val.split('|');
-                        for (var i = 0; i < tmp.length; i++) {
-                            if (tmp[i]) {
-                                render.push("<button type='button' class='btn btn-default btn-sm' onclick='taskComplete(this," + data.id + "," + data.businessKey + ")' id='" + tmp[i] + "'>" + _this.orderStatusName[tmp[i]] + "</button>");
-                            }
+        var button = {
+            code: 'formKey',
+            title: '操作',
+            width: '150px',
+            formatter: function (val, data) {
+                if (val) {
+                    var render = [];
+                    var tmp = val.split('|');
+                    for (var i = 0; i < tmp.length; i++) {
+                        if (tmp[i]) {
+                            render.push("<button type='button' class='btn btn-default btn-sm' onclick='taskComplete(this," + data.id + "," + data.businessKey + ")' id='" + tmp[i] + "'>" + _this.orderStatusName[tmp[i]] + "</button>");
                         }
-                        return render.join(" ");
                     }
-                    return val;
+                    return render.join(" ");
                 }
-            }]
+                return val;
+            }
+        };
+        Dolphin.ajax({
+            url: _this.connect.undoList.url,
+            type: 'post',
+            data: Dolphin.json2string(Dolphin.form.getValue('queryForm')),
+            onSuccess: function (data) {
+                $("#list").empty();
+                if (data.rows.length > 0) {
+                    _this.column[data.rows[0].processDefinitionKey].push(button);
+                    _this.undoList = new Dolphin.LIST({
+                        panel: '#list',
+                        url: _this.connect.undoList.url,
+                        queryParams : Dolphin.form.getValue('queryForm'),
+                        ajaxType: 'post',
+                        title: '待办列表',
+                        data: data,
+                        columns: _this.column[data.rows[0].processDefinitionKey]
+                    });
+                } else {
+                    $("#list").html("暂无待办数据。");
+                }
+            }
         });
     };
 
@@ -121,7 +203,7 @@ $(function () {
         if (el.id == 'orderMake') {
             data.complete = false;
         }
-        if(el.id == 'orderReject') {
+        if (el.id == 'orderReject') {
             data.orderCancel = 'Y';
         }
         Dolphin.ajax({

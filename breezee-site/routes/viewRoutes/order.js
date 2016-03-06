@@ -154,6 +154,7 @@ route.orderConfirm = function (queryData, res, callback) {
 };
 
 route.otherService = function (queryData, res, callback) {
+    //根据site获取组织
     global.myUtil.request({
         method: 'get',
         uri: 'http://127.0.0.1:10245/services/organization/'+queryData.siteId,
