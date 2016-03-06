@@ -37,7 +37,7 @@ $(function () {
             title: '标题'
         }, {
             code: 'subtitle',
-            title: '副标题'
+            title: '封面图片'
         }, {
             code: 'lang',
             title: '语言',
@@ -139,7 +139,11 @@ $(function () {
     });
 
     $('#articleUpdate').bind('click', function () {
-        location.href = "articleEdit?id=" + curSelect.id+"&modelId="+curSelect['id'];
+        if(curSelect) {
+            location.href = "articleEdit?id=" + curSelect.id + "&modelId=" + curSelect['id'];
+        } else {
+            Dolphin.alert('请选择一条记录。');
+        }
     });
 
     $('#articleDel').bind('click', function () {

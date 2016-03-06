@@ -47,6 +47,7 @@ var viewRoutes = {
                 body: {},
                 session: req.session,
                 userData: req.session.userData || {},
+                redirect:"",
                 cookie: req.cookies
             };
         extend(true, queryData, req.session.userData, {remoteIp: _this._getClientIp(req)});
@@ -87,7 +88,6 @@ router.get('*', function (req, res, next) {
         //endType = /mobile|Mobile/.test(req.headers['user-agent'])?"/mobile":"/desktop";
         endType = "/mobile";
         url = endType + (req.url == '/'?"/index":req.url);
-
         if(global.config.mockFlag){
             userInfo = true;
         }
