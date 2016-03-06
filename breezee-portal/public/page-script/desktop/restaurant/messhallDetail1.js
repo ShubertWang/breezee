@@ -24,36 +24,36 @@ $(function () {
 
     page.connect = {
         restaurantTree : {
-            url : '/data/restaurant/tree/{id}'
+            url : nginxProxy+'/data/restaurant/tree/{id}'
         },
         restaurantSave : {
-            url : '/data/restaurant/',
+            url : nginxProxy+'/data/restaurant/',
             type : Dolphin.requestMethod.PUT
         },
         restaurantDelete : {
-            url : '/data/restaurant/{id}',
+            url : nginxProxy+'/data/restaurant/{id}',
             type : Dolphin.requestMethod.DELETE
         },
         serviceLine : {
-            url : '/data/restaurant/serviceLine/{id}'
+            url : nginxProxy+'/data/restaurant/serviceLine/{id}'
         },
         serviceLineSave : {
-            url : '/data/restaurant/serviceLine/',
+            url : nginxProxy+'/data/restaurant/serviceLine/',
             type : Dolphin.requestMethod.PUT
         },
         serviceLineDelete : {
-            url : '/data/restaurant/serviceLine/{id}',
+            url : nginxProxy+'/data/restaurant/serviceLine/{id}',
             type : Dolphin.requestMethod.DELETE
         },
         table : {
-            url : '/data/restaurant/table/{id}'
+            url : nginxProxy+'/data/restaurant/table/{id}'
         },
         tableSave : {
-            url : '/data/restaurant/table/',
+            url : nginxProxy+'/data/restaurant/table/',
             type : Dolphin.requestMethod.PUT
         },
         tableDelete : {
-            url : '/data/restaurant/table/{id}',
+            url : nginxProxy+'/data/restaurant/table/{id}',
             type : Dolphin.requestMethod.DELETE
         }
     };

@@ -35,7 +35,7 @@ $(function () {
         }],
         multiple : false,
         ajaxType:'post',
-        url : '/data/sdx/messhall/page',
+        url : nginxProxy+'/data/sdx/messhall/page',
         dataFilter : function (data) {
             for(var i = 0; i < data.rows.length; i++){
                 data.rows[i].arguments = Dolphin.string2json(data.rows[i].arguments || '{}');
@@ -74,7 +74,7 @@ $(function () {
     $("#delete").click(function(){
         if(list.getChecked().length>0) {
             Dolphin.ajax({
-                url: '/data/sdx/messhall/'+list.getChecked()[0].id,
+                url: nginxProxy+'/data/sdx/messhall/'+list.getChecked()[0].id,
                 type: Dolphin.requestMethod.DELETE,
                 onSuccess: function (reData) {
                     Dolphin.alert(reData.msg || '删除成功', {
@@ -93,7 +93,7 @@ $(function () {
             var data = Dolphin.form.getValue('editForm', '"');
             data.arguments = Dolphin.json2string(data.arguments);
             Dolphin.ajax({
-                url : '/data/sdx/messhall',
+                url : nginxProxy+'/data/sdx/messhall',
                 type : Dolphin.requestMethod.PUT,
                 data : Dolphin.json2string(data),
                 onSuccess : function (reData) {
