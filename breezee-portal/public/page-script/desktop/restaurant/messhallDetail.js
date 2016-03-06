@@ -43,7 +43,7 @@ $(function () {
             title: '翻台时间'
         }],
         multiple : false,
-        url : '/data/sdx/foodLine/messhallId/'+REQUEST_MAP.data.id,
+        url : nginxProxy+'/data/sdx/foodLine/messhallId/'+REQUEST_MAP.data.id,
         dataFilter : function (data) {
             for(var i = 0; i < data.rows.length; i++){
                 data.rows[i].arguments = Dolphin.string2json(data.rows[i].arguments || '{}');
@@ -88,7 +88,7 @@ $(function () {
     $("#delete").click(function(){
         if(list.getChecked().length>0) {
             Dolphin.ajax({
-                url: '/data/sdx/foodLine/'+list.getChecked()[0].id,
+                url: nginxProxy+'/data/sdx/foodLine/'+list.getChecked()[0].id,
                 type: Dolphin.requestMethod.DELETE,
                 onSuccess: function (reData) {
                     Dolphin.alert(reData.msg || '删除成功', {
@@ -114,7 +114,7 @@ $(function () {
             });
             data.payType = tmp;
             Dolphin.ajax({
-                url : '/data/sdx/foodLine/',
+                url : nginxProxy+'/data/sdx/foodLine/',
                 type : Dolphin.requestMethod.PUT,
                 data : Dolphin.json2string(data),
                 onSuccess : function (reData) {

@@ -3,6 +3,7 @@
         data : JSON.parse('<%=JSON.stringify(data) %>'.replace(/&#34;/g, '"') || "{}"),
         userData : {userId:"<%= session.userId %>"}
     };
+    var nginxProxy = "<%= nginxProxy %>";
 </script>
 
 <!--jquery-->

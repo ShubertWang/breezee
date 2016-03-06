@@ -5,7 +5,7 @@ $(function () {
     menu.select('index');
 });
 
-var url = '/file/';
+var url = nginxProxy+'/file/';
 $('#fileupload').fileupload({
     url: url,
     dataType: 'json',

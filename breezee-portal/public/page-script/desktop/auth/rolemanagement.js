@@ -27,7 +27,7 @@ $(function () {
         }],
         multiple: false,
         ajaxType: 'post',
-        url: '/data/sym/role/list',
+        url: nginxProxy+'/data/sym/role/list',
         dataFilter: function (data) {
             for (var i = 0; i < data.rows.length; i++) {
                 data.rows[i].arguments = Dolphin.string2json(data.rows[i].arguments || '{}');
@@ -37,7 +37,7 @@ $(function () {
         onCheck: function (data) {
             selectNode = data;
             Dolphin.form.setValue(data, '#editForm');
-            roleAccntList.load('/data/sym/account/role/'+data.id);
+            roleAccntList.load(nginxProxy+'/data/sym/account/role/'+data.id);
         }
     });
 
@@ -80,7 +80,7 @@ $(function () {
         title : '未选择列表',
         panelType : 'panel-info',
         ajaxType:'post',
-        url : '/data/sym/account/excludeRole/{id}',
+        url : nginxProxy+'/data/sym/account/excludeRole/{id}',
         pagination : true,
         rowIndex : false,
         columns : [{
@@ -119,7 +119,7 @@ $(function () {
             var data = Dolphin.form.getValue('editForm', '"');
             data.arguments = Dolphin.json2string(data.arguments);
             Dolphin.ajax({
-                url: '/data/sym/role/',
+                url: nginxProxy+'/data/sym/role/',
                 type: Dolphin.requestMethod.PUT,
                 data: Dolphin.json2string(data),
                 onSuccess: function (reData) {
@@ -148,7 +148,7 @@ $(function () {
     $('#multipleUpdateAttr').click(function () {
         rolePanel.slideToggle(300, function () {
             accountPanel.slideToggle(300);
-            unselectedList.load('/data/sym/account/excludeRole/'+selectNode.id);
+            unselectedList.load(nginxProxy+'/data/sym/account/excludeRole/'+selectNode.id);
             selectedList.loadData(roleAccntList.data);
         });
     });
@@ -188,7 +188,7 @@ $(function () {
             data.accounts.push(selData[i].id);
         }
         Dolphin.ajax({
-            url : '/data/sym/role/acntRel',
+            url : nginxProxy+'/data/sym/role/acntRel',
             type : Dolphin.requestMethod.PUT,
             data : Dolphin.json2string(data),
             onSuccess : function (reData) {

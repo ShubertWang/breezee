@@ -10,7 +10,7 @@ $(function () {
     //categoryTree
     var categoryTree = new Dolphin.TREE({
         panel : '#categoryTree',
-        url : '/data/sym/organization/p/{id}',
+        url : nginxProxy+'/data/sym/organization/p/{id}',
         mockPathData : ['id'],
         multiple : false,
         onChecked : function (data) {
@@ -29,7 +29,7 @@ $(function () {
 
     var attrList = new Dolphin.LIST({
         panel : '#productList',
-        url : '/data/sym/account/org/{id}',
+        url : nginxProxy+'/data/sym/account/org/{id}',
         ajaxType:'post',
         mockPathData : ['id'],
         data : {rows : [], total : 0},
@@ -148,7 +148,7 @@ $(function () {
                 callback : function (flag) {
                     if(flag){
                         Dolphin.ajax({
-                            url : '/data/model/{id}',
+                            url : nginxProxy+'/data/model/{id}',
                             pathData : {
                                 id : checkedData[0].id
                             },
@@ -174,8 +174,8 @@ $(function () {
     $('#multipleUpdateAttr').click(function () {
         categoryPanel.slideToggle(300, function () {
             attributePanel.slideToggle(300);
-            //unselectedList.load('/data/sym/account/excludeOrg/'+selectNode.id);
-            unselectedList.load('/data/sym/account/page');
+            //unselectedList.load(nginxProxy+'/data/sym/account/excludeOrg/'+selectNode.id);
+            unselectedList.load(nginxProxy+'/data/sym/account/page');
             selectedList.loadData(attrList.data);
         });
     });
@@ -218,7 +218,7 @@ $(function () {
             data.accounts.push(selData[i].id);
         }
         Dolphin.ajax({
-            url : '/data/sym/organization/acntRel',
+            url : nginxProxy+'/data/sym/organization/acntRel',
             type : Dolphin.requestMethod.PUT,
             data : Dolphin.json2string(data),
             onSuccess : function (reData) {
@@ -251,7 +251,7 @@ $(function () {
         confirmButton.click(function () {
             var data = Dolphin.form.getValue('categoryForm', '"');
             Dolphin.ajax({
-                url : '/data/sym/organization/',
+                url : nginxProxy+'/data/sym/organization/',
                 type : Dolphin.requestMethod.PUT,
                 data : Dolphin.json2string(data),
                 onSuccess : function (reData) {

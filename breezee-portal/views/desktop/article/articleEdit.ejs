@@ -103,11 +103,15 @@
     var um;
     $(function () {
         Dolphin.form.parse();
-        um = UM.getEditor('myEditor');
+        um = UM.getEditor('myEditor', {
+            imageUrl:nginxProxy+"/file/"
+            ,imagePath:""
+            ,imageFieldName:"upfile"
+        });
         var pkId = REQUEST_MAP.data.id;
         if (pkId) {
             Dolphin.ajax({
-                url: "/data/sdx/article/" + pkId,
+                url: nginxProxy+"/data/sdx/article/" + pkId,
                 onSuccess: function (reData) {
                     Dolphin.form.setValue(reData.value, '#form');
                     if (reData.value['uedit'])
@@ -121,7 +125,7 @@
         data['modelId'] = REQUEST_MAP.data.modelId;
         data['uedit'] = um.getContent();
         Dolphin.ajax({
-            url: "/data/sdx/article/",
+            url: nginxProxy+"/data/sdx/article/",
             type: Dolphin.requestMethod.PUT,
             data: Dolphin.json2string(data),
             onSuccess: function (reData) {

@@ -18,16 +18,16 @@ $(function () {
 
     page.connect = {
         productDetail : {
-            url : '/data/pcm/product/'
+            url : nginxProxy+'/data/pcm/product/'
         },
         category : {
-            url : '/data/pcm/category/cateAttrs/{id}'
+            url : nginxProxy+'/data/pcm/category/cateAttrs/{id}'
         },
         productInfo : {
-            url : '/data/pcm/product/{id}'
+            url : nginxProxy+'/data/pcm/product/{id}'
         },
         productSave : {
-            url : '/data/pcm/product/',
+            url : nginxProxy+'/data/pcm/product/',
             type : Dolphin.requestMethod.PUT
         }
     };

@@ -5,7 +5,7 @@ $(function () {
 
     page.connect = {
         orderList : {
-            url : '/data/oms/order/page'
+            url : nginxProxy+'/data/oms/order/page'
         }
     };
 

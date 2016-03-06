@@ -6,7 +6,7 @@ $(function () {
         var data = Dolphin.form.getValue('form');
         var redirectUrl =$(this).data('redirect') || '/index';
         Dolphin.ajax({
-            url : '/login/',
+            url : nginxProxy+'/login/',
             type : Dolphin.requestMethod.POST,
             data : Dolphin.json2string(data),
             onSuccess : function (reData) {
