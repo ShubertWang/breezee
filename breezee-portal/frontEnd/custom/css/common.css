@@ -183,3 +183,6 @@ body .page-content{
 .slideThree input[type=checkbox]:checked + label {
     left: 31px;
 }
+.navMenu{
+    cursor: pointer;
+}
