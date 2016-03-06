@@ -20,7 +20,7 @@
         var pkId = REQUEST_MAP.data.id;
         if(pkId){
             Dolphin.ajax({
-                url: nginxProxy+"/data/sdx/article/" + pkId,
+                url: "/data/sdx/article/" + pkId,
                 onSuccess : function (reData) {
                     $("#content").append(reData.value['uedit']);
                 }

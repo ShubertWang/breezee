@@ -17,8 +17,7 @@ var config = {
     upload : {
         uploadDir : 'D:\\mywork\\workspace0\\breezee\\breezee-portal\\public\\uploadFiles\\images\\'
     },
-    publicPath : "",
-    nginxProxy : ""
+    publicPath : ""
 };
 
 module.exports = config;

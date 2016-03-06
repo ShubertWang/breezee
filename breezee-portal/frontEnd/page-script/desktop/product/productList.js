@@ -5,10 +5,10 @@ $(function () {
 
     page.connect = {
         productList : {
-            url : nginxProxy+'/data/pcm/product/page'
+            url : '/data/pcm/product/page'
         },
         productDelete : {
-            url : nginxProxy+'/data/pcm/product/',
+            url : '/data/pcm/product/',
             type : Dolphin.requestMethod.DELETE
         }
     };
@@ -122,13 +122,13 @@ $(function () {
 
     window.updateStatus = function(el,id){
         Dolphin.ajax({
-            url : nginxProxy+'/data/pcm/product/status/'+id+'/'+(el.checked?1:0)
+            url : '/data/pcm/product/status/'+id+'/'+(el.checked?1:0)
         });
     }
 
     window.updateRecommend = function(el,id){
         Dolphin.ajax({
-            url : nginxProxy+'/data/pcm/product/recommend/'+id+'/'+(el.checked?true:false)
+            url : '/data/pcm/product/recommend/'+id+'/'+(el.checked?true:false)
         });
     }
 
@@ -141,7 +141,7 @@ $(function () {
                 if(string){
                     if(Dolphin.isNumber(string)){
                         Dolphin.ajax({
-                            url : nginxProxy+'/data/oms/inventory/updateInventory',
+                            url : '/data/oms/inventory/updateInventory',
                             data : Dolphin.json2string({
                                 skuId:skuId.toString(),
                                 quantity:{value:string}

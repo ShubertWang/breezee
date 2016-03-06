@@ -14,19 +14,19 @@ $(function () {
 
     page.connect = {
         productDetail : {
-            url : nginxProxy+'/data/pcm/product/'
+            url : '/data/pcm/product/'
         },
         category : {
-            url : nginxProxy+'/data/pcm/category/cateAttrs/{id}'
+            url : '/data/pcm/category/cateAttrs/{id}'
         },
         categoryTree: {
-            url: nginxProxy+'/data/pcm/category/p/{id}'
+            url: '/data/pcm/category/p/{id}'
         },
         productInfo : {
-            url : nginxProxy+'/data/pcm/product/{id}'
+            url : '/data/pcm/product/{id}'
         },
         productSave : {
-            url : nginxProxy+'/data/pcm/product/',
+            url : '/data/pcm/product/',
             type : Dolphin.requestMethod.PUT
         }
     };

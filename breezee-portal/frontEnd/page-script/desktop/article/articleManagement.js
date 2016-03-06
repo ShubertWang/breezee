@@ -8,7 +8,7 @@ $(function () {
     //categoryTree
     var categoryTree = new Dolphin.TREE({
         panel : '#categoryTree',
-        url : nginxProxy+'/data/sdx/model/p/-1',
+        url : '/data/sdx/model/p/-1',
         mockPathData : ['id'],
         multiple : false,
         onChecked : function (data) {
@@ -27,7 +27,7 @@ $(function () {
 
     var attrList = new Dolphin.LIST({
         panel : '#productList',
-        url : nginxProxy+'/data/sdx/article/modelId/{id}',
+        url : '/data/sdx/article/modelId/{id}',
         ajaxType:'post',
         mockPathData : ['id'],
         data : {rows : [], total : 0},
@@ -112,7 +112,7 @@ $(function () {
     //            callback : function (flag) {
     //                if(flag){
     //                    Dolphin.ajax({
-    //                        url : nginxProxy+'/data/model/{id}',
+    //                        url : '/data/model/{id}',
     //                        pathData : {
     //                            id : checkedData[0].id
     //                        },
@@ -164,7 +164,7 @@ $(function () {
         confirmButton.click(function () {
             var data = Dolphin.form.getValue('categoryForm', '"');
             Dolphin.ajax({
-                url : nginxProxy+'/data/sdx/model/',
+                url : '/data/sdx/model/',
                 type : Dolphin.requestMethod.PUT,
                 data : Dolphin.json2string(data),
                 onSuccess : function (reData) {

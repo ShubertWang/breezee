@@ -5,7 +5,7 @@ $(function () {
 
     page.connect = {
         undoList : {
-            url : nginxProxy+'/data/bpm/bpmTask/findFinishedTasks'
+            url : '/data/bpm/bpmTask/findFinishedTasks'
         }
     };
 

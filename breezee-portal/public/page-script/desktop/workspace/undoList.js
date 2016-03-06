@@ -5,7 +5,7 @@ $(function () {
 
     page.connect = {
         undoList: {
-            url: nginxProxy+'/data/bpm/bpmTask/findUndoTasks'
+            url: '/data/bpm/bpmTask/findUndoTasks'
         }
     };
 
@@ -125,7 +125,7 @@ $(function () {
             data.orderCancel = 'Y';
         }
         Dolphin.ajax({
-            url: nginxProxy+'/data/bpm/bpmTask/' + taskId,
+            url: '/data/bpm/bpmTask/' + taskId,
             type: Dolphin.requestMethod.POST,
             data: Dolphin.json2string(data),
             onSuccess: function (reData) {

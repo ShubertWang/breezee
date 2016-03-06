@@ -35,7 +35,7 @@ $(function () {
         }],
         multiple : false,
         ajaxType:'post',
-        url : nginxProxy+'/data/pcm/attribute/page',
+        url : '/data/pcm/attribute/page',
         dataFilter : function (data) {
             for(var i = 0; i < data.rows.length; i++){
                 data.rows[i].arguments = Dolphin.string2json(data.rows[i].arguments || '{}');
@@ -72,7 +72,7 @@ $(function () {
             var data = Dolphin.form.getValue('editForm', '"');
             data.arguments = Dolphin.json2string(data.arguments);
             Dolphin.ajax({
-                url : nginxProxy+'/data/pcm/attribute',
+                url : '/data/pcm/attribute',
                 type : Dolphin.requestMethod.PUT,
                 data : Dolphin.json2string(data),
                 onSuccess : function (reData) {
