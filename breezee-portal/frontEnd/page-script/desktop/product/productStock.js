@@ -22,7 +22,7 @@ $(function () {
         }],
         multiple : false,
         ajaxType:'get',
-        url : nginxProxy+'/data/oms/inventory/skuId/'+REQUEST_MAP.data.skuId,
+        url : '/data/oms/inventory/skuId/'+REQUEST_MAP.data.skuId,
         onCheck : function (data) {
             Dolphin.form.setValue(data, '#editForm');
         }
@@ -52,7 +52,7 @@ $(function () {
             var data = Dolphin.form.getValue('editForm', '"');
             data.skuId = REQUEST_MAP.data.skuId;
             Dolphin.ajax({
-                url : nginxProxy+'/data/oms/inventory/',
+                url : '/data/oms/inventory/',
                 type : Dolphin.requestMethod.PUT,
                 data : Dolphin.json2string(data),
                 onSuccess : function (reData) {

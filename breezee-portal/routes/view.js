@@ -17,7 +17,6 @@ router.get('*', function(req, res, next) {
                 title : '登录',
                 redirect : req.url,
                 data:{},
-                nginxProxy:global.config.nginxProxy,
                 session:{}
             });
         }else{
@@ -33,7 +32,6 @@ router.get('*', function(req, res, next) {
                 data : queryData,
                 //body : body,
                 session:req.session || {},
-                nginxProxy:global.config.nginxProxy,
                 cookie : req.cookies
             });
         }

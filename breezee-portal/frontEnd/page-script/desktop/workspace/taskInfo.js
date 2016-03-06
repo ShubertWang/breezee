@@ -10,7 +10,7 @@ $(function () {
 
     page.connect = {
         orderInfo : {
-            url : nginxProxy+'/data/oms/order/'+REQUEST_MAP.data.businessKey
+            url : '/data/oms/order/'+REQUEST_MAP.data.businessKey
         }
     };
 
@@ -83,7 +83,7 @@ $(function () {
             data.complete = false;
         }
         Dolphin.ajax({
-            url:nginxProxy+'/data/bpm/bpmTask/'+taskId,
+            url:'/data/bpm/bpmTask/'+taskId,
             type: Dolphin.requestMethod.POST,
             data: Dolphin.json2string(data),
             onSuccess: function (reData) {

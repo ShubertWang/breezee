@@ -16,7 +16,7 @@ $(function () {
     var categoryTree = new Dolphin.TREE({
         defaultId:1,
         panel : '#categoryTree',
-        url : nginxProxy+'/data/pcm/category/p/{id}',
+        url : '/data/pcm/category/p/{id}',
         mockPathData : ['id'],
         multiple : false,
         onChecked : function (data) {
@@ -35,7 +35,7 @@ $(function () {
 
     var attrList = new Dolphin.LIST({
         panel : '#productList',
-        url : nginxProxy+'/data/pcm/category/cateAttrs/{id}',
+        url : '/data/pcm/category/cateAttrs/{id}',
         mockPathData : ['id'],
         data : {rows : [], total : 0},
         pagination : false,
@@ -169,7 +169,7 @@ $(function () {
                 callback : function (flag) {
                     if(flag){
                         Dolphin.ajax({
-                            url : nginxProxy+'/data/model/{id}',
+                            url : '/data/model/{id}',
                             pathData : {
                                 id : checkedData[0].id
                             },
@@ -195,8 +195,8 @@ $(function () {
     $('#multipleUpdateAttr').click(function () {
         categoryPanel.slideToggle(300, function () {
             attributePanel.slideToggle(300);
-            //unselectedList.load(nginxProxy+'/data/pcm/attribute/excludeCate/'+selectNode.id);
-            unselectedList.load(nginxProxy+'/data/pcm/attribute/list');
+            //unselectedList.load('/data/pcm/attribute/excludeCate/'+selectNode.id);
+            unselectedList.load('/data/pcm/attribute/list');
             selectedList.loadData(attrList.data);
         });
     });
@@ -208,7 +208,7 @@ $(function () {
         }
 
         Dolphin.ajax({
-            url : nginxProxy+'/data/pcm/categoryAttr',
+            url : '/data/pcm/categoryAttr',
             type : Dolphin.requestMethod.POST,
             data : Dolphin.json2string(data),
             onSuccess : function (reData) {
@@ -260,7 +260,7 @@ $(function () {
             }
         }
         Dolphin.ajax({
-            url : nginxProxy+'/data/pcm/category/categoryAttr',
+            url : '/data/pcm/category/categoryAttr',
             type : Dolphin.requestMethod.PUT,
             data : Dolphin.json2string(data),
             onSuccess : function (reData) {
@@ -290,7 +290,7 @@ $(function () {
         confirmButton.click(function () {
             var data = Dolphin.form.getValue('categoryForm', '"');
             Dolphin.ajax({
-                url : nginxProxy+'/data/pcm/category/',
+                url : '/data/pcm/category/',
                 type : Dolphin.requestMethod.PUT,
                 data : Dolphin.json2string(data),
                 onSuccess : function (reData) {
