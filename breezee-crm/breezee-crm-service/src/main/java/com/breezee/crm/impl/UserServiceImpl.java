@@ -107,9 +107,9 @@ public class UserServiceImpl implements IUserService {
         UserEntity entity = userRepository.findOne(info.getId());
         if (entity != null) {
             entity.setCompany(info.getCompany());
+            entity.setEmail(info.getEmail());
             entity.setType("site");
             userRepository.save(entity);
-
             sendMail(entity);
             return SuccessInfo.build(info);
         }

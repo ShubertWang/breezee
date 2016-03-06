@@ -8,6 +8,10 @@
         .weui_cell:before {
             left: 0;
         }
+        .weui_cell_ft{
+            float:right;
+            margin-top:-35px;
+        }
     </style>
 </head>
 <body ontouchstart>
@@ -44,7 +48,7 @@ var i, totalPrice = 0;
                 <p>微信支付<span>仅支持微信4.2及上版本</span></p>
             </div>
             <div class="weui_cell_ft">
-                <input type="radio" class="weui_check" value="wepay" name="payType" id="wepay_now">
+                <input type="radio" class="weui_check" value="wepay" name="payType" id="x11">
                 <span class="weui_icon_checked"></span>
             </div>
         </label>
@@ -202,13 +206,13 @@ var i, totalPrice = 0;
             type: Dolphin.requestMethod.PUT,
             data: Dolphin.json2string(orderInfo),
             onSuccess: function (reData) {
-                if(reData.id<0){
-                    alert(reData.remark);
+                if(reData.value.id<0){
+                    alert(reData.value.remark);
                     return;
                 }
                 //判断支付情况
-                if (reData.paymentType == 'wepay') {
-                    Dolphin.goUrl("/order/wepay?id="+reData.id);
+                if (orderInfo.paymentType == 'wepay') {
+                    Dolphin.goUrl("/order/wepay?id="+reData.value.id);
                 } else {
                     Dolphin.goUrl("/order/myOrder");
                 }

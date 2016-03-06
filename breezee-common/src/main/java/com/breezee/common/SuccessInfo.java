@@ -11,7 +11,7 @@ package com.breezee.common;
  */
 public class SuccessInfo {
 
-    public static <T extends BaseInfo> T build(Class<T> cla){
+    public static <T extends BaseInfo> T build(Class<T> cla) {
         T t = null;
         try {
             t = cla.newInstance();
@@ -22,8 +22,9 @@ public class SuccessInfo {
         return t;
     }
 
-    public static <T extends BaseInfo> T build(T t){
-        t.setId(100L);
+    public static <T extends BaseInfo> T build(T t) {
+        if (t.getId() == null || t.getId() < 0)
+            t.setId(100L);
         return t;
     }
 }
