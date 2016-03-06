@@ -16,6 +16,8 @@ var config = {
     },
     production:false,
     mockFlag : false,
+    contextPath : '/',
+    viewPrefix : 'view',
     publicPath : ""
 };
 

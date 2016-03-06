@@ -11,7 +11,7 @@
         <ul class="list-group">
             <% for(var i = 0; i < body.length; i++){ %>
             <li class="<%= body[i].defaultFlag?"list-group-item_edit":"list-group-item_edit_b" %> bh">
-                <a href="<%= (data.pickFlag?"/view/order/orderConfirm?restId="+data.restId+"&userId="+userData.userId+"&addressId=":"/view/account/addAddress?id=") + body[i].id %>">
+                <a href="<%= global.config.contextPath + global.config.viewPrefix %><%= (data.pickFlag?"/order/orderConfirm?restId="+data.restId+"&userId="+userData.userId+"&addressId=":"/account/addAddress?id=") + body[i].id %>">
                     <div class="bh">
                         <div class="title_a_h"><%= body[i].consigneeName %></div>
                         <div class="title_c_h"><%= body[i].consigneeMobile %></div>
@@ -25,7 +25,7 @@
 </article>
 
 <footer>
-    <div class="footer_box"><a href="/view/account/addAddress?pickFlag=<%= !!data.pickFlag %>" class="weui_btn weui_btn_default">新增收货地址</a></div>
+    <div class="footer_box"><a href="<%= global.config.contextPath + global.config.viewPrefix %>/account/addAddress?pickFlag=<%= !!data.pickFlag %>" class="weui_btn weui_btn_default">新增收货地址</a></div>
 </footer>
 
 <% include ../common/footer.ejs %>

@@ -1,7 +1,7 @@
 $(function () {
     $('.wddd_ddlist').click(function () {
         var param = $(this).data();
-        location.href = '/view/order/employeeOrderDetail?id='+param.id+"&taskId="+param.taskId;
+        Dolphin.goUrl('/order/employeeOrderDetail?id='+param.id+"&taskId="+param.taskId);
     });
 });
 

@@ -2,11 +2,11 @@
 <% if(body.length == 1){ %>
     <div class="news_dd">
         <ul>
-            <li class="name"><a href="/view/message/newsDetail?id=<%= body[i].id %>"><%- body[i].name %></a></li>
+            <li class="name"><a href="<%= global.config.contextPath + global.config.viewPrefix %>/message/newsDetail?id=<%= body[i].id %>"><%- body[i].name %></a></li>
             <li class="rq"><%= body[i]._date %></li>
-            <li class="img"><a href="/view/message/newsDetail?id=<%= body[i].id %>"><img src="<%= body[i].subTitle %>"></a></li>
+            <li class="img"><a href="<%= global.config.contextPath + global.config.viewPrefix %>/message/newsDetail?id=<%= body[i].id %>"><img src="<%= body[i].subTitle %>"></a></li>
             <li><%- body[i].remark %></li>
-            <li class="more"><a href="/view/message/newsDetail?id=<%= body[i].id %>">阅读全文</a></li>
+            <li class="more"><a href="<%= global.config.contextPath + global.config.viewPrefix %>/message/newsDetail?id=<%= body[i].id %>">阅读全文</a></li>
         </ul>
     </div>
     <div class="listPanel">
@@ -22,7 +22,7 @@
             <% for(i = 0; i < body.length; i++){ %>
                 <% if(i == 0){ %>
                 <li class="img">
-                    <a href="/view/message/newsDetail?id=<%= body[i].id %>">
+                    <a href="<%= global.config.contextPath + global.config.viewPrefix %>/message/newsDetail?id=<%= body[i].id %>">
                         <img src="<%= body[i].subTitle %>">
                     </a>
                     <div class="img_text"><%- body[i].name %></div>
@@ -31,7 +31,7 @@
                 <li class="line_gray bh">
                     <div class="name">
                         <div>
-                            <a href="/view/message/newsDetail?id=<%= body[i].id %>"><%- body[i].name %></a>
+                            <a href="<%= global.config.contextPath + global.config.viewPrefix %>/message/newsDetail?id=<%= body[i].id %>"><%- body[i].name %></a>
                         </div>
                     </div>
                     <div class="ms_img"><img src="<%= body[i].subTitle %>" ></div>

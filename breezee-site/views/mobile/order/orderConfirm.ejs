@@ -20,7 +20,7 @@ var i, totalPrice = 0;
         <% for(i = 0; i < body.address.length; i++){ %>
         <% if((data.addressId == null && body.address[i].defaultAddress) || data.addressId == body.address[i].id){ %>
         <li class="<%= body.address[i].defaultAddress ? "list-group-item_edit" : "list-group-item_edit_b" %> bh">
-            <a href="/view/account/address?pickFlag=true&restId=<%= data.restId %>&userId=<%= data.userId %>">
+            <a href="<%= global.config.contextPath + global.config.viewPrefix %>/account/address?pickFlag=true&restId=<%= data.restId %>&userId=<%= data.userId %>">
                 <div class="bh">
                     <div id="addressSel" addressId="<%= body.address[i].id %>"
                          class="title_a_h"><%= body.address[i].consigneeName %></div>
