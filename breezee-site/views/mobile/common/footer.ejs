@@ -1,7 +1,9 @@
 <script>
     var REQUEST_MAP = {
         data : JSON.parse('<%= JSON.stringify(data) %>'.replace(/&#34;/g, '"') || "{}"),
-        userData : JSON.parse('<%=  JSON.stringify(userData || {}) %>'.replace(/&#34;/g, '"') || "{}")
+        userData : JSON.parse('<%=  JSON.stringify(userData || {}) %>'.replace(/&#34;/g, '"') || "{}"),
+        contextPath : "<%= global.config.contextPath %>",
+        viewPrefix : "<%= global.config.viewPrefix %>"
     };
 </script>
 
