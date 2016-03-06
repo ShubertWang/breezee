@@ -160,8 +160,8 @@ $(function () {
             type: 'post',
             data: Dolphin.json2string(Dolphin.form.getValue('queryForm')),
             onSuccess: function (data) {
+                $("#list").empty();
                 if (data.rows.length > 0) {
-                    $("#list").empty();
                     _this.column[data.rows[0].processDefinitionKey].push(button);
                     _this.undoList = new Dolphin.LIST({
                         panel: '#list',
@@ -172,6 +172,8 @@ $(function () {
                         data: data,
                         columns: _this.column[data.rows[0].processDefinitionKey]
                     });
+                } else {
+                    $("#list").html("暂无待办数据。");
                 }
             }
         });
