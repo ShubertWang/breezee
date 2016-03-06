@@ -1,6 +1,13 @@
+<%
+ var yc = 0,bc=0;
+    if(body.properties){
+        yc = body.properties.yc;
+        bc = body.properties.bc;
+    }
+  %>
 <div class="tybtn_box evaluate_box" >
-    <a href="javascript:void(0);" onclick="__evaluat(this, true)" class="weui_btn weui_btn_mini weui_btn_default1 evaluate_yes">100</a>
-    <a href="javascript:void(0);" onclick="__evaluat(this, false)" class="weui_btn weui_btn_mini weui_btn_default1 evaluate_no">0</a>
+    <a href="javascript:void(0);" onclick="__evaluat(this, true)" class="weui_btn weui_btn_mini weui_btn_default1 evaluate_yes"><%= yc %></a>
+    <a href="javascript:void(0);" onclick="__evaluat(this, false)" class="weui_btn weui_btn_mini weui_btn_default1 evaluate_no"><%= bc %></a>
 </div>
 <script>
     function __evaluat(thisObj, flag){
@@ -9,11 +16,12 @@
         if(param_panel.length > 0){
             param = param_panel.data();
         }
+        Dolphin.defaults.mockFlag = false;
         if(!param.objectId){
             alert("不可评价");
             return;
         }
-        param.userId = "<%= userData.siteId %>";
+        param.userId = "<%= userData.userId %>";
         param.userType = "<%= userData.userType %>";
         param.value = flag?1:0;
 
@@ -22,10 +30,10 @@
             type: Dolphin.requestMethod.PUT,
             data: Dolphin.json2string(param),
             onSuccess:function(ret){
-                if(ret.id<0){
+                if(ret.value.id<0){
                     alert(ret.remark);
                 } else{
-                    _this.html(_this.html()-0+(flag?1:-1));
+                    _this.html(_this.html()-0+1);
                 }
             }
         });

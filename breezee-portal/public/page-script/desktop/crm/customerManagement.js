@@ -73,6 +73,20 @@ $(function () {
         }
         Dolphin.form.setValue(list.getChecked()[0], '#editForm');
     });
+    $("#delete").click(function(){
+        var checked = list.getChecked();
+        if(checked.length==0){
+            Dolphin.alert("请选择一行");
+            return;
+        }
+        Dolphin.ajax({
+            url: '/data/crm/user/'+checked[0].id,
+            type: Dolphin.requestMethod.DELETE,
+            onSuccess: function (reData) {
+                list.reload();
+            }
+        });
+    });
     $('#save').click(function () {
         if (Dolphin.form.validate('#editForm')) {
             var data = Dolphin.form.getValue('editForm', '"');

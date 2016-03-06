@@ -2,7 +2,7 @@
 <html>
 <head>
     <% include ../common/meta.ejs %>
-    <title>绑定员工卡</title>
+    <title>绑定营业网点</title>
     <% include ../common/public.ejs %>
 </head>
 <body ontouchstart>
@@ -13,7 +13,8 @@
             <div class="weui_cell">
                 <input type="hidden" name="id" value="<%= userData.userId %>" />
                 <input type="hidden" name="code" value="<%= data.openId %>" />
-                <input type="hidden" name="name" value="weChatUser" />
+                <input type="hidden" name="name" value="<%= body.nickname %>" />
+                <input type="hidden" name="wechat" value="<%= data.openId %>" />
                 <input type="hidden" name="type" value="site" />
 
                 <div class="weui_cell_bd weui_cell_primary">

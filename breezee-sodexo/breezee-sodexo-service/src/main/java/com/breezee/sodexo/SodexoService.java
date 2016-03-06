@@ -5,6 +5,7 @@
 
 package com.breezee.sodexo;
 
+import com.breezee.common.util.ContextUtil;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.context.annotation.ComponentScan;
@@ -28,6 +29,6 @@ public class SodexoService {
      * @throws IOException
      */
     public static void main(String[] args) throws IOException {
-        SpringApplication.run(SodexoService.class, args);
+        ContextUtil.current = SpringApplication.run(SodexoService.class, args);
     }
 }

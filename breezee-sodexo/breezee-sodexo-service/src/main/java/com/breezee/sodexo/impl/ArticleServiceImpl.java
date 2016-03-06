@@ -6,6 +6,7 @@ import com.breezee.sodexo.api.domain.ArticleInfo;
 import com.breezee.sodexo.entity.ArticleEntity;
 import com.breezee.sodexo.entity.ModelEntity;
 import com.breezee.sodexo.repository.ArticleRepository;
+import com.breezee.sodexo.repository.CommentRepository;
 import com.breezee.sodexo.repository.ModelRepository;
 import com.breezee.sodexo.api.service.IArticleService;
 import com.breezee.sysmgr.api.domain.AccountInfo;
@@ -35,6 +36,9 @@ public class ArticleServiceImpl implements IArticleService {
     @Resource
     private IAccountService accountService;
 
+    @Autowired
+    private CommentRepository commentRepository;
+
     @Override
     public PageResult<ArticleInfo> findByModelId(Long modelId, PageInfo page) {
         if (page == null) {
@@ -54,7 +58,7 @@ public class ArticleServiceImpl implements IArticleService {
         if (page == null) {
             page = new PageInfo();
         }
-        page.setSort(new Sort(Sort.Direction.DESC, "orderNo"));
+        page.setSort(new Sort(Sort.Direction.ASC, "orderNo"));
         ModelEntity entity = modelRepository.findByCode(modelCode);
         if (entity != null) {
             Page<ArticleEntity> pa = articleRepository.findByModel(entity, page);
@@ -63,6 +67,8 @@ public class ArticleServiceImpl implements IArticleService {
                 AccountInfo accountInfo = accountService.findByCode(info.getUpdator());
                 if (accountInfo != null)
                     info.setUserName(accountInfo.getName());
+                info.getProperties().put("yc",commentRepository.countObject(info.getId().toString(),1));
+                info.getProperties().put("nc",commentRepository.countObject(info.getId().toString(),0));
                 return info;
             });
         }

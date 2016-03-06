@@ -212,12 +212,6 @@ public final class TaskInfo extends BaseInfo {
         this.processDefinitionKey = processDefinitionKey;
     }
 
-    public Map<String, Object> getProperties() {
-        if(properties==null)
-            properties = new HashMap<>();
-        return properties;
-    }
-
     public List<ActionInfo> getActionInfos() {
         return actionInfos;
     }
