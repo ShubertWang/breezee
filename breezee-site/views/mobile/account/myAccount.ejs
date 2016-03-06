@@ -20,16 +20,16 @@
     </div>
     <div class="weui_cells weui_cells_access">
 
-        <a class="weui_cell" href="<%= userData.siteId?'javascript:void(0);':'/view/account/servicePoint' %>">
+        <a class="weui_cell" href="<%= userData.siteId?'javascript:void(0);':(global.config.contextPath + global.config.viewPrefix + '/account/servicePoint') %>">
             <div class="weui_cell_hd"><img src="/custom/wx_style/images/icon_50_dw.png" alt="" style="width:60%;margin-right:5px;display:block"></div>
             <div class="weui_cell_bd weui_cell_primary">
                 <p>服务点注册</p>
             </div>
             <div class="weui_cell_ft"><%= userData.siteId?'已':'未' %>注册</div>
         </a>
-        <a class="weui_cell" href="<%= userData.userType=='employee'?'javascript:void(0);':'/view/account/bindEmployeeInfo' %>">
+        <a class="weui_cell" href="<%= userData.userType=='employee'?'javascript:void(0);':(global.config.contextPath + global.config.viewPrefix + '/view/account/bindEmployeeInfo') %>">
             <div class="weui_cell_hd"><img src="/custom/wx_style/images/icon_50_ygk.png" alt="" style="width:60%;margin-right:5px;display:block"></div>
-            <div class="weui_cell_bd weui_cell_primary" onClick="location.href='bdygk.html'">
+            <div class="weui_cell_bd weui_cell_primary">
                 <p>员工信息</p>
             </div>
             <div class="weui_cell_ft"><%= userData.userType=='employee'?'已':'未' %>认证</div>
@@ -44,7 +44,7 @@
     </div>
     <div class="weui_cells weui_cells_access">
 
-        <a class="weui_cell" href="/view/account/address">
+        <a class="weui_cell" href="<%= global.config.contextPath + global.config.viewPrefix %>/account/address">
             <div class="weui_cell_hd"><img src="/custom/wx_style/images/icon_50_dw.png" alt="" style="width:60%;margin-right:5px;display:block"></div>
             <div class="weui_cell_bd weui_cell_primary">
                 <p>收货地址</p>
@@ -57,7 +57,7 @@
 
 <% if((session.user && session.user.userType) == 'employee'){ %> <!--TODO 从session中判断当前用户是否为管理人员，决定button是否可见-->
 <footer>
-    <div class="footer_box"><a href="/view/order/employeeOrder" class="weui_btn weui_btn_warn" >管理入口<span>（仅供索迪斯工作人员使用）</span></a></div>
+    <div class="footer_box"><a href="<%= global.config.contextPath + global.config.viewPrefix %>/order/employeeOrder" class="weui_btn weui_btn_warn" >管理入口<span>（仅供索迪斯工作人员使用）</span></a></div>
 </footer>
 <% } %>
 <% include ../common/footer.ejs %>

@@ -95,10 +95,10 @@
     </div>
 </div>
 <% include ../common/footer.ejs %>
-<link href="/uedit/themes/default/css/umeditor.css" type="text/css" rel="stylesheet">
-<script src="/uedit/umeditor.config.js"></script>
-<script src="/uedit/umeditor.min.js"></script>
-<script src="/uedit/lang/zh-cn/zh-cn.js"></script>
+<link href="<%= global.config.publicPath %>/uedit/themes/default/css/umeditor.css" type="text/css" rel="stylesheet">
+<script src="<%= global.config.publicPath %>/uedit/umeditor.config.js"></script>
+<script src="<%= global.config.publicPath %>/uedit/umeditor.min.js"></script>
+<script src="<%= global.config.publicPath %>/uedit/lang/zh-cn/zh-cn.js"></script>
 <script>
     var um;
     $(function () {

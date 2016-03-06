@@ -1,6 +1,6 @@
 $(function () {
     $('.wddd_ddlist').click(function () {
-        location.href = '/view/order/orderDetail?id='+$(this).attr("data-order-id");
+        Dolphin.goUrl('/view/order/orderDetail?id='+$(this).attr("data-order-id"));
     });
 });
 

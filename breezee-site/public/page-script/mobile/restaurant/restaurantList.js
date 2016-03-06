@@ -6,6 +6,6 @@ $(function () {
 
         Dolphin.cookie("restId", restId, {path:'/'});
         Dolphin.cookie("orderType", orderType, {path:'/'});
-        location.href = '/view/order/orderFood?restId='+restId;
+        Dolphin.goUrl('/order/orderFood?restId='+restId);
     });
 });

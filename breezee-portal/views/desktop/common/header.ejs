@@ -7,52 +7,52 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" link="/index" style="padding:0;">
+            <a class="navbar-brand" href="<%= global.config.contextPath + global.config.viewPrefix %>/index" style="padding:0;">
                 <img src="<%= global.config.publicPath %>/custom/images/icon/LOGO.png" style="height:50px;"/>
             </a>
         </div>
         <div id="navbar" class="navbar-collapse collapse">
             <ul class="nav navbar-nav">
-                <li menuCode="index"><a link="/index">首页</a></li>
+                <li menuCode="index"><a href="<%= global.config.contextPath + global.config.viewPrefix %>/index">首页</a></li>
                 <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">订单管理<span class="caret"></span></a>
+                    <a href="<%= global.config.contextPath + global.config.viewPrefix %>#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">订单管理<span class="caret"></span></a>
                     <ul class="dropdown-menu">
-                        <li menuCode="undoList"><a class="navMenu" link="/workspace/undoList">我的待办</a></li>
-                        <li menuCode="queryOrderList"><a class="navMenu" link="/workspace/queryOrderList">订单查询</a></li>
+                        <li menuCode="undoList"><a class="navMenu" href="<%= global.config.contextPath + global.config.viewPrefix %>/workspace/undoList">我的待办</a></li>
+                        <li menuCode="queryOrderList"><a class="navMenu" href="<%= global.config.contextPath + global.config.viewPrefix %>/workspace/queryOrderList">订单查询</a></li>
                     </ul>
                 </li>
                 <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">商品管理<span class="caret"></span></a>
+                    <a href="<%= global.config.contextPath + global.config.viewPrefix %>#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">商品管理<span class="caret"></span></a>
                     <ul class="dropdown-menu">
-                        <!--<li><a class="navMenu" link="product/catalogManagement">目录维护</a></li>-->
-                        <li menuCode="categoryManagement"><a class="navMenu" link="/category/categoryManagement">品类维护</a></li>
-                        <li menuCode="attributeManagement"><a class="navMenu" link="/category/attributeManagement">属性维护</a></li>
-                        <li menuCode="productList"><a class="navMenu" link="/product/productList">菜品维护</a></li>
+                        <!--<li><a class="navMenu" href="<%= global.config.contextPath + global.config.viewPrefix %>product/catalogManagement">目录维护</a></li>-->
+                        <li menuCode="categoryManagement"><a class="navMenu" href="<%= global.config.contextPath + global.config.viewPrefix %>/category/categoryManagement">品类维护</a></li>
+                        <li menuCode="attributeManagement"><a class="navMenu" href="<%= global.config.contextPath + global.config.viewPrefix %>/category/attributeManagement">属性维护</a></li>
+                        <li menuCode="productList"><a class="navMenu" href="<%= global.config.contextPath + global.config.viewPrefix %>/product/productList">菜品维护</a></li>
                     </ul>
                 </li>
-                <li menuCode="customerManagement"><a class="navMenu" link="/crm/customerManagement">客户管理</a></li>
+                <li menuCode="customerManagement"><a class="navMenu" href="<%= global.config.contextPath + global.config.viewPrefix %>/crm/customerManagement">客户管理</a></li>
                 <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">系统管理<span class="caret"></span></a>
+                    <a href="<%= global.config.contextPath + global.config.viewPrefix %>#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">系统管理<span class="caret"></span></a>
                     <ul class="dropdown-menu">
-                        <li menuCode="accountManagement"><a class="navMenu" link="/auth/accountManagement">账号管理</a></li>
-                        <li menuCode="organizationManagement"><a class="navMenu" link="/auth/organizationManagement">组织管理</a></li>
-                        <li menuCode="roleManagement"><a class="navMenu" link="/auth/roleManagement">角色管理</a></li>
+                        <li menuCode="accountManagement"><a class="navMenu" href="<%= global.config.contextPath + global.config.viewPrefix %>/auth/accountManagement">账号管理</a></li>
+                        <li menuCode="organizationManagement"><a class="navMenu" href="<%= global.config.contextPath + global.config.viewPrefix %>/auth/organizationManagement">组织管理</a></li>
+                        <li menuCode="roleManagement"><a class="navMenu" href="<%= global.config.contextPath + global.config.viewPrefix %>/auth/roleManagement">角色管理</a></li>
                         <li role="separator" class="divider"></li>
-                        <li menuCode="messhallList"><a class="navMenu" link="/restaurant/messhallList">营运点管理</a></li>
+                        <li menuCode="messhallList"><a class="navMenu" href="<%= global.config.contextPath + global.config.viewPrefix %>/restaurant/messhallList">营运点管理</a></li>
                         <li role="separator" class="divider"></li>
-                        <li menuCode="dict"><a class="navMenu" link="/dict/dict">枚举维护</a></li>
+                        <li menuCode="dict"><a class="navMenu" href="<%= global.config.contextPath + global.config.viewPrefix %>/dict/dict">枚举维护</a></li>
                         <li role="separator" class="divider"></li>
-                        <li menuCode="menuManagement"><a class="navMenu" link="/wechat/menuManagement">公众号菜单管理</a></li>
+                        <li menuCode="menuManagement"><a class="navMenu" href="<%= global.config.contextPath + global.config.viewPrefix %>/wechat/menuManagement">公众号菜单管理</a></li>
                     </ul>
                 </li>
-                <li menuCode="articleManagement"><a class="navMenu" link="/article/articleManagement">新闻管理</a></li>
+                <li menuCode="articleManagement"><a class="navMenu" href="<%= global.config.contextPath + global.config.viewPrefix %>/article/articleManagement">新闻管理</a></li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
                 <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><%= session.userName %><span class="caret"></span></a>
+                    <a href="<%= global.config.contextPath + global.config.viewPrefix %>#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><%= session.userName %><span class="caret"></span></a>
                     <ul class="dropdown-menu">
-                        <li><a class="navMenu" link="#">个人信息</a></li>
-                        <li><a class="navMenu" link="//login/logout">退出</a></li>
+                        <li><a class="navMenu" href="<%= global.config.contextPath + global.config.viewPrefix %>#">个人信息</a></li>
+                        <li><a class="navMenu" href="<%= global.config.contextPath + global.config.viewPrefix %>//login/logout">退出</a></li>
                     </ul>
                 </li>
             </ul>
