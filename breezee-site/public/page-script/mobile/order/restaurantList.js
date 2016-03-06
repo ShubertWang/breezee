@@ -1,4 +1,3 @@
-Dolphin.defaults.mockFlag = true;
 $(function () {
     $('.restaurantLink').click(function () {
         var restId = $(this).closest('.restaurantId').data('id');

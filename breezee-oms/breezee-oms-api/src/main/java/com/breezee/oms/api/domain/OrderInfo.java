@@ -67,6 +67,8 @@ public class OrderInfo extends BaseInfo {
 
     protected String consigneeMobile;
 
+    protected String payId;
+
     public Date getIssueDate() {
         return issueDate;
     }
@@ -232,6 +234,14 @@ public class OrderInfo extends BaseInfo {
 
     public void setRestaurantImage(String restaurantImage) {
         this.restaurantImage = restaurantImage;
+    }
+
+    public String getPayId() {
+        return payId;
+    }
+
+    public void setPayId(String payId) {
+        this.payId = payId;
     }
 
     public boolean isPayNow() {

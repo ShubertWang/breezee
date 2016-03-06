@@ -30,7 +30,7 @@ function graphTrace(options, pid, pdid, panelId) {
     };
 
     // 获取图片资源
-    var imageUrl = "http://127.0.0.1:10249/services/workflowTrace/processGraph/" + opts.pid;     //TODO 获取图片路径
+    var imageUrl = "/workflowchat/services/workflowTrace/processGraph/" + opts.pid;     //TODO 获取图片路径
     Dolphin.ajax({
         url: '/data/bpm/workflowTrace/traceProcess/' + opts.pid,
         type: Dolphin.requestMethod.GET,

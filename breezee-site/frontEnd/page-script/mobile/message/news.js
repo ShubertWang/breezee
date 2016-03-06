@@ -1,4 +1,3 @@
-Dolphin.defaults.mockFlag = true;
 $(function () {
     /*Dolphin.ajax({
         url : '/data/account/myAccount',

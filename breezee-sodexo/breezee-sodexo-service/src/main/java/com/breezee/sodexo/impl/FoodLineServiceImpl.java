@@ -11,6 +11,7 @@ import com.breezee.common.util.ContextUtil;
 import com.breezee.pcm.api.domain.CategoryInfo;
 import com.breezee.pcm.api.service.ICategoryService;
 import com.breezee.sodexo.api.domain.FoodLineInfo;
+import com.breezee.sodexo.api.domain.MesshallInfo;
 import com.breezee.sodexo.entity.FoodLineEntity;
 import com.breezee.sodexo.repository.FoodLineRepository;
 import com.breezee.sodexo.api.service.IFoodLineService;
@@ -100,7 +101,14 @@ public class FoodLineServiceImpl implements IFoodLineService {
     @Override
     public List<FoodLineInfo> findBySite(String site) {
         List<FoodLineEntity> l = foodLineRepository.findBySite(site);
-        return new InfoList<>(l, (Callback<FoodLineEntity, FoodLineInfo>) (FoodLineEntity, FoodLineInfo) -> FoodLineEntity.toInfo());
+        return new InfoList<>(l, (Callback<FoodLineEntity, FoodLineInfo>) (FoodLineEntity, FoodLineInfo) -> {
+            FoodLineInfo info = FoodLineEntity.toInfo();
+            MesshallInfo messhallInfo = messhallService.findInfoById(info.getMesshallId());
+            if(messhallInfo!=null){
+                info.setImageCode(messhallInfo.getImageCode());
+            }
+            return info;
+        });
     }
 
     @Override

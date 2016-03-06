@@ -43,6 +43,8 @@ public class OrderEntity extends BaseInfo {
      */
     private Double subTotal;
 
+    private String payId;
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ORDER_ID", unique = true, nullable = false)
@@ -215,6 +217,14 @@ public class OrderEntity extends BaseInfo {
 
     public void setNeedTime(String needTime) {
         this.needTime = needTime;
+    }
+
+    public String getPayId() {
+        return payId;
+    }
+
+    public void setPayId(String payId) {
+        this.payId = payId;
     }
 
     public OrderInfo toInfo(){

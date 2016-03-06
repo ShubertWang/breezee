@@ -10,9 +10,7 @@ import com.breezee.common.PageInfo;
 import com.breezee.common.PageResult;
 import com.breezee.oms.api.domain.OrderInfo;
 
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
+import javax.ws.rs.*;
 import java.util.Collection;
 import java.util.List;
 
@@ -30,4 +28,7 @@ public interface IOrderService extends IServiceLayer<OrderInfo> {
     @POST
     PageResult<OrderInfo> findMyOrder(@PathParam("userId") Long userId, PageInfo pageInfo);
 
+    @Path("/orderPay/{orderId}")
+    @GET
+    void orderPay(@PathParam("orderId") String orderId, @QueryParam("payId") String payId);
 }

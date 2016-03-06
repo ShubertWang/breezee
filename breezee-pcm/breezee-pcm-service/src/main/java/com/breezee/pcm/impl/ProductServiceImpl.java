@@ -22,6 +22,7 @@ import com.breezee.pcm.repository.ProductRepository;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
@@ -207,6 +208,7 @@ public class ProductServiceImpl implements IProductService, InitializingBean {
     @Override
     public PageResult<ProductInfo> pageAll(Map<String, Object> m, PageInfo pageInfo) {
         pageInfo = new PageInfo(pageInfo, m);
+        pageInfo.setSort(new Sort(Sort.Direction.DESC,"issueDate"));
         Page<ProductEntity> page = productRepository.findAll(DynamicSpecifications.createSpecification(m), pageInfo);
         return new PageResult<>(page, ProductInfo.class, (productEntity, productInfo) -> {
             ProductInfo info = productEntity.toInfo();

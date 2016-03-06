@@ -115,7 +115,7 @@ var orderStatus = {
         <% if(body.status == 0) { %>
         <a href="javascript:" class="weui_btn weui_btn_mini weui_btn_default1">立即支付</a>
         <% }
-            if(body.status < 2){  //已制作前都可以取消订单
+            if(body.status != -1 && body.status < 2){  //已制作前都可以取消订单
         %>
         <a href="javascript:$('#dialog1').show();" class="weui_btn weui_btn_mini weui_btn_default1">取消订单</a>
         <% } %>

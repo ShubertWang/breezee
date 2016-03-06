@@ -184,6 +184,14 @@ public class OrderServiceImpl implements IOrderService, InitializingBean {
         });
     }
 
+    @Override
+    public void orderPay(String orderId, String payId) {
+        OrderEntity entity = orderRepository.findOne(Long.parseLong(orderId));
+        entity.setPayId(payId);
+        entity.setStatus(1);
+        orderRepository.save(entity);
+    }
+
     private void setRestaurant(OrderInfo info) {
         FoodLineInfo foodLineInfo = foodLineService.findByCode(info.getStoreName());
         if (foodLineInfo.getId() > 0 && foodLineInfo.getMesshallInfo() != null) {
