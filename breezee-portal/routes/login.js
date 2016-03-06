@@ -15,7 +15,9 @@ router.get('/', function(req, res, next) {
         path : url,
         endType : "",
         title : '走在nodeJs的路上',
-        redirect : ""
+        redirect : "",
+        data:{},
+        session:{}
     });
 });
 

@@ -56,7 +56,7 @@ $(function () {
                 title:'库存',
                 formatter:function(val,data){
                     //return '<div class="text-center">'+val+' &nbsp;&nbsp;&nbsp;<a href="productStock?skuId='+data.code+'">明细</a> </div>';
-                    return val;
+                    return val + ' <span class="glyphicon glyphicon-pencil cursorPointer" onclick="changeNumber('+val+', \''+data.code+'\')" aria-hidden="true"></span>'
                 }
             },{
                 code : 'status',
@@ -133,4 +133,33 @@ $(function () {
     }
 
     window.page = page.init();
+
+    window.changeNumber = function(value, skuId){
+        Dolphin.prompt('请输入物料总数量',{
+            defaultValue : value,
+            callback : function(string){
+                if(string){
+                    if(Dolphin.isNumber(string)){
+                        Dolphin.ajax({
+                            url : '/data/oms/inventory/updateInventory',
+                            data : Dolphin.json2string({
+                                skuId:skuId.toString(),
+                                quantity:{value:string}
+                            }),
+                            type : Dolphin.requestMethod.PUT,
+                            onSuccess : function(result){
+                                Dolphin.alert('操作成功。', {
+                                    callback : function(){
+                                        page.productList.reload();
+                                    }
+                                });
+                            }
+                        })
+                    }else{
+                        Dolphin.alert('数量输入有误');
+                    }
+                }
+            }
+        });
+    }
 });

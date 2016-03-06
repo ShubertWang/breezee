@@ -18,6 +18,8 @@ route.news = function (queryData, res, callback) {
         uri : 'http://127.0.0.1:10250/services/article/modelCode/'+queryData.modelCode,
         mockData : '/message/news'
     }, function(error, response, body){
+        body = body || {content:[]};
+        body.content = body.content || [];
         for(var i = 0; i < body.content.length; i++){
             body.content[i]._date = global.myUtil.dateFormatter(new Date(body.content[i].date), "MM月dd日");
         }

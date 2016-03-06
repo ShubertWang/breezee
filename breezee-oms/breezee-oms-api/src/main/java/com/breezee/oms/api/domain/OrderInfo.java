@@ -7,6 +7,7 @@ package com.breezee.oms.api.domain;
 
 import com.breezee.common.BaseInfo;
 import com.breezee.common.types.Amount;
+import com.breezee.common.util.ContextUtil;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
 import java.util.ArrayList;
@@ -192,6 +193,8 @@ public class OrderInfo extends BaseInfo {
     }
 
     public String getStatusName() {
+        if(statusName==null)
+            return ContextUtil.getMessage("order.status."+status);
         return statusName;
     }
 

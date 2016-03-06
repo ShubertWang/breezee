@@ -1,4 +1,5 @@
 var sha1=require('sha1');
+var md5 = require('md5');
 var route = {};
 
 route.restaurantList = function (queryData, res, callback) {
@@ -84,17 +85,21 @@ route.orderDetail = function (queryData, res, callback) {
 };
 
 route.employeeOrder = function (queryData, res, callback) {
+    queryData.pageNumber = queryData.pageNumber || 0;
+    queryData.pageSize = queryData.pageSize || 20;
     global.myUtil.request({
         method: 'post',
         uri: 'http://127.0.0.1:10249/services/bpmTask/findUndoTasks',
         mockData: '/order/employeeOrderList',
-        json:{userId:queryData.userId}
+        json:{userJob : queryData.userJob,pageNumber:queryData.pageNumber,pageSize:queryData.pageSize}
         //form: queryData
     }, function (error, response, body) {
         if (error) {
             throw error;
         }
-        callback(body);
+        body = body || {content:[]};
+        body.content = body.content || [];
+        callback(body.content);
     });
 };
 route.employeeOrderByPage = function (queryData, res, callback) {
@@ -104,7 +109,7 @@ route.employeeOrderByPage = function (queryData, res, callback) {
 route.employeeOrderDetail = function (queryData, res, callback) {
     global.myUtil.request({
         method: 'get',
-        uri: '/order/',
+        uri: 'http://127.0.0.1:10247/services/order/' + queryData.id,
         mockData: '/order/orderDetail_' + queryData.id,
         form: queryData
     }, function (error, response, body) {
@@ -168,11 +173,30 @@ route.otherService = function (queryData, res, callback) {
 
 route.bookSite = function(queryData, res, callback){
     //获取餐厅列表
-    callback({});
+    global.myUtil.request({
+        method: 'get',
+        uri: 'http://127.0.0.1:10250/services/messhall/list/all',
+        mockData: '/order/otherService'
+    }, function (error, response, body) {
+        if (error) {
+            throw error;
+        }
+        body = body || [];
+        callback(body);
+    });
 };
 
 route.seatDetail = function(queryData, res, callback){
-    callback({});
+    global.myUtil.request({
+        method: 'get',
+        uri: 'http://127.0.0.1:10250/services/seatOrder/'+queryData.id,
+        mockData: '/order/otherService'
+    }, function (error, response, body) {
+        if (error) {
+            throw error;
+        }
+        callback(body);
+    });
 };
 
 route.wepay = function(queryData, res, callback){
@@ -184,26 +208,37 @@ route.wepay = function(queryData, res, callback){
         body = body || {};
         global.weChatUtil.preOrder({
             nonce_str:body.code,
-            amount:1,
+            amount:body.subTotal.value,
             remoteIp:queryData.remoteIp,
             openid:queryData.userCode
         },function(ret){
             if(ret.return_code=='SUCCESS'){
-                var key = [],n = body.issueDate;
-                key.push("jsapi_ticket="+global.weChatUtil.tokenCache.tokenId);
-                key.push("noncestr="+ret.nonce_str);
-                key.push("timestamp="+n);
-                key.push("url=http://weixin.sodexo-cn.com/wepay?id="+body.id);
-                var str = sha1(key.join("&"));
-                console.log("str:",key.join("&"),",signature:",str);
-                callback({
-                    appId:ret.appid,
-                    timestamp:n,
-                    nonceStr: ret.nonce_str,
-                    signature: str,
-                    signType:'MD5',
-                    paySign:ret.sign,
-                    package:ret.prepay_id
+                global.weChatUtil.getTicket(function(ticket){
+                    var key = [],n = body.issueDate;
+                    key.push("jsapi_ticket="+ticket);
+                    key.push("noncestr="+body.code);
+                    key.push("timestamp="+n);
+                    key.push("url=http://weixin.sodexo-cn.com/view/order/wepay?id="+body.id);
+                    var str = sha1(key.join("&"));
+                    var paySign = [];
+                    paySign.push("appId="+ret.appid);
+                    paySign.push("nonceStr="+body.code);
+                    paySign.push("package=prepay_id="+ret.prepay_id);
+                    paySign.push("signType=MD5");
+                    paySign.push("timeStamp="+n);
+                    paySign.push("key="+global.weChatUtil.config.key);
+                    var _paySign = md5(paySign.join("&")).toUpperCase();
+                    callback({
+                        appId:ret.appid,
+                        timestamp:n,
+                        nonceStr: body.code,
+                        signature: str,
+                        signType:'MD5',
+                        paySign:_paySign,
+                        package:"prepay_id="+ret.prepay_id,
+                        orderId:queryData.id
+                    });
+
                 });
             } else {
                 callback({

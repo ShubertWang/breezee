@@ -24,34 +24,43 @@ $(function () {
             ajaxType:'post',
             queryParams : Dolphin.form.getValue('queryForm'),
             title : '订单列表',
+            checkbox:false,
             columns : [{
                 code: 'code',
-                title: '订单号',
+                title: '订单信息',
+                width:'200px',
                 formatter : function(val, row, index){
-                    var link = $('<a>').html(val);
-                    link.attr('href', 'taskInfo');
-                    return link;
+                    return "<div><p>订单号："+val+"</p><p>订单状态："+row.statusName+"</p><p>付款方式："+row.paymentType+"</p></div>"
                 }
             }, {
                 code:'issueDate',
-                title:'下单日期'
-            },{
-                code:'userId',
-                title:'下单人'
-            },{
-                code: 'paymentAmount',
-                title: '支付金额',
-                formatter : function(val, row, index){
-                    return val.value;
+                title:'下单日期',
+                width:'150px',
+                formatter:function(val){
+                    return Dolphin.longDate2string(val,"yyyy-MM-dd hh:mm");
                 }
             },{
-                code:'shippingMethod',
-                title:'支付方式'
-            }, {
-                code:'subTotal',
-                title:'商品金额',
-                formatter : function(val, row, index){
-                    return val.value;
+                code: 'subTotal.value',
+                textAlign:'right',
+                title: '订单金额',
+
+                width:'85px'
+            },{
+                code:'orderLines',
+                title:"菜品编码 - 菜品名称 - 菜品单价 - 数量",
+                formatter:function(val,data){
+                    var html =[];
+                    html.push("<table class='table table-striped'>");
+                    for(var i=0;i<val.length;i++){
+                        html.push("<tr>");
+                        html.push("<td>"+val[i].skuId+"</td>");
+                        html.push("<td>"+val[i].note+"</td>");
+                        html.push("<td>"+val[i].unitPrice.value+"</td>");
+                        html.push("<td>"+val[i].quantity.value+"</td>");
+                        html.push("</tr>")
+                    }
+                    html.push("</table>");
+                    return html.join("");
                 }
             }]
         });

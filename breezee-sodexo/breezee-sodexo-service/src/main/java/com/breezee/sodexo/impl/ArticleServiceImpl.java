@@ -8,11 +8,14 @@ import com.breezee.sodexo.entity.ModelEntity;
 import com.breezee.sodexo.repository.ArticleRepository;
 import com.breezee.sodexo.repository.ModelRepository;
 import com.breezee.sodexo.api.service.IArticleService;
+import com.breezee.sysmgr.api.domain.AccountInfo;
+import com.breezee.sysmgr.api.service.IAccountService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -29,12 +32,15 @@ public class ArticleServiceImpl implements IArticleService {
     @Autowired
     private ModelRepository modelRepository;
 
+    @Resource
+    private IAccountService accountService;
+
     @Override
     public PageResult<ArticleInfo> findByModelId(Long modelId, PageInfo page) {
-        if(page==null){
+        if (page == null) {
             page = new PageInfo();
         }
-        page.setSort(new Sort(Sort.Direction.DESC,"updateTime"));
+        page.setSort(new Sort(Sort.Direction.DESC, "updateTime"));
         ModelEntity entity = modelRepository.findOne(modelId);
         if (entity != null) {
             Page<ArticleEntity> pa = articleRepository.findByModel(entity, page);
@@ -45,14 +51,20 @@ public class ArticleServiceImpl implements IArticleService {
 
     @Override
     public PageResult<ArticleInfo> findByModelCode(String modelCode, PageInfo page) {
-        if(page==null){
+        if (page == null) {
             page = new PageInfo();
         }
-        page.setSort(new Sort(Sort.Direction.DESC,"updateTime"));
+        page.setSort(new Sort(Sort.Direction.DESC, "orderNo"));
         ModelEntity entity = modelRepository.findByCode(modelCode);
         if (entity != null) {
             Page<ArticleEntity> pa = articleRepository.findByModel(entity, page);
-            return new PageResult<>(pa, ArticleInfo.class, (articleEntity, articleInfo) -> articleEntity.toInfo());
+            return new PageResult<>(pa, ArticleInfo.class, (articleEntity, articleInfo) -> {
+                ArticleInfo info = articleEntity.toInfo();
+                AccountInfo accountInfo = accountService.findByCode(info.getUpdator());
+                if (accountInfo != null)
+                    info.setUserName(accountInfo.getName());
+                return info;
+            });
         }
         return new PageResult<>();
     }

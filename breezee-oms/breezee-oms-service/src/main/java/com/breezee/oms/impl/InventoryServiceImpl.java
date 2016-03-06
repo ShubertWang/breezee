@@ -20,6 +20,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -65,6 +66,23 @@ public class InventoryServiceImpl implements InventoryService {
         if (entity == null)
             return ErrorInfo.build(InventoryInfo.class);
         return entity.toInfo();
+    }
+
+    @Override
+    public void updateInventoryBySkuId(InventoryInfo inventoryInfo) {
+        List<InventoryEntity> l = inventoryRepository.findBySkuId(inventoryInfo.getSkuId());
+        if(l.size()==0){
+            inventoryRepository.save(new InventoryEntity().parse(inventoryInfo));
+        } else {
+            for (InventoryEntity entity : l) {
+                entity.setUpdateTime(new Date());
+                if (inventoryInfo.getUpdator() != null)
+                    entity.setUpdator(inventoryInfo.getUpdator());
+                if (inventoryInfo.getQuantity() != null)
+                    entity.setQuantity(inventoryInfo.getQuantity().getValue());
+                inventoryRepository.save(entity);
+            }
+        }
     }
 
     @Override

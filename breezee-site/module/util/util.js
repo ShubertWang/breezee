@@ -94,6 +94,7 @@ myUtil.customerInfo = function(url, callback) {
             userData.userName = body.name;
             userData.userMobile = body.phone;
             userData.addressCount = body.addressCount;
+            userData.userJob = body.userJob;
             if(body.defaultAddress) {
                 userData.defaultAddress = body.defaultAddress;
             }

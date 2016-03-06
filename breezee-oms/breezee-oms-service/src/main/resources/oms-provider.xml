@@ -24,4 +24,7 @@
 
     <dubbo:reference interface="com.breezee.crm.api.service.IUserService" id="userService"
                      protocol="dubbo" check="false" />
+
+    <dubbo:reference interface="com.breezee.sodexo.api.service.IFoodLineService" id="foodLineService"
+                     protocol="dubbo" check="false"/>
 </beans>

@@ -13,7 +13,7 @@
                 <div class="cpxq bh">
                     <div class="text">
                         <h1><%= body[i].restaurantName %></h1>
-                        <div class="wddd_list"><%= body[i].issueDate %> </div>
+                        <div class="wddd_list"><%= global.myUtil.dateFormatter(new Date(body[i].issueDate), "yyyy-MM-dd hh:mm:ss") %> </div>
                     </div>
                     <div class="jg"><span><%= body[i].subTotal.value %> </span>元</div>
                 </div>
@@ -21,8 +21,8 @@
             <div class="wddd_money bg_<%= body[i].shippingMethod %>">
                 <%= body[i].shippingMethod == "wm" ? "外送订单" : "堂吃订单" %><!--TODO 枚举-->
                 <% if(body[i].payNow) { %>
-                <input type="submit" name="button" value="立即支付" class="btnred">
-                <%}%>
+                <a href="/order/wepay?id=<%= body[i].id %>" target="_self" class="btnred">立即支付</a>
+                <% } %>
             </div>
         </div>
     </div>

@@ -10,6 +10,7 @@ var weChatUtil = {
     user_info_url:'https://api.weixin.qq.com/cgi-bin/user/info',
     message_url:'https://api.weixin.qq.com/cgi-bin/message/template/send',
     preorder_url:'https://api.mch.weixin.qq.com/pay/unifiedorder',
+    ticket_url : 'https://api.weixin.qq.com/cgi-bin/ticket/getticket',
     config:{
         appid:'wx5fb7696767080dbb',
         mch_id:'1316675801',
@@ -140,6 +141,25 @@ weChatUtil.templateMessage = function(message){
         });
     });
 };
+
+weChatUtil.getTicket = function(callback){
+    var _this = this;
+    request({
+        method: 'get',
+        uri: _this.ticket_url+"?access_token="+_this.tokenCache.tokenId+"&type=jsapi"
+    }, function (error, response, body) {
+        if (error)
+            throw error;
+        console.log("weChatUtil.getTicket:@",body,"@");
+        var retData = JSON.parse(body);
+        console.log(retData);
+        if (retData.ticket) {
+            callback(retData.ticket);
+        } else {
+            console.log("fetch ticket error!");
+        }
+    });
+}
 
 weChatUtil.preOrder = function(obj, callback){
     var _this = this;

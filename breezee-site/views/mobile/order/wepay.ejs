@@ -11,62 +11,46 @@
     </style>
 </head>
 <body ontouchstart>
-<form id="form1" runat="server">
-    <div style="text-align: center; margin-top: 50px;">
-        当前网络环境： <span class="int"></span>
-        <br/>
-        <br/>
-        <br/>
-        <span id="payMsg" style="color: Red;">微信支付测试：0.01 元</span>
-        <br/>
-        <span id="Span1" style="color: Red;">订单编号：<%= body.code %></span>
-        <br/>
-        时间戳:<%= body.timestamp %>
-        <br/>
-        统一支付后的随机串：<%= body.nonceStr %>
-        <br/>
-        预支付ID：<%= body.package %>
-        <br/>
-        统一签名类型：<%= body.signType %>
-        <br/>
-        统一签名：<%= body.paySign %>
-    </div>
-    <div style="margin-top: 200px; text-align: right;">
-        <span style="font-size: 12px; color: #CCC;">测试微信支付 </span>
-    </div>
-</form>
+<%
+console.log("wepay body:", body);
+%>
+<div style="text-align: center; margin-top: 50px;" id="errorMsg"></div>
+<!--<div style="text-align: center;">-->
+    <!--当前网络环境： <span class="int"></span>-->
+    <!--<br/>-->
+    <!--<br/>-->
+    <!--<span id="payMsg" style="color: Red;">微信支付：0.01 元</span>-->
+    <!--<br/>-->
+    <!--<span id="Span1" style="color: Red;">订单编号：<%= body.code %></span>-->
+    <!--<br/>-->
+    时间戳:<%= body.timestamp %>
+    <!--<br/>-->
+    统一支付后的随机串：<%= body.nonceStr %>
+    <!--<br/>-->
+    预支付ID：<%= body.package %>
+    <!--<br/>-->
+    统一签名类型：<%= body.signType %>
+    <!--<br/>-->
+    统一签名：<%= body.signature %>
+<!--</div>-->
+
 <script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js" type="text/javascript"></script>
+<% include ../common/footer.ejs %>
 <script type="text/javascript">
     wx.config({
         debug: true,
-        appid: '<%= body.appid %>', // 必填，公众号的唯一标识
+        appId: "<%= body.appId %>", // 必填，公众号的唯一标识
         timestamp: "<%= body.timestamp %>",
         nonceStr: "<%= body.nonceStr %>",
         signature: "<%= body.signature %>",
         jsApiList: [  // 必填，需要使用的JS接口列表
-            'onMenuShareTimeline',
-            'onMenuShareAppMessage',
-            'getNetworkType',
-            'chooseWXPay'
+            "onMenuShareTimeline",
+            "onMenuShareAppMessage",
+            "getNetworkType",
+            "chooseWXPay"
         ]
     });
     wx.ready(function () {
-//        document.querySelector('#payOK').onclick = function () {
-//            wx.chooseWXPay({
-//                timestamp: "<%= body.timestamp %>", // 支付签名时间戳
-//                nonceStr: "<%= body.nonceStr %>", // 支付签名随机串
-//                package: "<%= body.package %>", // 统一支付接口返回的package包
-//                signType: "<%= body.signType %>", // 签名方式，'MD5'
-//                paySign: "<%= body.paySign %>", // 支付签名
-//                success: function (res) {
-//                    if (res.err_msg == "get_brand_wcpay_request:ok") {
-//                        alert("支付成功");
-//                        // 使用以上方式判断前端返回,微信团队郑重提示：res.err_msg将在用户支付成功后返回ok，但并不保证它绝对可靠。
-//                    }
-//                }
-//            });
-//        };
-
         wx.chooseWXPay({
             timestamp: "<%= body.timestamp %>", // 支付签名时间戳
             nonceStr: "<%= body.nonceStr %>", // 支付签名随机串
@@ -74,33 +58,31 @@
             signType: "<%= body.signType %>", // 签名方式，'MD5'
             paySign: "<%= body.paySign %>", // 支付签名
             success: function (res) {
-                //TODO:更新订单状态
-                alert(res);
-
-                if (res.err_msg == "get_brand_wcpay_request:ok") {
-                    alert("支付成功");
+                if (res.err_msg.indexOf("ok") > -1) {
                     // 使用以上方式判断前端返回,微信团队郑重提示：res.err_msg将在用户支付成功后返回ok，但并不保证它绝对可靠。
+                    Dolphin.ajax({
+                        url: '/data/oms/order/status/<%= body.orderId %>/1',
+                        type: Dolphin.requestMethod.GET,
+                        onSuccess: function (reData) {
+                            Dolphin.goUrl("/order/myOrder");
+                        }
+                    });
+                } else {
+                    $("#errorMsg").html(res.err_msg);
                 }
             }
         });
 
+
         //监听错误事件 出现'invalid signature' AJAX刷新ticket,并刷新当前页面
         wx.error(function (res) {
-            console.log(res,'-----------------------');
             if (res.errMsg.indexOf("invalid signature") > 0) {
-                alert("无效的签名，需要更新");
-            }
-            else {
-                alert(res.errMsg);
+                $("#errorMsg").html(res.errMsg);
             }
         });
-
     });
 </script>
 
-<% include ../common/footer.ejs %>
-<script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js" type="text/javascript"></script>
-<script>
-</script>
+
 </body>
 </html>

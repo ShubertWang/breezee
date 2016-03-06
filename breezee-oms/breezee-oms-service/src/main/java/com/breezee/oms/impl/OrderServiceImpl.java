@@ -18,6 +18,8 @@ import com.breezee.oms.entity.InventoryEntity;
 import com.breezee.oms.entity.OrderEntity;
 import com.breezee.oms.repository.InventoryRepository;
 import com.breezee.oms.repository.OrderRepository;
+import com.breezee.sodexo.api.domain.FoodLineInfo;
+import com.breezee.sodexo.api.service.IFoodLineService;
 import com.google.common.collect.Lists;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,20 +48,23 @@ public class OrderServiceImpl implements IOrderService, InitializingBean {
     @Autowired
     private InventoryRepository inventoryRepository;
 
+    @Autowired
+    private IFoodLineService foodLineService;
+
     @Override
     public OrderInfo saveInfo(OrderInfo orderInfo) {
         String msg = checkInventory(orderInfo);
-        if(msg != null){
-            return ErrorInfo.build(orderInfo,msg);
+        if (msg != null) {
+            return ErrorInfo.build(orderInfo, msg);
         }
         if (orderInfo.getId() == null)
-            orderInfo.setCode(String.format("%05d", orderInfo.getUserId()) + Long.valueOf(System.currentTimeMillis()-1457000000000L).toString());
+            orderInfo.setCode(String.format("%05d", orderInfo.getUserId()) + Long.valueOf(System.currentTimeMillis() - 1457000000000L).toString());
         OrderEntity entity = new OrderEntity().parse(orderInfo);
         entity.setIssueDate(new Date());
         entity.setName(orderInfo.getCode());
         orderRepository.save(entity);
         //启动流程
-        if (entity.getId()>0 && orderInfo.getTaskId() == null) {
+        if (entity.getId() > 0 && orderInfo.getTaskId() == null) {
             Map<String, Object> vars = new HashMap<>();
             //注意第一次保存启动流程orderInfo的ProcDefId和code一定要有值
             vars.put("foodLineRole", entity.getStoreName());
@@ -73,20 +78,21 @@ public class OrderServiceImpl implements IOrderService, InitializingBean {
 
     /**
      * 检查Sku库存,并减库存
+     *
      * @param info
      * @return
      */
-    private String checkInventory(OrderInfo info){
+    private String checkInventory(OrderInfo info) {
         List<OrderLineInfo> l = info.getOrderLines();
-        if(l != null){
+        if (l != null) {
             for (OrderLineInfo a : l) {
-                InventoryEntity entity = inventoryRepository.findBySkuIdAndLocationId(a.getSkuId(), info.getStoreName());
-                if(entity==null)
-                    return ContextUtil.getMessage("inventory.no.exist",new Object[]{a.getSkuId()});
-                if(entity.getQuantity()<1)
-                    return ContextUtil.getMessage("inventory.lack",new Object[]{a.getSkuId()});
-                entity.setQuantity(entity.getQuantity()-1);
-                inventoryRepository.save(entity);
+                List<InventoryEntity> entitys = inventoryRepository.findBySkuId(a.getSkuId());
+                if (entitys.size() == 0)
+                    return ContextUtil.getMessage("inventory.no.exist", new Object[]{a.getSkuId()});
+                if (entitys.get(0).getQuantity() < 1)
+                    return ContextUtil.getMessage("inventory.lack", new Object[]{a.getSkuId()});
+                entitys.get(0).setQuantity(entitys.get(0).getQuantity() - 1);
+                inventoryRepository.save(entitys.get(0));
             }
         }
         return null;
@@ -105,6 +111,7 @@ public class OrderServiceImpl implements IOrderService, InitializingBean {
         OrderInfo info = entity.toInfo();
         setShippingAddress(info);
         info.setStatusName(ContextUtil.getMessage("order.status." + info.getStatus()));
+        setRestaurant(info);
         return info;
     }
 
@@ -170,7 +177,19 @@ public class OrderServiceImpl implements IOrderService, InitializingBean {
             pageInfo.setSort(new Sort(Sort.Direction.DESC, "issueDate"));
         }
         Page<OrderEntity> page = orderRepository.findByUserId(userId, pageInfo);
-        return new PageResult<>(page, OrderInfo.class, (orderEntity, orderInfo) -> orderEntity.toInfo());
+        return new PageResult<>(page, OrderInfo.class, (orderEntity, orderInfo) -> {
+            OrderInfo info = orderEntity.toInfo();
+            setRestaurant(info);
+            return info;
+        });
+    }
+
+    private void setRestaurant(OrderInfo info) {
+        FoodLineInfo foodLineInfo = foodLineService.findByCode(info.getStoreName());
+        if (foodLineInfo.getId() > 0 && foodLineInfo.getMesshallInfo() != null) {
+            info.setRestaurantName(foodLineInfo.getMesshallInfo().getName());
+            info.setRestaurantImage(foodLineInfo.getMesshallInfo().getImageCode());
+        }
     }
 
     /**

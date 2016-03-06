@@ -58,7 +58,7 @@ public class SeatOrderEntity extends SeatOrderInfo {
         return storeName;
     }
 
-    public Date getReservedTime() {
+    public String getReservedTime() {
         return reservedTime;
     }
 

@@ -64,7 +64,7 @@
             <% var food = null;%>
             <% for(var j = 0; j < body.data[i].products.length; j++){%>
             <% food = body.data[i].products[j]; %>
-            <div class="list bh foodData" data-food-id="<%= food.id %>" data-food-price="<%= food.basePrice.value %>" data-food-name="<%= food.name %>">
+            <div class="list bh foodData" data-food-code="<%= food.code %>" data-food-id="<%= food.id %>" data-food-price="<%= food.basePrice.value %>" data-food-name="<%= food.name %>">
                 <div class="text foodDetail"><a href="#"><%= food.name %></a></div>
                 <div class="img foodDetail"><img src="/custom/wx_style/images/<%= food.image || "img_cp1.png" %>"></div>
                 <div class="bh">
@@ -72,9 +72,9 @@
                     <div class="btn_gm">
                         <div class="icon_jh icon_jhh"></div>
                         <div class="sz" style=" display:none;">5</div>
-                        <div class="icon_jh1" style=" display:none;"></div>
+                        <div class="icon_jh1" style="color: #000"> 剩余<%= food.quantity.value || '无货' %>份</div>
                     </div>
-                    <div class="jg_b"><span>￥</span><%= food.basePrice.value || 18 %></div>
+                    <div class="jg_b"><span>￥</span><%= food.basePrice.value || '无价钱' %>/份</div>
                 </div>
             </div>
             <% } %>

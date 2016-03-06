@@ -72,7 +72,6 @@ var i, totalPrice = 0;
         </label>
     </div>
 
-
     <div class="weui_cells">
         <div class=" weui_cells_access">
             <a class="weui_cell" href="javascript:;">
@@ -103,10 +102,7 @@ var i, totalPrice = 0;
             </a>
         </div>
     </div>
-
-
     <div class="weui_cells">
-
         <div class=" weui_cells_access">
             <a class="weui_cell" href="javascript:;">
                 <div class="weui_cell_bd weui_cell_primary">
@@ -123,9 +119,7 @@ var i, totalPrice = 0;
         </div>
     </div>
 
-
     <div class="div_ddlist">
-
         <div class="ddmx">
             <ul class="list-group">
                 <% for(i = 0; i < body.foodList.length; i++){ %>
@@ -138,7 +132,6 @@ var i, totalPrice = 0;
                 <% } %>
             </ul>
         </div>
-
     </div>
 </div>
 <article>
@@ -173,19 +166,14 @@ var i, totalPrice = 0;
         orderInfo.userMobile = '<%= userData.userMobile %>';
         orderInfo.userName = '<%= userData.userName %>';
 
-        $("input[name='payType']").each(function () {
-            console.log($(this).is(':checked'), $(this).val());
-            if ($(this).is(':checked')) {
-                orderInfo.paymentType = $(this).val();
-            }
-        });
+        orderInfo.paymentType = $("input[name='payType']:checked").val();
         orderInfo.needTime = document.getElementById("needTime").value;
         orderInfo.remark = document.getElementById("remark").value;
 
         var orderLines = [];
         <% for(i = 0; i < body.foodList.length; i++){ %>
         orderLines.push({
-            skuId: "<%= body.foodList[i].id %>",
+            skuId: "<%= body.foodList[i].code %>",
             note: "<%= body.foodList[i].name %>",
             quantity: {value: "<%= body.foodList[i].number %>"},
             unitPrice: {value: "<%= body.foodList[i].price.toFixed(2) %>"}
@@ -197,18 +185,19 @@ var i, totalPrice = 0;
         orderInfo.shippingAddressId = $("#addressSel").attr("addressId");
         <% } %>
         orderInfo.shippingMethod = "<%= cookie.orderType %>";
-        //userId
-        //subTotal
-        //storeName 服务线
-        //orderLines
+
         Dolphin.ajax({
             url: '/data/oms/order/',
             type: Dolphin.requestMethod.PUT,
             data: Dolphin.json2string(orderInfo),
             onSuccess: function (reData) {
+                if(reData.id<0){
+                    alert(reData.remark);
+                    return;
+                }
                 //判断支付情况
                 if (reData.paymentType == 'wepay') {
-                    Dolphin.goUrl("/order/wepay");
+                    Dolphin.goUrl("/order/wepay?id="+reData.id);
                 } else {
                     Dolphin.goUrl("/order/myOrder");
                 }

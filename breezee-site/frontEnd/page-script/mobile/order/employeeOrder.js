@@ -1,6 +1,7 @@
 $(function () {
     $('.wddd_ddlist').click(function () {
-        location.href = '/view/order/employeeOrderDetail?id=1';
+        var param = $(this).data();
+        location.href = '/view/order/employeeOrderDetail?id='+param.id+"&taskId="+param.taskId;
     });
 });
 

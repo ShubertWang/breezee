@@ -1563,7 +1563,8 @@
             codeField : 'code',
             nameField : 'name',
 			optionUrl : null,
-			optionParam : null
+			optionParam : null,
+			ajaxType:'get'
 		}
 	};
 
@@ -1929,6 +1930,7 @@
 					var thisSelect = this,opts = $.extend({}, thisForm.opts.select, param);
 					var options = null,
 						optionUrl = $(this).attr('optionUrl') || opts.optionUrl,
+						ajaxType = $(this).attr('ajaxType') || opts.ajaxType,
 						optionParam=$(this).attr('optionParam') || opts.optionParam,
 						codeField = $(this).attr('codeField') || opts.codeField,
 						nameField = $(this).attr('nameField') || opts.nameField,
@@ -1944,7 +1946,7 @@
 							//urgent, so just like this
 							optionUrl = optionUrl+"?"+optionParam;
 						}
-						options = thisTool.ajax({url : optionUrl, async : false, mockPathData: mockPathData});
+						options = thisTool.ajax({url : optionUrl, async : false, type:ajaxType, mockPathData: mockPathData});
 						if(dataFilter){
 							switch(typeof dataFilter){
 								case "string" :
@@ -3011,6 +3013,9 @@
 				col = $('<td>').attr('columnCode', column.code).appendTo(row);
 				if(column.width){
 					col.css('width', column.width);
+				}
+				if(column.textAlign){
+					col.css('text-align', column.textAlign);
 				}
 				if(column.wrap){
 					col.css('white-space', 'nowrap');

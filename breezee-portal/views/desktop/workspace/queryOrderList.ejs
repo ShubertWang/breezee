@@ -4,6 +4,11 @@
     <% include ../common/meta.ejs %>
     <title>管理平台</title>
     <% include ../common/public.ejs %>
+    <style>
+        p{
+            margin:0px;
+        }
+    </style>
 </head>
 <body>
 <% include ../common/header.ejs %>
@@ -28,7 +33,7 @@
                         <form id="queryForm" name="queryForm" class="form-horizontal form-single">
                             <input type="hidden" name="storeName" value="<%= session.job %>"/>
                             <div class="dolphin-row">
-                                <div class="dolphin-col-10">
+                                <div class="dolphin-col-6">
                                     <div class="form-group">
                                         <label class="col-sm-4 control-label">
                                             订单编号
@@ -38,7 +43,26 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="dolphin-col-10">
+                                <div class="dolphin-col-6">
+                                    <div class="form-group">
+                                        <label class="col-sm-4 control-label">
+                                            订单状态
+                                        </label>
+                                        <div class="col-sm-8">
+                                            <select name="status" class="form-control">
+                                                <option value=""></option>
+                                                <option value="0">待付款</option>
+                                                <option value="1">已创建</option>
+                                                <option value="2">已确认</option>
+                                                <option value="3">已制作</option>
+                                                <option value="4">已完成</option>
+                                                <option value="5">已拒绝</option>
+                                                <option value="-1">已取消</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="dolphin-col-6">
                                     <div class="form-group">
                                         <label class="col-sm-4 control-label">
                                             联系手机
@@ -62,7 +86,6 @@
                         </form>
                     </div>
                 </div>
-
                 <!--list-->
                 <div id="list"></div>
             </div>

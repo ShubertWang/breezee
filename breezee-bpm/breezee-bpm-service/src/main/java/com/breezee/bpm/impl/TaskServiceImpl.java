@@ -85,10 +85,26 @@ public class TaskServiceImpl implements ITaskService {
         Integer orderStatus = Integer.parseInt(variables.get("orderStatus").toString());
         variables.remove("orderId");
         variables.remove("orderStatus");
-        if (variables.get("taskOwner") != null)
-            taskService.setOwner(taskId, variables.get("taskOwner").toString());
-        if (variables.get("complete").toString().equals("true"))
-            taskService.complete(taskId, variables);
+        if(taskId.equals("-1")){
+            String owner = variables.get("userId").toString();
+            String group = variables.get("storeName").toString();
+            variables.remove("userId");
+            variables.remove("storeName");
+            List<Task> l = taskService.createTaskQuery().taskOwner(owner)
+                    .taskCandidateGroup(group).active().list();
+            ProcessInstance pi;
+            for(Task t : l){
+                pi = runtimeService.createProcessInstanceQuery().processInstanceId(t.getProcessInstanceId()).singleResult();
+                if(pi.getBusinessKey().equals(orderId.toString())){
+                    taskService.complete(taskId, variables);
+                }
+            }
+        } else {
+            if (variables.get("taskOwner") != null)
+                taskService.setOwner(taskId, variables.get("taskOwner").toString());
+            if (variables.get("complete").toString().equals("true"))
+                taskService.complete(taskId, variables);
+        }
         orderService.updateStatus(orderId, orderStatus);
     }
 
@@ -261,9 +277,15 @@ public class TaskServiceImpl implements ITaskService {
             BeanUtils.copyProperties(a, vo);
             ProcessInstance pi = runtimeService.createProcessInstanceQuery().processInstanceId(a.getProcessInstanceId()).singleResult();
             if (pi != null && pi.getBusinessKey() != null) {
-                vo.getProperties().put("orderInfo", orderService.findInfoById(Long.parseLong(pi.getBusinessKey())));
-                vo.setProcessDefinitionName(pi.getProcessDefinitionName());
-                vo.setBusinessKey(pi.getBusinessKey());
+                if(pi.getProcessDefinitionKey().equals("orderProcess")) {
+                    vo.getProperties().put("orderInfo", orderService.findInfoById(Long.parseLong(pi.getBusinessKey())));
+                    vo.setProcessDefinitionName(pi.getProcessDefinitionName());
+                    vo.setBusinessKey(pi.getBusinessKey());
+                } else if(pi.getProcessDefinitionKey().equals("seatProcess")){
+
+                } else if(pi.getProcessDefinitionKey().equals("requestProcess")){
+
+                }
             }
             ll.add(vo);
         });

@@ -48,6 +48,11 @@ public class UserInfo extends BaseInfo {
 
     protected String accountId;
 
+    /**
+     * 供内部用户使用，主要用来处理流程订单的
+     */
+    protected String userJob;
+
     protected double balance = 0.00;
 
     protected Integer addressCount=0;
@@ -192,6 +197,14 @@ public class UserInfo extends BaseInfo {
 
     public void setShippingAddressInfos(List<ShippingAddressInfo> shippingAddressInfos) {
         this.shippingAddressInfos = shippingAddressInfos;
+    }
+
+    public String getUserJob() {
+        return userJob;
+    }
+
+    public void setUserJob(String userJob) {
+        this.userJob = userJob;
     }
 
     public void addShippingAddressInfo(ShippingAddressInfo sinfo){

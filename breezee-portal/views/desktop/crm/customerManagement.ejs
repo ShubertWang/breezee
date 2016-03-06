@@ -94,6 +94,7 @@
                     </div>
                     <div class="panel-body">
                         <form id="editForm">
+                            <input type="hidden" name="id" />
                             <div class="form-group">
                                 <label>客户编码</label>
                                 <input type="text" class="form-control"  name="code" dol-validate="required">
@@ -115,8 +116,8 @@
                                 <input type="text" class="form-control"  name="wechat">
                             </div>
                             <div class="form-group">
-                                <label>工作人员</label>
-                                <input type="text" class="form-control"  name="accountId">
+                                <label>内部服务线</label>
+                                <select class="form-control" options optionUrl="/data/sdx/foodLine/list" ajaxType="post" codeField="code" name="userJob"></select>
                             </div>
                             <hr/>
                             <div class="form-buttons">

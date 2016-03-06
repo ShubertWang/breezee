@@ -13,13 +13,13 @@
             <div class="page-content">
                 <!--title-->
                 <div class="page-header">
-                    <h1>订单处理</h1>
+                    <h1>订单处理 - <%= data.businessKey %></h1>
                     <div class="operationButton">
                         <%
                         var render = [];
-                        var tmp = body.formKey.split('|');
+                        var tmp = data.formKey.split('|');
                         for (var i = 0; i < tmp.length; i++) {
-                            render.push("<button onclick='taskComplete(this," + data.id + "," + data.businessKey + ")' id='" + tmp[i] + "'>" + tmp[i] + "</button>");
+                            render.push("<button onclick='taskComplete(this," + data.taskId + "," + data.businessKey + ")' id='" + tmp[i] + "'>" + tmp[i] + "</button>");
                         } %>
                         <%- render %>
                         <button type="button" class="btn btn-default dol-goBack" id="cancel">
@@ -28,34 +28,126 @@
                         </button>
                     </div>
                 </div>
+                <div class="panel-body form-horizontal" id="baseInfo">
+                    <div class="dolphin-row">
+                        <div class="dolphin-col-6">
+                            <div class="form-group">
+                                <label class="col-sm-5 control-label">
+                                    订单编号
+                                </label>
+                                <div class="col-sm-7">
+                                    <p class="form-control-static" name="code"></p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="dolphin-col-6">
+                            <div class="form-group">
+                                <label class="col-sm-5 control-label">
+                                    下单时间
+                                </label>
+                                <div class="col-sm-7">
+                                    <p class="form-control-static" name="name"></p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="dolphin-col-6">
+                            <div class="form-group">
+                                <label class="col-sm-5 control-label">
+                                    服务类型
+                                </label>
+                                <div class="col-sm-7">
+                                    <p id="parentName" class="form-control-static" name="shippingMethod"></p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="dolphin-col-6">
+                            <div class="form-group">
+                                <label class="col-sm-5 control-label">
+                                    送餐时间
+                                </label>
+                                <div class="col-sm-7">
+                                    <p class="form-control-static" name="needTime"></p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="dolphin-col-6">
+                            <div class="form-group">
+                                <label class="col-sm-5 control-label">
+                                    订单金额
+                                </label>
+                                <div class="col-sm-7">
+                                    <p class="form-control-static" name="subTotal.value"></p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="dolphin-col-6">
+                            <div class="form-group">
+                                <label class="col-sm-5 control-label">
+                                    支付方式
+                                </label>
+                                <div class="col-sm-7">
+                                    <p class="form-control-static" name="paymentType"></p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="dolphin-col-6">
+                            <div class="form-group">
+                                <label class="col-sm-5 control-label">
+                                    订单状态
+                                </label>
+                                <div class="col-sm-7">
+                                    <p class="form-control-static" name="statusName"></p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="dolphin-col-6">
+                            <div class="form-group">
+                                <label class="col-sm-5 control-label">
+                                    收货人
+                                </label>
+                                <div class="col-sm-7">
+                                    <p class="form-control-static" name="consigneeName"></p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="dolphin-col-6">
+                            <div class="form-group">
+                                <label class="col-sm-5 control-label">
+                                    联系手机
+                                </label>
+                                <div class="col-sm-7">
+                                    <p class="form-control-static" name="consigneeMobile"></p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="dolphin-col-6">
+                            <div class="form-group">
+                                <label class="col-sm-5 control-label">
+                                    收货地址
+                                </label>
+                                <div class="col-sm-7">
+                                    <p class="form-control-static" name="consigneeAddress"></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 <!--list-->
                 <div id="list">
 
                 </div>
             </div>
         </div>
-        <div class="dolphin-col-24"  id="image">
+        <div class="dolphin-col-24" id="image">
         </div>
     </div>
 </div>
 <% include ../common/footer.ejs %>
-<script>
-    wfHistory();
-</script>
-<script src="${ctx }/public/custom/js/parent-workflow.js"></script>
+<script src="<%= global.config.publicPath %>/custom/js/parent-workflow.js"></script>
 <script>
     if (REQUEST_MAP.data.processInstanceId) {
-//        graphTrace(
-//                {
-//                    imageUrl    :   '',
-//                    dataUrl     :   '',
-//                    prcsDefId   :   REQUEST_MAP.data.processDefinitionId.split(":")[0]
-//                },
-//                REQUEST_MAP.data.processInstanceId
-//        );
         graphTrace(null, REQUEST_MAP.data.processInstanceId, REQUEST_MAP.data.processDefinitionId.split(":")[0], 'image');
     }
-
 </script>
 </body>
 </html>

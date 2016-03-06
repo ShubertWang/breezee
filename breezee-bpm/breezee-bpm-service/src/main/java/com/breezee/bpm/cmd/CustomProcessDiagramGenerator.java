@@ -98,8 +98,8 @@ public class CustomProcessDiagramGenerator {
         this.minY = point.y;
         this.minX = (this.minX <= 5) ? 5 : this.minX;
         this.minY = (this.minY <= 5) ? 5 : this.minY;
-        this.minX -= 120;
-        this.minY -= 150;
+        this.minX -= 70;
+        this.minY -= 130;
 
         ProcessDefinitionEntity definition = new GetDeploymentProcessDefinitionCmd(
                 processDefinitionId).execute(Context.getCommandContext());

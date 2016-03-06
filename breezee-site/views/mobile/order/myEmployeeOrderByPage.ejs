@@ -1,28 +1,31 @@
-<% for(var i = 0; i < body.length; i++){ %>
+<% for(var i = 0; i < body.length; i++){  console.log(body[i]);%>
 <div class="weui_cells weui_cells_access">
     <a class="weui_cell" href="javascript:;">
         <div class="weui_cell_bd weui_cell_primary">
-            <p>订单号：<%= body[i].businessKey %></p>
+            <p>订单号：<%= body[i].properties.orderInfo.code %></p>
         </div>
         <div class="weui_cell_ft"><%= body[i].taskDefinitionKey %></div>
     </a>
 
     <div class="wdlist"><!--TODO 根据orderStatus判断已完成订单 -->
         <div>
-            <div class="wddd_ddlist bh" data-order-id="<%= body[i].properties.id %>">
+            <div class="wddd_ddlist bh" data-id="<%= body[i].properties.orderInfo.id %>" data-task-id="<%= body[i].id %>">
                 <div class="cpxq bh">
                     <div class="text">
-                        <h1><%= body[i].properties.restaurantName %></h1>
-                        <div class="wddd_list"><%= body[i].properties.issueDate %> </div>
+                        <h1><%= body[i].properties.orderInfo.restaurantName %></h1>
+                        <div class="wddd_list"><%= global.myUtil.dateFormatter(new Date(body[i].properties.orderInfo.issueDate), "yyyy-MM-dd hh:mm:ss") %> </div>
+                    </div>
+                    <div>
+                        <h3><%= body[i].properties.orderInfo.statusName %></h3>
                     </div>
                     <div class="jg">
-                        <span><%= body[i].properties.subTotal && body[i].properties.subTotal.value %> </span>元
+                        <span><%= body[i].properties.orderInfo.subTotal && body[i].properties.orderInfo.subTotal.value %> </span>元
                     </div>
                 </div>
             </div>
-            <div class="wddd_money bg_<%= body[i].properties.shippingMethod %>">
-                <%= body[i].properties.shippingMethod == "wm" ? "外送订单" : "堂吃订单" %><!--TODO 枚举-->
-                <% var buttonList = body[i].formKey.split('|'); %>
+            <div class="wddd_money bg_<%= body[i].properties.orderInfo.shippingMethod %>">
+                <%= body[i].properties.orderInfo.shippingMethod == "wm" ? "外送订单" : "堂吃订单" %><!--TODO 枚举-->
+                <% body[i].formKey=body[i].formKey || "";var buttonList = body[i].formKey.split('|'); %>
                 <% for(var j = 0; j < buttonList.length; j++){ %>
                 <input type="button" value="<%= buttonList[j] %>" id="<%= buttonList[j] %>" class="btnred" onclick="taskComplete(this, '<%= body[i].id %>', '<%= body[i].businessKey %>')" />
                 <% } %>
