@@ -32,7 +32,7 @@
                     </div>
                     <div class="dolphin-col-12">
                         <div class="form-group">
-                            <label class="col-sm-4 control-label">副标题</label>
+                            <label class="col-sm-4 control-label">封面图片</label>
 
                             <div class="col-sm-8">
                                 <input type="text" class="form-control" name="subtitle"/>
@@ -43,7 +43,8 @@
                         <div class="form-group">
                             <label class="col-sm-4 control-label">营运站点</label>
                             <div class="col-sm-8">
-                                <input type="text" class="form-control" name="site"/>
+                                <input type="text" class="form-control" name="site"
+                                       readonly="readonly" value="<%= session.userOrg %>"/>
                             </div>
                         </div>
                     </div>
@@ -104,7 +105,7 @@
     $(function () {
         Dolphin.form.parse();
         um = UM.getEditor('myEditor', {
-            imageUrl:"/file/"
+            imageUrl:"<%= global.config.contextPath + global.config.viewPrefix %>/file/"
             ,imagePath:""
             ,imageFieldName:"upfile"
         });

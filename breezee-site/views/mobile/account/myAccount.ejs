@@ -10,9 +10,9 @@
     <div class="weui_cells weui_cells_access" style="margin-top:0;">
 
         <a class="weui_cell" href="javascript:;">
-            <div class="weui_cell_hd img_tx"><img src="<%= userData.headimgurl?userData.headimgurl:'/custom/wx_style/images/icon_tx.png' %>" alt="" style="width:60%;margin-right:5px;display:block"></div>
+            <div class="weui_cell_hd img_tx"><img src="<%= body.headimgurl?body.headimgurl:'/custom/wx_style/images/icon_tx.png' %>" alt="" style="width:60%;margin-right:5px;display:block"></div>
             <div class="weui_cell_bd weui_cell_primary">
-                <p name="username"><%= userData.userName %></p>
+                <p name="username"><%= body.nickname %></p>
             </div>
             <div class="weui_cell_ft"></div>
         </a>

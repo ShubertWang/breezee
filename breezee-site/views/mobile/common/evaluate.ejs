@@ -10,20 +10,25 @@
         if(param_panel.length > 0){
             param = param_panel.data();
         }
+        if(!param.objectId){
+            alert("不可评价");
+            return;
+        }
+        param.userId = "<%= userData.siteId %>";
+        param.userType = "<%= userData.userType %>";
+        param.value = flag?1:0;
+
         Dolphin.ajax({
-            url:'/data/sdx/comment',
-            data:param,
+            url:'/data/sdx/comment/',
+            type: Dolphin.requestMethod.PUT,
+            data: Dolphin.json2string(param),
             onSuccess:function(ret){
                 if(ret.id<0){
                     alert(ret.remark);
-                    return;
+                } else{
+                    _this.html(_this.html()-0+(flag?1:-1));
                 }
             }
         });
-        console.log(flag);
-        console.log(param);
-        /*ajax*/
-        //onSuccess TODO 后台需对评价的次数做校验限制
-        _this.html(_this.html()-0+(flag?1:-1));
     }
 </script>

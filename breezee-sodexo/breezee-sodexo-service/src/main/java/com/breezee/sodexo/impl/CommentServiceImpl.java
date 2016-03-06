@@ -30,13 +30,16 @@ public class CommentServiceImpl implements ICommentService {
     @Override
     public CommentInfo saveInfo(CommentInfo info) {
         //evaluate, read, order
+        String time = formatter.format(new Date());
         if (info.getObjectType().equals("evaluate")) {
-            CommentEntity entity = commentRepository.findByUserIdAndObjectIdAndCommentTime(info.getUserId(), info.getObjectId(), formatter.format(new Date()));
+            CommentEntity entity = commentRepository.findByUserIdAndObjectIdAndCommentTime(info.getUserId(), info.getObjectId(), time);
             if (entity != null) {
                 return ErrorInfo.build(info, ContextUtil.getMessage("comment.once.error"));
             }
         }
-        commentRepository.save(new CommentEntity().parse(info));
+        CommentEntity entity = new CommentEntity();
+        entity.setCommentTime(time);
+        commentRepository.save(entity.parse(info));
         return SuccessInfo.build(CommentInfo.class);
     }
 

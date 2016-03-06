@@ -76,6 +76,7 @@ public class CommentEntity extends CommentInfo {
 
     public CommentEntity parse(CommentInfo info){
         BeanUtils.copyProperties(info,this);
+        this.setCreateTime(new Date());
         return this;
     }
 }

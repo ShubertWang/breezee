@@ -15,7 +15,11 @@ accountRoute.myAccount = function (queryData, res, callback) {
     //}, function(error, response, body){
     //    callback(body);
     //});
-    callback({});
+
+    global.weChatUtil.getUserInfo(queryData.code,function(wechatUser){
+        callback(wechatUser);
+    });
+
 };
 accountRoute.account = function (queryData, res, callback) {
     global.myUtil.request({

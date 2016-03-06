@@ -21,7 +21,7 @@ route.news = function (queryData, res, callback) {
         body = body || {content:[]};
         body.content = body.content || [];
         for(var i = 0; i < body.content.length; i++){
-            body.content[i]._date = global.myUtil.dateFormatter(new Date(body.content[i].date), "MM月dd日");
+            body.content[i]._date = global.myUtil.dateFormatter(new Date(body.content[i].updateTime), "MM月dd日");
         }
         callback(body.content);
     });
