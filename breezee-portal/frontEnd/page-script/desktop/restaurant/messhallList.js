@@ -83,6 +83,8 @@ $(function () {
         Dolphin.form.setValue(list.getChecked()[0], '#editForm');
         $("#field-Type").change();
         Dolphin.form.setValue(list.getChecked()[0], '#editForm');
+
+        $("#imageShowBody").attr("src",list.getChecked()[0].imageCode);
     });
     $("#delete").click(function () {
         if (list.getChecked().length > 0) {

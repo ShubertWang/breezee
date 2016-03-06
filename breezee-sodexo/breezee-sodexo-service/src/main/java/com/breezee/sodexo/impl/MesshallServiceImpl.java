@@ -10,6 +10,7 @@ import com.breezee.common.util.Callback;
 import com.breezee.common.util.ContextUtil;
 import com.breezee.sodexo.api.domain.MesshallInfo;
 import com.breezee.sodexo.entity.MesshallEntity;
+import com.breezee.sodexo.repository.CommentRepository;
 import com.breezee.sodexo.repository.MesshallRepository;
 import com.breezee.sodexo.api.service.IMesshallService;
 import com.breezee.sysmgr.api.service.IAccountService;
@@ -37,6 +38,9 @@ public class MesshallServiceImpl implements IMesshallService {
     @Autowired
     private IAccountService accountService;
 
+    @Autowired
+    private CommentRepository commentRepository;
+
     @Override
     public MesshallInfo saveInfo(MesshallInfo messhallInfo) {
         MesshallEntity entity = messhallRepository.findByCode(messhallInfo.getCode());
@@ -61,7 +65,10 @@ public class MesshallServiceImpl implements IMesshallService {
         MesshallEntity entity = messhallRepository.findOne(id);
         if (entity == null)
             return ErrorInfo.build(MesshallInfo.class);
-        return entity.toInfo();
+        MesshallInfo info = entity.toInfo();
+        info.getProperties().put("yc",commentRepository.countObject(info.getId().toString(),1));
+        info.getProperties().put("bc",commentRepository.countObject(info.getId().toString(),0));
+        return info;
     }
 
     @Override

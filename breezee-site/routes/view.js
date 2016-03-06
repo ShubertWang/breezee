@@ -68,7 +68,7 @@ var viewRoutes = {
         } else {
             fun(queryData, res, function (body, checkUser) {
                 //1: public 2: site 3: employee
-                if (!global.config.mockFlag && checkUser && _this._checkUser[checkUser] < _this._checkUser[req.session.userData.userType]) {
+                if (!global.config.mockFlag && checkUser && _this._checkUser[checkUser] > _this._checkUser[req.session.userData.userType]) {
                     url = '/mobile/noAccess';
                 }
                 rendParam.body = body;

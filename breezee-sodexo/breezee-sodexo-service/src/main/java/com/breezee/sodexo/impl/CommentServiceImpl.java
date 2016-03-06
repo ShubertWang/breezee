@@ -39,6 +39,7 @@ public class CommentServiceImpl implements ICommentService {
             return ErrorInfo.build(info, ContextUtil.getMessage("comment.once.error"));
         } else {
             entity = new CommentEntity();
+            entity.setCode(info.getCode());
         }
         commentRepository.save(entity.parse(info));
         return SuccessInfo.build(CommentInfo.class);

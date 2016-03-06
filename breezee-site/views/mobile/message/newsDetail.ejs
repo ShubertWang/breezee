@@ -2,7 +2,7 @@
 <html>
 <head>
     <% include ../common/meta.ejs %>
-    <title>消息中心111</title>
+    <title>新闻详情</title>
     <% include ../common/public.ejs %>
 </head>
 <body ontouchstart>
@@ -15,6 +15,13 @@
         <li><%- body.uedit %></li>
     </ul>
 </div>
+<%
+var yc = 0,bc=0;
+if(body && body.properties){
+    yc = body.properties.yc;
+    bc = body.properties.bc;
+}
+%>
 <div class="evaluate_param" data-object-type="news" data-object-id="<%= body.id %>"  data-oper-type="evaluate">
 <% include ../common/evaluate.ejs %>
 </div>

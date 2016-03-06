@@ -1,12 +1,12 @@
 $(function () {
     var page = {
-        foodList : {},
-        restaurant : null
+        foodList: {},
+        restaurant: null
     };
 
     page.init = function () {
         this.event();
-        this.restaurant = REQUEST_MAP.body;
+        this.restaurant = bodyData;
     };
 
     page.event = function () {
@@ -17,48 +17,48 @@ $(function () {
             _this.addClass('li1');
 
             $('.pagePanel').hide();
-            $('#'+_this.data('tab')).show();
+            $('#' + _this.data('tab')).show();
 
-            if(_this.data('tab') == 'restaurant_info'){
+            if (_this.data('tab') == 'restaurant_info') {
                 $('#cartPanel').hide();
-            }else{
+            } else {
                 $('#cartPanel').show();
             }
         });
 
         $('div.foodDetail').click(function (e) {
-            var food, foodId, number=0,
+            var food, foodId, number = 0,
                 i, j;
 
             foodId = $(this).closest('[data-food-id]').data('food-id');
-            for(i = 0; i < _this.restaurant.food.length; i++){
-                for(j = 0; j < _this.restaurant.food[i].children.length; j++){
-                    if(foodId == _this.restaurant.food[i].children[j].id){
-                        food = _this.restaurant.food[i].children[j];
+            for (i = 0; i < _this.restaurant.data.length; i++) {
+                for (j = 0; j < _this.restaurant.data[i].products.length; j++) {
+                    if (foodId == _this.restaurant.data[i].products[j].id) {
+                        food = _this.restaurant.data[i].products[j];
                         break;
                     }
                 }
-                if(food){
+                if (food) {
                     break;
                 }
             }
-
-            if(_this.foodList[foodId]){
+            if (_this.foodList[foodId]) {
                 number = _this.foodList[foodId].number;
             }
 
             var detailPanel = $('#food_detail');
 
             detailPanel.find('#food_detail_panel').data({
-                'foodId' : food.id,
-                'foodName' : food.name,
-                'foodPrice' : food.price
+                'foodId': food.id,
+                'foodName': food.name,
+                'foodPrice': food.basePrice.value
             });
-            detailPanel.find('div[name="img"]').html('<img src="/custom/wx_style/images/'+food.image+'.png">');
+            detailPanel.find('div[name="img"]').html('<img src="'+food['productData']['4']+'">');
             detailPanel.find('div[name="name"]').html(food.name);
             detailPanel.find('div[name="number"]').html(number);
-            detailPanel.find('span[name="price"]').html(food.price);
-            detailPanel.find('[name="desc"]').html(food.desc || '暂无');
+            detailPanel.find('span[name="price"]').html(food.basePrice.value);
+            detailPanel.find('[name="desc"]').html(food['productData']['2']);
+            detailPanel.find('[name="endesc"]').html(food['productData']['3']);
 
             $('.pagePanel').hide();
             detailPanel.show();
@@ -70,7 +70,7 @@ $(function () {
             //根据code 从界面上拿到
             $('#foodTypeName').html(_this.data('food-type-name'));
             $('.foodTypeList').hide();
-            $('.foodTypeList_'+_this.data('food-type-id')).show();
+            $('.foodTypeList_' + _this.data('food-type-id')).show();
         });
 
         $('.icon_jh').click(function () {
@@ -85,9 +85,9 @@ $(function () {
         });
 
         $('#clear').click(function () {
-            for(var key in _this.foodList){
+            for (var key in _this.foodList) {
                 _this.reduceFood({
-                    foodId : key
+                    foodId: key
                 }, 0);
             }
         });
@@ -95,46 +95,45 @@ $(function () {
         $('#submit').click(function () {
             var foodForm = $('#form')[0];
             var foodList = [];
-            for(var key in _this.foodList){
+            for (var key in _this.foodList) {
                 _this.foodList[key].price = _this.foodList[key].price * _this.foodList[key].number;
                 foodList.push(_this.foodList[key]);
             }
 
-            if(foodList.length == 0){
+            if (foodList.length == 0) {
                 alert('请至少选择一道菜肴');
-            }else{
-                Dolphin.cookie("foodList", Dolphin.json2string(foodList), {path:'/'});
-                Dolphin.goUrl("/order/orderConfirm?restId="+REQUEST_MAP.data.restId+"&userId="+REQUEST_MAP.userData.userId);
+            } else {
+                Dolphin.cookie("foodList", Dolphin.json2string(foodList), {path: '/'});
+                Dolphin.goUrl("/order/orderConfirm?restId=" + REQUEST_MAP.data.restId + "&userId=" + REQUEST_MAP.userData.userId);
             }
         });
     };
     page.addFood = function (data, number) {
-        console.log(data);
         var _this = this;
         var id = data.foodId,
             name = data.foodName,
             price = data.foodPrice
-            code = data.foodCode;
+        code = data.foodCode;
 
-        if(_this.foodList[id]){
-            if(number){
+        if (_this.foodList[id]) {
+            if (number) {
                 _this.foodList[id].number = number;
-            }else{
+            } else {
                 _this.foodList[id].number++;
             }
-        }else{
+        } else {
             _this.foodList[id] = {
-                id : id,
-                name : name,
-                price : price,
-                code:code,
-                number : number==null?1:number
+                id: id,
+                name: name,
+                price: price,
+                code: code,
+                number: number == null ? 1 : number
             }
         }
 
         $('#food_detail').find('div[name="number"]').html(_this.foodList[id].number);
 
-        var foodPanel = $('[data-food-id="'+id+'"]');
+        var foodPanel = $('[data-food-id="' + id + '"]');
         foodPanel.find('.sz,.icon_jh1').show();
         foodPanel.find('.jg_b').addClass('jg');
         foodPanel.find('.icon_jh').removeClass('icon_jhh');
@@ -147,21 +146,21 @@ $(function () {
         var _this = this;
         var id = data.foodId;
 
-        if(_this.foodList[id] == null){
+        if (_this.foodList[id] == null) {
             return this;
         }
 
-        if(number != null){
+        if (number != null) {
             _this.foodList[id].number = number;
-        }else{
+        } else {
             _this.foodList[id].number--;
         }
 
         $('#food_detail').find('div[name="number"]').html(_this.foodList[id].number);
 
-        var foodPanel = $('[data-food-id="'+id+'"]');
+        var foodPanel = $('[data-food-id="' + id + '"]');
         foodPanel.find('.sz').html(_this.foodList[id].number);
-        if(_this.foodList[id].number == 0){
+        if (_this.foodList[id].number == 0) {
             foodPanel.find('.jg_b').removeClass('jg');
             foodPanel.find('.icon_jh').addClass('icon_jhh');
             foodPanel.find('.sz,.icon_jh1').hide();
@@ -175,19 +174,19 @@ $(function () {
     page.modifyFood = function () {
         var _this = this;
         var totalNumber = 0, totalPrice = 0,
-            li,title,price,btn,icon_add,number,icon_reduce,
+            li, title, price, btn, icon_add, number, icon_reduce,
             cartListPanel = $('#cartList'),
             key;
 
         cartListPanel.empty();
-        for(key in _this.foodList){
+        for (key in _this.foodList) {
             totalNumber += _this.foodList[key].number;
             totalPrice += _this.foodList[key].number * _this.foodList[key].price;
 
             li = $('<li class="bh">').data({
-                "foodId" : _this.foodList[key].id,
-                "foodName" : _this.foodList[key].name,
-                "foodPrice" : _this.foodList[key].price,
+                "foodId": _this.foodList[key].id,
+                "foodName": _this.foodList[key].name,
+                "foodPrice": _this.foodList[key].price,
             }).appendTo(cartListPanel);
             title = $('<div class="title_a">').html(_this.foodList[key].name).appendTo(li);
             price = $('<div class="title_c_text">').html('￥' + (_this.foodList[key].price * _this.foodList[key].number).toFixed(2)).appendTo(li);
