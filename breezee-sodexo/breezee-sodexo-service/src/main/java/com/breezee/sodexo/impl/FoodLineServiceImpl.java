@@ -93,15 +93,8 @@ public class FoodLineServiceImpl implements IFoodLineService {
     public void updateStatus(Long id, int status) {
     }
 
-    @Override
-    public List<FoodLineInfo> findByMesshallId(Long messhallId) {
-        return new InfoList<>(foodLineRepository.findByMesshallId(messhallId), (Callback<FoodLineEntity, FoodLineInfo>) (FoodLineEntity, FoodLineInfo) -> FoodLineEntity.toInfo());
-    }
-
-    @Override
-    public List<FoodLineInfo> findBySite(String site) {
-        List<FoodLineEntity> l = foodLineRepository.findBySite(site);
-        return new InfoList<>(l, (Callback<FoodLineEntity, FoodLineInfo>) (FoodLineEntity, FoodLineInfo) -> {
+    public List toList(List<FoodLineEntity> l){
+         return new InfoList<>(l, (Callback<FoodLineEntity, FoodLineInfo>) (FoodLineEntity, FoodLineInfo) -> {
             FoodLineInfo info = FoodLineEntity.toInfo();
             MesshallInfo messhallInfo = messhallService.findInfoById(info.getMesshallId());
             if(messhallInfo!=null){
@@ -112,9 +105,20 @@ public class FoodLineServiceImpl implements IFoodLineService {
     }
 
     @Override
+    public List<FoodLineInfo> findByMesshallId(Long messhallId) {
+        return new InfoList<>(foodLineRepository.findByMesshallId(messhallId), (Callback<FoodLineEntity, FoodLineInfo>) (FoodLineEntity, FoodLineInfo) -> FoodLineEntity.toInfo());
+    }
+
+    @Override
+    public List<FoodLineInfo> findBySite(String site) {
+        List<FoodLineEntity> l = foodLineRepository.findBySite(site);
+        return toList(l);
+    }
+
+    @Override
     public List<FoodLineInfo> findBySiteAndShipping(String site, String shipping) {
         List<FoodLineEntity> l = foodLineRepository.findBySiteAndShipping(site,shipping);
-        return new InfoList<>(l, (Callback<FoodLineEntity, FoodLineInfo>) (FoodLineEntity, FoodLineInfo) -> FoodLineEntity.toInfo());
+        return toList(l);
     }
 
     @Override

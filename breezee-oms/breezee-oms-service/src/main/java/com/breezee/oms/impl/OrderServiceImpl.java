@@ -5,6 +5,7 @@
 
 package com.breezee.oms.impl;
 
+import com.breezee.bpm.api.domain.ProcsInsInfo;
 import com.breezee.bpm.api.service.IWorkflowService;
 import com.breezee.common.*;
 import com.breezee.common.util.Callback;
@@ -70,7 +71,8 @@ public class OrderServiceImpl implements IOrderService, InitializingBean {
             vars.put("foodLineRole", entity.getStoreName());
             vars.put("startUser", entity.getUserId());
             vars.put("orderId", entity.getId());
-            workflowServiceImpl.startProcessInstanceById(orderInfo.getProcDefId(), entity.getId().toString(), vars);
+            ProcsInsInfo procsInsInfo = workflowServiceImpl.startProcessInstanceById(orderInfo.getProcDefId(), entity.getId().toString(), vars);
+            orderInfo.setTaskId(Long.parseLong(procsInsInfo.getCode()));
         }
         orderInfo.setId(entity.getId());
         return SuccessInfo.build(orderInfo);
@@ -127,6 +129,7 @@ public class OrderServiceImpl implements IOrderService, InitializingBean {
         if (m.get("username") != null) {
             m.remove("username");
         }
+        pageInfo.setSort(new Sort(Sort.Direction.DESC, "issueDate"));
         Page<OrderEntity> page = orderRepository.findAll(DynamicSpecifications.createSpecification(m), pageInfo);
         return new PageResult<>(page, OrderInfo.class, (orderEntity, orderInfo) -> orderEntity.toInfo());
     }
@@ -174,8 +177,8 @@ public class OrderServiceImpl implements IOrderService, InitializingBean {
     public PageResult<OrderInfo> findMyOrder(Long userId, PageInfo pageInfo) {
         if (pageInfo == null) {
             pageInfo = new PageInfo();
-            pageInfo.setSort(new Sort(Sort.Direction.DESC, "issueDate"));
         }
+        pageInfo.setSort(new Sort(Sort.Direction.DESC, "issueDate"));
         Page<OrderEntity> page = orderRepository.findByUserId(userId, pageInfo);
         return new PageResult<>(page, OrderInfo.class, (orderEntity, orderInfo) -> {
             OrderInfo info = orderEntity.toInfo();

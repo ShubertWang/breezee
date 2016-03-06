@@ -203,21 +203,30 @@ route.seatDetail = function(queryData, res, callback){
 };
 
 route.orderMessage = function(queryData, res, callback){
-    global.weChatUtil.templateMessage({
-        touser:queryData.userCode,
-        template_id: "UdFYzwb7GdGH25-kx69vkbz4wOBwHuWWjocmJF34HYM",
-        url:"http://weixin.sodexo-cn.com/site/view/order/employeeOrderDetail?id="+queryData.orderId,
-        topcolor: "#FF0000",
-        data:{
-            title: {value: "有新的订单来临，请及时处理", color: "#173177"},
-            keyword1: {value: "订单号"+queryData.orderCode, color: "#173177"},
-            keyword2: {value: global.myUtil.dateFormatter(new Date(), "yyyy-MM-dd HH:mm:ss"), color: "#173177"},
-            remark: {value: "详情请点击查看。", color: "#173177"}
+    global.myUtil.request({
+        method: 'post',
+        uri: global.config.service['crm']+'/user/list',
+        json:{userJob : queryData.storeName}
+    },function(error, response, body){
+        body = body || [];
+        for(var i=0;i<body.length;i++){
+            global.weChatUtil.templateMessage({
+                touser:body[i].code,
+                template_id: "UdFYzwb7GdGH25-kx69vkbz4wOBwHuWWjocmJF34HYM",
+                url:"http://weixin.sodexo-cn.com/site/view/order/employeeOrderDetail?id="+queryData.orderId+"&taskId="+queryData.taskId,
+                topcolor: "#FF0000",
+                data:{
+                    title: {value: "有新的订单来临，请及时处理", color: "#173177"},
+                    keyword1: {value: "订单号"+queryData.orderCode, color: "#173177"},
+                    keyword2: {value: global.myUtil.dateFormatter(new Date(), "yyyy-MM-dd hh:mm:ss"), color: "#173177"},
+                    remark: {value: "详情请点击查看。", color: "#173177"}
+                }
+            }, function(data){
+            });
         }
+        callback({});
     });
-
-    callback({});
-}
+};
 
 route.wepay = function(queryData, res, callback){
     global.myUtil.request({
@@ -256,7 +265,8 @@ route.wepay = function(queryData, res, callback){
                         signType:'MD5',
                         paySign:_paySign,
                         package:"prepay_id="+ret.prepay_id,
-                        orderId:queryData.id
+                        orderId:queryData.id,
+                        storeName:body.storeName
                     });
 
                 });

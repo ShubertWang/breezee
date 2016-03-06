@@ -11,7 +11,7 @@
         <% for(var i = 0; i < body.length; i++){ %>
         <li class="bh li_ct evaluate_param restaurantId" data-id="<%= body[i].code %>">
             <div class="img">
-                <div><a href="javascript:void(0)" class="restaurantLink"><img src='<% body[i].imageCode || "/custom/wx_style/images/icon_ct_mr.png"%>'></a></div>
+                <div><a href="javascript:void(0)" class="restaurantLink"><img src="<% body[i].imageCode || "/custom/wx_style/images/icon_ct_mr.png"%>"></a></div>
             </div>
             <div class="text_ct bh">
                 <h2><a href="javascript:void(0)" class="restaurantLink"><%= body[i].name %></a></h2>

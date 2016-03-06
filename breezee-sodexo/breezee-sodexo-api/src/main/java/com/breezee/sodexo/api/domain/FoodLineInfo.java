@@ -82,7 +82,7 @@ public class FoodLineInfo extends BaseInfo {
 
     protected String telphone;
 
-    protected String imageCode = "icon_ct_mr";
+    protected String imageCode;
 
     protected MesshallInfo messhallInfo;
 

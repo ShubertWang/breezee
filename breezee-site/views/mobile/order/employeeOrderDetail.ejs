@@ -7,11 +7,17 @@
     <style>
         .tybtn_box {
             text-align: center;
+            margin-top:0;
         }
-
         .tybtn_box .weui_btn_mini {
             margin: 3% 5%;
             width: 30%;
+        }
+        .ddmx .list-group{
+            margin-top:5px;
+        }
+        .weui_cells{
+            margin-top:0.3em;
         }
     </style>
 </head>
@@ -90,6 +96,10 @@ var orderStatus = {
         <div class="ddmx">
             <ul class="list-group" style="margin-top:0;">
                 <li class=" bh">
+                    <div class="title_b">订单号 ：</div>
+                    <div class="title_b_text"><%= body.code %></div>
+                </li>
+                <li class=" bh">
                     <div class="title_b">餐厅 ：</div>
                     <div class="title_b_text"><%= body.restaurantName %></div>
                 </li>
@@ -116,7 +126,7 @@ var orderStatus = {
     <% if(body.status == "1"){ %>
     <!--TODO 根据订单状态决定显示button，待确认-->
     <div class=" tybtn_box">
-        <a href="javascript:taskComplete('orderConfirm',<%= data.taskId %>, <%= data.id %>);" class="weui_btn weui_btn_mini weui_btn_default1">确认</a>
+        <a href="javascript:void(0);" data-status="orderConfirm" data-order-id="<%= data.id %>" data-task-id="<%= data.taskId %>" class="operBut weui_btn weui_btn_mini weui_btn_default1">确认</a>
         <a href="javascript:$('#dialog1').show();" class="weui_btn weui_btn_mini weui_btn_default1">拒绝</a>
     </div>
     <!--BEGIN dialog1-->
@@ -134,7 +144,7 @@ var orderStatus = {
             </div>
             <div class="weui_dialog_ft">
                 <a href="javascript:$('#dialog1').hide();" class="weui_btn_dialog default">取消</a>
-                <a href="javascript:taskComplete('orderReject',<%= data.taskId %>, <%= data.id %>);" class="weui_btn_dialog primary">确定</a>
+                <a href="javascript:void(0);" data-status="orderReject" data-order-id="<%= data.id %>" data-task-id="<%= data.taskId %>" class="operBut weui_btn_dialog primary">确定</a>
             </div>
         </div>
     </div>
@@ -142,9 +152,9 @@ var orderStatus = {
     <% }else if(body.status == '2' || body.status == '3'){ %>
     <div class=" tybtn_box">
         <% if(body.status == '2'){ %>
-        <a href="javascript:taskComplete('orderMake',<%= data.taskId %>, <%= data.id %>);" class="weui_btn weui_btn_mini weui_btn_default1">已制作</a>
+        <a href="javascript:void(0);" data-status="orderMake" data-order-id="<%= data.id %>" data-task-id="<%= data.taskId %>" class="operBut weui_btn weui_btn_mini weui_btn_default1">已制作</a>
         <% } %>
-        <a href="javascript:taskComplete('orderComplete',<%= data.taskId %>, <%= data.id %>);" class="weui_btn weui_btn_mini weui_btn_default1">已完成</a>
+        <a href="javascript:void(0);" data-status="orderComplete" data-order-id="<%= data.id %>" data-task-id="<%= data.taskId %>" class="operBut weui_btn weui_btn_mini weui_btn_default1">已完成</a>
     </div>
     <% } %>
 </article>
@@ -169,29 +179,30 @@ var orderStatus = {
         orderComplete: 4
     };
 
-    window.taskComplete = function (status, taskId, orderId) {
+    $(".operBut").click(function(){
+        var param = $(this).data();
         var data = {
             orderCancel: 'N',
-            taskOwner: "<%= userData.accountId %>",
-            orderId: orderId,
-            orderStatus: orderStatus[status],
+            taskOwner: "<%= userData.accountId || userData.userId %>",
+            orderId: param.orderId,
+            orderStatus: orderStatus[param.status],
             complete: true
         };
-        if (status == 'orderMake') {
+        if (param.status == 'orderMake') {
             data.complete = false;
         }
-        if(status=='orderReject') {
+        if(param.status=='orderReject') {
             data.orderCancel = 'Y';
         }
         Dolphin.ajax({
-            url: '/data/bpm/bpmTask/' + taskId,
+            url: '/data/bpm/bpmTask/' + param.taskId,
             type: Dolphin.requestMethod.POST,
             data: Dolphin.json2string(data),
             onSuccess: function (reData) {
                 Dolphin.goHistory();
             }
         });
-    }
+    });
 </script>
 </body>
 </html>

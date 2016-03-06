@@ -43,7 +43,7 @@
                         type: Dolphin.requestMethod.GET,
                         onSuccess: function (reData) {
                             //发送通知消息
-                            Dolphin.goUrl("/order/orderMessage?orderId=<%= body.package %>&orderCode=<%= body.nonceStr%>");
+                            Dolphin.goUrl("/order/orderMessage?orderId=<%= body.package %>&orderCode=<%= body.nonceStr%>&storeName=<%= %>");
                         }
                     });
                 } else {

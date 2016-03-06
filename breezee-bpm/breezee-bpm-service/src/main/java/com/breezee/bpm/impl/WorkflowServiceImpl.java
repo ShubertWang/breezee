@@ -63,7 +63,9 @@ public class WorkflowServiceImpl implements IWorkflowService {
 
             taskService.setOwner(task.getId(),variables.get("startUser").toString());
         }
-        return this.populator(processInstance);
+        ProcsInsInfo procsInsInfo = this.populator(processInstance);
+        procsInsInfo.setCode(task.getId());
+        return procsInsInfo;
     }
 
     @Override

@@ -114,7 +114,7 @@ weChatUtil.getUserInfo = function (openId, calback) {
  * 发送微信消息
  * @param message
  */
-weChatUtil.templateMessage = function (message) {
+weChatUtil.templateMessage = function (message, callback) {
     var _this = this;
     //var message = {
     //    touser: "opkN1t-njzuumf7t2d3Xlw8sUg2U",//openid
@@ -142,6 +142,7 @@ weChatUtil.templateMessage = function (message) {
                 console.log(error);
             }
             console.log("weChatUtil.templateMessage:@" + body + "@");
+            callback(body);
         });
     });
 

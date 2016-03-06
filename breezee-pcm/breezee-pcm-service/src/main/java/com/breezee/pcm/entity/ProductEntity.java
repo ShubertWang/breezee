@@ -144,6 +144,7 @@ public class ProductEntity extends BaseInfo {
             else
                 this.setCurrencyCode("RMB");
         }
+        this.setUpdateTime(new Date());
         this.setRecommend(info.isRecommend());
         return this;
     }
