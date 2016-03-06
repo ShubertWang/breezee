@@ -13,22 +13,25 @@
         <div class="weui_cells weui_cells_form">
             <div class="weui_cell">
                 <div class="weui_cell_bd weui_cell_primary">
-                    <input class="weui_input" type="text" placeholder="员工编号" name="code" disabled value="<%= userData.userCode %>"/>
+                    <input class="weui_input" type="hidden" placeholder="员工编号" name="code" disabled value="<%= userData.userCode %>"/>
                 </div>
             </div>
             <div class="weui_cell">
+                <span style="font-weight: 700;padding-right: 30px;">营运站点</span>
                 <div class="weui_cell_bd weui_cell_primary">
                     <input class="weui_input" type="text" placeholder="营运站点" name="company" disabled value="<%= userData.siteId %>"/>
                 </div>
             </div>
             <div class="weui_cell">
+                <span style="font-weight: 700;padding-right: 30px;">员工姓名</span>
                 <div class="weui_cell_bd weui_cell_primary">
                     <input class="weui_input" type="text" placeholder="员工姓名" name="name" disabled value="<%= userData.userName %>"/>
                 </div>
             </div>
             <div class="weui_cell">
+                <span style="font-weight: 700;padding-right: 30px;">企业邮箱</span>
                 <div class="weui_cell_bd weui_cell_primary">
-                    <input class="weui_input" type="email" placeholder="请提供Microsoft邮箱@microsoft.com" name="email" value="<%= userData.email %>"/>
+                    <input class="weui_input" type="email" placeholder="请提供企业邮箱@microsoft.com" name="email" value="<%= userData.email %>"/>
                 </div>
             </div>
         </div>
