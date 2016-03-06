@@ -10,6 +10,10 @@
         if(param_panel.length > 0){
             param = param_panel.data();
         }
+        if(!param.objectId){
+            alert("不可评价");
+            return;
+        }
         param.userId = "<%= userData.siteId %>";
         param.userType = "<%= userData.userType %>";
         param.value = flag?1:0;
