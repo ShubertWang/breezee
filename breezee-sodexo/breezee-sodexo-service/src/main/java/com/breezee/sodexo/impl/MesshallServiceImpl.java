@@ -66,7 +66,7 @@ public class MesshallServiceImpl implements IMesshallService {
         if (entity == null)
             return ErrorInfo.build(MesshallInfo.class);
         MesshallInfo info = entity.toInfo();
-        info.getProperties().put("yc",commentRepository.countObject(info.getId().toString(),"messhall","evaluate",1));
+        info.getProperties().put("gc",commentRepository.countObject(info.getId().toString(),"messhall","evaluate",1));
         info.getProperties().put("bc",commentRepository.countObject(info.getId().toString(),"messhall","evaluate",0));
         return info;
     }

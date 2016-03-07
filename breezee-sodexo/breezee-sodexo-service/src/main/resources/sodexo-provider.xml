@@ -20,6 +20,9 @@
                    ref="articleService" protocol="dubbo,rest" />
     <dubbo:service interface="com.breezee.sodexo.api.service.ICommentService"
                    ref="commentService" protocol="dubbo,rest" />
+    <dubbo:service interface="com.breezee.sodexo.api.service.IVisitCountService"
+                   ref="visitCountService" protocol="dubbo,rest" />
+
 
     <dubbo:service interface="com.breezee.sodexo.api.service.ISeatOrderService"
                    ref="seatOrderService" protocol="dubbo,rest" />

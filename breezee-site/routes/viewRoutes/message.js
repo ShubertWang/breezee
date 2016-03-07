@@ -29,15 +29,30 @@ route.news = function (queryData, res, callback) {
 route.newsByPage = function (queryData, res, callback) {
     route.news(queryData, res, callback);
 };
+
 route.newsDetail = function (queryData, res, callback) {
     global.myUtil.request({
         method : 'get',
         uri : 'http://127.0.0.1:10250/services/article/'+queryData.id,
         mockData : '/message/newsDetail'
     }, function(error, response, body){
+        body = body || {};
+        //发送阅读统计
+        global.myUtil.request({
+            method : 'put',
+            uri : global.config.service['sdx']+'/visitCount/',
+            json : {
+                pageId:queryData.id,
+                pageName:body.name,
+                reader:queryData.openId,
+                readerType:(queryData.userType || 1)
+            },
+            mockData : '/message/newsDetail'
+        }, function(){});
         callback(body);
     });
 };
+
 route.messageLuckyMoney = function (queryData, res, callback) {
     global.myUtil.request({
         method : 'get',
