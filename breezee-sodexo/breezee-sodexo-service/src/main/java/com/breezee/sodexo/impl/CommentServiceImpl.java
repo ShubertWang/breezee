@@ -74,6 +74,6 @@ public class CommentServiceImpl implements ICommentService {
 
     @Override
     public long countObject(String objectId, Integer value) {
-        return commentRepository.countObject(objectId, value);
+        return 0;
     }
 }

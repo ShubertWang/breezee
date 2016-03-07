@@ -67,8 +67,7 @@ public class ArticleServiceImpl implements IArticleService {
                 AccountInfo accountInfo = accountService.findByCode(info.getUpdator());
                 if (accountInfo != null)
                     info.setUserName(accountInfo.getName());
-                info.getProperties().put("yc",commentRepository.countObject(info.getId().toString(),1));
-                info.getProperties().put("nc",commentRepository.countObject(info.getId().toString(),0));
+
                 return info;
             });
         }
@@ -103,7 +102,13 @@ public class ArticleServiceImpl implements IArticleService {
         ArticleEntity entity = articleRepository.findOne(id);
         if (entity == null)
             return ErrorInfo.build(ArticleInfo.class);
-        return entity.toInfo();
+        return buildCommentCount(entity.toInfo());
+    }
+
+    private ArticleInfo buildCommentCount(ArticleInfo info){
+        info.getProperties().put("yc",commentRepository.countObject(info.getId().toString(),"news","evaluate",1));
+        info.getProperties().put("nc",commentRepository.countObject(info.getId().toString(),"news","evaluate",0));
+        return info;
     }
 
     @Override
