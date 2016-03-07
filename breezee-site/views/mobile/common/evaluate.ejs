@@ -1,6 +1,6 @@
 <div class="tybtn_box evaluate_box" >
-    <a href="javascript:void(0);" onclick="__evaluat(this, true)" style="line-height: 2.5em;" class="weui_btn weui_btn_mini weui_btn_default1 evaluate_yes"><%= yc %></a>
-    <a href="javascript:void(0);" onclick="__evaluat(this, false)" style="line-height: 2.5em;" class="weui_btn weui_btn_mini weui_btn_default1 evaluate_no"><%= bc %></a>
+    <a href="javascript:void(0);" onclick="__evaluat(this, true)" style="line-height: 2.5em;" class="weui_btn weui_btn_mini weui_btn_default1 evaluate_yes"><s></s><span class="count"><%= yc %></span></a>
+    <a href="javascript:void(0);" onclick="__evaluat(this, false)" style="line-height: 2.5em;" class="weui_btn weui_btn_mini weui_btn_default1 evaluate_no"><s></s><span class="count"><%= bc %></span></a>
 </div>
 <script>
     function __evaluat(thisObj, flag){
@@ -26,7 +26,7 @@
                 if(ret.value.id<0){
                     alert(ret.remark);
                 } else{
-                    _this.html(_this.html()-0+1);
+                    _this.find('.count').html(_this.html()-0+1);
                 }
             }
         });
