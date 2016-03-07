@@ -109,10 +109,10 @@
         </div>
 
         <%
-        var yc = 0, bc=0;
+        var gc = 0, bc=0;
         if(body.messhall.properties){
-            yc = body.messhall.properties.yc;
-            bc = body.messhall.properties.bc;
+            gc = body.messhall.properties.gc || 0;
+            bc = body.messhall.properties.bc || 0;
         }
         %>
         <div class="clear bh evaluate_param" data-object-type="messhall" data-object-id="<%= body.messhall.id %>"  data-oper-type="evaluate">

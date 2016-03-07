@@ -106,8 +106,8 @@ public class ArticleServiceImpl implements IArticleService {
     }
 
     private ArticleInfo buildCommentCount(ArticleInfo info){
-        info.getProperties().put("yc",commentRepository.countObject(info.getId().toString(),"news","evaluate",1));
-        info.getProperties().put("nc",commentRepository.countObject(info.getId().toString(),"news","evaluate",0));
+        info.getProperties().put("gc",commentRepository.countObject(info.getId().toString(),"news","evaluate",1));
+        info.getProperties().put("bc",commentRepository.countObject(info.getId().toString(),"news","evaluate",0));
         return info;
     }
 
