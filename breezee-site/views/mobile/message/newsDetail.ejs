@@ -18,8 +18,8 @@
 <%
 var yc = 0,bc=0;
 if(body && body.properties){
-    yc = body.properties.yc;
-    bc = body.properties.bc;
+    yc = body.properties.yc || 0;
+    bc = body.properties.bc || 0;
 }
 %>
 <div class="evaluate_param" data-object-type="news" data-object-id="<%= body.id %>"  data-oper-type="evaluate">

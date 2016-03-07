@@ -18,6 +18,6 @@ public interface CommentRepository extends PagingAndSortingRepository<CommentEnt
 
     CommentEntity findByCode(String code);
 
-    @Query(value = "select count(t.cmt_id) from sdx_td_comments t where t.object_id=:objectId and t.value=:value", nativeQuery = true)
-    long countObject(@Param("objectId") String objectId, @Param("value") Integer value);
+    @Query(value = "select count(t.cmt_id) from sdx_td_comments t where t.object_id=:objectId and t.object_type=:objectType and t.oper_type=:operType and t.value=:value", nativeQuery = true)
+    long countObject(@Param("objectId") String objectId,@Param("objectType") String objectType,@Param("operType") String operType, @Param("value") Integer value);
 }
