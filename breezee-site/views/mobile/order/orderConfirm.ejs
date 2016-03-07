@@ -217,7 +217,7 @@ var i, totalPrice = 0;
                 if (orderInfo.paymentType == 'wepay') {
                     Dolphin.goUrl("/order/wepay?id="+reData.value.id);
                 } else {
-                    if(reData.value.taskId){
+                    if(reData.value.taskId)
                         Dolphin.goUrl("/order/orderMessage?orderId="+reData.value.id+"&orderCode="+reData.value.code+"&storeName="+orderInfo.storeName+"&taskId="+reData.value.taskId);
                 }
             }

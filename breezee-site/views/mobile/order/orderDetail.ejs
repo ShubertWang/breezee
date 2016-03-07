@@ -87,6 +87,10 @@ var orderStatus = {
         <div class="ddmx">
             <ul class="list-group" style="margin-top:0;">
                 <li class=" bh">
+                    <div class="title_b">订单号 ：</div>
+                    <div class="title_b_text"><%= body.code %></div>
+                </li>
+                <li class=" bh">
                     <div class="title_b">餐厅 ：</div>
                     <div class="title_b_text"><%= body.restaurantName %></div>
                 </li>
@@ -128,7 +132,7 @@ var orderStatus = {
             <div class="weui_dialog_bd">亲，您的订单已被商家受理，确认要取消么？</div>
             <div class="weui_dialog_ft">
                 <a href="javascript:$('#dialog1').hide();" class="weui_btn_dialog default">取消</a>
-                <a href="javascript:;" class="weui_btn_dialog primary">确定</a>
+                <a href="javascript:cancelOrder();" class="weui_btn_dialog primary">确定</a>
             </div>
         </div>
     </div>
@@ -149,20 +153,15 @@ var orderStatus = {
         });
     });
 
-    var data = {};
-    data.userId = "<%= userData.userId %>";
-    data.orderStatus = -1;
-    data.orderId = "<%= body.id %>";
-    data.storeName = "<%= body.storeName %>";
-    data.orderCancel = "Y";
-    Dolphin.ajax({
-        url: '/data/bpm/bpmTask/-1',
-        type: Dolphin.requestMethod.POST,
-        data: Dolphin.json2string(data),
-        onSuccess: function (reData) {
-            page.undoList.reload();
-        }
-    });
+    function cancelOrder(){
+        Dolphin.ajax({
+            url: '/data/oms/order/status/<%= body.id %>/-1',
+            type: Dolphin.requestMethod.GET,
+            onSuccess: function (reData) {
+                Dolphin.goUrl("myOrder");
+            }
+        });
+    }
 
 </script>
 </body>
