@@ -34,14 +34,22 @@
 .evaluate_box .weui_btn_mini {
     margin: 0 5px;
     width: 90px;
-    padding: 0 0 0 40px;
+    padding: 0;
 }
-
-.evaluate_box .weui_btn_mini.evaluate_yes {
-    background: url(../images/icon/yes.png) no-repeat 5px 50%;
+.evaluate_box .weui_btn_mini s {
+    background-image: url(../wx_style/images/icon_24.png);
+    background-repeat: no-repeat;
+    display: inline-block;
+    vertical-align: middle;
+    height: 24px;
+    width: 24px;
+    margin-right: 10px;
 }
-.evaluate_box .weui_btn_mini.evaluate_no {
-    background: url(../images/icon/no.png) no-repeat 5px 50%;
+.evaluate_box .weui_btn_mini.evaluate_yes s {
+    background-position: -72px 0;
+}
+.evaluate_box .weui_btn_mini.evaluate_no s {
+    background-position: -48px 0;
 }
 
 /* .slideThree */
