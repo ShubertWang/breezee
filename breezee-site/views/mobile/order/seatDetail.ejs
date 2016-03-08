@@ -2,13 +2,13 @@
 <html>
 <head>
     <% include ../common/meta.ejs %>
-    <title>订单详情</title>
+    <title>订位详情</title>
     <% include ../common/public.ejs %>
 </head>
 <body ontouchstart>
 <% var i;%>
 <div class="div_ddcg">
-    <div class="zt" data-code="<%= body.status %>"><%= body.status <= "1"?'订单待确认':'订单已确认' %></div> <!--TODO 接枚举，siteOrderStatus-->
+    <div class="zt" data-code="<%= body.status %>"><%= body.status <= "1"?'订位待确认':'订位已确认' %></div> <!--TODO 接枚举，siteOrderStatus-->
     <div class="time"><%= global.myUtil.dateFormatter(new Date(body.issueDate), "yyyy-MM-dd hh:mm:ss") %></div>
 </div>
 <div>
@@ -50,20 +50,9 @@
     <% } %>
 
     <div class="weui_cells">
-        <div class=" weui_cells_access">
-            <a class="weui_cell" href="javascript:;">
-                <div class="weui_cell_bd weui_cell_primary">
-                    <p><%= body.restaurantName %></p>
-                </div>
-                <div class="weui_cell_ft"></div>
-            </a>
-        </div>
-    </div>
-
-    <div class="weui_cells">
         <div class="weui_cell">
             <div class="weui_cell_bd weui_cell_primary">
-                <p>订单详情</p>
+                <p>订位详情</p>
             </div>
         </div>
         <div class="ddmx">

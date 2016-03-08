@@ -63,7 +63,7 @@ public class ProductServiceImpl implements IProductService, InitializingBean {
         }
         List<ProductInfo> ll = new ArrayList<>();
         l.forEach(a -> {
-            ll.add(a.toInfo());
+            ll.add(a.toInfo(true));
         });
         if (rec) {
             Set<CategoryEntity> ss = categoryEntity.getChildren();
@@ -86,7 +86,7 @@ public class ProductServiceImpl implements IProductService, InitializingBean {
         }
         List<ProductInfo> ll = new ArrayList<>();
         l.forEach(a -> {
-            ll.add(a.toInfo());
+            ll.add(a.toInfo(true));
         });
         return ll;
     }
@@ -96,7 +96,7 @@ public class ProductServiceImpl implements IProductService, InitializingBean {
         ProductEntity entity = productRepository.findByCode(code);
         if (entity == null)
             return ErrorInfo.build(ProductInfo.class);
-        return entity.toInfo();
+        return entity.toInfo(false);
     }
 
     @Override
@@ -107,7 +107,7 @@ public class ProductServiceImpl implements IProductService, InitializingBean {
         for (InventoryInfo inventoryInfo : l) {
             entity = productRepository.findByCode(inventoryInfo.getSkuId());
             if (entity != null) {
-                ProductInfo productInfo = entity.toInfo();
+                ProductInfo productInfo = entity.toInfo(true);
                 productInfo.setQuantity(inventoryInfo.getQuantity());
                 ll.add(productInfo);
             }
@@ -138,7 +138,7 @@ public class ProductServiceImpl implements IProductService, InitializingBean {
             });
         }
         return new InfoList<>(l, (Callback<ProductEntity, ProductInfo>) (productEntity, productInfo) -> {
-            ProductInfo info = productEntity.toInfo();
+            ProductInfo info = productEntity.toInfo(true);
             return setStock(info);
         });
     }
@@ -195,14 +195,14 @@ public class ProductServiceImpl implements IProductService, InitializingBean {
     @Override
     public ProductInfo findInfoById(Long id) {
         ProductEntity entity = productRepository.findOne(id);
-        ProductInfo info = entity.toInfo();
+        ProductInfo info = entity.toInfo(false);
         return info;
     }
 
     @Override
     public List<ProductInfo> listAll(Map<String, Object> m) {
         List<ProductEntity> l = productRepository.findAll(DynamicSpecifications.createSpecification(m));
-        return new InfoList<>(l, (Callback<ProductEntity, ProductInfo>) (productEntity, productInfo) -> productEntity.toInfo());
+        return new InfoList<>(l, (Callback<ProductEntity, ProductInfo>) (productEntity, productInfo) -> productEntity.toInfo(false));
     }
 
     @Override
@@ -211,7 +211,7 @@ public class ProductServiceImpl implements IProductService, InitializingBean {
         pageInfo.setSort(new Sort(Sort.Direction.DESC,"recommend","updateTime"));
         Page<ProductEntity> page = productRepository.findAll(DynamicSpecifications.createSpecification(m), pageInfo);
         return new PageResult<>(page, ProductInfo.class, (productEntity, productInfo) -> {
-            ProductInfo info = productEntity.toInfo();
+            ProductInfo info = productEntity.toInfo(true);
             return setStock(info);
         });
     }

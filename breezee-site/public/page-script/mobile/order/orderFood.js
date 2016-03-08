@@ -29,39 +29,36 @@ $(function () {
         $('div.foodDetail').click(function (e) {
             var food, foodId, number = 0,
                 i, j;
-
             foodId = $(this).closest('[data-food-id]').data('food-id');
-            for (i = 0; i < _this.restaurant.data.length; i++) {
-                for (j = 0; j < _this.restaurant.data[i].products.length; j++) {
-                    if (foodId == _this.restaurant.data[i].products[j].id) {
-                        food = _this.restaurant.data[i].products[j];
-                        break;
+            Dolphin.ajax({
+                url: '/data/pcm/product/'+foodId,
+                type: Dolphin.requestMethod.GET,
+                onSuccess: function (reData) {
+                    console.log(reData);
+                    food = reData.value;
+
+                    if (_this.foodList[foodId]) {
+                        number = _this.foodList[foodId].number;
                     }
-                }
-                if (food) {
-                    break;
-                }
-            }
-            if (_this.foodList[foodId]) {
-                number = _this.foodList[foodId].number;
-            }
 
-            var detailPanel = $('#food_detail');
+                    var detailPanel = $('#food_detail');
 
-            detailPanel.find('#food_detail_panel').data({
-                'foodId': food.id,
-                'foodName': food.name,
-                'foodPrice': food.basePrice.value
+                    detailPanel.find('#food_detail_panel').data({
+                        'foodId': food.id,
+                        'foodName': food.name,
+                        'foodPrice': food.basePrice.value
+                    });
+                    detailPanel.find('div[name="img"]').html('<img src="'+food['productData']['4']+'">');
+                    detailPanel.find('div[name="name"]').html(food.name);
+                    detailPanel.find('div[name="number"]').html(number);
+                    detailPanel.find('span[name="price"]').html(food.basePrice.value);
+                    detailPanel.find('[name="desc"]').html(food['productData']['2']);
+                    detailPanel.find('[name="endesc"]').html(food['productData']['3']);
+
+                    $('.pagePanel').hide();
+                    detailPanel.show();
+                }
             });
-            detailPanel.find('div[name="img"]').html('<img src="'+food['productData']['4']+'">');
-            detailPanel.find('div[name="name"]').html(food.name);
-            detailPanel.find('div[name="number"]').html(number);
-            detailPanel.find('span[name="price"]').html(food.basePrice.value);
-            detailPanel.find('[name="desc"]').html(food['productData']['2']);
-            detailPanel.find('[name="endesc"]').html(food['productData']['3']);
-
-            $('.pagePanel').hide();
-            detailPanel.show();
         });
 
         $('[data-food-type-id]').click(function () {

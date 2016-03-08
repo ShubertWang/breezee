@@ -7,7 +7,9 @@
 </head>
 <body ontouchstart>
 <% if(userData.userJob) { %>
-<div><a href="employeeOrder" style="padding:10px;line-height: 3em">订单管理</a></div>
+<div><a href="employeeOrder" style="padding:10px;line-height: 3em">订单管理</a>
+<a href="employeeSeat" style="padding:10px;line-height: 3em">订位管理</a>
+<a href="employeeOrder" style="padding:10px;line-height: 3em">其他服务</a></div>
 <% } %>
 <% if(body.length > 0 ){%>
     <% include ./myOrderByPage.ejs %>
