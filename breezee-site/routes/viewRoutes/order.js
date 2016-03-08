@@ -182,21 +182,13 @@ route.orderConfirm = function (queryData, res, callback) {
 
 route.otherService = function (queryData, res, callback) {
     //根据site获取组织
-    global.myUtil.request({
-        method: 'get',
-        uri: 'http://127.0.0.1:10245/services/organization/'+queryData.siteId,
-        mockData: '/order/otherService',
-        form: queryData
-    }, function (error, response, body) {
-        if (error) {
-            throw error;
-        }
-        if(!body){
-            body = {serviceType:[]};
-        }
-        body.serviceType = body.serviceType || [];
-        callback(body, global.config.permission.employee);
-    });
+    var body={};
+    body.serviceType = [];
+    body.serviceType.push({code:"birthdayParty",value:"生日会"})
+    body.serviceType.push({code:"teamBuilding",value:"部门会议订餐"})
+    body.serviceType.push({code:"selfBuilding",value:"自助餐"})
+    body.serviceType.push({code:"coffeeBreak",value:"茶歇"})
+    callback(body, global.config.permission.public);
 };
 
 route.bookSite = function(queryData, res, callback){

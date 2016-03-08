@@ -16,7 +16,7 @@ public class OtherRequestInfo extends BaseInfo {
     protected Date issueDate;
 
     protected Long taskId;
-    protected String procDefId = "orderProcess";
+    protected String procDefId = "requestProcess";
     protected Long procsInsId;
 
     public Long getTaskId() {

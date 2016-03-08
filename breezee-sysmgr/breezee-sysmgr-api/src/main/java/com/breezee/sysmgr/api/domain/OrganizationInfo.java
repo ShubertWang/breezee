@@ -8,6 +8,8 @@ package com.breezee.sysmgr.api.domain;
 import com.breezee.common.TreeObject;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -36,6 +38,11 @@ public class OrganizationInfo extends TreeObject<OrganizationInfo> {
     }
 
     public List<Map<String, String>> getServiceType() {
+        this.serviceType = new ArrayList<>();
+        this.serviceType.add(Collections.singletonMap("birthdayParty","生日会"));
+        this.serviceType.add(Collections.singletonMap("teamBuilding","部门会议订餐"));
+        this.serviceType.add(Collections.singletonMap("selfBuilding","自助餐"));
+        this.serviceType.add(Collections.singletonMap("coffeeBreak","茶歇"));
         return serviceType;
     }
 
