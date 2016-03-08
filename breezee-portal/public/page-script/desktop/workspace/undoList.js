@@ -1,7 +1,7 @@
 Dolphin.defaults.mockFlag = false;
 $(function () {
     menu.select('undoList');
-    var page = {};
+    var page = {},prcsDef;
 
     page.connect = {
         undoList: {
@@ -13,7 +13,9 @@ $(function () {
         orderConfirm: 2,
         orderReject: 5,
         orderMake: 3,
-        orderComplete: 4
+        orderComplete: 4,
+
+        orderAssign:3
     };
 
     page.orderStatusName = {
@@ -21,7 +23,8 @@ $(function () {
         orderReject: '拒绝',
         orderMake: '已制作',
         orderComplete: "完成",
-        orderCancel: '已取消'
+        orderCancel: '已取消',
+        orderAssign:'分配'
     };
 
     page.init = function () {
@@ -162,7 +165,8 @@ $(function () {
             onSuccess: function (data) {
                 $("#list").empty();
                 if (data.rows.length > 0) {
-                    _this.column[data.rows[0].processDefinitionKey].push(button);
+                    prcsDef = data.rows[0].processDefinitionKey;
+                    _this.column[prcsDef].push(button);
                     _this.undoList = new Dolphin.LIST({
                         panel: '#list',
                         url: _this.connect.undoList.url,
@@ -192,8 +196,8 @@ $(function () {
     window.page = page.init();
 
     window.taskComplete = function (el, taskId, orderId) {
-        console.log(el.id);
         var data = {
+            prcsDef:prcsDef,
             orderCancel: 'N',
             taskOwner: REQUEST_MAP.userData.userId,
             orderId: orderId,
@@ -206,6 +210,23 @@ $(function () {
         if (el.id == 'orderReject') {
             data.orderCancel = 'Y';
         }
+        if(el.id=="orderAssign"){
+            Dolphin.prompt('请输入分配的座位号',{
+                callback : function(string){
+                    if(string){
+                        data.complete = false;
+                        data.seatNo = string;
+                        _taskComplete(data,taskId);
+                    }
+                }
+            });
+        } else {
+            _taskComplete(data, taskId);
+        }
+
+    }
+
+    function _taskComplete(data, taskId){
         Dolphin.ajax({
             url: '/data/bpm/bpmTask/' + taskId,
             type: Dolphin.requestMethod.POST,

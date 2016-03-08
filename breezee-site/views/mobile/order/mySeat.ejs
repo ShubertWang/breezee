@@ -2,27 +2,27 @@
 <html>
 <head>
     <% include ../common/meta.ejs %>
-    <title>我的订单</title>
+    <title>我的订位</title>
     <% include ../common/public.ejs %>
 </head>
 <body ontouchstart>
 <% if(userData.userJob) { %>
 <div><a href="employeeOrder" style="padding:10px;line-height: 3em">订单管理</a>
 <a href="employeeSeat" style="padding:10px;line-height: 3em">订位管理</a>
-<a href="employeeRequest" style="padding:10px;line-height: 3em">其他服务</a></div>
+</div>
 <hr/>
 <% } %>
 <div><a href="myOrder" style="padding:10px;line-height: 3em">我的预定</a>
     <a href="mySeat" style="padding:10px;line-height: 3em">我的订位</a>
-    <a href="employeeRequest" style="padding:10px;line-height: 3em">我的请求</a></div>
+</div>
 <% if(body.length > 0 ){%>
-    <% include ./myOrderByPage.ejs %>
+    <% include ./mySeatByPage.ejs %>
 <% }else{ %>
 <div class="noorder">
 
     <div class="noorder_text">
         有种淡淡的忧伤
-        <p><a href="#">去餐厅逛逛吧</a></p>
+        <p><a href="#">赶紧去订位吧</a></p>
     </div>
 
 </div>

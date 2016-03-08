@@ -123,10 +123,10 @@ public class FoodLineServiceImpl implements IFoodLineService {
 
     @Override
     public FoodLineInfo findByOrgId(Long orgId) {
-        FoodLineEntity entity = foodLineRepository.findByOrgId(orgId);
-        if (entity == null)
+        List<FoodLineEntity> entity = foodLineRepository.findByOrgId(orgId);
+        if (entity == null || entity.size()==0)
             return ErrorInfo.build(FoodLineInfo.class);
-        return entity.toInfo();
+        return entity.get(0).toInfo();
     }
 
     @Override

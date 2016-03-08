@@ -27,6 +27,6 @@ public interface FoodLineRepository extends PagingAndSortingRepository<FoodLineE
 
     FoodLineEntity findByCode(String code);
 
-    FoodLineEntity findByOrgId(Long orgId);
+    List<FoodLineEntity> findByOrgId(Long orgId);
 
 }

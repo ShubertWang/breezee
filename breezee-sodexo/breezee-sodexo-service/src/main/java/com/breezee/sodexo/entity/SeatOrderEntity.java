@@ -15,7 +15,7 @@ import java.util.Date;
  * Created by Silence on 2016/2/16.
  */
 @Entity
-@Table(name = "sdx_tf_seat_order")
+@Table(name = "SDX_TF_SEAT_ORDER")
 public class SeatOrderEntity extends SeatOrderInfo {
 
     @Id
@@ -92,6 +92,18 @@ public class SeatOrderEntity extends SeatOrderInfo {
 
     public Date getIssueDate() {
         return issueDate;
+    }
+
+    public String getSeatNo() {
+        return seatNo;
+    }
+
+    public String getCode() {
+        return code;
+    }
+
+    public String getRemark() {
+        return remark;
     }
 
     public SeatOrderInfo toInfo() {

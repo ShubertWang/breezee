@@ -1,7 +1,7 @@
 /**
  * Created by Shubert.Wang on 2016/1/27.
  */
-Dolphin.defaults.mockFlag = true;
+Dolphin.defaults.mockFlag = false;
 $(function () {
     menu.select('index');
 

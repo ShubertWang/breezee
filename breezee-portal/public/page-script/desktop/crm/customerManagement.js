@@ -15,7 +15,11 @@ $(function () {
         title: '客户列表',
         columns: [{
             code: 'code',
-            title: '客户编码'
+            width:'75px',
+            title: '客户编码',
+            formatter:function(val,data){
+                return val.substr(7,20)+"...";
+            }
         }, {
             code: 'name',
             title: '客户名称'
@@ -26,11 +30,8 @@ $(function () {
             code: 'company',
             title: '网点编码'
         }, {
-            code: 'wechat',
-            title: '微信ID'
-        },{
-            code: 'accountId',
-            title: '工作人员'
+            code: 'userJob',
+            title: '内部人员'
         }, {
             code:'addressCount',
             title:'收货地址',
