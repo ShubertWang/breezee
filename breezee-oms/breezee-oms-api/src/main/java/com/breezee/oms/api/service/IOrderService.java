@@ -28,7 +28,7 @@ public interface IOrderService extends IServiceLayer<OrderInfo> {
     @POST
     PageResult<OrderInfo> findMyOrder(@PathParam("userId") Long userId, PageInfo pageInfo);
 
-    @Path("/orderPay/{orderId}")
+    @Path("/orderPay/{orderId}/{payId}")
     @GET
-    void orderPay(@PathParam("orderId") String orderId, @QueryParam("payId") String payId);
+    OrderInfo orderPay(@PathParam("orderId") String orderId, @PathParam("payId") String payId);
 }

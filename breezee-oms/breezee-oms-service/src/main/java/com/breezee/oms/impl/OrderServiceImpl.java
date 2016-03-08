@@ -73,7 +73,10 @@ public class OrderServiceImpl implements IOrderService, InitializingBean {
             vars.put("orderId", entity.getId());
             ProcsInsInfo procsInsInfo = workflowServiceImpl.startProcessInstanceById(orderInfo.getProcDefId(), entity.getId().toString(), vars);
             orderInfo.setTaskId(Long.parseLong(procsInsInfo.getCode()));
+            entity.setTaskId(orderInfo.getTaskId());
+            orderRepository.save(entity);
         }
+
         orderInfo.setId(entity.getId());
         return SuccessInfo.build(orderInfo);
     }
@@ -188,11 +191,12 @@ public class OrderServiceImpl implements IOrderService, InitializingBean {
     }
 
     @Override
-    public void orderPay(String orderId, String payId) {
+    public OrderInfo orderPay(String orderId, String payId) {
         OrderEntity entity = orderRepository.findOne(Long.parseLong(orderId));
         entity.setPayId(payId);
         entity.setStatus(1);
         orderRepository.save(entity);
+        return entity.toInfo();
     }
 
     private void setRestaurant(OrderInfo info) {

@@ -44,6 +44,7 @@ public class OrderEntity extends BaseInfo {
     private Double subTotal;
 
     private String payId;
+    private Long taskId;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -227,6 +228,14 @@ public class OrderEntity extends BaseInfo {
         this.payId = payId;
     }
 
+    public Long getTaskId() {
+        return taskId;
+    }
+
+    public void setTaskId(Long taskId) {
+        this.taskId = taskId;
+    }
+
     public OrderInfo toInfo(){
         OrderInfo info = new OrderInfo();
         cloneAttributeTo(info);
@@ -248,6 +257,7 @@ public class OrderEntity extends BaseInfo {
         info.setNeedTime(this.getNeedTime());
         info.setUserMobile(this.getUserMobile());
         info.setUserName(this.getUserName());
+        info.setTaskId(this.getTaskId());
         return info;
     }
 

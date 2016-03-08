@@ -9,7 +9,7 @@ route.restaurantList = function (queryData, res, callback) {
         mockData: '/restaurant/restaurantList'
     }, function (error, response, body) {
         body = body || [];
-        callback(body,3);
+        callback(body, global.config.permission.employee);
     });
 };
 
@@ -52,7 +52,7 @@ route.myOrder = function (queryData, res, callback) {
         }
         body = body || {content:[]};
         body.content = body.content || [];
-        callback(body.content);
+        callback(body.content, global.config.permission.employee);
     });
 };
 
@@ -67,7 +67,7 @@ route.mySeat = function(queryData, res, callback){
         }
         body = body || {content:[]};
         body.content = body.content || [];
-        callback(body.content);
+        callback(body.content, global.config.permission.employee);
     });
 }
 
@@ -195,7 +195,7 @@ route.otherService = function (queryData, res, callback) {
             body = {serviceType:[]};
         }
         body.serviceType = body.serviceType || [];
-        callback(body);
+        callback(body, global.config.permission.employee);
     });
 };
 
@@ -211,7 +211,7 @@ route.bookSite = function(queryData, res, callback){
             throw error;
         }
         body = body || [];
-        callback(body);
+        callback(body, global.config.permission.employee);
     });
 };
 
