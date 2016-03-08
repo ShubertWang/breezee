@@ -8,12 +8,45 @@
 <body>
 <% include common/header.ejs %>
 
-<div class="container">
-    首页
-    <form method="post" action="/file/" enctype="multipart/form-data">
-    <span class="btn btn-success fileinput-button"><i class="glyphicon glyphicon-plus"></i><span>图片选择</span><input id="fileupload" type="file" name="upfile" multiple></span>
-        <input type="submit" value="submit" />
-    </form>
+<div class="container page-content">
+    <div class="index_tap">
+        <div class="tap_panel addMessage">
+            <a href="javascript:void(0)">
+                <span class="icon"></span>
+                <span class="number" id="newMessage">0</span>
+                <span class="title">新消息</span>
+            </a>
+        </div>
+        <div class="tap_panel addUser">
+            <a href="javascript:void(0)">
+                <span class="icon"></span>
+                <span class="number" id="newUser">5</span>
+                <span class="title">新人数</span>
+            </a>
+        </div>
+        <div class="tap_panel total">
+            <a href="javascript:void(0)">
+                <span class="icon"></span>
+                <span class="number" id="totalUser">30</span>
+                <span class="title">总用户数</span>
+            </a>
+        </div>
+    </div>
+
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h3 class="panel-title">
+                系统公告
+            </h3>
+        </div>
+        <div class="list-group index_message" id="messagePanel">
+            <a href="javascript:void(0)" class="list-group-item">
+                <span class="date">2016-03-08</span>
+                微信连Wi-Fi插件对所有公众号开放
+            </a>
+        </div>
+    </div>
+    <div id="pagination"></div>
 </div>
 
 <% include common/footer.ejs %>

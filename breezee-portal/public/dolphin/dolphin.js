@@ -2283,7 +2283,7 @@
 		return this;
 	}
 	PAGINATION.defaults = {
-		panel : "#planList",								//生成区别，遵循jQuery选择器规则
+		panel : "",								//生成区别，遵循jQuery选择器规则
 		pageSize : 10,										//每页条数
 		pageNumber : 1,									//当前页码
 
