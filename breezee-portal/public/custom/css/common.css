@@ -193,7 +193,7 @@ body .page-content{
 }
 .index_tap .tap_panel{
     display: inline-block;
-    width:33%;
+    width:20%;
     background:#7cbae5;
     border:1px solid #6eb0dd;
 }
@@ -220,15 +220,7 @@ body .page-content{
     height: 34px;
     vertical-align: middle;
     display: inline-block;
-}
-.index_tap .tap_panel.addMessage a .icon{
-    background: url("/custom/images/icon/page_index_z25b76d.png") 0 0 no-repeat;
-}
-.index_tap .tap_panel.addUser a .icon{
-    background: url("/custom/images/icon/page_index_z25b76d.png") 0 -44px no-repeat;
-}
-.index_tap .tap_panel.total a .icon{
-    background: url("/custom/images/icon/page_index_z25b76d.png") 0 -88px no-repeat;
+    font-size: 30px;
 }
 .index_tap .tap_panel a .number{
     margin-left: 5px;

@@ -20,9 +20,9 @@ $(function () {
             url : '/data/index',
             async : false,
             onSuccess : function (reData) {
-                $('#newMessage').html(reData.value.message);
-                $('#newUser').html(reData.value.user);
-                $('#totalUser').html(reData.value.totalUser);
+                for(var key in reData.value){
+                    $('#' + key).html(reData.value[key]);
+                }
             }
         });
     };
