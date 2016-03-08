@@ -6,6 +6,7 @@
 package com.breezee.sodexo.api.domain;
 
 import com.breezee.common.BaseInfo;
+import com.breezee.common.util.ContextUtil;
 
 import java.util.Date;
 
@@ -19,6 +20,8 @@ public class SeatOrderInfo extends BaseInfo {
     protected String userMobile;
     protected String userName;
     protected Date issueDate;
+
+    protected String seatNo;
 
     /**
      * 餐线
@@ -59,6 +62,8 @@ public class SeatOrderInfo extends BaseInfo {
     private String statusName;
 
     private String restaurantName;
+
+    protected long queueNo = -1;
 
     public String getStoreName() {
         return storeName;
@@ -165,6 +170,8 @@ public class SeatOrderInfo extends BaseInfo {
     }
 
     public String getStatusName() {
+        if (statusName == null)
+            return ContextUtil.getMessage("seat.status." + status);
         return statusName;
     }
 
@@ -186,5 +193,21 @@ public class SeatOrderInfo extends BaseInfo {
 
     public void setRestaurantName(String restaurantName) {
         this.restaurantName = restaurantName;
+    }
+
+    public String getSeatNo() {
+        return seatNo;
+    }
+
+    public void setSeatNo(String seatNo) {
+        this.seatNo = seatNo;
+    }
+
+    public long getQueueNo() {
+        return queueNo;
+    }
+
+    public void setQueueNo(long queueNo) {
+        this.queueNo = queueNo;
     }
 }

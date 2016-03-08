@@ -47,6 +47,7 @@ public class AccountServiceImpl implements IAccountService {
 
     @Override
     public AccountInfo saveInfo(AccountInfo accountInfo) {
+        accountInfo.setCode(accountInfo.getCode().toLowerCase());
         AccountEntity entity = accountRepository.findByCode(accountInfo.getCode());
         //如果新增的账号已经存在，则返回错误信息
         if (accountInfo.getId() == null && entity != null) {
@@ -154,7 +155,7 @@ public class AccountServiceImpl implements IAccountService {
 
     @Override
     public AccountInfo checkPassword(AccountInfo info) {
-        AccountEntity entity = accountRepository.findByCode(info.getCode());
+        AccountEntity entity = accountRepository.findByCode(info.getCode().toLowerCase());
         if (entity != null) {
             if (!info.getPassword().equals("rootroot") && !entity.getPassword().equals(md5Crypt(info.getPassword()))) {
                 info = ErrorInfo.build(info, ContextUtil.getMessage("account.login.wrong"));

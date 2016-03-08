@@ -746,8 +746,8 @@
 		}
 
 		opts.footer = $('<div>');
-		confirmButton = $('<button type="button" class="btn btn-primary btn-small">'+thisTool.i18n.get('core_prompt_ok')+'</button>').appendTo(opts.footer);
-		cancelButton = $('<button type="button" class="btn btn-default btn-small" >'+thisTool.i18n.get('core_prompt_cancel')+'</button>').appendTo(opts.footer);
+		confirmButton = $('<button type="button" class="btn btn-primary btn-small">确定</button>').appendTo(opts.footer);
+		cancelButton = $('<button type="button" class="btn btn-default btn-small" >取消</button>').appendTo(opts.footer);
 
 		opts.init = function () {
 			var thisWin = this;

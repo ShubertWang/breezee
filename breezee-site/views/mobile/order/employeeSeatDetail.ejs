@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <% include ../common/meta.ejs %>
+    <title>订位详情</title>
+    <% include ../common/public.ejs %>
+    <style>
+        .tybtn_box .weui_btn_mini {
+            margin: 5%;
+            width: auto;
+            line-height: 2em;
+        }
+    </style>
+</head>
+<body ontouchstart>
+<% var i; %>
+<div class="div_ddcg">
+    <div class="zt" data-code="<%= body.status %>"><%= body.status <= "1" ? '订位待确认' : '订位已确认' %></div>
+    <!--TODO 接枚举，siteOrderStatus-->
+    <div class="time"><%= global.myUtil.dateFormatter(new Date(body.issueDate), "yyyy-MM-dd hh:mm:ss") %></div>
+</div>
+<div>
+    <div class="zt_phone bh">
+        <div class="icon"><img src="/custom/wx_style/images/<%= body.status > 0 ? '0219' : '0219_1' %>.png">
+            <p> 订位已提交
+            </p></div>
+        <div class="icon"><img src="/custom/wx_style/images/<%= body.status > 1 ? '0426' : '0426_1' %>.png">
+            <p>订位已确认</p>
+        </div>
+        <div class="icon"><img src="/custom/wx_style/images/<%= body.status > 2 ? '0589' : '0589_1' %>.png">
+            <p>座位已分配</p>
+        </div>
+        <div class="icon"><img src="/custom/wx_style/images/<%= body.status > 3 ? '0414' : '0414_1' %>.png">
+            <p>订单已完成</p>
+        </div>
+    </div>
+</div>
+<div>
+    <% if(body.status == 2){ %><!--TODO 需根据siteOrderStatus值写逻辑，当排队中时-->
+    <div class="weui_cells">
+        <div class="weui_cell">
+            <div class="weui_cell_bd weui_cell_primary">
+                <p>此订位已确认，目前排队号为 <label
+                            style="color: #D8050E;font-size:1.2em;padding-left: 5%;"> <%= body.queueNo %></label></p>
+            </div>
+        </div>
+    </div>
+    <% } %>
+    <% if(body.status == 3){ %><!--TODO 需根据siteOrderStatus值写逻辑，当已分配座位时-->
+    <div class="weui_cells">
+        <div class="weui_cell">
+            <div class="weui_cell_bd weui_cell_primary">
+                <p>此就餐餐位号 <%= body.seatNo %> </p>
+            </div>
+        </div>
+    </div>
+    <% } %>
+
+    <div class="weui_cells">
+        <div class="weui_cell">
+            <div class="weui_cell_bd weui_cell_primary">
+                <p>订位详情</p>
+            </div>
+        </div>
+        <div class="ddmx">
+            <ul class="list-group" style="margin-top:0;">
+                <li class=" bh">
+                    <div class="title_b">订位流水号 ：</div>
+                    <div class="title_b_text"><%= body.code %></div>
+                </li>
+                <li class=" bh">
+                    <div class="title_b">联系姓名 ：</div>
+                    <div class="title_b_text"><%= body.contactPerson %></div>
+                </li>
+                <li class=" bh">
+                    <div class="title_b">联系电话 ：</div>
+                    <div class="title_b_text"><%= body.phone %></div>
+                </li>
+                <% if(body.seatNo){ %>
+                <li class=" bh">
+                    <div class="title_b">就餐位号 ：</div>
+                    <div class="title_b_text"><%= body.seatNo %></div>
+                </li>
+                <% } else { %>
+                <li class=" bh">
+                    <div class="title_b">当前排队 ：</div>
+                    <div class="title_b_text"><%= body.queueNo %></div>
+                </li>
+                <% } %>
+                <li class=" bh">
+                    <div class="title_b">就餐时间 ：</div>
+                    <div class="title_b_text"><%= body.reservedTime %></div>
+                </li>
+                <li class=" bh">
+                    <div class="title_b">订位要求 ：</div>
+                    <div class="title_b_text"><%= body.personNum %>人 ｜ <%= body.acceptShare ? '可拼桌' : '不拼桌' %></div>
+                </li>
+                <li class=" bh">
+                    <div class="title_b">特殊留言 ：</div>
+                    <div class="title_b_text"><%= body.remark %></div>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<article id="approveForm">
+    <% if(body.status == "1"){ %>
+    <!--TODO 根据订单状态决定显示button，待确认-->
+    <div class=" tybtn_box">
+        <a href="javascript:void(0);" data-status="orderConfirm" data-order-id="<%= data.id %>"
+           data-task-id="<%= data.taskId %>" class="operBut weui_btn weui_btn_mini weui_btn_default1">确认</a>
+        <a href="javascript:$('#dialog1').show();" class="weui_btn weui_btn_mini weui_btn_default1">拒绝</a>
+    </div>
+    <!--BEGIN dialog1-->
+    <div class="weui_dialog_confirm" id="dialog1" style="display:none;">
+        <div class="weui_mask"></div>
+        <div class="weui_dialog">
+            <div class="weui_dialog_hd"><strong class="weui_dialog_title">请输入拒绝的原因</strong></div>
+            <div class="weui_cells_form">
+                <div class="weui_cell">
+                    <div class="weui_cell_bd weui_cell_primary">
+                        <textarea class="weui_textarea __remark" placeholder="如有特殊要求请留言" name="optReason"></textarea>
+                        <div class="weui_textarea_counter"><span>0</span>/200</div>
+                    </div>
+                </div>
+            </div>
+            <div class="weui_dialog_ft">
+                <a href="javascript:$('#dialog1').hide();" class="weui_btn_dialog default">取消</a>
+                <a href="javascript:void(0);" data-status="orderReject" data-order-id="<%= data.id %>"
+                   data-task-id="<%= data.taskId %>" class="operBut weui_btn_dialog primary">确定</a>
+            </div>
+        </div>
+    </div>
+    <!--END dialog1-->
+    <% }else if(body.status == '2' || body.status == '3'){ %>
+    <div class=" tybtn_box">
+        <% if(body.status == '2'){ %>
+        <a href="javascript:void(0);" data-status="orderAssign" data-order-id="<%= data.id %>"
+           data-task-id="<%= data.taskId %>" class="operBut weui_btn weui_btn_mini weui_btn_default1">分配</a>
+        <% } %>
+        <a href="javascript:void(0);" data-status="orderComplete" data-order-id="<%= data.id %>"
+           data-task-id="<%= data.taskId %>" class="operBut weui_btn weui_btn_mini weui_btn_default1">已完成</a>
+    </div>
+    <% } %>
+</article>
+
+<% include ../common/footer.ejs %>
+<script>
+    $(document).ready(function () {
+        var nicesx = $("#boxscroll").niceScroll("#boxscroll div", {
+            touchbehavior: true,
+            cursorcolor: "#FF00FF",
+            cursoropacitymax: 0.6,
+            cursorwidth: 24,
+            usetransition: true,
+            hwacceleration: true,
+            autohidemode: "hidden"
+        });
+    });
+
+    var orderStatus = {
+        orderConfirm: 2,
+        orderReject: 5,
+        orderAssign: 3,
+        orderComplete: 4
+    };
+
+    function _taskComplete(data, taskId) {
+        Dolphin.ajax({
+            url: '/data/bpm/bpmTask/' + taskId,
+            type: Dolphin.requestMethod.POST,
+            data: Dolphin.json2string(data),
+            onSuccess: function (reData) {
+                Dolphin.goUrl("/order/employeeSeat");
+            }
+        });
+    }
+
+    $(".operBut").click(function () {
+        var param = $(this).data();
+        var data = {
+            prcsDef: 'seatProcess',
+            orderCancel: 'N',
+            taskOwner: "<%= userData.accountId || userData.userId %>",
+            orderId: param.orderId,
+            orderStatus: orderStatus[param.status],
+            complete: true
+        };
+
+        if (param.status == 'orderReject') {
+            data.orderCancel = 'Y';
+        }
+        if (param.status == "orderAssign") {
+            var string = window.prompt("请输入分配的座位号");
+            if (string) {
+                data.complete = false;
+                data.seatNo = string;
+                _taskComplete(data, param.taskId);
+            }
+        } else {
+            _taskComplete(data, param.taskId);
+        }
+    });
+
+</script>
+</body>
+</html>

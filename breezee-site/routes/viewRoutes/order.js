@@ -9,7 +9,7 @@ route.restaurantList = function (queryData, res, callback) {
         mockData: '/restaurant/restaurantList'
     }, function (error, response, body) {
         body = body || [];
-        callback(body,3);
+        callback(body, global.config.permission.employee);
     });
 };
 
@@ -52,9 +52,24 @@ route.myOrder = function (queryData, res, callback) {
         }
         body = body || {content:[]};
         body.content = body.content || [];
-        callback(body.content);
+        callback(body.content, global.config.permission.employee);
     });
 };
+
+route.mySeat = function(queryData, res, callback){
+    global.myUtil.request({
+        method: 'post',
+        uri: global.config.service['sdx']+'/seatOrder/mySeat/' + queryData.userId,
+        mockData: '/order/myOrder_dfd'
+    }, function (error, response, body) {
+        if (error) {
+            throw error;
+        }
+        body = body || {content:[]};
+        body.content = body.content || [];
+        callback(body.content, global.config.permission.employee);
+    });
+}
 
 route.myOrderByPage = function (queryData, res, callback) {
     global.myUtil.request({
@@ -104,22 +119,32 @@ route.employeeOrder = function (queryData, res, callback) {
         callback(body.content);
     });
 };
+
 route.employeeOrderByPage = function (queryData, res, callback) {
     route.employeeOrder(queryData, res, callback);
 };
 
 route.employeeOrderDetail = function (queryData, res, callback) {
+    route.orderDetail(queryData,res,callback);
+};
+
+route.employeeSeat = function (queryData, res, callback) {
+    route.employeeOrder(queryData,res,callback);
+};
+
+route.employeeSeatDetail = function(queryData, res, callback){
+    route.seatDetail(queryData,res,callback);
+}
+
+route.seatDetail = function(queryData, res, callback){
     global.myUtil.request({
         method: 'get',
-        uri: 'http://127.0.0.1:10247/services/order/' + queryData.id,
-        mockData: '/order/orderDetail_' + queryData.id,
-        form: queryData
+        uri: 'http://127.0.0.1:10250/services/seatOrder/'+queryData.id,
+        mockData: '/order/otherService'
     }, function (error, response, body) {
         if (error) {
             throw error;
         }
-        body.createTime = global.myUtil.dateFormatter(new Date(body.createTime), "yyyy-MM-dd hh:mm");
-        body.time = global.myUtil.dateFormatter(new Date(body.time), "yyyy-MM-dd hh:mm");
         callback(body);
     });
 };
@@ -170,7 +195,7 @@ route.otherService = function (queryData, res, callback) {
             body = {serviceType:[]};
         }
         body.serviceType = body.serviceType || [];
-        callback(body);
+        callback(body, global.config.permission.employee);
     });
 };
 
@@ -186,20 +211,7 @@ route.bookSite = function(queryData, res, callback){
             throw error;
         }
         body = body || [];
-        callback(body);
-    });
-};
-
-route.seatDetail = function(queryData, res, callback){
-    global.myUtil.request({
-        method: 'get',
-        uri: 'http://127.0.0.1:10250/services/seatOrder/'+queryData.id,
-        mockData: '/order/otherService'
-    }, function (error, response, body) {
-        if (error) {
-            throw error;
-        }
-        callback(body);
+        callback(body, global.config.permission.employee);
     });
 };
 

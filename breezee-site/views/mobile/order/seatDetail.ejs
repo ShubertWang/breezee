@@ -28,23 +28,21 @@
     </div>
 </div>
 <div>
-    <% if(body.type == "site" && body.status == 2){%><!--TODO 需根据siteOrderStatus值写逻辑，当排队中时-->
+    <% if( body.status == 2){%><!--TODO 需根据siteOrderStatus值写逻辑，当排队中时-->
     <div class="weui_cells">
         <div class="weui_cell">
             <div class="weui_cell_bd weui_cell_primary">
-                <p>您的订位已确认，目前排队号为<span></span></p>
+                <p>您的订位已确认，目前排队号为 <label style="color: #D8050E;font-size:1.2em;padding-left: 5%;"> <%= body.queueNo %></label></p>
             </div>
-            <div class="weui_cell_ft_red"><%= body.name %></div>
         </div>
     </div>
     <% } %>
-    <% if(body.type == "site" && body.status == 3){%><!--TODO 需根据siteOrderStatus值写逻辑，当已分配座位时-->
+    <% if(body.status == 3){%><!--TODO 需根据siteOrderStatus值写逻辑，当已分配座位时-->
     <div class="weui_cells">
         <div class="weui_cell">
             <div class="weui_cell_bd weui_cell_primary">
-                <p>您的就餐餐位号<span>请在预订的就餐时间内到达餐厅，超时将不保留订位</span></p>
+                <p>您的就餐餐位号 <label style="color: #D8050E;font-size:1.2em;padding-left: 5%;"> <%= body.seatNo %></label><span>请在预订的就餐时间内到达餐厅，超时将不保留订位</span></p>
             </div>
-            <div class="weui_cell_ft_red"><%= body.name %></div>
         </div>
     </div>
     <% } %>
@@ -58,6 +56,10 @@
         <div class="ddmx">
             <ul class="list-group" style="margin-top:0;">
                 <li class=" bh">
+                    <div class="title_b">订位流水号 ：</div>
+                    <div class="title_b_text"><%= body.code %></div>
+                </li>
+                <li class=" bh">
                     <div class="title_b">联系姓名 ：</div>
                     <div class="title_b_text"><%= body.contactPerson %></div>
                 </li>
@@ -65,10 +67,17 @@
                     <div class="title_b">联系电话 ：</div>
                     <div class="title_b_text"><%= body.phone %></div>
                 </li>
+                <% if(body.seatNo){ %>
                 <li class=" bh">
                     <div class="title_b">就餐位号 ：</div>
-                    <div class="title_b_text"><%= body.name %></div>
+                    <div class="title_b_text"><%= body.seatNo %></div>
                 </li>
+                <% } else {%>
+                <li class=" bh">
+                    <div class="title_b">当前排队 ：</div>
+                    <div class="title_b_text"><%= body.queueNo %></div>
+                </li>
+                <% } %>
                 <li class=" bh">
                     <div class="title_b">就餐时间 ：</div>
                     <div class="title_b_text"><%= body.reservedTime %></div>
@@ -77,11 +86,15 @@
                     <div class="title_b">订位要求 ：</div>
                     <div class="title_b_text"><%= body.personNum %>人 ｜ <%= body.acceptShare?'可拼桌':'不拼桌'%></div>
                 </li>
+                <li class=" bh">
+                    <div class="title_b">特殊留言 ：</div>
+                    <div class="title_b_text"><%= body.remark %></div>
+                </li>
             </ul>
         </div>
     </div>
 </div>
-<% if(body.type == "site" || body.status < 3) { %><!--TODO 需根据siteOrderStatus值写逻辑-->
+<% if(body.status>-1 && body.status < 3) { %><!--TODO 需根据siteOrderStatus值写逻辑-->
 <article>
     <div class=" tybtn_box"><a href="javascript:$('#dialog1').show();" class="weui_btn weui_btn_mini weui_btn_default1">取消订单</a></div>
     <!--BEGIN dialog1-->
@@ -92,17 +105,17 @@
             <div class="weui_dialog_bd">亲，您的订单已被商家受理，确认要取消么？</div>
             <div class="weui_dialog_ft">
                 <a href="javascript:$('#dialog1').hide();" class="weui_btn_dialog default">取消</a>
-                <a href="javascript:;" class="weui_btn_dialog primary">确定</a>
+                <a href="javascript:cancelOrder();" class="weui_btn_dialog primary">确定</a>
             </div>
         </div>
     </div>
     <!--END dialog1-->
 </article>
 <% } %>
-<% if(body.status == 5){%>
-<article>
-    <div class=" tybtn_box"><a href="javascript:;" class="weui_btn weui_btn_warn">评价</a></div>
-</article>
+<% if(body.status == 3){%>
+<!--<article>-->
+    <!--<div class=" tybtn_box"><a href="javascript:;" class="weui_btn weui_btn_warn">评价</a></div>-->
+<!--</article>-->
 <% } %>
 <% include ../common/footer.ejs %>
 <script>
@@ -117,6 +130,17 @@
             autohidemode: "hidden"
         });
     });
+
+    function cancelOrder() {
+        Dolphin.ajax({
+            url: '/data/sdx/seatOrder/status/<%= body.id %>/-1',
+            type: Dolphin.requestMethod.GET,
+            onSuccess: function (reData) {
+                Dolphin.goUrl("myOrder");
+            }
+        });
+    }
+
 </script>
 </body>
 </html>

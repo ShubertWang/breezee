@@ -14,6 +14,11 @@ var config = {
         name: "sID",                                      //这里的name值得是cookie的name，默认cookie的name是：connect.sid
         cookie: {"maxAge": 1800000 }                     //设置maxAge是1800000ms，即30min后session和相应的cookie失效过期
     },
+    permission : {
+        public:'public',
+        site:'site',
+        employee:'employee'
+    },
     production:false,
     mockFlag : false,
     contextPath : '/',

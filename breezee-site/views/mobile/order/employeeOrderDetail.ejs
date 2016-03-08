@@ -182,6 +182,7 @@ var orderStatus = {
     $(".operBut").click(function(){
         var param = $(this).data();
         var data = {
+            prcsDef:'orderProcess',
             orderCancel: 'N',
             taskOwner: "<%= userData.accountId || userData.userId %>",
             orderId: param.orderId,

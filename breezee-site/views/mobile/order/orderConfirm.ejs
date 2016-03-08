@@ -51,7 +51,7 @@ var i, totalPrice = 0;
                 <p>微信支付<span>仅支持微信4.2及上版本</span></p>
             </div>
             <div class="weui_cell_ft">
-                <input type="radio" class="weui_check" value="wepay" name="payType" id="x11">
+                <input type="radio" class="weui_check" value="wepay"  onclick="setPoNo('a')"  name="payType" id="x11">
                 <span class="weui_icon_checked"></span>
             </div>
         </label>
@@ -62,7 +62,7 @@ var i, totalPrice = 0;
                 <p>员工卡支付<span>从员工卡中在线扣款</span></p>
             </div>
             <div class="weui_cell_ft">
-                <input type="radio" name="payType" class="weui_check" value="cardpay" id="x12">
+                <input type="radio" name="payType" class="weui_check"  onclick="setPoNo('a')"  value="cardpay" id="x12">
                 <span class="weui_icon_checked"></span>
             </div>
         </label>
@@ -73,7 +73,7 @@ var i, totalPrice = 0;
                 <p>就餐时支付<span>只支持持有员工卡的公司员工使用</span></p>
             </div>
             <div class="weui_cell_ft">
-                <input type="radio" name="payType" value="cash" class="weui_check" id="x13">
+                <input type="radio" name="payType" onclick="setPoNo('a')" value="cash" class="weui_check" id="x13">
                 <span class="weui_icon_checked"></span>
             </div>
         </label>
@@ -84,8 +84,11 @@ var i, totalPrice = 0;
                 <p>PO支付<span>使用PO号码支付</span></p>
             </div>
             <div class="weui_cell_ft">
-                <input type="radio" name="payType" class="weui_check" value="popay" id="x14">
+                <input type="radio" onclick="setPoNo('po')" name="payType" class="weui_check" value="popay" id="x14">
                 <span class="weui_icon_checked"></span>
+            </div>
+            <div class="weui_cell_ft" id="poNum" style="display: none;float: right;">
+                <input type="text" name="payId" id="payId" placeholder="请输入PO号" class="form-control">
             </div>
         </label>
     </div>
@@ -101,20 +104,30 @@ var i, totalPrice = 0;
                     <select class="weui_select" name="needTime" id="needTime">
                         <option value="">请选择</option>
                         <option value="16:00">7:00</option>
-                        <option value="16:00">8:00</option>
-                        <option value="16:00">9:00</option>
-                        <option value="16:00">10:00</option>
-                        <option value="16:00">11:00</option>
-                        <option value="16:00">12:00</option>
-                        <option value="16:00">13:00</option>
-                        <option value="16:00">14:00</option>
-                        <option value="16:00">15:00</option>
-                        <option value="16:00">16:00</option>
-                        <option value="16:00">17:00</option>
-                        <option value="16:00">18:00</option>
-                        <option value="16:00">19:00</option>
-                        <option value="16:00">20:00</option>
-                        <option value="16:00">21:00</option>
+                        <option value="7:30">7:30</option>
+                        <option value="8:00">8:00</option>
+                        <option value="8:30">8:30</option>
+                        <option value="9:00">9:00</option>
+                        <option value="9:30">9:30</option>
+                        <option value="10:00">10:00</option>
+                        <option value="10:30">10:30</option>
+                        <option value="11:00">11:00</option>
+                        <option value="11:30">11:30</option>
+                        <option value="12:00">12:00</option>
+                        <option value="12:30">12:30</option>
+                        <option value="13:00">13:00</option>
+                        <option value="13:00">13:30</option>
+                        <option value="16:30">16:30</option>
+                        <option value="17:00">17:00</option>
+                        <option value="17:30">17:30</option>
+                        <option value="18:00">18:00</option>
+                        <option value="18:30">18:30</option>
+                        <option value="19:00">19:00</option>
+                        <option value="19:30">19:30</option>
+                        <option value="20:00">20:00</option>
+                        <option value="20:30">20:30</option>
+                        <option value="21:00">21:00</option>
+                        <option value="21:30">21:30</option>
                     </select>
                 </div>
             </a>
@@ -176,6 +189,13 @@ var i, totalPrice = 0;
         });
     });
 
+    function setPoNo(id){
+        if(id=='po')
+            $("#poNum").show();
+        else
+            $("#poNum").hide();
+    }
+
     $("#confirmOrder").click(function () {
         var orderInfo = {};
         orderInfo.subTotal = {value: "<%= totalPrice.toFixed(2) %>"};
@@ -203,6 +223,10 @@ var i, totalPrice = 0;
         orderInfo.shippingAddressId = $("#addressSel").attr("addressId");
         <% } %>
         orderInfo.shippingMethod = "<%= cookie.orderType %>";
+
+        if(orderInfo.paymentType=='popay') {
+            orderInfo.payId = $("#payId").val();
+        }
 
         Dolphin.ajax({
             url: '/data/oms/order/',

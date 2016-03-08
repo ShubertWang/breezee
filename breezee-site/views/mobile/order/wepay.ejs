@@ -38,17 +38,17 @@
             success: function (res) {
                 if (res.err_msg.indexOf("ok") > -1) {
                     // 使用以上方式判断前端返回,微信团队郑重提示：res.err_msg将在用户支付成功后返回ok，但并不保证它绝对可靠。
-                    Dolphin.ajax({
-                        url: '/data/oms/order/orderPay/<%= body.orderId %>?payId=<%= body.package %>',
-                        type: Dolphin.requestMethod.GET,
-                        onSuccess: function (reData) {
-                            //发送通知消息
-                            Dolphin.goUrl("/order/orderMessage?orderId=<%= body.package %>&orderCode=<%= body.nonceStr%>&storeName=<%= %>");
-                        }
-                    });
                 } else {
                     $("#errorMsg").html(res.err_msg);
                 }
+                Dolphin.ajax({
+                    url: '/data/oms/order/orderPay/<%= body.orderId %>/<%= body.package %>',
+                    type: Dolphin.requestMethod.GET,
+                    onSuccess: function (reData) {
+                        //发送通知消息
+                        Dolphin.goUrl("/order/orderMessage?orderId="+reData.value.id+"&orderCode="+reData.value.code+"&storeName="+reData.value.storeName+"&taskId="+reData.value.taskId);
+                    }
+                });
             }
         });
 

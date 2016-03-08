@@ -19,6 +19,7 @@ function moreOrder(thisObj, pageNumber){
 function taskComplete(el,id,orderId){
     console.log(el.id);
     var data = {
+        prcsDef:'orderProcess',
         orderCancel:'N',
         taskOwner:REQUEST_MAP.userData.userId,
         orderId:orderId,
@@ -27,6 +28,9 @@ function taskComplete(el,id,orderId){
     };
     if(el.id=='orderMake'){
         data.complete = false;
+    }
+    if (el.id == 'orderReject') {
+        data.orderCancel = 'Y';
     }
     Dolphin.ajax({
         url:'/data/bpm/bpmTask/'+id,

@@ -1,0 +1,42 @@
+<% for(var i = 0; i < body.length; i++){ %>
+<div class="weui_cells weui_cells_access">
+    <a class="weui_cell" href="javascript:;">
+        <div class="weui_cell_bd weui_cell_primary">
+            <p>订单号：<%= body[i].code %></p>
+        </div>
+    </a>
+
+    <div class="wdlist">
+        <div>
+            <div class="wddd_ddlist bh" data-id="<%= body[i].id %>" data-order-id="<%= body[i].id %>">
+                <div class="cpxq bh">
+                    <div class="text">
+                        <h1><%= body[i].restaurantName %></h1>
+                        <div class="wddd_list"><%= global.myUtil.dateFormatter(new Date(body[i].issueDate), "yyyy-MM-dd hh:mm:ss") %> </div>
+                    </div>
+                    <div>
+                        <h3><%= body[i].statusName %></h3>
+                    </div>
+                </div>
+                <div class="cpxq bh">
+                    <% if (body[i].status == 1) {%>
+                    <p>订位已确认，目前排队号为 <label style="color: #D8050E;font-size:1.2em;padding-left: 5%;"> <%= body.queueNo %></label></p>
+                    <% } if (body[i].status == 3) {%>
+                    <p>就餐餐位号 <label style="color: #D8050E;font-size:1.2em;padding-left: 5%;"> <%= body.seatNo %></label></p>
+                        <span>请在预订的就餐时间内到达餐厅，超时将不保留订位</span>
+                    <% } %>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<% } %>
+<% if(body.length == 20){ %> <!--当返回数据等于20条时，显示更多button-->
+<div class="orderListPanel">
+    <article>
+        <div class=" tybtn_box"><a href="javascript:void(0);"
+                                   onclick='moreOrder(this,"<%= data.pageNumber + 1 || 2 %>")'
+                                   class="weui_btn weui_btn_mini weui_btn_default1">点击加载更多</a></div>
+    </article>
+</div>
+<% } %>

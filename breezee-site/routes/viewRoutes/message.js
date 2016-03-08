@@ -23,7 +23,11 @@ route.news = function (queryData, res, callback) {
         for(var i = 0; i < body.content.length; i++){
             body.content[i]._date = global.myUtil.dateFormatter(new Date(body.content[i].updateTime), "MM月dd日");
         }
-        callback(body.content);
+        if(queryData.modelCode=='event'|| queryData.modelCode=='menu'){
+            callback(body.content, global.config.permission.employee);
+        } else {
+            callback(body.content);
+        }
     });
 };
 route.newsByPage = function (queryData, res, callback) {

@@ -5,26 +5,27 @@
     <title>订单详情</title>
     <% include ../common/public.ejs %>
     <style>
-        .tybtn_box{
+        .tybtn_box {
             text-align: center;
         }
-        .tybtn_box .weui_btn_mini{
-            margin : 3% 5%;
-            width : 35%;
+
+        .tybtn_box .weui_btn_mini {
+            margin: 3% 5%;
+            width: 35%;
         }
     </style>
 </head>
 <body ontouchstart>
-<% var i;%>
+<% var i; %>
 <%
 var orderStatus = {
-    "-1" : "用户已取消",
-    "0" : "订单待支付",
-    "1" : "订单已创建",
-    "2" : "订单已确认",
-    "3" : "订单已制作",
-    "4" : "订单已完成",
-    "5" : "订单已拒绝"
+    "-1": "用户已取消",
+    "0": "订单待支付",
+    "1": "订单已创建",
+    "2": "订单已确认",
+    "3": "订单已制作",
+    "4": "订单已完成",
+    "5": "订单已拒绝"
 };
 %>
 <div class="div_ddcg">
@@ -33,16 +34,17 @@ var orderStatus = {
 </div>
 <div>
     <div class="zt_phone bh">
-        <div class="icon"><img src="/custom/wx_style/images/<%= body.status > 0?'0219':'0219_1'%>.png">
+        <div class="icon"><img src="/custom/wx_style/images/<%= body.status > 0 ? '0219' : '0219_1' %>.png">
             <p> 订单已提交
             </p></div>
-        <div class="icon"><img src="/custom/wx_style/images/<%= body.status > 1?'0426':'0426_1'%>.png">
-            <p><%= body.status == 5?"订单已拒绝":"订单已确认" %></p>
+        <div class="icon"><img src="/custom/wx_style/images/<%= body.status > 1 ? '0426' : '0426_1' %>.png">
+            <p><%= body.status == 5 ? "订单已拒绝" : "订单已确认" %></p>
         </div>
-        <div class="icon"><img src="/custom/wx_style/images/<%= (body.status > 2 && body.status < 5)?'0589':'0589_1'%>.png">
+        <div class="icon"><img
+                    src="/custom/wx_style/images/<%= (body.status > 2 && body.status < 5) ? '0589' : '0589_1' %>.png">
             <p>已制作</p>
         </div>
-        <div class="icon"><img src="/custom/wx_style/images/<%= body.status == 4?'0414':'0414_1'%>.png">
+        <div class="icon"><img src="/custom/wx_style/images/<%= body.status == 4 ? '0414' : '0414_1' %>.png">
             <p>已结单</p>
         </div>
     </div>
@@ -62,8 +64,8 @@ var orderStatus = {
     <div class="div_ddlist">
         <div class="ddmx">
             <ul class="list-group" style="margin-top:0;">
-                <% for(i = 0; i < body.orderLines.length; i++){%>
-                <li class="bh <%= i==(body.orderLines.length-1)?'line_bot_p5':''%>">
+                <% for(i = 0; i < body.orderLines.length; i++){ %>
+                <li class="bh <%= i == (body.orderLines.length - 1) ? 'line_bot_p5' : '' %>">
                     <div class="title_a"><%= body.orderLines[i].note %></div>
                     <div class="title_ad"> × <%= body.orderLines[i].quantity.value %></div>
                     <div class="title_c_text">￥<%= body.orderLines[i].unitPrice.value %></div>
@@ -102,7 +104,7 @@ var orderStatus = {
                     <div class="title_b">联系电话 ：</div>
                     <div class="title_b_text"><%= body.consigneeMobile %></div>
                 </li>
-                <% if(body.shippingMethod == "wm"){%>
+                <% if(body.shippingMethod == "wm"){ %>
                 <li class=" bh">
                     <div class="title_b">收货地址 ：</div>
                     <div class="title_b_text"><%= body.consigneeAddress %></div>
@@ -117,9 +119,9 @@ var orderStatus = {
 <article>
     <div class=" tybtn_box">
         <% if(body.status == 0) { %>
-        <a href="javascript:" class="weui_btn weui_btn_mini weui_btn_default1">立即支付</a>
+        <a href="/view/order/wepay?id=<%= body.id %>" class="weui_btn weui_btn_mini weui_btn_default1">立即支付</a>
         <% }
-            if(body.status != -1 && body.status < 2){  //已制作前都可以取消订单
+        if(body.status != -1 && body.status < 3){  //已制作前都可以取消订单
         %>
         <a href="javascript:$('#dialog1').show();" class="weui_btn weui_btn_mini weui_btn_default1">取消订单</a>
         <% } %>
@@ -153,7 +155,7 @@ var orderStatus = {
         });
     });
 
-    function cancelOrder(){
+    function cancelOrder() {
         Dolphin.ajax({
             url: '/data/oms/order/status/<%= body.id %>/-1',
             type: Dolphin.requestMethod.GET,

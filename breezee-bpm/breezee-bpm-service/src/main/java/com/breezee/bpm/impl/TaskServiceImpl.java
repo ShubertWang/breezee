@@ -91,6 +91,7 @@ public class TaskServiceImpl implements ITaskService {
     public void complete(String taskId, Map<String, Object> variables) {
         Long orderId = Long.parseLong(variables.get("orderId").toString());
         Integer orderStatus = Integer.parseInt(variables.get("orderStatus").toString());
+        String prcsDef = variables.get("prcsDef").toString();
         variables.remove("orderId");
         variables.remove("orderStatus");
         if(taskId.equals("-1")){
@@ -113,7 +114,18 @@ public class TaskServiceImpl implements ITaskService {
             if (variables.get("complete").toString().equals("true"))
                 taskService.complete(taskId, variables);
         }
-        orderService.updateStatus(orderId, orderStatus);
+        switch (prcsDef){
+            case "orderProcess":
+                orderService.updateStatus(orderId, orderStatus);
+                break;
+            case "seatProcess":
+                seatOrderService.updateStatusAndNo(orderId,orderStatus,
+                        variables.get("seatNo")==null?null:variables.get("seatNo").toString());
+                break;
+            case "requestProcess":
+                break;
+        }
+
     }
 
     @Override
