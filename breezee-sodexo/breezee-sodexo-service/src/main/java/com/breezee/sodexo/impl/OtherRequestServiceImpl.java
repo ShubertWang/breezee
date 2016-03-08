@@ -47,7 +47,7 @@ public class OtherRequestServiceImpl implements IOtherRequestService {
             vars.put("requestServiceRole", environment.getProperty("request.service.line","requestServiceLine"));
             vars.put("startUser", entity.getUserId());
             vars.put("orderId", entity.getId());
-            workflowServiceImpl.startProcessInstanceById(orderInfo.getProcDefId(), entity.getId().toString(), vars);
+//            workflowServiceImpl.startProcessInstanceById(orderInfo.getProcDefId(), entity.getId().toString(), vars);
         }
         orderInfo.setId(entity.getId());
         return SuccessInfo.build(orderInfo);
