@@ -121,7 +121,8 @@ public class CategoryServiceImpl implements ICategoryService {
             Set<ProductEntity> s = e.getProducts();
             if (s != null && s.size() > 0) {
                 s.forEach(a -> {
-                    ll.add(a.toInfo());
+                    ProductInfo info = a.toInfo(true);
+                    ll.add(info);
                 });
             }
             CategoryInfo inf = e.toInfo(false);

@@ -40,16 +40,32 @@
                             <option value="8">8人</option>
                         </select></div>
                 </a>
-                <a class="weui_cell" href="javascript:;">
-                    <div class="weui_cell_bd weui_cell_primary">
-                        <p>拼桌</p>
+                <div class=" weui_cells_form div_dw">
+                    <div class="weui_cell">
+                        <div class="weui_cell_hd1"><label class="weui_label">拼桌</label></div>
+                        <div class=" weui_cells_radio"style="width: 75%;">
+                            <label class="weui_cell weui_check_label" for="s12">
+                                <div class="weui_cell_hd1">
+                                    <input type="radio" name="acceptShare" value="true" class="weui_check" id="s12">
+                                    <i class="weui_icon_checked"></i>
+                                </div>
+                                <div class="weui_cell_bd weui_cell_primary">
+                                    <p>愿意</p>
+                                </div>
+                            </label>
+                            <label class="weui_cell weui_check_label" for="s11">
+                                <div class="weui_cell_hd1">
+                                    <input type="radio" class="weui_check" name="acceptShare" value="false" id="s11" checked="radio">
+                                    <i class="weui_icon_checked"></i>
+                                </div>
+                                <div class="weui_cell_bd weui_cell_primary">
+                                    <p>不愿意</p>
+                                </div>
+                            </label>
+                        </div>
                     </div>
-                    <div class="<!--weui_cell_ft-->"><select class="weui_select" name="acceptShare">
-                            <option value="true" selected>愿意</option>
-                            <option value="false">不愿意</option>
-                        </select></div>
-                </a>
-                <div class="weui_cells">
+                </div>
+                <div class="weui_cells" style="line-height: 4em;">
                     <div class="weui_cell weui_cell_select weui_select_before">
                         <div class="weui_cell_bd weui_cell_primary">
                             <p>时间</p>
@@ -93,7 +109,7 @@
 
                 </div>
             </div>
-            <div class="weui_cells">
+            <div class="weui_cells" style="line-height: 2.5em;">
                 <div class="weui_cell weui_cell_select weui_select_before">
                     <div class="weui_cell_bd weui_cell_primary">
                         <p>联系手机</p>

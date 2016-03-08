@@ -1,0 +1,4 @@
+1. Add the findByCode in IServiceLayer
+2. Use the Integer to replace some string dict
+3. Add the orderNo to BaseInfo clasee to support the Sort, And make the entity implement the customer sort entity
+4. Add the scope to BaseInfo

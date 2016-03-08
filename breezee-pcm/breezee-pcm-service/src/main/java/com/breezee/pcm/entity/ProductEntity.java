@@ -118,7 +118,7 @@ public class ProductEntity extends BaseInfo {
         this.recommend = recommend;
     }
 
-    public ProductInfo toInfo() {
+    public ProductInfo toInfo(boolean removeDesc) {
         ProductInfo info = new ProductInfo();
         cloneAttributeTo(info);
         if (this.getCategory() != null) {
@@ -127,7 +127,11 @@ public class ProductEntity extends BaseInfo {
         }
         if (this.getData() != null && this.getData().size() > 0) {
             this.getData().forEach(a -> {
-                info.getProductData().put(a.getAttribute().getId().toString(), a.getAttrValue());
+                if(removeDesc && a.getAttribute().getCode().toUpperCase().contains("DESC")){
+
+                } else {
+                    info.getProductData().put(a.getAttribute().getId().toString(), a.getAttrValue());
+                }
             });
         }
         info.setBasePrice(new Amount(this.currencyCode, this.basePrice));

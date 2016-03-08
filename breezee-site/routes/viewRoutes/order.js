@@ -177,8 +177,9 @@ route.otherService = function (queryData, res, callback) {
 route.bookSite = function(queryData, res, callback){
     //获取餐厅列表
     global.myUtil.request({
-        method: 'get',
-        uri: 'http://127.0.0.1:10250/services/messhall/list/all',
+        method: 'post',
+        uri: global.config.service['sdx']+'/foodLine/list',
+        json:{shipping:'seat'},
         mockData: '/order/otherService'
     }, function (error, response, body) {
         if (error) {

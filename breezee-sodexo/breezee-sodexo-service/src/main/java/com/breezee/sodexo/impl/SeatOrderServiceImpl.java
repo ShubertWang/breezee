@@ -50,7 +50,7 @@ public class SeatOrderServiceImpl implements ISeatOrderService {
         if (orderInfo.getTaskId() == null || orderInfo.getTaskId() < 0) {
             Map<String, Object> vars = new HashMap<>();
             //注意第一次保存启动流程orderInfo的ProcDefId和code一定要有值
-            vars.put("seatLineRole", environment.getProperty("seat.service.line","seatServiceLine"));
+            vars.put("seatLineRole", entity.getStoreName());
             vars.put("startUser", entity.getUserId());
             vars.put("orderId", entity.getId());
             workflowServiceImpl.startProcessInstanceById(orderInfo.getProcDefId(), entity.getId().toString(), vars);
