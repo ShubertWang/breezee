@@ -248,6 +248,8 @@ margin-top:1.5em;	}
 
 .wdlist{width:100%; background:#FFF ;border-top: solid 1px #d9d9d9;}
 .bg_ywc{background:#FFF url(/custom/wx_style/images/bg_ywc.png) no-repeat 90% 12%;background-size:20%;}
+.bg_qx{background:#FFF url(/custom/wx_style/images/bg_qx.png) no-repeat 90% 12%;background-size:20%;}
+.bg_qx_red{background:#FFF url(/custom/wx_style/images/bg_qx_red.png) no-repeat 90% 12%;background-size:20%;}
 .wdlist .wddd_list{font: normal 1em/220% Helvetica, Arial, sans-serif, "微软雅黑","幼圆","黑体";color:#85888b;}
 .wdlist .wddd_list a{float:right; display:block;text-align:right; }
 .wdlist .wddd_list img{width:50%;}

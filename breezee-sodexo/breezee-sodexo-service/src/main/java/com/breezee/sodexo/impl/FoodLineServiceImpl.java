@@ -95,6 +95,9 @@ public class FoodLineServiceImpl implements IFoodLineService {
 
     @Override
     public void updateStatus(Long id, int status) {
+        FoodLineEntity entity = foodLineRepository.findOne(id);
+        entity.setStatus(status);
+        foodLineRepository.save(entity);
     }
 
     public List toList(List<FoodLineEntity> l){

@@ -7,7 +7,7 @@ package com.breezee.sysmgr.impl;
 
 import com.breezee.common.*;
 import com.breezee.common.util.Callback;
-import com.breezee.common.DynamicSpecifications;
+import com.breezee.common.util.ContextUtil;
 import com.breezee.sysmgr.api.domain.DictDetailInfo;
 import com.breezee.sysmgr.api.domain.DictInfo;
 import com.breezee.sysmgr.api.service.IDictService;
@@ -46,7 +46,18 @@ public class DictServiceImpl implements IDictService {
 
     @Override
     public DictInfo saveInfo(DictInfo dictInfo) {
-        dictRepository.save(new DictEntity().parse(dictInfo));
+        DictEntity entity = dictRepository.findByCode(dictInfo.getCode());
+        //如果新增的账号已经存在，则返回错误信息
+        if (dictInfo.getId() == null && entity != null) {
+            return ErrorInfo.build(dictInfo, ContextUtil.getMessage("duplicate.key", new String[]{dictInfo.getCode()}));
+        }
+        if (entity == null) {
+            entity = new DictEntity();
+        } else {
+            dictRepository.deleteDetails(entity);
+        }
+        entity.parse(dictInfo);
+        dictRepository.save(entity);
         return SuccessInfo.build(DictInfo.class);
     }
 

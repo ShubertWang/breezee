@@ -16,14 +16,16 @@ $(function () {
         }, {
             code: 'shipping',
             title: '服务类型'
-        },{
-            code: 'startTime',
-            title: '营业时间',
-            width:'150px',
-            formatter:function(val,data){
-                return data.startTime+"-"+data.endTime;
-            }
-        },{
+        }
+        //    ,{
+        //    code: 'startTime',
+        //    title: '营业时间',
+        //    width:'150px',
+        //    formatter:function(val,data){
+        //        return data.startTime+"-"+data.endTime;
+        //    }
+        //}
+            ,{
             code: 'closeTime',
             title: '预订截止',
             width:'90px'
@@ -33,7 +35,7 @@ $(function () {
             title: '提前量'
         }, {
             code: 'startTime',
-            title: '服务类型'
+            title: '开始时间'
         },{
             code: 'payType',
             title: '支付方式'
@@ -41,7 +43,13 @@ $(function () {
             code: 'shiftNum',
             width:'100px',
             title: '翻台时间'
-        }],
+        }, {
+                code:'status',
+                title:'状态',
+                formatter:function(val,data){
+                    return val?"启用":"禁用";
+                }
+            }],
         multiple : false,
         url : '/data/sdx/foodLine/messhallId/'+REQUEST_MAP.data.id,
         dataFilter : function (data) {
@@ -141,5 +149,32 @@ $(function () {
     });
     $("#cancelSel").click(function(){
         Dolphin.goHistory();
+    });
+
+    $("#enableBtn").click(function(){
+        if(list.getChecked().length==0) {
+            Dolphin.alert( '无选择项');
+            return;
+        }
+        Dolphin.ajax({
+            url : '/data/sdx/foodLine/status/'+list.getChecked()[0].id+'/1',
+            type : Dolphin.requestMethod.GET,
+            onSuccess : function (reData) {
+                list.reload();
+            }
+        });
+    });
+    $("#disableBtn").click(function(){
+        if(list.getChecked().length==0) {
+            Dolphin.alert( '无选择项');
+            return;
+        }
+        Dolphin.ajax({
+            url : '/data/sdx/foodLine/status/'+list.getChecked()[0].id+'/0',
+            type : Dolphin.requestMethod.GET,
+            onSuccess : function (reData) {
+                list.reload();
+            }
+        });
     });
 });
