@@ -26,7 +26,11 @@
             <div class="wddd_money bg_<%= body[i].properties.orderInfo.shippingMethod %>">
                 <%= body[i].properties.orderInfo.shippingMethod == "wm" ? "外送订单" : "堂吃订单" %><!--TODO 枚举-->
                 <% body[i].formKey=body[i].formKey || "";var buttonList = body[i].formKey.split('|'); %>
-                <% for(var j = 0; j < buttonList.length; j++){ %>
+                <%
+                for(var j = 0; j < buttonList.length; j++){
+                    if(body[i].properties.orderInfo.status==3 && buttonList[j]=='orderMake')
+                        continue;
+                %>
                 <input type="button" value="<%= buttonList[j] %>" id="<%= buttonList[j] %>" class="btnred" onclick="taskComplete(this, '<%= body[i].id %>', '<%= body[i].businessKey %>')" />
                 <% } %>
             </div>

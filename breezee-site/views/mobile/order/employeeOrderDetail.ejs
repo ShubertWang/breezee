@@ -200,7 +200,7 @@ var orderStatus = {
             type: Dolphin.requestMethod.POST,
             data: Dolphin.json2string(data),
             onSuccess: function (reData) {
-                Dolphin.goHistory();
+                location.reload();
             }
         });
     });

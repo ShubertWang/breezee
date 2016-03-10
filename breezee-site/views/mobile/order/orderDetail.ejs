@@ -160,7 +160,7 @@ var orderStatus = {
             url: '/data/oms/order/status/<%= body.id %>/-1',
             type: Dolphin.requestMethod.GET,
             onSuccess: function (reData) {
-                Dolphin.goUrl("myOrder");
+                Dolphin.goUrl("/order/myOrder");
             }
         });
     }

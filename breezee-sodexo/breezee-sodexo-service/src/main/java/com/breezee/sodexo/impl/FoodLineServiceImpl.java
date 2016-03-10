@@ -13,6 +13,7 @@ import com.breezee.pcm.api.service.ICategoryService;
 import com.breezee.sodexo.api.domain.FoodLineInfo;
 import com.breezee.sodexo.api.domain.MesshallInfo;
 import com.breezee.sodexo.entity.FoodLineEntity;
+import com.breezee.sodexo.repository.CommentRepository;
 import com.breezee.sodexo.repository.FoodLineRepository;
 import com.breezee.sodexo.api.service.IFoodLineService;
 import com.breezee.sodexo.api.service.IMesshallService;
@@ -38,6 +39,9 @@ public class FoodLineServiceImpl implements IFoodLineService {
 
     @Resource
     private IMesshallService messhallService;
+
+    @Autowired
+    private CommentRepository commentRepository;
 
     @Override
     public FoodLineInfo saveInfo(FoodLineInfo foodLineInfo) {
@@ -99,6 +103,9 @@ public class FoodLineServiceImpl implements IFoodLineService {
             MesshallInfo messhallInfo = messhallService.findInfoById(info.getMesshallId());
             if(messhallInfo!=null){
                 info.setImageCode(messhallInfo.getImageCode());
+                info.setMesshallInfo(messhallInfo);
+            } else {
+                info.setMesshallInfo(new MesshallInfo());
             }
             return info;
         });

@@ -85,7 +85,7 @@ myUtil.customerInfo = function(url, callback) {
         }
     }, function (error, response, body) {
         //判断body
-        var userData = {};
+        var userData = {userType:'public'};
         if(body && body.id > 0){
             userData.userType = body.type;
             userData.siteId = body.company;

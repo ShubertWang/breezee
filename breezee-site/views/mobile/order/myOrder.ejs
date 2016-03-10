@@ -9,12 +9,12 @@
 <% if(userData.userJob) { %>
 <div><a href="employeeOrder" style="padding:10px;line-height: 3em">订单管理</a>
 <a href="employeeSeat" style="padding:10px;line-height: 3em">订位管理</a>
-<a href="employeeRequest" style="padding:10px;line-height: 3em">其他服务</a></div>
+</div>
 <hr/>
 <% } %>
-<div><a href="myOrder" style="padding:10px;line-height: 3em">我的预定</a>
+<div><a href="myOrder" style="padding:10px;line-height: 3em">我的预订</a>
     <a href="mySeat" style="padding:10px;line-height: 3em">我的订位</a>
-    <a href="employeeRequest" style="padding:10px;line-height: 3em">我的请求</a></div>
+</div>
 <% if(body.length > 0 ){%>
     <% include ./myOrderByPage.ejs %>
 <% }else{ %>

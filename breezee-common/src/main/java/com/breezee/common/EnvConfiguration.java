@@ -8,6 +8,7 @@ package com.breezee.common;
 import com.alibaba.dubbo.remoting.http.servlet.DispatcherServlet;
 import com.breezee.common.servlet.DubboServletContextInitializer;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.springframework.beans.factory.InitializingBean;
 import org.springframework.boot.context.embedded.ServletContextInitializer;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
@@ -21,7 +22,7 @@ import org.springframework.context.support.ResourceBundleMessageSource;
 @Configuration
 @ImportResource(value = {"classpath:/bean/bre-datasource.xml",
         "classpath:/bean/bre-dubbo.xml"})
-public class EnvConfiguration {
+public class EnvConfiguration implements InitializingBean {
 
     @Bean
     public DispatcherServlet services() {
@@ -43,5 +44,11 @@ public class EnvConfiguration {
     @Bean
     public ObjectMapper objectMapper(){
         return new ObjectMapper();
+    }
+
+    @Override
+    public void afterPropertiesSet() throws Exception {
+        System.setProperty("user.timezone","Asia/Shanghai");
+        System.out.println(this.getClass().getName()+": user.timezone--->Asia/Shanghai");
     }
 }
