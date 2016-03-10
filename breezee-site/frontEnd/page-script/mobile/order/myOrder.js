@@ -5,5 +5,5 @@ $(function () {
 });
 
 function moreOrder(thisObj, pageNumber){
-    $(thisObj).closest('.orderListPanel').load('/order/myOrderByPage?pageNumber='+pageNumber);
+    $(thisObj).closest('.orderListPanel').load(Dolphin.path.contextPath+Dolphin.defaults.url.viewPrefix+'/order/myOrderByPage?pageNumber='+pageNumber);
 }

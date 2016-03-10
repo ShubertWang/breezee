@@ -269,7 +269,7 @@ public class TaskServiceImpl implements ITaskService {
         TaskQuery taskQuery = taskService.createTaskQuery().taskCandidateGroup(m.get("userJob").toString()).active().orderByTaskCreateTime().desc();
         long count = taskQuery.count();
         List<Task> l = taskQuery.listPage(pageInfo.getPageNumber(), pageInfo.getPageSize());
-        PageResult<TaskInfo> pageResult = convert(l, count);
+        PageResult<TaskInfo> pageResult = convert(l, count, m.get("prcsId"));
         return pageResult;
     }
 
@@ -281,7 +281,7 @@ public class TaskServiceImpl implements ITaskService {
         HistoricTaskInstanceQuery hquery = historyService.createHistoricTaskInstanceQuery().taskAssignee(m.get("username").toString()).finished();
         long count = hquery.count();
         List<HistoricTaskInstance> l = hquery.listPage(pageInfo.getPageNumber(), pageInfo.getPageSize());
-        return convert(l, count);
+        return convert(l, count, null);
     }
 
     @Override
@@ -289,15 +289,18 @@ public class TaskServiceImpl implements ITaskService {
         taskStepRepository.save(new TaskStepEntity().parse(stepInfo));
     }
 
-    private <T extends org.activiti.engine.task.TaskInfo> PageResult<TaskInfo> convert(List<T> l, long count) {
+    private <T extends org.activiti.engine.task.TaskInfo> PageResult<TaskInfo> convert(List<T> l, long count, Object prcsId) {
         List<TaskInfo> ll = new ArrayList<>(l.size());
-        l.forEach(a -> {
+        for(org.activiti.engine.task.TaskInfo a : l){
             TaskInfo vo = new TaskInfo();
             vo.setId(Long.parseLong(a.getId()));
             BeanUtils.copyProperties(a, vo);
             ProcessInstance pi = runtimeService.createProcessInstanceQuery().processInstanceId(a.getProcessInstanceId()).singleResult();
             if (pi != null && pi.getBusinessKey() != null) {
                 vo.setProcessDefinitionKey(pi.getProcessDefinitionKey());
+                if(prcsId!=null && !pi.getProcessDefinitionKey().equals(prcsId.toString())){
+                    continue;
+                }
                 if(pi.getProcessDefinitionKey().equals("orderProcess")) {
                     vo.getProperties().put("orderInfo", orderService.findInfoById(Long.parseLong(pi.getBusinessKey())));
                 } else if(pi.getProcessDefinitionKey().equals("seatProcess")){
@@ -309,7 +312,7 @@ public class TaskServiceImpl implements ITaskService {
                 vo.setBusinessKey(pi.getBusinessKey());
             }
             ll.add(vo);
-        });
+        };
         PageResult<TaskInfo> pageResult = new PageResult<>();
         pageResult.setTotal(count);
         pageResult.setContent(ll);

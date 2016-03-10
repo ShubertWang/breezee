@@ -11,7 +11,7 @@
     </style>
 </head>
 <body ontouchstart>
-<div style="text-align: center; margin-top: 50px;" id="errorMsg"></div>
+<div style="text-align: center; margin-top: 50px;" id="errorMsg">正在支付，请稍候</div>
 <script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js" type="text/javascript"></script>
 <% include ../common/footer.ejs %>
 <script type="text/javascript">
@@ -55,9 +55,10 @@
 
         //监听错误事件 出现'invalid signature' AJAX刷新ticket,并刷新当前页面
         wx.error(function (res) {
-            if (res.errMsg.indexOf("invalid signature") > 0) {
-                $("#errorMsg").html(res.errMsg);
-            }
+//            if (res.errMsg.indexOf("invalid signature") > 0) {
+//
+//            }
+            $("#errorMsg").html("支付成功，请返回");
         });
     });
 </script>

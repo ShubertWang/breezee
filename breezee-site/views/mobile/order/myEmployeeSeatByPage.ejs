@@ -20,10 +20,10 @@
                     </div>
                 </div>
                 <div class="cpxq bh">
-                    <% if (body[i].properties.seatInfo.status == 1) {%>
-                    <p>订位已确认，目前排队号为 <label style="color: #D8050E;font-size:1.2em;padding-left: 5%;"> <%= body.queueNo %></label></p>
+                    <% if (body[i].properties.seatInfo.status == 2) {%>
+                    <p>订位已确认，目前排队号为 <label style="color: #D8050E;font-size:1.2em;padding-left: 5%;"> <%= body[i].properties.seatInfo.queueNo %></label></p>
                     <% } if (body[i].properties.seatInfo.status == 3) {%>
-                    <p>就餐餐位号 <label style="color: #D8050E;font-size:1.2em;padding-left: 5%;"> <%= body.seatNo %></label><span>请在预订的就餐时间内到达餐厅，超时将不保留订位</span></p>
+                    <p>就餐餐位号 <label style="color: #D8050E;font-size:1.2em;padding-left: 5%;"> <%= body[i].properties.seatInfo.seatNo %></label><span>请在预订的就餐时间内到达餐厅，超时将不保留订位</span></p>
                     <% } %>
                 </div>
             </div>

@@ -44,6 +44,7 @@ $(function () {
                     var detailPanel = $('#food_detail');
 
                     detailPanel.find('#food_detail_panel').data({
+                        'foodCode':food.code,
                         'foodId': food.id,
                         'foodName': food.name,
                         'foodPrice': food.basePrice.value
@@ -109,9 +110,7 @@ $(function () {
         var _this = this;
         var id = data.foodId,
             name = data.foodName,
-            price = data.foodPrice
-        code = data.foodCode;
-
+            price = data.foodPrice,code = data.foodCode;
         if (_this.foodList[id]) {
             if (number) {
                 _this.foodList[id].number = number;

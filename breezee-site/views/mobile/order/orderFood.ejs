@@ -63,7 +63,7 @@
             <h3><span class="icon_tj1">&nbsp;</span><span id="foodTypeName"><%= body.data[0].name %></span></h3>
         </div>
 
-        <% for(i = 0; i < body.data.length; i++){%>
+        <% for(i = 0; i < body.data.length; i++){ %>
         <div class="div_listtz foodTypeList foodTypeList_<%= body.data[i].id %>" style="<%= i==0?'':'display:none;'%>">
             <% var food = null;%>
             <% for(var j = 0; j < body.data[i].products.length; j++){%>

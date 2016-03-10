@@ -2,7 +2,9 @@ package com.breezee.bpm.conf;
 
 import org.activiti.engine.delegate.DelegateExecution;
 import org.activiti.engine.delegate.JavaDelegate;
+import org.springframework.beans.factory.InitializingBean;
 import org.springframework.stereotype.Service;
+
 import java.io.Serializable;
 
 /**
@@ -10,13 +12,14 @@ import java.io.Serializable;
  */
 
 @Service("orderComplete")
-public class OrderComplete implements JavaDelegate,Serializable {
+public class OrderComplete implements JavaDelegate, Serializable, InitializingBean {
 
     public void execute(DelegateExecution execution) throws Exception {
-
-            System.out.println("~~~~order complete invoke~~~~~");
-            // TODO
-
+        System.out.println("~~~~order complete invoke~~~~~");
+        // TODO
     }
 
+    @Override
+    public void afterPropertiesSet() throws Exception {
+    }
 }

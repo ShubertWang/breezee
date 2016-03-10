@@ -7,7 +7,7 @@
         <div class="weui_cell_ft"><%= body[i].statusName %></div>
     </a>
 
-    <div class="wdlist <%= body[i].status == 5 ? 'bg_ywc' : '' %>"><!--TODO 根据orderStatus判断已完成订单 -->
+    <div class="wdlist <%= body[i].status == 4 ? 'bg_ywc' : '' %>"><!--TODO 根据orderStatus判断已完成订单 -->
         <div>
             <div class="wddd_ddlist bh" data-order-id="<%= body[i].id %>">
                 <div class="cpxq bh">
@@ -28,7 +28,7 @@
     </div>
 </div>
 <% } %>
-<% if(body.length == 20){ %> <!--当返回数据等于20条时，显示更多button-->
+<% if(body.length == 3){ %> <!--当返回数据等于20条时，显示更多button-->
 <div class="orderListPanel">
     <article>
         <div class=" tybtn_box"><a href="javascript:void(0);"

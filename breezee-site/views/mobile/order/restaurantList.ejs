@@ -15,10 +15,10 @@
             </div>
             <div class="text_ct bh">
                 <h2><a href="javascript:void(0)" class="restaurantLink"><%= body[i].name %></a></h2>
-                <div class="icon_ty like"><s> </s><a href="tel:<%= body[i].telephone %>"><%= body[i].telephone %></a></div>
+                <div class="icon_ty like"><s> </s><a href="tel:<%= body[i].messhallInfo.telephone %>"><%= body[i].messhallInfo.telephone %></a></div>
                 <div class="clear bh">
-                    <div class="icon_ty dzh" onclick="__evaluat(this, true)"><s> </s><a href="javascript:void(0)" class="__count"><%= (body.properties && body.properties.good) || '0' %></a></div>
-                    <div class="icon_ty dw" onclick="__evaluat(this, false)"><s> </s><a href="javascript:void(0)" class="__count"><%= (body.properties && body.properties.bad) || '0' %></a></div>
+                    <div class="icon_ty dzh" onclick="__evaluat(this, true)"><s> </s><a href="javascript:void(0)" class="__count"><%= (body[i].messhallInfo.properties.gc) || '0' %></a></div>
+                    <div class="icon_ty dw" onclick="__evaluat(this, false)"><s> </s><a href="javascript:void(0)" class="__count"><%= (body[i].messhallInfo.properties.bc) || '0' %></a></div>
                 </div>
             </div>
         </li>

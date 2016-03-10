@@ -45,6 +45,7 @@ route.myOrder = function (queryData, res, callback) {
     global.myUtil.request({
         method: 'post',
         uri: 'http://127.0.0.1:10247/services/order/myOrder/' + queryData.userId,
+        json:{pageSize:queryData.pageSize || 10, pageNumber:queryData.pageNumber || 0},
         mockData: '/order/myOrder_dfd'
     }, function (error, response, body) {
         if (error) {
@@ -72,17 +73,7 @@ route.mySeat = function(queryData, res, callback){
 }
 
 route.myOrderByPage = function (queryData, res, callback) {
-    global.myUtil.request({
-        method: 'get',
-        uri: 'http://127.0.0.1:10247/services/order/' + queryData.id,
-        mockData: '/order/myOrder_dfd'
-    }, function (error, response, body) {
-        if (error) {
-            throw error;
-        }
-        body.type = 'DineIn';
-        callback(body);
-    });
+    route.myOrder(queryData,res,callback);
 };
 
 route.orderDetail = function (queryData, res, callback) {
@@ -108,7 +99,7 @@ route.employeeOrder = function (queryData, res, callback) {
         method: 'post',
         uri: 'http://127.0.0.1:10249/services/bpmTask/findUndoTasks',
         mockData: '/order/employeeOrderList',
-        json:{userJob : queryData.userJob,pageNumber:queryData.pageNumber,pageSize:queryData.pageSize}
+        json:{userJob : queryData.userJob,pageNumber:queryData.pageNumber,pageSize:queryData.pageSize,prcsId:'orderProcess'}
         //form: queryData
     }, function (error, response, body) {
         if (error) {
@@ -129,7 +120,22 @@ route.employeeOrderDetail = function (queryData, res, callback) {
 };
 
 route.employeeSeat = function (queryData, res, callback) {
-    route.employeeOrder(queryData,res,callback);
+    queryData.pageNumber = queryData.pageNumber || 0;
+    queryData.pageSize = queryData.pageSize || 20;
+    global.myUtil.request({
+        method: 'post',
+        uri: 'http://127.0.0.1:10249/services/bpmTask/findUndoTasks',
+        mockData: '/order/employeeOrderList',
+        json:{userJob : queryData.userJob,pageNumber:queryData.pageNumber,pageSize:queryData.pageSize,prcsId:'seatProcess'}
+        //form: queryData
+    }, function (error, response, body) {
+        if (error) {
+            throw error;
+        }
+        body = body || {content:[]};
+        body.content = body.content || [];
+        callback(body.content);
+    });
 };
 
 route.employeeSeatDetail = function(queryData, res, callback){
