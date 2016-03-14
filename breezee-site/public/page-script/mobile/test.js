@@ -8,6 +8,7 @@ $(function () {
         timeFormat : 'HH:ii',
         mode: 'scroller',
         lang: 'zh',
+        dateOrder : 'yymmdd', //面板中日期排列格式
         display: 'modal'
     };
 

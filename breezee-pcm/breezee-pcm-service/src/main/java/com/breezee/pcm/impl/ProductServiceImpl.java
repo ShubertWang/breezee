@@ -143,7 +143,7 @@ public class ProductServiceImpl implements IProductService, InitializingBean {
         });
     }
 
-    private ProductInfo setStock(ProductInfo info) {
+    protected ProductInfo setStock(ProductInfo info) {
         List<InventoryInfo> l1 = inventoryService.findInventoryBySkuId(info.getCode());
         int sum = 0;
         for (InventoryInfo a : l1) {
