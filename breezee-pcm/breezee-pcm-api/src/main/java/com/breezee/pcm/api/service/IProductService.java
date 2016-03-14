@@ -47,4 +47,7 @@ public interface IProductService extends IServiceLayer<ProductInfo> {
     @Path("/recommendproduct/{cateId}")
     @GET
     List<ProductInfo> findRecomProductByCateId(@PathParam("cateId") String cateId);
+
+    //临时措施
+    ProductInfo setStock(ProductInfo info);
 }
