@@ -122,6 +122,7 @@ public class CategoryServiceImpl implements ICategoryService {
             if (s != null && s.size() > 0) {
                 s.forEach(a -> {
                     ProductInfo info = a.toInfo(true);
+                    ((ProductServiceImpl)productService).setStock(info);
                     ll.add(info);
                 });
             }
