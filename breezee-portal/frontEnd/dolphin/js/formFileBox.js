@@ -96,7 +96,7 @@
                 }, 3000);
                 this.addFile(result);
             }else{
-                Dolphin.alert(result.msg || '上传失败', {
+                Dolphin.alert(result[thisTool.defaults.ajax.returnMsgKey] || '上传失败', {
                     countDownFlag : false
                 });
             }

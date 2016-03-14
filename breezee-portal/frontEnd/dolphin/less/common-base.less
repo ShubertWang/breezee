@@ -96,3 +96,33 @@
   }
   .generate-rotate(@n, (@i + 30deg), (@j + 30));
 }
+
+/*摇晃*/
+@-webkit-keyframes animation_shaking {
+  0% {
+    -webkit-transform: rotate(10deg);
+    -moz-transform: rotate(10deg);
+    -ms-transform: rotate(10deg);
+    -o-transform: rotate(10deg);
+    transform: rotate(10deg);
+  }
+  100% {
+    -webkit-transform: rotate(-10deg);
+    -moz-transform: rotate(-10deg);
+    -ms-transform: rotate(-10deg);
+    -o-transform: rotate(-10deg);
+    transform: rotate(-10deg);
+  }
+}
+.shake:hover {
+  animation-name: animation_shaking;
+  animation-duration: 0.75s;
+  animation-timing-function: linear;
+  animation-iteration-count: 1;
+}
+.shaking{
+  animation-name: animation_shaking;
+  animation-duration: 0.1s;
+  animation-timing-function: linear;
+  animation-iteration-count:infinite;
+}

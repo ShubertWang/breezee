@@ -7,13 +7,27 @@
 		panel : 'body',
 		ajax : thisTool.ajax,
 		formatter : null,
+		ignore : "",
 
 		select : {
 			emptyOption : true,
             codeField : 'code',
             nameField : 'name',
 			optionUrl : null,
-			optionParam : null
+			optionParam : null,
+			ajaxType:'get'
+		},
+
+		renderForm : {
+			colPreRow : 2,
+			labelCol : 6,
+			inputTypeKey : 'inputType',
+			labelKey : "title",
+			nameKey : 'attrCode',
+			codeField : 'attrCode',
+			idField : 'attrId',
+			selectOptionsKey : 'subType',
+			eachField : null								//function 渲染字段前触发，返回false时，跳过此字段
 		}
 	};
 
@@ -215,9 +229,10 @@
 			return obj;
 		},
 		setValue : function(data, panel, param){
+			var _this = this;
 			var thisPanel = $(panel || this.opts.panel);
-			var opts = param || this.opts,
-				key, _key, value, control;
+			var opts = $.extend({}, this.opts, param),
+				i, key, _key, keyPath = [], control;
 
 			//TODO i18n
 			if(data.lang){
@@ -228,17 +243,35 @@
 				}
 			}
 
-			for(key in data){
-				if(typeof data[key] != 'object'){
-					control = thisPanel.find('[name="'+key+'"]');
-					this.setControlValue(control, data[key]);
+			if(opts.ignore){
+				opts.ignore = "," + opts.ignore.join(',') + ",";
+			}
+
+			(function (_data, level){
+				for(key in _data){
+					if(new RegExp(',' + key + ',').test(opts.ignore)
+                        || _data[key] instanceof jQuery
+                        || _data[key] instanceof HTMLElement
+                        || key == "_parent"){
+						continue;
+					}
+
+					keyPath[level] = key;
+					if(typeof _data[key] != 'object'){
+						_key = "";
+						for(i = 0; i <= level; i++){
+							if(i > 0){
+								_key += ".";
+							}
+							_key += keyPath[i];
+						}
+						control = thisPanel.find('[name="'+_key+'"]');
+						_this.setControlValue(control, _data[key]);
 				}else{
-					for(_key in data[key]){
-						control = thisPanel.find('[name="'+key+'.'+_key+'"]');
-						this.setControlValue(control, data[key][_key]);
+						arguments.callee(_data[key], level+1);
 					}
 				}
-			}
+			})(data, 0);
 
 			//TODO file
 			thisPanel.find('.dolphin_file_box').each(function(){
@@ -308,54 +341,102 @@
 		/*
 		 功能：通过json创建表单
 		 参数说明：
-		 param : {attr: [name:"", title:"", controlType:"", placeholder:""], colNum : 1, labelCol : 3}
+		 param : [{name:"", title:"", inputType:"", placeholder:"", labelCol : 2}]
 		 */
-		renderForm : function(param, panel){
-			var thisPanel = panel || this.opts.panel;
+		renderForm : function(fields, panel, param){
+			var thisPanel = panel || this.opts.panel,
+				_this = this,
+				opts = $.extend(true, {}, this.opts.renderForm, param);
 
-			var form = "",attrObj = null;
-			var row = $('<div class="row">').appendTo($(thisPanel)), col;
+			var row = $('<div class="dolphin-row">').appendTo(thisPanel);
 
-			for(var i = 0; i < param.attr.length; i++){
-				attrObj = this.renderControl(param.attr[i]);
-				if(attrObj){
-					col = $('<div>').addClass('col-md-'+12/(param.colNum || 1)).appendTo(row);
-					col.append(attrObj);
+			for(var i = 0; i < fields.length; i++){
+				_this.renderField(fields[i], row, opts);
 				}
-			}
+			return row;
 		},
-		renderControl : function(param){
-			var control = null;
+		renderField : function(field, panel, param){
+			var col, formField, label, controlPanel;
 
-			switch(param.controlType){
-				case 'text':
-					control = this.renderText(param);
-					break;
-				default :
-					control = this.renderStatic(param);
-				//console.log(param.name + '控件未找到');
+			if(typeof param.eachField == 'function'){
+				if(param.eachField(field, param) === false){
+					return false;
+			}
 			}
 
+			if(field.hidden || field[param.inputTypeKey] == 'hidden'){
+				this.renderControlMethod['hidden'](field, param).prependTo(panel);
+			}else{
+				if(!field[param.idField]){
+					field[param.idField] = Dolphin.random(8);
+				}
+				col = $('<div>').addClass('dolphin-col-'+24/(field.colPreRow || param.colPreRow)).attr({
+					'attrCode': field[param.codeField],
+					'attrId': field[param.idField]
+				});
+
+				formField = $('<div>').addClass('form-group').appendTo(col);
+				label = $('<label>').addClass('dolphin-col-'+(field.labelCol || param.labelCol)+' control-label').html(field[param.labelKey]).appendTo(formField);
+				controlPanel = $('<div>').addClass('dolphin-col-'+(24-(field.labelCol || param.labelCol))).appendTo(formField);
+
+				this.renderControl(field, controlPanel, param);
+			}
+
+			if(col && panel){
+				col.appendTo(panel);
+			}
+
+			return col;
+		},
+		renderControl : function (field, panel, param) {
+			var control;
+
+			if(typeof field.formatter == 'function'){
+				control = field.formatter(field);
+			}else{
+				if(typeof this.renderControlMethod[field[param.inputTypeKey]] == 'function'){
+					control = this.renderControlMethod[field[param.inputTypeKey]].call(this, field, param);
+				}else{
+					control = this.renderControlMethod['static'].call(this, field, param);
+			}
+			}
+			if(panel){
+				panel.append(control);
+			}
 			return control;
 		},
-		renderText : function(param){
-			var control = $('<div>').addClass('form-group');
-			var label = $('<label>').addClass('col-sm-'+(param.labelCol || 3)+' control-label').html(param.title + '：').appendTo(control);
-			var input = $('<div>').addClass('col-sm-'+(12-(param.labelCol || 3))).appendTo(control);
-			$('<input type="text" class="form-control"/>').val(param.defautValue || "").attr({
-				'name' : param.code,
-				'placeholder' : param.placeholder || ''
-			}).appendTo(input);
+		renderControlMethod : {
+			text : function(field, param){
+				var control = $('<input type="text" class="form-control"/>').val(field.defautValue || "").attr({
+					'name' : field[param.nameKey],
+					'placeholder' : field.placeholder || ''
+				});
 
 			return control;
 		},
-		renderStatic : function(param){
-			var control = $('<div>').addClass('form-group');
-			var label = $('<label>').addClass('control-label').html(param.title + '：').appendTo(control);
-			var input = $('<div>').addClass('control-label control-value').appendTo(control);
-			input.attr('name',param.code).html(param.defautValue || " ");
-
+			enum : function (field, param) {
+				var control = $('<select class="form-control">').attr({
+					'name' : field[param.nameKey]
+				});
+				this.parseSelect(control, {
+					options : field[param.selectOptionsKey]
+				});
 			return control;
+		},
+			hidden : function(field, param){
+				var control = $('<input type="hidden" />').val(field.defautValue || "").attr({
+					'name' : field[param.nameKey]
+				});
+
+				return control;
+			},
+			static : function(field, param){
+				var control = $('<p class="form-control-static">').attr({
+					name : field[param.nameKey]
+				}).html(field.defaultValue || '');
+
+				return control;
+			}
 		},
 		submitForm : function(param){
 			var result = thisTool.ajax({
@@ -364,12 +445,12 @@
 				type: param.type
 			});
 			if(result.success){
-				thisTool.alert(result.msg || "操作成功");
+				thisTool.alert(result[thisTool.defaults.ajax.returnMsgKey] || "操作成功");
 				if(param.callback){
 					param.callback();
 				}
 			}else{
-				thisTool.alert(result.msg);
+				thisTool.alert(result[thisTool.defaults.ajax.returnMsgKey]);
 			}
 		},
 		parseSelect : function(selectors, param){
@@ -377,8 +458,9 @@
 			selectors.each(
 				function() {
 					var thisSelect = this,opts = $.extend({}, thisForm.opts.select, param);
-					var options = null,
+					var options = $(this).attr('options') || opts.options,
 						optionUrl = $(this).attr('optionUrl') || opts.optionUrl,
+						ajaxType = $(this).attr('ajaxType') || opts.ajaxType,
 						optionParam=$(this).attr('optionParam') || opts.optionParam,
 						codeField = $(this).attr('codeField') || opts.codeField,
 						nameField = $(this).attr('nameField') || opts.nameField,
@@ -394,7 +476,7 @@
 							//urgent, so just like this
 							optionUrl = optionUrl+"?"+optionParam;
 						}
-						options = thisTool.ajax({url : optionUrl, async : false, mockPathData: mockPathData});
+						options = thisTool.ajax({url : optionUrl, async : false, type:ajaxType, mockPathData: mockPathData});
 						if(dataFilter){
 							switch(typeof dataFilter){
 								case "string" :
@@ -410,7 +492,7 @@
 							options = options.rows;
 						}
 					}else{
-						options = thisTool.enum.getEnum($(this).attr('options'));
+						options = thisTool.enum.getEnum(options);
 					}
 					if(options){
 						if(emptyOption){
