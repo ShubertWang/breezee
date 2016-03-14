@@ -15,6 +15,7 @@
     "extend": "^3.0.0",
     "moment": "^2.11.2",
     "morgan": "~1.6.1",
+    "i18n-node": "latest",
     "request": "^2.67.0",
     "serve-favicon": "~2.3.0",
     "sha1":"latest",
