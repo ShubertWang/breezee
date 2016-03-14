@@ -145,7 +145,7 @@
 .ddmx .list-group .title_ad{ width:15%; float:left; padding: .4em 0;font: 1em/120% Arial, Helvetica, sans-serif, Microsoft YaHei,微软雅黑,宋体; color:#686868; text-align:right;}
 
 .ddmx .list-group .title_b{ float:left;color:#333;font: .875em/100% Arial, Helvetica, sans-serif, Microsoft YaHei,微软雅黑,宋体;padding: .4em 0;margin-left:0;}
-.ddmx .list-group .title_b_text{ float:left; margin-left:2; color:#333;font: .875em/100% Arial, Helvetica, sans-serif, Microsoft YaHei,微软雅黑,宋体; color:#686868;padding: .4em 0;}
+.ddmx .list-group .title_b_text{ float:left; margin-left:2px; color:#333;font: .875em/100% Arial, Helvetica, sans-serif, Microsoft YaHei,微软雅黑,宋体; color:#686868;padding: .4em 0;}
 
 .ddmx .list-group .title_c_text{ float:right; margin-left:2%; color:#f1524f;font: 1em/130% Arial, Helvetica, sans-serif, Microsoft YaHei,微软雅黑,宋体;padding: .4em 0;}
 
