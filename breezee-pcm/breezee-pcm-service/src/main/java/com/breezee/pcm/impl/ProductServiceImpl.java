@@ -27,7 +27,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
-import javax.sql.DataSource;
 import javax.ws.rs.PathParam;
 import java.util.*;
 
@@ -49,9 +48,6 @@ public class ProductServiceImpl implements IProductService, InitializingBean {
 
     @Resource
     private InventoryService inventoryService;
-
-    @Autowired
-    private DataSource dataSource;
 
     @Override
     public List<ProductInfo> findProductsByCateId(Long cateId, boolean rec) {
@@ -143,7 +139,7 @@ public class ProductServiceImpl implements IProductService, InitializingBean {
         });
     }
 
-    protected ProductInfo setStock(ProductInfo info) {
+    public ProductInfo setStock(ProductInfo info) {
         List<InventoryInfo> l1 = inventoryService.findInventoryBySkuId(info.getCode());
         int sum = 0;
         for (InventoryInfo a : l1) {
