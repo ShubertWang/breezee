@@ -19,7 +19,8 @@
 			requestHeader : {},
 			formatterRequestData : null,
             originalPath : "/data",
-			mockPath : "/mockData"
+			mockPath : "/mockData",
+			returnMsgKey : 'msg'
 		},
 		compare : function(a, b){
 			return a == b;
@@ -430,7 +431,7 @@
 			var date = new Date(long);
 			return this.date2string(date, format);
 		} else {
-			return "-";
+			return "";
 		}
 	};
 	DOLPHIN.jsonDate2string = function(json, format){
@@ -461,6 +462,7 @@
 
 	//ajax
 	DOLPHIN.ajax = function(param){//初始化数据
+		var _this = this;
 		var return_data = null, opts, key;
 		var defaultFunction = {
 			success : function(reData, textStatus){
@@ -470,7 +472,8 @@
 						param.onSuccess(reData, textStatus);
 					}
 				}else{
-					thisTool.alert(reData.msg || (this.i18n && this.i18n.get('core_ajax_error')), {
+					thisTool.alert(reData[thisTool.defaults.ajax.returnMsgKey]
+						|| thisTool.i18n.get('core_ajax_error'), {
 						countDownFlag:false,
 						callback : function(){
 							if(typeof param.onError === 'function'){
@@ -488,9 +491,17 @@
 						countDownFlag:false
 					});
 				}else if(XMLHttpRequest.status == 403){
-					thisTool.alert(this.i18n.get('core_login_timeout') + '<br/>' + '<a href=".">'+this.i18n.get('core_reLogin')+'</a>', {
+					thisTool.alert(thisTool.i18n.get('core_login_timeout') + '<br/>' + '<a href=".">'+thisTool.i18n.get('core_reLogin')+'</a>', {
 						countDownFlag:false
 					});
+				}else if(XMLHttpRequest.status == 404){
+					thisTool.alert(textStatus + "<br/>" + XMLHttpRequest.status + "<br/>"+this.url, {
+						countDownFlag:false
+					});
+					return_data = textStatus;
+					if(typeof param.onError === 'function'){
+						param.onError(textStatus);
+					}
 				}else{
 					thisTool.alert(textStatus + "<br/>" + XMLHttpRequest.status, {
 						countDownFlag:false
@@ -546,6 +557,7 @@
 			var mockType = "",urlArray, paramFlag = (opts.url.indexOf("?") > 0)?true:false,paramArray,i;
 			opts.url = opts.url.replace(thisTool.defaults.ajax.originalPath, thisTool.defaults.ajax.mockPath);
 			if(opts.mockPathData){
+				if($.isArray(opts.mockPathData)){
 				urlArray = opts.url.split("/");
 				if(paramFlag){
 					paramArray = urlArray[urlArray.length -1].split("?");
@@ -557,6 +569,11 @@
 				opts.url = urlArray.join("/");
 				if(paramFlag){
 					opts.url += "?" + paramArray[1];
+				}
+				}else if(typeof opts.mockPathData == "object"){
+					for(key in opts.mockPathData){
+						opts.url = opts.url.replace('{'+key+'}', opts.mockPathData[key]);
+					}
 				}
 			}
 
@@ -645,43 +662,51 @@
 		var _this = this;
 		var opts = $.extend({}, thisTool.defaults.alert, param), countDownSpan;
 
-		opts.content = info;
-
-		if(opts.countDownFlag !== false){
-			opts.footer = $('<div>');
-			countDownSpan = $('<span class="countDown">').appendTo(opts.footer);
-			countDownSpan.html(_this.i18n.get('core_alert_countDown', opts.countDownTime));
-
-			opts.init = function(){
-				var countDownNum = opts.countDownTime,
-					modalWindow = this;
-				function countDown(){
-					var callee = arguments.callee;
-					if(countDownNum != 0){
-						countDownSpan.html(_this.i18n.get('core_alert_countDown', countDownNum));
-						countDownNum--;
-						setTimeout(function(){
-							callee();
-						}, 1000);
-					}else{
-						modalWindow.modal('hide');
-					}
-				}
-				countDown();
-			}
-		}
-
-		if(typeof opts.callback == 'function'){
-			opts.hide = function(){
+		if(this.browser.isMobile){
+			alert(info);
+			if(typeof opts.callback == 'function'){
 				opts.callback.call(this);
-			};
+			}
+			return false;
+		}else{
+            opts.content = info;
+
+            if(opts.countDownFlag !== false){
+                opts.footer = $('<div>');
+                countDownSpan = $('<span class="countDown">').appendTo(opts.footer);
+                countDownSpan.html(_this.i18n.get('core_alert_countDown', opts.countDownTime));
+
+                opts.init = function(){
+                    var countDownNum = opts.countDownTime,
+                        modalWindow = this;
+                    function countDown(){
+                        var callee = arguments.callee;
+                        if(countDownNum != 0){
+                            countDownSpan.html(_this.i18n.get('core_alert_countDown', countDownNum));
+                            countDownNum--;
+                            setTimeout(function(){
+                                callee();
+                            }, 1000);
+                        }else{
+                            modalWindow.modal('hide');
+                        }
+                    }
+                    countDown();
+                }
+            }
+
+            if(typeof opts.callback == 'function'){
+                opts.hide = function(){
+                    opts.callback.call(this);
+                };
+            }
+
+            opts.hidden = function () {
+                this.remove();
+            };
+
+            return this.modalWin(opts);
 		}
-
-		opts.hidden = function () {
-			this.remove();
-		};
-
-		return this.modalWin(opts);
 	};
 	DOLPHIN.confirm = function(info, param){
 		var opts = $.extend({}, thisTool.defaults.confirm, param),
@@ -1227,7 +1252,7 @@
                 }, 3000);
                 this.addFile(result);
             }else{
-                Dolphin.alert(result.msg || '上传失败', {
+                Dolphin.alert(result[thisTool.defaults.ajax.returnMsgKey] || '上传失败', {
                     countDownFlag : false
                 });
             }
@@ -1548,469 +1573,564 @@
 	thisTool.validate = validate;
 })(jQuery);
 ;/*!/dolphin/js/form.js*/
-(function($){
-	var thisTool = Dolphin;
-	function FORM(param){
-		this.init(param);
-	}
-	FORM.defaults = {
-		panel : 'body',
-		ajax : thisTool.ajax,
-		formatter : null,
+(function ($) {
+    var thisTool = Dolphin;
 
-		select : {
-			emptyOption : true,
-            codeField : 'code',
-            nameField : 'name',
-			optionUrl : null,
-			optionParam : null,
-			ajaxType:'get'
-		}
-	};
+    function FORM(param) {
+        this.init(param);
+    }
 
+    FORM.defaults = {
+        panel: 'body',
+        ajax: thisTool.ajax,
+        formatter: null,
+        ignore: "",
 
-	FORM.prototype = {
-		/* ==================== property ================= */
-		constructor : FORM,
-		data : null,
+        select: {
+            emptyOption: true,
+            codeField: 'code',
+            nameField: 'name',
+            optionUrl: null,
+            optionParam: null,
+            ajaxType: 'get'
+        },
 
-		/* ===================== method ================== */
-		init : function(param){
-			this.opts = $.extend({}, FORM.defaults, param);
-		},
-		parse : function(panel, param){
-			var _panel = panel || this.opts.panel;
-			//select
-			this.parseSelect($(_panel).find('select[options]'));
-
-			//date
-			$(_panel).find('.input-group.dolphin_date_picker').datepicker({
-				format: "yyyy-mm-dd",
-				language: navigator.language,
-				autoclose: true,
-				orientation: "bottom left"
-			});
-
-			//datetime
-			$(_panel).find('.input-group.dolphin_datetime_picker').datetimepicker({
-				format: "yyyy-mm-dd hh:ii",
-				autoclose: true,
-				pickerPosition: "bottom-left"
-			});
-
-			//i18n
-			$(_panel).find('.dolphin_i18n_box').each(function () {
-				$(this).i18nBox();
-			});
-
-			//ref-tree
-			$(_panel).find('.form-control-ref').each(function(){
-				var thisControl = $(this);
-				var url = thisTool.path.contextPath + thisControl.attr('data-ref-url');
-				var idField = thisControl.attr('idField');
-				var nameField = thisControl.attr('nameField');
-
-				var refTree = new REFWIN({
-					type : thisControl.attr('data-ref-type'),
-					url : url,
-					mockPathData : thisControl.attr('mockPathData').split(","),
-
-					idField : idField || 'code',
-					textField : nameField || 'name',
-
-					multiple : thisControl.attr('data-ref-multiple') === "true"?true:false,
-					checkbox : thisControl.attr('data-ref-checkbox') === "false"?false:true,
-					cascadeCheck : thisControl.attr('data-ref-cascadeCheck') === "true"?true:false,
-					onlyLeafCheck : thisControl.attr('data-ref-onlyLeafCheck') === "true"?true:false,
-					onShow : function(){
-						var selected = thisControl.find('.form-control-hidden').val().split(',');
-
-						for(var i = 0; i < selected.length; i++){
-							this.refObj.check(this.refObj.findById(selected[i]));
-						}
-					},
-					onSubmit : function(data){
-						var selectNode = '';
-						var selectId = '';
-						for(var i = 0; i < data.length; i++){
-							if(i != 0){
-								selectNode += ', ';
-								selectId += ', ';
-							}
-							selectNode += data[i][this.opts.textField];
-							selectId += data[i][this.opts.idField];
-						}
-						thisControl.find('.form-control').val(selectNode);
-						thisControl.find('.form-control-hidden').val(selectId);
-					}
-				});
-				thisControl.find('.input-group-addon').bind('click', function(){
-					//console.log(tree.getChecked());
-					refTree.show();
-				});
-			});
-
-			//file
-			$(_panel).find('.dolphin_file_box').each(function(){
-				$(this).fileBox();
-			});
-
-			//validate
-			thisTool.validate.monitor($(this.opts.panel).find('['+thisTool.validate.defaults.attr+']'));
-
-			return this;
-		},
-		empty : function(panel, param){
-			var thisPanel = panel || this.opts.panel;
-			var opts = param || this.opts;
-			var control;
-
-			$(thisPanel).find('[name]').each(function () {
-				control = $(this);
-				if(control[0].tagName.toLowerCase() == 'input'){
-					if(control.attr('type') == 'radio' || control.attr('type') == 'checkbox'){
-						control[0].checked = false;
-					}else{
-						control.val("");
-					}
-				}else if(control[0].tagName.toLowerCase() == 'select' || control[0].tagName.toLowerCase() == 'textarea'){
-					control.val("");
-				}else if(control[0].tagName.toLowerCase() == 'p' || control[0].tagName.toLowerCase() == 'span' || control[0].tagName.toLowerCase() == 'div'){
-					control.html("");
-				}
-			});
-			$(thisPanel).find('div.dolphin_i18n_box').each(function () {
-				$(this).find('[__i18n_flag]').removeAttr('__i18n_flag');
-				$(this).find('._lang_items').hide();
-			});
-		},
-		//form --> json
-		getValue : function(formId){
-			var _form;
-			if(typeof formId === 'string'){
-				if($(formId).length > 0){
-					_form = $(formId);
-				}else{
-					_form = $("#"+formId);
-				}
-			}else{
-				_form = formId;
-			}
-			var obj = {}, control,
-				nameTree, namePointer,
-				i, j, k;
-
-			//select,input,textarea,checkbox,radio
-			var item = _form.find('select[name], input[name][type!="checkbox"][type!="radio"], textarea[name], input[name][type="checkbox"]:checked, input[name][type="radio"]:checked');
-			for(i = 0; i < item.length; i++){
-				control = item.eq(i);
-				if(control.closest('.table-edit').length > 0 || control.attr('type') == 'file'){
-					continue;
-				}
-				if(control.attr('name').indexOf('.') > 0){
-					nameTree = control.attr('name').split('.');
-					namePointer = obj;
-					for(j = 0; j < nameTree.length; j++){
-						if(j != (nameTree.length -1)){
-							if(!namePointer[nameTree[j]]){
-								namePointer[nameTree[j]] = {};
-							}
-							namePointer = namePointer[nameTree[j]];
-						}else{
-							namePointer[nameTree[j]] = control.val();
-						}
-					}
-				}else{
-					obj[control.attr('name')] = control.val();
-				}
-			}
-
-			//list
-			var editList = _form.find('.table-edit');
-			for(i = 0; i < editList.length; i++){
-				obj[editList.eq(i).attr('tableName')] = editList.data('dolphin').data.rows;
-
-				//TODO i18n 处理多语言问题 待优化
-				var i18n_box = editList.eq(i).find('.list_body').children('tr').eq(0).find('.dolphin_i18n_box');
-				for(j = 0; j < i18n_box.length; j++){
-					var field_name = i18n_box.eq(j).attr('controlName');
-					for(k = 0; k < obj[editList.eq(i).attr('tableName')].length; k++){
-						obj[editList.eq(i).attr('tableName')][k][field_name] = translateI18n(obj[editList.eq(i).attr('tableName')][k][field_name]);
-					}
-				}
-			}
-
-			//TODO i18n 处理多语言问题 待优化
-			_form.find('.dolphin_i18n_box').each(function (i) {
-				var control = $(this);
-				if(control.closest('.table-edit').length > 0 || control.attr('type') == 'file'){
-					return true;
-				}else{
-					var name = control.attr('controlName');
-					obj[name] = translateI18n(obj[name]);
-				}
-			});
-			function translateI18n(data){
-				var i18nData = "";
-				for(var key in data){
-					if(i18nData != ""){
-						i18nData += ","
-					}
-					i18nData += "\"" + key + "\"" + ":" + (data[key]?"\"" + data[key] + "\"":"\"\"");
-				}
-
-				return i18nData;
-			}
+        renderForm: {
+            staticFlag: false,
+            colPreRow: 2,
+            labelCol: 6,
+            inputTypeKey: 'inputType',
+            labelKey: "title",
+            nameKey: 'attrCode',
+            codeField: 'attrCode',
+            idField: 'attrId',
+            selectOptionsKey: 'subType',
+            eachField: null								//function 渲染字段前触发，返回false时，跳过此字段
+        }
+    };
 
 
-			return obj;
-		},
-		setValue : function(data, panel, param){
-			var thisPanel = $(panel || this.opts.panel);
-			var opts = param || this.opts,
-				key, _key, value, control;
+    FORM.prototype = {
+        /* ==================== property ================= */
+        constructor: FORM,
+        data: null,
 
-			//TODO i18n
-			if(data.lang){
-				for(key in data.lang){
-					data[key + "_i18n_"] = {};
-					data[key + "_i18n_"]['code'] = data.lang[key];
-					data[key + "_i18n_"][Dolphin.I18N_BOX.defaults.defaultLang] = data[key];
-				}
-			}
+        /* ===================== method ================== */
+        init: function (param) {
+            this.opts = $.extend({}, FORM.defaults, param);
+        },
+        parse: function (panel, param) {
+            var _panel = panel || this.opts.panel;
+            //select
+            this.parseSelect($(_panel).find('select[options]'));
 
-			for(key in data){
-				if(typeof data[key] != 'object'){
-					control = thisPanel.find('[name="'+key+'"]');
-					this.setControlValue(control, data[key]);
-				}else{
-					for(_key in data[key]){
-						control = thisPanel.find('[name="'+key+'.'+_key+'"]');
-						this.setControlValue(control, data[key][_key]);
-					}
-				}
-			}
+            //date
+            $(_panel).find('.input-group.dolphin_date_picker').datepicker({
+                format: "yyyy-mm-dd",
+                language: navigator.language,
+                autoclose: true,
+                orientation: "bottom left"
+            });
 
-			//TODO file
-			thisPanel.find('.dolphin_file_box').each(function(){
-				$(this).data('dolphin').resetFiles();
-			});
+            //datetime
+            $(_panel).find('.input-group.dolphin_datetime_picker').datetimepicker({
+                format: "yyyy-mm-dd hh:ii",
+                autoclose: true,
+                pickerPosition: "bottom-left"
+            });
 
-			return this;
-		},
-		setControlValue : function (control, value, param) {
-			var opts = param || this.opts;
-			if(control.length > 0){
-				if(control[0].tagName.toLowerCase() == 'input'){
-					if(control.attr('type') == 'radio' || control.attr('type') == 'checkbox'){
-						if(control.length > 1){
-							for(var i = 0; i < control.length; i++){
-								if(control.eq(i).val() == value){
-									control[i].checked = true;
-								}
-							}
-						}else{
-							if(value === true || value === "true" || value === "1"){
-								control[0].checked = true;
-							}
-						}
-					}else{
-						control.val(value);
-					}
-				}else if(control[0].tagName.toLowerCase() == 'select'){
-					control.val(value + "");
-					control.attr('selectedOption', value + "");
-				}else if(control[0].tagName.toLowerCase() == 'textarea'){
-					control.val(value + "");
-				}else if(control[0].tagName.toLowerCase() == 'p' || control[0].tagName.toLowerCase() == 'span' || control[0].tagName.toLowerCase() == 'div'){
-					if(control.attr('options')){
-						control.html(thisTool.enum.getEnumText(control.attr('options'),value));
-					}else{
-						if(opts.formatter && typeof opts.formatter[key] === 'function'){
-							control.html(opts.formatter[key].call(this, value, data));
-						}else{
-							control.html(value);
-						}
-					}
-				}
-			}
-		},
-		loadData : function(param, panel, funcParam){
-			var thisForm = this;
-			param.onSuccess = function(data){
-				if(typeof funcParam.dataFilter == "function"){
-					data = funcParam.dataFilter.call(thisForm, data);
-				}
+            //i18n
+            $(_panel).find('.dolphin_i18n_box').each(function () {
+                $(this).i18nBox();
+            });
 
-				thisForm.setValue(data.value, panel, param);
+            //ref-tree
+            $(_panel).find('.form-control-ref').each(function () {
+                var thisControl = $(this);
+                var url = thisTool.path.contextPath + thisControl.attr('data-ref-url');
+                var idField = thisControl.attr('idField');
+                var nameField = thisControl.attr('nameField');
 
-				if(typeof funcParam.callback == "function"){
-					funcParam.callback.call(thisForm, data);
-				}
-			};
-			thisTool.ajax(param);
-		},
-		validate : function(panel){
-			var _panel = panel || this.opts.panel;
+                var refTree = new REFWIN({
+                    type: thisControl.attr('data-ref-type'),
+                    url: url,
+                    mockPathData: thisControl.attr('mockPathData').split(","),
 
-			return thisTool.validate($(_panel).find('['+thisTool.validate.defaults.attr+']'));
-		},
+                    idField: idField || 'code',
+                    textField: nameField || 'name',
 
-		/*
-		 功能：通过json创建表单
-		 参数说明：
-		 param : {attr: [name:"", title:"", controlType:"", placeholder:""], colNum : 1, labelCol : 3}
-		 */
-		renderForm : function(param, panel){
-			var thisPanel = panel || this.opts.panel;
+                    multiple: thisControl.attr('data-ref-multiple') === "true" ? true : false,
+                    checkbox: thisControl.attr('data-ref-checkbox') === "false" ? false : true,
+                    cascadeCheck: thisControl.attr('data-ref-cascadeCheck') === "true" ? true : false,
+                    onlyLeafCheck: thisControl.attr('data-ref-onlyLeafCheck') === "true" ? true : false,
+                    onShow: function () {
+                        var selected = thisControl.find('.form-control-hidden').val().split(',');
 
-			var form = "",attrObj = null;
-			var row = $('<div class="row">').appendTo($(thisPanel)), col;
+                        for (var i = 0; i < selected.length; i++) {
+                            this.refObj.check(this.refObj.findById(selected[i]));
+                        }
+                    },
+                    onSubmit: function (data) {
+                        var selectNode = '';
+                        var selectId = '';
+                        for (var i = 0; i < data.length; i++) {
+                            if (i != 0) {
+                                selectNode += ', ';
+                                selectId += ', ';
+                            }
+                            selectNode += data[i][this.opts.textField];
+                            selectId += data[i][this.opts.idField];
+                        }
+                        thisControl.find('.form-control').val(selectNode);
+                        thisControl.find('.form-control-hidden').val(selectId);
+                    }
+                });
+                thisControl.find('.input-group-addon').bind('click', function () {
+                    //console.log(tree.getChecked());
+                    refTree.show();
+                });
+            });
 
-			for(var i = 0; i < param.attr.length; i++){
-				attrObj = this.renderControl(param.attr[i]);
-				if(attrObj){
-					col = $('<div>').addClass('col-md-'+12/(param.colNum || 1)).appendTo(row);
-					col.append(attrObj);
-				}
-			}
-		},
-		renderControl : function(param){
-			var control = null;
+            //file
+            $(_panel).find('.dolphin_file_box').each(function () {
+                $(this).fileBox();
+            });
 
-			switch(param.controlType){
-				case 'text':
-					control = this.renderText(param);
-					break;
-				default :
-					control = this.renderStatic(param);
-				//console.log(param.name + '控件未找到');
-			}
+            //validate
+            thisTool.validate.monitor($(this.opts.panel).find('[' + thisTool.validate.defaults.attr + ']'));
 
-			return control;
-		},
-		renderText : function(param){
-			var control = $('<div>').addClass('form-group');
-			var label = $('<label>').addClass('col-sm-'+(param.labelCol || 3)+' control-label').html(param.title + '：').appendTo(control);
-			var input = $('<div>').addClass('col-sm-'+(12-(param.labelCol || 3))).appendTo(control);
-			$('<input type="text" class="form-control"/>').val(param.defautValue || "").attr({
-				'name' : param.code,
-				'placeholder' : param.placeholder || ''
-			}).appendTo(input);
+            return this;
+        },
+        empty: function (panel, param) {
+            var thisPanel = panel || this.opts.panel;
+            var opts = param || this.opts;
+            var control;
 
-			return control;
-		},
-		renderStatic : function(param){
-			var control = $('<div>').addClass('form-group');
-			var label = $('<label>').addClass('control-label').html(param.title + '：').appendTo(control);
-			var input = $('<div>').addClass('control-label control-value').appendTo(control);
-			input.attr('name',param.code).html(param.defautValue || " ");
+            $(thisPanel).find('[name]').each(function () {
+                control = $(this);
+                if (control[0].tagName.toLowerCase() == 'input') {
+                    if (control.attr('type') == 'radio' || control.attr('type') == 'checkbox') {
+                        control[0].checked = false;
+                    } else {
+                        control.val("");
+                    }
+                } else if (control[0].tagName.toLowerCase() == 'select' || control[0].tagName.toLowerCase() == 'textarea') {
+                    control.val("");
+                } else if (control[0].tagName.toLowerCase() == 'p' || control[0].tagName.toLowerCase() == 'span' || control[0].tagName.toLowerCase() == 'div') {
+                    control.html("");
+                }
+            });
+            $(thisPanel).find('div.dolphin_i18n_box').each(function () {
+                $(this).find('[__i18n_flag]').removeAttr('__i18n_flag');
+                $(this).find('._lang_items').hide();
+            });
+        },
+        //form --> json
+        getValue: function (formId) {
+            var _form;
+            if (typeof formId === 'string') {
+                if ($(formId).length > 0) {
+                    _form = $(formId);
+                } else {
+                    _form = $("#" + formId);
+                }
+            } else {
+                _form = formId;
+            }
+            var obj = {}, control,
+                nameTree, namePointer,
+                i, j, k;
 
-			return control;
-		},
-		submitForm : function(param){
-			var result = thisTool.ajax({
-				url: param.url,
-				data: param.data || {},
-				type: param.type
-			});
-			if(result.success){
-				thisTool.alert(result.msg || "操作成功");
-				if(param.callback){
-					param.callback();
-				}
-			}else{
-				thisTool.alert(result.msg);
-			}
-		},
-		parseSelect : function(selectors, param){
-			var thisForm = this;
-			selectors.each(
-				function() {
-					var thisSelect = this,opts = $.extend({}, thisForm.opts.select, param);
-					var options = null,
-						optionUrl = $(this).attr('optionUrl') || opts.optionUrl,
-						ajaxType = $(this).attr('ajaxType') || opts.ajaxType,
-						optionParam=$(this).attr('optionParam') || opts.optionParam,
-						codeField = $(this).attr('codeField') || opts.codeField,
-						nameField = $(this).attr('nameField') || opts.nameField,
-						nameFormatter = $(this).attr('nameFormatter') || opts.nameFormatter,
-						emptyOption = ($(this).attr('emptyOption') === false || $(this).attr('emptyOption') === "false")?false:opts.emptyOption,
-						selectedOption = $(this).attr('selectedOption') || opts.selectedOption,
-						mockPathData = $(this).attr('mockPathData')?$(this).attr('mockPathData').split(","):opts.mockPathData,
-						dataFilter = $(this).attr('dataFilter') || opts.dataFilter,
-						optionName;
+            //select,input,textarea,checkbox,radio
+            var item = _form.find('select[name], input[name][type!="checkbox"][type!="radio"], textarea[name], input[name][type="checkbox"]:checked, input[name][type="radio"]:checked');
+            for (i = 0; i < item.length; i++) {
+                control = item.eq(i);
+                if (control.closest('.table-edit').length > 0 || control.attr('type') == 'file') {
+                    continue;
+                }
+                if (control.attr('name').indexOf('.') > 0) {
+                    nameTree = control.attr('name').split('.');
+                    namePointer = obj;
+                    for (j = 0; j < nameTree.length; j++) {
+                        if (j != (nameTree.length - 1)) {
+                            if (!namePointer[nameTree[j]]) {
+                                namePointer[nameTree[j]] = {};
+                            }
+                            namePointer = namePointer[nameTree[j]];
+                        } else {
+                            namePointer[nameTree[j]] = control.val();
+                        }
+                    }
+                } else {
+                    obj[control.attr('name')] = control.val();
+                }
+            }
 
-					if(optionUrl){
-						if(optionParam){
-							//urgent, so just like this
-							optionUrl = optionUrl+"?"+optionParam;
-						}
-						options = thisTool.ajax({url : optionUrl, async : false, type:ajaxType, mockPathData: mockPathData});
-						if(dataFilter){
-							switch(typeof dataFilter){
-								case "string" :
-									options = window[dataFilter].call(thisSelect, options);
-									break;
-								case "function":
-									options = dataFilter.call(thisSelect, options);
-									break;
-								default:
-									break;
-							}
-						}else{
-							options = options.rows;
-						}
-					}else{
-						options = thisTool.enum.getEnum($(this).attr('options'));
-					}
-					if(options){
-						if(emptyOption){
-							$(this).append(
-								'<option value="">'
-								+ '--请选择--' + '</option>');
-						}
-						for (var i = 0; i < options.length; i++) {
-							switch(typeof nameFormatter){
-								case "string" :
-									optionName = window[nameFormatter].call(thisSelect, options[i][nameField]);
-									break;
-								case "function":
-									optionName = nameFormatter.call(thisSelect, options[i][nameField]);
-									break;
-								default:
-									optionName = options[i][nameField];
-									break;
-							}
-							$(this).append(
-								'<option value="' + options[i][codeField] + '">'
-								+ optionName + '</option>');
-						}
-						if(selectedOption){
-							$(this).val(selectedOption);
-						}
-					}
-					if($(this).attr('callback')){
-						window[$(this).attr('callback')].call(this,$(this).val(), options);
-						if($(this).attr('noChange')){
+            //list
+            var editList = _form.find('.table-edit');
+            for (i = 0; i < editList.length; i++) {
+                obj[editList.eq(i).attr('tableName')] = editList.data('dolphin').data.rows;
 
-						}else{
-							$(this).bind('change', function(){
-								window[$(thisSelect).attr('callback')].call(this,$(thisSelect).val(), options);
-							})
-						}
-					}
-				}
-			);
-		},
-		setOptions : function(param){
-			$.extend(true, this.opts, param);
-			return this;
-		}
-	};
+                //TODO i18n 处理多语言问题 待优化
+                var i18n_box = editList.eq(i).find('.list_body').children('tr').eq(0).find('.dolphin_i18n_box');
+                for (j = 0; j < i18n_box.length; j++) {
+                    var field_name = i18n_box.eq(j).attr('controlName');
+                    for (k = 0; k < obj[editList.eq(i).attr('tableName')].length; k++) {
+                        obj[editList.eq(i).attr('tableName')][k][field_name] = translateI18n(obj[editList.eq(i).attr('tableName')][k][field_name]);
+                    }
+                }
+            }
 
-	thisTool.FORM = FORM;
-	thisTool.form = new FORM();
+            //TODO i18n 处理多语言问题 待优化
+            _form.find('.dolphin_i18n_box').each(function (i) {
+                var control = $(this);
+                if (control.closest('.table-edit').length > 0 || control.attr('type') == 'file') {
+                    return true;
+                } else {
+                    var name = control.attr('controlName');
+                    obj[name] = translateI18n(obj[name]);
+                }
+            });
+            function translateI18n(data) {
+                var i18nData = "";
+                for (var key in data) {
+                    if (i18nData != "") {
+                        i18nData += ","
+                    }
+                    i18nData += "\"" + key + "\"" + ":" + (data[key] ? "\"" + data[key] + "\"" : "\"\"");
+                }
+
+                return i18nData;
+            }
+
+
+            return obj;
+        },
+        setValue: function (data, panel, param) {
+            var _this = this;
+            var thisPanel = $(panel || this.opts.panel);
+            var opts = $.extend({}, this.opts, param),
+                i, key, _key, keyPath = [], control;
+
+            //TODO i18n
+            if (data.lang) {
+                for (key in data.lang) {
+                    data[key + "_i18n_"] = {};
+                    data[key + "_i18n_"]['code'] = data.lang[key];
+                    data[key + "_i18n_"][Dolphin.I18N_BOX.defaults.defaultLang] = data[key];
+                }
+            }
+
+            if (opts.ignore) {
+                opts.ignore = "," + opts.ignore.join(',') + ",";
+            }
+
+            (function (_data, level) {
+                for (key in _data) {
+                    if (new RegExp(',' + key + ',').test(opts.ignore)
+                        || _data[key] instanceof jQuery
+                        || _data[key] instanceof HTMLElement
+                        || key == "_parent") {
+                        continue;
+                    }
+
+                    keyPath[level] = key;
+                    if (typeof _data[key] != 'object') {
+                        _key = "";
+                        for (i = 0; i <= level; i++) {
+                            if (i > 0) {
+                                _key += ".";
+                            }
+                            _key += keyPath[i];
+                        }
+                        control = thisPanel.find('[name="' + _key + '"]');
+                        _this.setControlValue(control, _data[key]);
+                    } else {
+                        arguments.callee(_data[key], level + 1);
+                    }
+                }
+            })(data, 0);
+
+            //TODO file
+            thisPanel.find('.dolphin_file_box').each(function () {
+                $(this).data('dolphin').resetFiles();
+            });
+
+            return this;
+        },
+        setControlValue: function (control, value, param) {
+            var opts = param || this.opts;
+            if (control.length > 0) {
+                if (control[0].tagName.toLowerCase() == 'input') {
+                    if (control.attr('type') == 'radio' || control.attr('type') == 'checkbox') {
+                        if (control.length > 1) {
+                            for (var i = 0; i < control.length; i++) {
+                                if (control.eq(i).val() == value) {
+                                    control[i].checked = true;
+                                }
+                            }
+                        } else {
+                            if (value === true || value === "true" || value === "1") {
+                                control[0].checked = true;
+                            }
+                        }
+                    } else {
+                        control.val(value);
+                    }
+                } else if (control[0].tagName.toLowerCase() == 'select') {
+                    control.val(value + "");
+                    control.attr('selectedOption', value + "");
+                } else if (control[0].tagName.toLowerCase() == 'textarea') {
+                    control.val(value + "");
+                } else if (control[0].tagName.toLowerCase() == 'p' || control[0].tagName.toLowerCase() == 'span' || control[0].tagName.toLowerCase() == 'div') {
+                    if (control.attr('options')) {
+                        control.html(thisTool.enum.getEnumText(control.attr('options'), value));
+                    } else {
+                        if (opts.formatter && typeof opts.formatter[key] === 'function') {
+                            control.html(opts.formatter[key].call(this, value, data));
+                        } else {
+                            control.html(value);
+                        }
+                    }
+                }
+            }
+        },
+        loadData: function (param, panel, funcParam) {
+            var thisForm = this;
+            param.onSuccess = function (data) {
+                if (typeof funcParam.dataFilter == "function") {
+                    data = funcParam.dataFilter.call(thisForm, data);
+                }
+
+                thisForm.setValue(data.value, panel, param);
+
+                if (typeof funcParam.callback == "function") {
+                    funcParam.callback.call(thisForm, data);
+                }
+            };
+            thisTool.ajax(param);
+        },
+        validate: function (panel) {
+            var _panel = panel || this.opts.panel;
+
+            return thisTool.validate($(_panel).find('[' + thisTool.validate.defaults.attr + ']'));
+        },
+
+        /*
+         功能：通过json创建表单
+         参数说明：
+         param : [{name:"", title:"", inputType:"", placeholder:"", labelCol : 2}]
+         */
+        renderForm: function (fields, panel, param) {
+            var thisPanel = panel || this.opts.panel,
+                _this = this,
+                opts = $.extend(true, {}, this.opts.renderForm, param);
+
+            var row = $('<div class="dolphin-row">').appendTo(thisPanel);
+
+            for (var i = 0; i < fields.length; i++) {
+                _this.renderField(fields[i], row, opts);
+            }
+            return row;
+        },
+        renderField: function (field, panel, param) {
+            var col, formField, label, controlPanel;
+
+            if (typeof param.eachField == 'function') {
+                if (param.eachField(field, param) === false) {
+                    return false;
+                }
+            }
+
+            if (field.hidden || field[param.inputTypeKey] == 'hidden') {
+                this.renderControlMethod['hidden'](field, param).prependTo(panel);
+            } else {
+                if (!field[param.idField]) {
+                    field[param.idField] = Dolphin.random(8);
+                }
+                col = $('<div>').addClass('dolphin-col-' + 24 / (field.colPreRow || param.colPreRow)).attr({
+                    'attrCode': field[param.codeField],
+                    'attrId': field[param.idField]
+                });
+
+                formField = $('<div>').addClass('form-group').appendTo(col);
+                label = $('<label>').addClass('dolphin-col-' + (field.labelCol || param.labelCol) + ' control-label').html(field[param.labelKey]).appendTo(formField);
+                controlPanel = $('<div>').addClass('dolphin-col-' + (24 - (field.labelCol || param.labelCol))).appendTo(formField);
+
+                this.renderControl(field, controlPanel, param);
+            }
+
+            if (col && panel) {
+                col.appendTo(panel);
+            }
+
+            return col;
+        },
+        renderControl: function (field, panel, param) {
+            var control;
+
+            if (typeof field.formatter == 'function') {
+                control = field.formatter(field);
+            } else {
+                if (param.staticFlag === false && typeof this.renderControlMethod[field[param.inputTypeKey]] == 'function') {
+                    control = this.renderControlMethod[field[param.inputTypeKey]].call(this, field, param);
+                } else {
+                    control = this.renderControlMethod['static'].call(this, field, param);
+                }
+            }
+            if (panel) {
+                panel.append(control);
+            }
+            return control;
+        },
+        renderControlMethod: {
+            text: function (field, param) {
+                var control = $('<input type="text" class="form-control"/>').val(field.defautValue || "").attr({
+                    'name': field[param.nameKey],
+                    'placeholder': field.placeholder || ''
+                });
+
+                return control;
+            },
+            enum: function (field, param) {
+                var control = $('<select class="form-control">').attr({
+                    'name': field[param.nameKey]
+                });
+                this.parseSelect(control, {
+                    options: field[param.selectOptionsKey]
+                });
+                return control;
+            },
+            hidden: function (field, param) {
+                var control = $('<input type="hidden" />').val(field.defautValue || "").attr({
+                    'name': field[param.nameKey]
+                });
+
+                return control;
+            },
+            static: function (field, param) {
+                var control = $('<p class="form-control-static">').attr({
+                    name: field[param.nameKey]
+                }).html(field.defaultValue || '');
+
+                return control;
+            },
+            textarea : function (field, param) {
+                var control = $('<textarea class="form-control">').attr({
+                    name: field[param.nameKey]
+                }).html(field.defaultValue || '');
+
+                return control;
+            }
+        },
+        submitForm: function (param) {
+            var result = thisTool.ajax({
+                url: param.url,
+                data: param.data || {},
+                type: param.type
+            });
+            if (result.success) {
+                thisTool.alert(result[thisTool.defaults.ajax.returnMsgKey] || "操作成功");
+                if (param.callback) {
+                    param.callback();
+                }
+            } else {
+                thisTool.alert(result[thisTool.defaults.ajax.returnMsgKey]);
+            }
+        },
+        parseSelect: function (selectors, param) {
+            var thisForm = this;
+            selectors.each(
+                function () {
+                    var thisSelect = this, opts = $.extend({}, thisForm.opts.select, param);
+                    var options = $(this).attr('options') || opts.options,
+                        optionUrl = $(this).attr('optionUrl') || opts.optionUrl,
+                        ajaxType = $(this).attr('ajaxType') || opts.ajaxType,
+                        optionParam = $(this).attr('optionParam') || opts.optionParam,
+                        codeField = $(this).attr('codeField') || opts.codeField,
+                        nameField = $(this).attr('nameField') || opts.nameField,
+                        nameFormatter = $(this).attr('nameFormatter') || opts.nameFormatter,
+                        emptyOption = ($(this).attr('emptyOption') === false || $(this).attr('emptyOption') === "false") ? false : opts.emptyOption,
+                        selectedOption = $(this).attr('selectedOption') || opts.selectedOption,
+                        mockPathData = $(this).attr('mockPathData') ? $(this).attr('mockPathData').split(",") : opts.mockPathData,
+                        dataFilter = $(this).attr('dataFilter') || opts.dataFilter,
+                        optionName;
+
+                    if (optionUrl) {
+                        if (optionParam) {
+                            //urgent, so just like this
+                            optionUrl = optionUrl + "?" + optionParam;
+                        }
+                        options = thisTool.ajax({
+                            url: optionUrl,
+                            async: false,
+                            type: ajaxType,
+                            mockPathData: mockPathData
+                        });
+                        if (dataFilter) {
+                            switch (typeof dataFilter) {
+                                case "string" :
+                                    options = window[dataFilter].call(thisSelect, options);
+                                    break;
+                                case "function":
+                                    options = dataFilter.call(thisSelect, options);
+                                    break;
+                                default:
+                                    break;
+                            }
+                        } else {
+                            options = options.rows;
+                        }
+                    } else {
+                        options = thisTool.enum.getEnum(options);
+                    }
+                    if (options) {
+                        if (emptyOption) {
+                            $(this).append(
+                                '<option value="">'
+                                + '--请选择--' + '</option>');
+                        }
+                        for (var i = 0; i < options.length; i++) {
+                            switch (typeof nameFormatter) {
+                                case "string" :
+                                    optionName = window[nameFormatter].call(thisSelect, options[i][nameField]);
+                                    break;
+                                case "function":
+                                    optionName = nameFormatter.call(thisSelect, options[i][nameField]);
+                                    break;
+                                default:
+                                    optionName = options[i][nameField];
+                                    break;
+                            }
+                            $(this).append(
+                                '<option value="' + options[i][codeField] + '">'
+                                + optionName + '</option>');
+                        }
+                        if (selectedOption) {
+                            $(this).val(selectedOption);
+                        }
+                    }
+                    if ($(this).attr('callback')) {
+                        window[$(this).attr('callback')].call(this, $(this).val(), options);
+                        if ($(this).attr('noChange')) {
+
+                        } else {
+                            $(this).bind('change', function () {
+                                window[$(thisSelect).attr('callback')].call(this, $(thisSelect).val(), options);
+                            })
+                        }
+                    }
+                }
+            );
+        },
+        setOptions: function (param) {
+            $.extend(true, this.opts, param);
+            return this;
+        }
+    };
+
+    thisTool.FORM = FORM;
+    thisTool.form = new FORM();
 })(jQuery);
 ;/*!/dolphin/js/enum.js*/
 /**
@@ -2283,7 +2403,7 @@
 		return this;
 	}
 	PAGINATION.defaults = {
-		panel : "",								//生成区别，遵循jQuery选择器规则
+		panel : "",								        //生成区别，遵循jQuery选择器规则
 		pageSize : 10,										//每页条数
 		pageNumber : 1,									//当前页码
 
@@ -2558,6 +2678,7 @@
 		constructor : LIST,
 		data : null,
 		pagination : null,
+		tbody : null,
 		groupCount : 0,
 		groupCode : null,
 
@@ -2616,7 +2737,7 @@
 			this.initTheader(table);
 
 			//table-body
-			table.append('<tbody class="list_body"></tbody>');
+			this.tbody = $('<tbody class="list_body">').appendTo(table);
 
 			//bind function
 			if(this.opts.checkbox && this.opts.multiple){
@@ -2751,7 +2872,7 @@
 		},
 		empty : function(){
 			this.data = {rows : [], total : 0};
-			$(this.opts.panel).find('tbody').empty();
+			this.tbody.empty();
 			if(this.opts.pagination){
 				this.pagination.empty();
 			}
@@ -2957,10 +3078,9 @@
 		},
 		addTotalRow : function(data, rowIndex){
 			var thisList = this;
-			var tbody = $(this.opts.panel).find('tbody.list_body');
 			this.groupCount++;
 
-			var row = $('<tr>').addClass('total_row').appendTo(tbody);
+			var row = $('<tr>').addClass('total_row').appendTo(thisList.tbody);
 
 			var colspan = 0, colName = "";
 			if(this.opts.checkbox){
@@ -2991,7 +3111,6 @@
 		},
 		addDataRow : function(data, rowIndex){
 			var thisList = this;
-			var tbody = $(thisList.opts.panel).find('tbody.list_body');
 			data.__id__ = thisTool.random(8);
 
 			var row = $('<tr>');
@@ -3100,7 +3219,7 @@
 				$('<td class="editButtonCol">').html('<button type="button" class="btn btn-danger btn-xs removeRow"><span class="glyphicon glyphicon-trash"></span></button>').appendTo(row);
 			}
 
-			$(tbody).append(row);
+			$(thisList.tbody).append(row);
 
 			if(this.opts.checkbox){
 				checkboxInput.bind('change', function(event){
@@ -3250,6 +3369,15 @@
 
 				return returnData;
 			}
+		},
+		getName : function(data){
+			var name;
+			if(typeof this.opts.nameField == 'function'){
+				name = this.opts.nameField.call(this, data);
+			}else{
+				name = data[this.opts.nameField];
+			}
+			return name;
 		}
 	};
 
@@ -3370,7 +3498,10 @@
 				if(_parent != null){
 					data._parent = _parent;
 				}
-				
+				if(typeof thisTree.opts.dataFilter == 'function'){
+					data = thisTree.opts.dataFilter.call(thisTree, data);
+				}
+
 				if(data.children){
 					callee.call(thisTree, data.children, data);
 				}
@@ -3379,6 +3510,7 @@
 		render : function(nodeList, panel){
 			var thisTree = this;
 			
+			panel.addClass('Dolphin-tree');
 			panel.empty();
 			
 			var callee = arguments.callee;
@@ -3408,7 +3540,7 @@
 					}
 				}
 
-				$("<td>").html(thisTree.getName(node)).appendTo(treeItem);
+				var treeItemLabel = $("<td>").addClass('tree-label').html(thisTree.getName(node)).appendTo(treeItem);
 				if(node.type == 'folder' && node.children){
 					var childrenItemTr = $('<tr class="treeChildren" hidden >').appendTo(tbody);
 					node.childrenTarget = childrenItemTr;
@@ -3421,7 +3553,7 @@
 
 				//bind function
 				if(thisTree.opts.onClick){
-					treeItem.bind('click', function(){
+					treeItemLabel.bind('click', function(){
 						thisTree.opts.onClick.call(thisTree, node);
 					});
 				}
@@ -3595,13 +3727,14 @@
 			var thisTree = this, _url;
 			node.target.find('.toggleIcon').removeClass(thisTree.opts.icon.folder_close);
 			_url = this.opts.url.replace('{'+this.opts.requestKey+'}', node[this.opts.idField]);
-			var data={};
-			data[this.opts.idField]=node[this.opts.idField];
+			var queryParams = {};
+			queryParams[this.opts.requestKey] = node[this.opts.idField];
+
 			if(!node.hasLoadChildren){
 				this.opts.ajax({
 					url : _url,
 					mockPathData : this.opts.mockPathData,
-					data : data,
+					data : queryParams,
 					onSuccess : function(returnData){
 						var childrenData = returnData.rows;
 						thisTree.initData(childrenData, node);
@@ -3773,6 +3906,8 @@
         //icon
         icon: {},
 
+        queryParams : null,
+
         dataFilter: null
     };
 
@@ -3780,10 +3915,13 @@
     HORIZONTAL_TREE.prototype = {
         /* ==================== property ================= */
         constructor: HORIZONTAL_TREE,
+        __panel__: null,
         panel: null,
         data: null,
         selectedItem: null,
         itemPanel: {},
+        //TODO 强制触发刷新
+        reloadFlag : false,
 
         /* ===================== method ================== */
         init: function (param) {
@@ -3806,6 +3944,7 @@
             table = $('<table>').appendTo(horizontal_tree);
             tbody = $('<tbody>').appendTo(table);
             this.panel = $('<tr>').appendTo(tbody);
+            this.__panel__ = horizontal_tree;
 
             return this;
         },
@@ -3824,7 +3963,7 @@
         },
         load: function (node, url, param) {
             var _this = this,
-                data = {};
+                data = $.extend(true, {}, this.opts.queryParams);
             if (url) {
                 _this.opts.url = url;
             } else {
@@ -3953,13 +4092,25 @@
                 parent[_this.opts.childrenField].push(data);
             }
         },
+        reload : function (url, param) {
+            this.load(null, url, param);
+        },
+        reloadLevel : function (parentId) {
+            if(parentId){
+                //TODO 强制触发刷新
+                this.reloadFlag = true;
+                $('div._item[id="' + parentId + '"]').click();
+            }else{
+                this.reload();
+            }
+        },
         reloadItem: function (id, data) {
             var _this = this;
             var item, itemPanel, name, _url, _data;
             if (typeof id === 'string') {
                 item = _this.findItem(id);
             } else {
-                item = id
+                item = _this.findItem(id[_this.opts.idField]);
             }
             itemPanel = $('div._item[id="' + item[_this.opts.idField] + '"]');
 
@@ -3974,7 +4125,7 @@
 
                 itemPanel.click();
             } else {
-                _data = {};
+                _data = $.extend({}, _this.opts.queryParams);
                 if (item[_this.opts.idField]) {
                     _data[_this.opts.requestKey] = item[_this.opts.idField];
                     _url = _this.opts.url.replace('{'+_this.opts.requestKey+'}', item[_this.opts.idField]);
@@ -4012,11 +4163,11 @@
             function traversal(data) {
                 var i, item;
                 for (i = 0; i < data.length; i++) {
-                    if (data[i].id == id) {
+                    if (data[i][_this.opts.idField] == id) {
                         return data[i];
                     } else {
-                        if (data[_this.opts.childrenField]) {
-                            item = arguments.callee(data[_this.opts.childrenField]);
+                        if (data[i][_this.opts.childrenField]) {
+                            item = arguments.callee(data[i][_this.opts.childrenField]);
                             if (item) {
                                 return item
                             }
@@ -4032,18 +4183,20 @@
 
         click: function (itemData, thisItem, event) {
             var _this = this;
-            if (!$(thisItem).hasClass('active')) {
+            //TODO 强制触发刷新
+            if (!$(thisItem).hasClass('active') || _this.reloadFlag) {
                 $(thisItem).closest('td').nextAll().remove();
 
                 $(thisItem).siblings(".active").removeClass('active');
                 $(thisItem).addClass('active');
 
                 //if(itemData.type == "folder" || _this.opts.buttons.length>0){
-                if (itemData[_this.opts.childrenField]) {
+                if (itemData[_this.opts.childrenField] && !_this.reloadFlag) {
                     _this.loadData(itemData, itemData[_this.opts.childrenField]);
                 } else {
                     _this.load(itemData);
                 }
+                _this.reloadFlag = false;
                 //}
             }
 
@@ -4057,7 +4210,10 @@
         },
 
         complete: function () {
-
+            var treePanelDOM = this.__panel__[0];
+            if(treePanelDOM.offsetWidth != treePanelDOM.scrollWidth){
+                treePanelDOM.scrollLeft = treePanelDOM.scrollWidth - treePanelDOM.offsetWidth;
+            }
         }
     };
 
@@ -4599,7 +4755,8 @@
 		onSubmit : null,
 		onShow : null,
 
-		mockPathData : null
+		mockPathData : null,
+		showButton : null
 	};
 
 	REFWIN.prototype = {
@@ -4612,6 +4769,7 @@
 
 		/* ===================== method ================== */
 		init : function(param){
+			var _this = this;
 			this.opts = $.extend({}, REFWIN.defaults, param);
 
 			this.render();
@@ -4626,6 +4784,12 @@
 			}
 
 			this.bind();
+
+			if(this.opts.showButton){
+				$(this.opts.showButton).click(function () {
+					_this.show();
+				})
+			}
 		},
 		empty : function(){
 			$(this.opts.panel).empty();
@@ -4733,5 +4897,4 @@
 	};
 
 	thisTool.REFWIN = REFWIN;
-	window.REFWIN = REFWIN;
 })(jQuery);

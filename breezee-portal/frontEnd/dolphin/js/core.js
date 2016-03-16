@@ -557,18 +557,18 @@
 			opts.url = opts.url.replace(thisTool.defaults.ajax.originalPath, thisTool.defaults.ajax.mockPath);
 			if(opts.mockPathData){
 				if($.isArray(opts.mockPathData)){
-                    urlArray = opts.url.split("/");
-                    if(paramFlag){
-                        paramArray = urlArray[urlArray.length -1].split("?");
-                        urlArray[urlArray.length -1] = paramArray[0];
-                    }
-                    for(i = 1; i <= opts.mockPathData.length; i++){
-                        urlArray[urlArray.length - i] = opts.mockPathData[opts.mockPathData.length - i];
-                    }
-                    opts.url = urlArray.join("/");
-                    if(paramFlag){
-                        opts.url += "?" + paramArray[1];
-                    }
+				urlArray = opts.url.split("/");
+				if(paramFlag){
+					paramArray = urlArray[urlArray.length -1].split("?");
+					urlArray[urlArray.length -1] = paramArray[0];
+				}
+				for(i = 1; i <= opts.mockPathData.length; i++){
+					urlArray[urlArray.length - i] = opts.mockPathData[opts.mockPathData.length - i];
+				}
+				opts.url = urlArray.join("/");
+				if(paramFlag){
+					opts.url += "?" + paramArray[1];
+				}
 				}else if(typeof opts.mockPathData == "object"){
 					for(key in opts.mockPathData){
 						opts.url = opts.url.replace('{'+key+'}', opts.mockPathData[key]);
