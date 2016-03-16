@@ -43,6 +43,8 @@
         //icon
         icon: {},
 
+        queryParams : null,
+
         dataFilter: null
     };
 
@@ -50,10 +52,13 @@
     HORIZONTAL_TREE.prototype = {
         /* ==================== property ================= */
         constructor: HORIZONTAL_TREE,
+        __panel__: null,
         panel: null,
         data: null,
         selectedItem: null,
         itemPanel: {},
+        //TODO 强制触发刷新
+        reloadFlag : false,
 
         /* ===================== method ================== */
         init: function (param) {
@@ -76,6 +81,7 @@
             table = $('<table>').appendTo(horizontal_tree);
             tbody = $('<tbody>').appendTo(table);
             this.panel = $('<tr>').appendTo(tbody);
+            this.__panel__ = horizontal_tree;
 
             return this;
         },
@@ -94,7 +100,7 @@
         },
         load: function (node, url, param) {
             var _this = this,
-                data = {};
+                data = $.extend(true, {}, this.opts.queryParams);
             if (url) {
                 _this.opts.url = url;
             } else {
@@ -223,13 +229,25 @@
                 parent[_this.opts.childrenField].push(data);
             }
         },
+        reload : function (url, param) {
+            this.load(null, url, param);
+        },
+        reloadLevel : function (parentId) {
+            if(parentId){
+                //TODO 强制触发刷新
+                this.reloadFlag = true;
+                $('div._item[id="' + parentId + '"]').click();
+            }else{
+                this.reload();
+            }
+        },
         reloadItem: function (id, data) {
             var _this = this;
             var item, itemPanel, name, _url, _data;
             if (typeof id === 'string') {
                 item = _this.findItem(id);
             } else {
-                item = id
+                item = _this.findItem(id[_this.opts.idField]);
             }
             itemPanel = $('div._item[id="' + item[_this.opts.idField] + '"]');
 
@@ -244,7 +262,7 @@
 
                 itemPanel.click();
             } else {
-                _data = {};
+                _data = $.extend({}, _this.opts.queryParams);
                 if (item[_this.opts.idField]) {
                     _data[_this.opts.requestKey] = item[_this.opts.idField];
                     _url = _this.opts.url.replace('{'+_this.opts.requestKey+'}', item[_this.opts.idField]);
@@ -302,18 +320,20 @@
 
         click: function (itemData, thisItem, event) {
             var _this = this;
-            if (!$(thisItem).hasClass('active')) {
+            //TODO 强制触发刷新
+            if (!$(thisItem).hasClass('active') || _this.reloadFlag) {
                 $(thisItem).closest('td').nextAll().remove();
 
                 $(thisItem).siblings(".active").removeClass('active');
                 $(thisItem).addClass('active');
 
                 //if(itemData.type == "folder" || _this.opts.buttons.length>0){
-                if (itemData[_this.opts.childrenField]) {
+                if (itemData[_this.opts.childrenField] && !_this.reloadFlag) {
                     _this.loadData(itemData, itemData[_this.opts.childrenField]);
                 } else {
                     _this.load(itemData);
                 }
+                _this.reloadFlag = false;
                 //}
             }
 
@@ -327,7 +347,10 @@
         },
 
         complete: function () {
-
+            var treePanelDOM = this.__panel__[0];
+            if(treePanelDOM.offsetWidth != treePanelDOM.scrollWidth){
+                treePanelDOM.scrollLeft = treePanelDOM.scrollWidth - treePanelDOM.offsetWidth;
+            }
         }
     };
 

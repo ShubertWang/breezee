@@ -22,6 +22,11 @@
   float: right;
   margin-top: -6px;
 }
+/******************************************** overwrite bootstrap *******************************************/
+.input-group-btn-icon {
+  padding-top: 9px;
+  padding-bottom: 9px;
+}
 /******************************************** loading *******************************************/
 .loading {
   display: none;
@@ -226,6 +231,35 @@
   -o-transform: rotate(360deg);
   transform: rotate(360deg);
 }
+/*摇晃*/
+@-webkit-keyframes animation_shaking {
+  0% {
+    -webkit-transform: rotate(10deg);
+    -moz-transform: rotate(10deg);
+    -ms-transform: rotate(10deg);
+    -o-transform: rotate(10deg);
+    transform: rotate(10deg);
+  }
+  100% {
+    -webkit-transform: rotate(-10deg);
+    -moz-transform: rotate(-10deg);
+    -ms-transform: rotate(-10deg);
+    -o-transform: rotate(-10deg);
+    transform: rotate(-10deg);
+  }
+}
+.shake:hover {
+  animation-name: animation_shaking;
+  animation-duration: 0.75s;
+  animation-timing-function: linear;
+  animation-iteration-count: 1;
+}
+.shaking {
+  animation-name: animation_shaking;
+  animation-duration: 0.1s;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+}
 /******************************************** form *******************************************/
 form div.form-inline .form-control {
   width: 100px;
@@ -383,6 +417,10 @@ form div.form-inline .form-control {
 .table th .iconButton {
   cursor: pointer;
 }
+.table .centerHeader th {
+  text-align: center;
+  vertical-align: middle;
+}
 .listFooter {
   margin-top: 3px;
   margin-bottom: 3px;
@@ -466,6 +504,10 @@ form div.form-inline .form-control {
   cursor: not-allowed;
 }
 /******************************************** tree *******************************************/
+.Dolphin-tree {
+  max-height: 600px;
+  overflow: auto;
+}
 .tree-table td {
   border: 0;
   padding: 3px;
@@ -481,6 +523,9 @@ form div.form-inline .form-control {
 }
 .tree-table .treeItem:hover {
   background: #eee;
+}
+.tree-table .tree-label {
+  cursor: pointer;
 }
 /******************************************** tree *******************************************/
 /*************************************** horizontal tree *******************************************/
@@ -537,7 +582,7 @@ form div.form-inline .form-control {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-  max-width: 70%;
+  max-width: 65%;
   display: inline-block;
   vertical-align: sub;
 }

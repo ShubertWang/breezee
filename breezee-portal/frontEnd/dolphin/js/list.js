@@ -82,6 +82,7 @@
 		constructor : LIST,
 		data : null,
 		pagination : null,
+		tbody : null,
 		groupCount : 0,
 		groupCode : null,
 
@@ -140,7 +141,7 @@
 			this.initTheader(table);
 
 			//table-body
-			table.append('<tbody class="list_body"></tbody>');
+			this.tbody = $('<tbody class="list_body">').appendTo(table);
 
 			//bind function
 			if(this.opts.checkbox && this.opts.multiple){
@@ -275,7 +276,7 @@
 		},
 		empty : function(){
 			this.data = {rows : [], total : 0};
-			$(this.opts.panel).find('tbody').empty();
+			this.tbody.empty();
 			if(this.opts.pagination){
 				this.pagination.empty();
 			}
@@ -481,10 +482,9 @@
 		},
 		addTotalRow : function(data, rowIndex){
 			var thisList = this;
-			var tbody = $(this.opts.panel).find('tbody.list_body');
 			this.groupCount++;
 
-			var row = $('<tr>').addClass('total_row').appendTo(tbody);
+			var row = $('<tr>').addClass('total_row').appendTo(thisList.tbody);
 
 			var colspan = 0, colName = "";
 			if(this.opts.checkbox){
@@ -515,7 +515,6 @@
 		},
 		addDataRow : function(data, rowIndex){
 			var thisList = this;
-			var tbody = $(thisList.opts.panel).find('tbody.list_body');
 			data.__id__ = thisTool.random(8);
 
 			var row = $('<tr>');
@@ -624,7 +623,7 @@
 				$('<td class="editButtonCol">').html('<button type="button" class="btn btn-danger btn-xs removeRow"><span class="glyphicon glyphicon-trash"></span></button>').appendTo(row);
 			}
 
-			$(tbody).append(row);
+			$(thisList.tbody).append(row);
 
 			if(this.opts.checkbox){
 				checkboxInput.bind('change', function(event){
@@ -774,6 +773,15 @@
 
 				return returnData;
 			}
+		},
+		getName : function(data){
+			var name;
+			if(typeof this.opts.nameField == 'function'){
+				name = this.opts.nameField.call(this, data);
+			}else{
+				name = data[this.opts.nameField];
+			}
+			return name;
 		}
 	};
 

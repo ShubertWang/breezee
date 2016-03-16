@@ -37,7 +37,8 @@
 		onSubmit : null,
 		onShow : null,
 
-		mockPathData : null
+		mockPathData : null,
+		showButton : null
 	};
 
 	REFWIN.prototype = {
@@ -50,6 +51,7 @@
 
 		/* ===================== method ================== */
 		init : function(param){
+			var _this = this;
 			this.opts = $.extend({}, REFWIN.defaults, param);
 
 			this.render();
@@ -64,6 +66,12 @@
 			}
 
 			this.bind();
+
+			if(this.opts.showButton){
+				$(this.opts.showButton).click(function () {
+					_this.show();
+				})
+			}
 		},
 		empty : function(){
 			$(this.opts.panel).empty();
@@ -171,5 +179,4 @@
 	};
 
 	thisTool.REFWIN = REFWIN;
-	window.REFWIN = REFWIN;
 })(jQuery);

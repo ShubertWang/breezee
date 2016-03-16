@@ -18,7 +18,8 @@
 			requestHeader : {},
 			formatterRequestData : null,
             originalPath : "/data",
-			mockPath : "/mockData"
+			mockPath : "/mockData",
+			returnMsgKey : 'msg'
 		},
 		compare : function(a, b){
 			return a == b;
@@ -429,7 +430,7 @@
 			var date = new Date(long);
 			return this.date2string(date, format);
 		} else {
-			return "-";
+			return "";
 		}
 	};
 	DOLPHIN.jsonDate2string = function(json, format){
@@ -460,6 +461,7 @@
 
 	//ajax
 	DOLPHIN.ajax = function(param){//初始化数据
+		var _this = this;
 		var return_data = null, opts, key;
 		var defaultFunction = {
 			success : function(reData, textStatus){
@@ -469,7 +471,8 @@
 						param.onSuccess(reData, textStatus);
 					}
 				}else{
-					thisTool.alert(reData.msg || (this.i18n && this.i18n.get('core_ajax_error')), {
+					thisTool.alert(reData[thisTool.defaults.ajax.returnMsgKey]
+						|| thisTool.i18n.get('core_ajax_error'), {
 						countDownFlag:false,
 						callback : function(){
 							if(typeof param.onError === 'function'){
@@ -487,9 +490,17 @@
 						countDownFlag:false
 					});
 				}else if(XMLHttpRequest.status == 403){
-					thisTool.alert(this.i18n.get('core_login_timeout') + '<br/>' + '<a href=".">'+this.i18n.get('core_reLogin')+'</a>', {
+					thisTool.alert(thisTool.i18n.get('core_login_timeout') + '<br/>' + '<a href=".">'+thisTool.i18n.get('core_reLogin')+'</a>', {
 						countDownFlag:false
 					});
+				}else if(XMLHttpRequest.status == 404){
+					thisTool.alert(textStatus + "<br/>" + XMLHttpRequest.status + "<br/>"+this.url, {
+						countDownFlag:false
+					});
+					return_data = textStatus;
+					if(typeof param.onError === 'function'){
+						param.onError(textStatus);
+					}
 				}else{
 					thisTool.alert(textStatus + "<br/>" + XMLHttpRequest.status, {
 						countDownFlag:false
@@ -545,6 +556,7 @@
 			var mockType = "",urlArray, paramFlag = (opts.url.indexOf("?") > 0)?true:false,paramArray,i;
 			opts.url = opts.url.replace(thisTool.defaults.ajax.originalPath, thisTool.defaults.ajax.mockPath);
 			if(opts.mockPathData){
+				if($.isArray(opts.mockPathData)){
 				urlArray = opts.url.split("/");
 				if(paramFlag){
 					paramArray = urlArray[urlArray.length -1].split("?");
@@ -556,6 +568,11 @@
 				opts.url = urlArray.join("/");
 				if(paramFlag){
 					opts.url += "?" + paramArray[1];
+				}
+				}else if(typeof opts.mockPathData == "object"){
+					for(key in opts.mockPathData){
+						opts.url = opts.url.replace('{'+key+'}', opts.mockPathData[key]);
+					}
 				}
 			}
 
@@ -644,43 +661,51 @@
 		var _this = this;
 		var opts = $.extend({}, thisTool.defaults.alert, param), countDownSpan;
 
-		opts.content = info;
-
-		if(opts.countDownFlag !== false){
-			opts.footer = $('<div>');
-			countDownSpan = $('<span class="countDown">').appendTo(opts.footer);
-			countDownSpan.html(_this.i18n.get('core_alert_countDown', opts.countDownTime));
-
-			opts.init = function(){
-				var countDownNum = opts.countDownTime,
-					modalWindow = this;
-				function countDown(){
-					var callee = arguments.callee;
-					if(countDownNum != 0){
-						countDownSpan.html(_this.i18n.get('core_alert_countDown', countDownNum));
-						countDownNum--;
-						setTimeout(function(){
-							callee();
-						}, 1000);
-					}else{
-						modalWindow.modal('hide');
-					}
-				}
-				countDown();
-			}
-		}
-
-		if(typeof opts.callback == 'function'){
-			opts.hide = function(){
+		if(this.browser.isMobile){
+			alert(info);
+			if(typeof opts.callback == 'function'){
 				opts.callback.call(this);
-			};
+			}
+			return false;
+		}else{
+            opts.content = info;
+
+            if(opts.countDownFlag !== false){
+                opts.footer = $('<div>');
+                countDownSpan = $('<span class="countDown">').appendTo(opts.footer);
+                countDownSpan.html(_this.i18n.get('core_alert_countDown', opts.countDownTime));
+
+                opts.init = function(){
+                    var countDownNum = opts.countDownTime,
+                        modalWindow = this;
+                    function countDown(){
+                        var callee = arguments.callee;
+                        if(countDownNum != 0){
+                            countDownSpan.html(_this.i18n.get('core_alert_countDown', countDownNum));
+                            countDownNum--;
+                            setTimeout(function(){
+                                callee();
+                            }, 1000);
+                        }else{
+                            modalWindow.modal('hide');
+                        }
+                    }
+                    countDown();
+                }
+            }
+
+            if(typeof opts.callback == 'function'){
+                opts.hide = function(){
+                    opts.callback.call(this);
+                };
+            }
+
+            opts.hidden = function () {
+                this.remove();
+            };
+
+            return this.modalWin(opts);
 		}
-
-		opts.hidden = function () {
-			this.remove();
-		};
-
-		return this.modalWin(opts);
 	};
 	DOLPHIN.confirm = function(info, param){
 		var opts = $.extend({}, thisTool.defaults.confirm, param),

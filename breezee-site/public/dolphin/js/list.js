@@ -12,6 +12,7 @@
 		id : null,											//随机id
 		panel : "#planList",								//生成区别，遵循jQuery选择器规则
 		columns : null,									//列属性，[{code:"", title:"", width:"", formatter:function(val, row, index){}}]
+		hideHeader : false,								//是否隐藏表头
 		striped : true,									//是否隔行变色
 		bordered : true,									//是否有边框
 		hover : true,										//是否鼠标移上时变色
@@ -81,6 +82,7 @@
 		constructor : LIST,
 		data : null,
 		pagination : null,
+		tbody : null,
 		groupCount : 0,
 		groupCode : null,
 
@@ -118,6 +120,9 @@
 			if(this.opts.height){
 				div.css('height', this.opts.height);
 			}
+			if(this.opts.maxHeight){
+				div.css('max-height', this.opts.maxHeight);
+			}
 			if(this.opts.striped){
 				table.addClass('table-striped');
 			}
@@ -136,7 +141,7 @@
 			this.initTheader(table);
 
 			//table-body
-			table.append('<tbody class="list_body"></tbody>');
+			this.tbody = $('<tbody class="list_body">').appendTo(table);
 
 			//bind function
 			if(this.opts.checkbox && this.opts.multiple){
@@ -175,7 +180,11 @@
 		initTheader : function(tablePanel){
 			var table = tablePanel || $(this.opts.panel).find('table');
 			var thead = '', thisList = this;
-			thead += '<thead>';
+			thead += '<thead';
+			if(this.opts.hideHeader){
+				thead += ' style="display:none;"';
+			}
+			thead += '>';
 			thead += '	<tr>';
 			if(this.opts.checkbox){
 				thead += '	<th class="checkboxTh" >';
@@ -267,7 +276,7 @@
 		},
 		empty : function(){
 			this.data = {rows : [], total : 0};
-			$(this.opts.panel).find('tbody').empty();
+			this.tbody.empty();
 			if(this.opts.pagination){
 				this.pagination.empty();
 			}
@@ -320,6 +329,10 @@
 					pageSize : this.opts.pageSize,
 					pageNumber : this.opts.pageNumber - 1
 				});
+				$.extend(queryCondition, {
+					pageSize : this.opts.pageSize,
+					pageNumber : this.opts.pageNumber - 1
+				});
 			}
 			if(this.opts.sortName){
 				url = thisTool.urlAddParam(url, {
@@ -331,9 +344,16 @@
 				$.extend(queryCondition, {groupCode : this.groupCode});
 			}
 
+			var _data;
+			if(this.opts.ajaxType=='get'){
+				_data = queryCondition;
+			} else {
+				_data = Dolphin.json2string(queryCondition);
+			}
+
 			this.opts.ajax({
 				url : url,
-				data : queryCondition,
+				data : _data,
 				type : this.opts.ajaxType,
 				mockPathData : this.opts.mockPathData,
 				pathData : this.opts.pathData,
@@ -462,10 +482,9 @@
 		},
 		addTotalRow : function(data, rowIndex){
 			var thisList = this;
-			var tbody = $(this.opts.panel).find('tbody.list_body');
 			this.groupCount++;
 
-			var row = $('<tr>').addClass('total_row').appendTo(tbody);
+			var row = $('<tr>').addClass('total_row').appendTo(thisList.tbody);
 
 			var colspan = 0, colName = "";
 			if(this.opts.checkbox){
@@ -496,7 +515,6 @@
 		},
 		addDataRow : function(data, rowIndex){
 			var thisList = this;
-			var tbody = $(thisList.opts.panel).find('tbody.list_body');
 			data.__id__ = thisTool.random(8);
 
 			var row = $('<tr>');
@@ -519,6 +537,9 @@
 				if(column.width){
 					col.css('width', column.width);
 				}
+				if(column.textAlign){
+					col.css('text-align', column.textAlign);
+				}
 				if(column.wrap){
 					col.css('white-space', 'nowrap');
 				}
@@ -526,7 +547,7 @@
 					col.addClass('hiddenCol');
 				}
 
-				if(column.code.indexOf('.') > 0){
+				if(typeof column.code == "string" && column.code.indexOf('.') > 0){
 					valueArr = column.code.split('.');
 					value = data;
 					for(level = 0; level < valueArr.length; level++){
@@ -602,7 +623,7 @@
 				$('<td class="editButtonCol">').html('<button type="button" class="btn btn-danger btn-xs removeRow"><span class="glyphicon glyphicon-trash"></span></button>').appendTo(row);
 			}
 
-			$(tbody).append(row);
+			$(thisList.tbody).append(row);
 
 			if(this.opts.checkbox){
 				checkboxInput.bind('change', function(event){
@@ -752,6 +773,15 @@
 
 				return returnData;
 			}
+		},
+		getName : function(data){
+			var name;
+			if(typeof this.opts.nameField == 'function'){
+				name = this.opts.nameField.call(this, data);
+			}else{
+				name = data[this.opts.nameField];
+			}
+			return name;
 		}
 	};
 

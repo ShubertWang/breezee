@@ -112,7 +112,10 @@
 				if(_parent != null){
 					data._parent = _parent;
 				}
-				
+				if(typeof thisTree.opts.dataFilter == 'function'){
+					data = thisTree.opts.dataFilter.call(thisTree, data);
+				}
+
 				if(data.children){
 					callee.call(thisTree, data.children, data);
 				}
@@ -121,6 +124,7 @@
 		render : function(nodeList, panel){
 			var thisTree = this;
 			
+			panel.addClass('Dolphin-tree');
 			panel.empty();
 			
 			var callee = arguments.callee;
@@ -150,7 +154,7 @@
 					}
 				}
 
-				$("<td>").html(thisTree.getName(node)).appendTo(treeItem);
+				var treeItemLabel = $("<td>").addClass('tree-label').html(thisTree.getName(node)).appendTo(treeItem);
 				if(node.type == 'folder' && node.children){
 					var childrenItemTr = $('<tr class="treeChildren" hidden >').appendTo(tbody);
 					node.childrenTarget = childrenItemTr;
@@ -163,7 +167,7 @@
 
 				//bind function
 				if(thisTree.opts.onClick){
-					treeItem.bind('click', function(){
+					treeItemLabel.bind('click', function(){
 						thisTree.opts.onClick.call(thisTree, node);
 					});
 				}
@@ -337,12 +341,14 @@
 			var thisTree = this, _url;
 			node.target.find('.toggleIcon').removeClass(thisTree.opts.icon.folder_close);
 			_url = this.opts.url.replace('{'+this.opts.requestKey+'}', node[this.opts.idField]);
+			var queryParams = {};
+			queryParams[this.opts.requestKey] = node[this.opts.idField];
 
 			if(!node.hasLoadChildren){
 				this.opts.ajax({
 					url : _url,
 					mockPathData : this.opts.mockPathData,
-					data : {code : node[this.opts.idField]},
+					data : queryParams,
 					onSuccess : function(returnData){
 						var childrenData = returnData.rows;
 						thisTree.initData(childrenData, node);
