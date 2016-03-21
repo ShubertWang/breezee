@@ -27,10 +27,8 @@
         <property name="customSessionFactories">
             <list>
                 <bean class="com.breezee.bpm.identity.MyGroupManagerFactory">
-                    <property name="accountService" ref="accountService" />
                 </bean>
                 <bean class="com.breezee.bpm.identity.MyUserManagerFactory">
-                    <property name="accountService" ref="accountService" />
                 </bean>
             </list>
         </property>

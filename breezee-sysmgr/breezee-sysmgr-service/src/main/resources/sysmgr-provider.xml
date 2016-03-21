@@ -19,5 +19,5 @@
                    protocol="dubbo,rest" />
 
     <dubbo:reference interface="com.breezee.sodexo.api.service.IFoodLineService" id="foodLineService"
-                     group="bre-sdx" protocol="dubbo" check="false"/>
+                     protocol="dubbo" check="false"/>
 </beans>

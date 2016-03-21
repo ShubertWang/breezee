@@ -11,6 +11,7 @@ import com.breezee.common.util.ContextUtil;
 import com.breezee.sodexo.api.domain.FoodLineInfo;
 import com.breezee.sodexo.api.service.IFoodLineService;
 import com.breezee.sysmgr.api.domain.AccountInfo;
+import com.breezee.sysmgr.api.domain.OrganizationInfo;
 import com.breezee.sysmgr.api.service.IAccountService;
 import com.breezee.sysmgr.entity.AccountEntity;
 import com.breezee.sysmgr.entity.RoleEntity;
@@ -56,8 +57,9 @@ public class AccountServiceImpl implements IAccountService {
         if (entity == null)
             entity = new AccountEntity();
         entity.parse(accountInfo);
-        if (accountInfo.getOrgId() != null)
-            entity.setOrganization(organizationRepository.findOne(accountInfo.getOrgId()));
+        for (OrganizationInfo a : accountInfo.getOrganizations()) {
+            entity.addOrg(organizationRepository.findOne(a.getId()));
+        }
         if (accountInfo.getRoles() != null && accountInfo.getRoles().size() > 0) {
             for (String roleId : accountInfo.getRoles()) {
                 entity.addRole(roleRepository.findByCode(roleId));
@@ -162,13 +164,17 @@ public class AccountServiceImpl implements IAccountService {
             } else {
                 info = entity.toInfo();
                 //获取服务线
-                FoodLineInfo lineInfo = foodLineService.findByOrgId(info.getOrgId());
-                info.setJob(lineInfo.getCode());
+                String tmp="";
+                FoodLineInfo lineInfo;
+                for (OrganizationInfo org : info.getOrganizations()) {
+                    lineInfo = foodLineService.findByOrgId(org.getId());
+                    tmp = tmp+lineInfo.getCode()+",";
+                }
+                info.setJob(tmp);
             }
         } else {
             info = ErrorInfo.build(info, ContextUtil.getMessage("account.not.exist",new Object[]{info.getCode()}));
         }
-
         return info;
     }
 

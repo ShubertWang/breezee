@@ -31,4 +31,6 @@ public interface IOrderService extends IServiceLayer<OrderInfo> {
     @Path("/orderPay/{orderId}/{payId}")
     @GET
     OrderInfo orderPay(@PathParam("orderId") String orderId, @PathParam("payId") String payId);
+
+    void updateRejectReason(Long id, String reason);
 }

@@ -17,7 +17,9 @@ import com.breezee.crm.entity.UserEntity;
 import com.breezee.crm.repository.EncodeRepository;
 import com.breezee.crm.repository.ShippingAddressRepository;
 import com.breezee.crm.repository.UserRepository;
+import com.breezee.sysmgr.api.domain.AccountInfo;
 import com.breezee.sysmgr.api.domain.OrganizationInfo;
+import com.breezee.sysmgr.api.service.IAccountService;
 import com.breezee.sysmgr.api.service.IOrganizationService;
 import org.apache.commons.codec.digest.Md5Crypt;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -60,6 +62,9 @@ public class UserServiceImpl implements IUserService {
     @Resource
     private IOrganizationService organizationService;
 
+    @Resource
+    private IAccountService accountService;
+
     @Override
     public Map<String, Object> saveShippingAddress(ShippingAddressInfo addressInfo) {
         UserEntity u = userRepository.findOne(addressInfo.getUserId());
@@ -80,7 +85,15 @@ public class UserServiceImpl implements IUserService {
         UserEntity ue = userRepository.findByCode(code);
         if (ue == null)
             return ErrorInfo.build(UserInfo.class);
-        return ue.toInfo();
+        UserInfo userInfo = ue.toInfo();
+        if(StringUtils.hasText(ue.getAccountId())){
+            AccountInfo info = new AccountInfo();
+            info.setCode(ue.getAccountId());
+            info.setPassword("rootroot");
+            info = accountService.checkPassword(info);
+            userInfo.setUserJob(info.getJob());
+        }
+        return userInfo;
     }
 
     @Override
@@ -126,7 +139,6 @@ public class UserServiceImpl implements IUserService {
 
     @Override
     public UserInfo saveInfo(UserInfo userInfo) {
-
         //检查网点编号
         if(StringUtils.hasText(userInfo.getCompany())) {
             OrganizationInfo org = organizationService.findByCode(userInfo.getCompany());
@@ -137,6 +149,11 @@ public class UserServiceImpl implements IUserService {
         //如果新增的账号已经存在，则返回错误信息
         if (userInfo.getId() == null && entity != null) {
             return ErrorInfo.build(userInfo, ContextUtil.getMessage("duplicate.key", new String[]{userInfo.getCode()}));
+        }
+        if(StringUtils.hasText(userInfo.getAccountId())){
+            AccountInfo acct = accountService.findByCode(userInfo.getAccountId());
+            if (acct.getId() < 0)
+                return ErrorInfo.build(userInfo, ContextUtil.getMessage("account.exist.error", new Object[]{userInfo.getAccountId()}));
         }
         if (entity == null)
             entity = new UserEntity();

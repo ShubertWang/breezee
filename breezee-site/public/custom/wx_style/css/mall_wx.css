@@ -187,7 +187,8 @@ background:rgba(0, 0, 0, 0.8);filter: progid:DXImageTransform.Microsoft.gradient
 
 .tybtn_box { padding:0;	
     width:100%;
-margin-top:1.5em;	}
+	margin-top:0.5em;
+}
 .footer_box input{ width:100%;}
 
 

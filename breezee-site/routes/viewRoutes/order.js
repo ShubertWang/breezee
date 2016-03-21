@@ -85,7 +85,6 @@ route.orderDetail = function (queryData, res, callback) {
         if (error) {
             throw error;
         }
-        body.type = 'DineIn';
         body.createTime = global.myUtil.dateFormatter(new Date(body.createTime), "yyyy-MM-dd hh:mm");
         body.time = global.myUtil.dateFormatter(new Date(body.time), "yyyy-MM-dd hh:mm");
         callback(body);
@@ -224,7 +223,7 @@ route.orderMessage = function(queryData, res, callback){
             global.weChatUtil.templateMessage({
                 touser:body[i].code,
                 template_id: "UdFYzwb7GdGH25-kx69vkbz4wOBwHuWWjocmJF34HYM",
-                url:"http://weixin.sodexo-cn.com/site/view/order/employeeOrderDetail?id="+queryData.orderId+"&taskId="+queryData.taskId,
+                url:"http://weixin.sodexo-cn.com/site/view/order/employeeOrderDetail?id="+queryData.orderId+"&taskId=0",
                 topcolor: "#FF0000",
                 data:{
                     title: {value: "有新的订单来临，请及时处理", color: "#173177"},

@@ -17,7 +17,6 @@ function moreOrder(thisObj, pageNumber){
 }
 
 function taskComplete(el,id,orderId){
-    console.log(el.id);
     var data = {
         prcsDef:'orderProcess',
         orderCancel:'N',
@@ -31,6 +30,15 @@ function taskComplete(el,id,orderId){
     }
     if (el.id == 'orderReject') {
         data.orderCancel = 'Y';
+        var string = window.prompt("请输入拒绝原因");
+        if(string==null){
+            return;
+        }
+        if(!string){
+            alert("拒绝原因不能为空!");
+            return;
+        }
+        data.rejectReason = string;
     }
     Dolphin.ajax({
         url:'/data/bpm/bpmTask/'+id,

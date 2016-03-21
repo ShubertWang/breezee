@@ -105,23 +105,19 @@ public class OrganizationServiceImpl implements IOrganizationService {
 
     @Override
     public void updateOrganizationAccount(OrganizationInfo organizationInfo) {
-        String delSql = "delete from sym_tf_acnt_org where ORG_ID=" + organizationInfo.getId();
-        //一个账号只能属于一个组织，所以删除其关联的其他组织
-        String delSqlAct = "delete from sym_tf_acnt_org where ACNT_ID=?";
+        //这块因为需求改的比较乱，所以写的也比较乱，需要明确下来
+        String delSqlAct = "delete from sym_tf_acnt_org where ORG_ID=? and ACNT_ID=?";
         String insertSql = "insert into sym_tf_acnt_org (ORG_ID,ACNT_ID) values(?,?)";
         List<Object[]> l = new ArrayList<>();
-        List<Object[]> ll = new ArrayList<>();
 
         if (organizationInfo.getAccounts() != null)
             organizationInfo.getAccounts().forEach(a -> {
                 l.add(new Object[]{organizationInfo.getId(), a});
-                ll.add(new Object[]{a});
             });
-        jdbcTemplate.update(delSql);
-        if(ll.size()>0)
-            jdbcTemplate.batchUpdate(delSqlAct, ll);
-        if(l.size()>0)
+        if(l.size()>0) {
+            jdbcTemplate.batchUpdate(delSqlAct,l);
             jdbcTemplate.batchUpdate(insertSql, l);
+        }
     }
 
     @Override

@@ -16,6 +16,7 @@ import org.springframework.web.context.support.AnnotationConfigWebApplicationCon
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * Spring容器Bean的管理类
@@ -46,6 +47,14 @@ public final class ContextUtil implements ApplicationContextAware {
 
     public static String getMessage(String code, Object[] params) {
         return current.getMessage(code, params,code, LocaleContextHolder.getLocale());
+    }
+
+    public static String getMessage(String code, String language) {
+        return current.getMessage(code, null, code, new Locale(language));
+    }
+
+    public static String getMessage(String code, Object[] params, String language) {
+        return current.getMessage(code, params,code, new Locale(language));
     }
 
     public static Object getBean(String name) {

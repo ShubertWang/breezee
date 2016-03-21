@@ -172,7 +172,7 @@ public class AccountEntity extends BaseInfo {
         this.address = address;
     }
 
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinTable(name = "SYM_TF_ACNT_ORG",
             joinColumns = @JoinColumn(name = "ACNT_ID", referencedColumnName = "ACNT_ID"),
             inverseJoinColumns = @JoinColumn(name = "ORG_ID", referencedColumnName = "ORG_ID"))
@@ -202,6 +202,14 @@ public class AccountEntity extends BaseInfo {
         if(this.roles==null)
             this.roles = new HashSet<>();
         this.roles.add(role);
+    }
+
+    public void addOrg(OrganizationEntity org){
+        if(org == null)
+            return;
+        if(this.organization==null)
+            this.organization = new HashSet<>();
+        this.organization.add(org);
     }
 
     public AccountInfo toInfo(){

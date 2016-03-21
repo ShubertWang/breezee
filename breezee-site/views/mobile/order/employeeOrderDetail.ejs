@@ -10,7 +10,7 @@
             margin-top:0;
         }
         .tybtn_box .weui_btn_mini {
-            margin: 3% 5%;
+            margin: 0% 5%;
             width: 30%;
         }
         .ddmx .list-group{
@@ -111,12 +111,25 @@ var orderStatus = {
                     <div class="title_b">联系电话 ：</div>
                     <div class="title_b_text"><%= body.consigneeMobile %></div>
                 </li>
+                <li class=" bh">
+                    <div class="title_b"><%= cookie.orderType == "wm" ? "送达时间" : "取餐时间/就餐时间" %> ：</div>
+                    <div class="title_b_text"><%= body.needTime %></div>
+                </li>
+                <li class=" bh">
+                    <div class="title_b">是否打包 ：</div>
+                    <div class="title_b_text"><%= body.needPack?"是":"否" %></div>
+                </li>
                 <% if(body.shippingMethod == "wm"){ %>
                 <li class=" bh">
                     <div class="title_b">收货地址 ：</div>
                     <div class="title_b_text"><%= body.consigneeAddress %></div>
                 </li>
-
+                <% } %>
+                <% if(body.status == 5){ %>
+                <li class=" bh">
+                    <div class="title_b">拒绝原因 ：</div>
+                    <div class="title_b_text"><%= body.rejectReason %></div>
+                </li>
                 <% } %>
             </ul>
         </div>
@@ -137,7 +150,7 @@ var orderStatus = {
             <div class="weui_cells_form">
                 <div class="weui_cell">
                     <div class="weui_cell_bd weui_cell_primary">
-                        <textarea class="weui_textarea __remark" placeholder="如有特殊要求请留言" name="optReason"></textarea>
+                        <textarea class="weui_textarea __remark" placeholder="如有特殊要求请留言" name="rejectReason" id="rejectReason"></textarea>
                         <div class="weui_textarea_counter"><span>0</span>/200</div>
                     </div>
                 </div>
@@ -194,6 +207,11 @@ var orderStatus = {
         }
         if(param.status=='orderReject') {
             data.orderCancel = 'Y';
+            data.rejectReason = $("#rejectReason").val();
+            if(!data.rejectReason){
+                alert("拒绝原因不可为空");
+                return;
+            }
         }
         Dolphin.ajax({
             url: '/data/bpm/bpmTask/' + param.taskId,

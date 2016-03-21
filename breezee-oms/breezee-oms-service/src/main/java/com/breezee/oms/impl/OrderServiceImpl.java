@@ -10,8 +10,6 @@ import com.breezee.bpm.api.service.IWorkflowService;
 import com.breezee.common.*;
 import com.breezee.common.util.Callback;
 import com.breezee.common.util.ContextUtil;
-import com.breezee.crm.api.domain.ShippingAddressInfo;
-import com.breezee.crm.api.service.IUserService;
 import com.breezee.oms.api.domain.OrderInfo;
 import com.breezee.oms.api.domain.OrderLineInfo;
 import com.breezee.oms.api.service.IOrderService;
@@ -43,9 +41,6 @@ public class OrderServiceImpl implements IOrderService, InitializingBean {
     @Resource
     private IWorkflowService workflowServiceImpl;
 
-    @Resource
-    private IUserService userService;
-
     @Autowired
     private InventoryRepository inventoryRepository;
 
@@ -73,6 +68,7 @@ public class OrderServiceImpl implements IOrderService, InitializingBean {
             vars.put("orderId", entity.getId());
             ProcsInsInfo procsInsInfo = workflowServiceImpl.startProcessInstanceById(orderInfo.getProcDefId(), entity.getId().toString(), vars);
             orderInfo.setTaskId(Long.parseLong(procsInsInfo.getCode()));
+            //为什么要这样做，我也不记得了。。。Anjing，是为了给用户取消订单的时候用的吗？
             entity.setTaskId(orderInfo.getTaskId());
             orderRepository.save(entity);
         }
@@ -114,7 +110,6 @@ public class OrderServiceImpl implements IOrderService, InitializingBean {
         if (entity == null)
             return ErrorInfo.build(OrderInfo.class);
         OrderInfo info = entity.toInfo();
-        setShippingAddress(info);
         info.setStatusName(ContextUtil.getMessage("order.status." + info.getStatus()));
         setRestaurant(info);
         return info;
@@ -143,23 +138,8 @@ public class OrderServiceImpl implements IOrderService, InitializingBean {
         if (entity == null)
             return ErrorInfo.build(OrderInfo.class);
         OrderInfo info = entity.toInfo();
-        setShippingAddress(info);
         info.setStatusName(ContextUtil.getMessage("order.status." + info.getStatus()));
         return info;
-    }
-
-    private void setShippingAddress(OrderInfo info) {
-        if (info.getShippingAddressId() != null) {
-            ShippingAddressInfo shippingAddressInfo = userService.findShippingAddressById(info.getShippingAddressId());
-            if (shippingAddressInfo != null) {
-                info.setConsigneeAddress(shippingAddressInfo.getConsigneeAddress());
-                info.setConsigneeName(shippingAddressInfo.getConsigneeName());
-                info.setConsigneeMobile(shippingAddressInfo.getConsigneeMobile());
-            }
-        } else {
-            info.setConsigneeName(info.getUserName());
-            info.setConsigneeMobile(info.getUserMobile());
-        }
     }
 
     @Override
@@ -197,6 +177,13 @@ public class OrderServiceImpl implements IOrderService, InitializingBean {
         entity.setStatus(1);
         orderRepository.save(entity);
         return entity.toInfo();
+    }
+
+    @Override
+    public void updateRejectReason(Long id, String reason) {
+        OrderEntity entity = orderRepository.findOne(id);
+        entity.setRejectReason(reason);
+        orderRepository.save(entity);
     }
 
     private void setRestaurant(OrderInfo info) {

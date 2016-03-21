@@ -38,6 +38,17 @@ public class OrderEntity extends BaseInfo {
     private String shippingMethod;
     private String storeName;
     private String needTime;
+
+    protected String consigneeName;
+
+    protected String consigneeAddress;
+
+    protected String consigneeMobile;
+
+    protected String rejectReason;
+
+    protected boolean needPack;
+
     /**
      * 总商品金额
      */
@@ -220,6 +231,46 @@ public class OrderEntity extends BaseInfo {
         this.needTime = needTime;
     }
 
+    public String getConsigneeName() {
+        return consigneeName;
+    }
+
+    public void setConsigneeName(String consigneeName) {
+        this.consigneeName = consigneeName;
+    }
+
+    public String getConsigneeAddress() {
+        return consigneeAddress;
+    }
+
+    public void setConsigneeAddress(String consigneeAddress) {
+        this.consigneeAddress = consigneeAddress;
+    }
+
+    public String getConsigneeMobile() {
+        return consigneeMobile;
+    }
+
+    public void setConsigneeMobile(String consigneeMobile) {
+        this.consigneeMobile = consigneeMobile;
+    }
+
+    public String getRejectReason() {
+        return rejectReason;
+    }
+
+    public void setRejectReason(String rejectReason) {
+        this.rejectReason = rejectReason;
+    }
+
+    public boolean isNeedPack() {
+        return needPack;
+    }
+
+    public void setNeedPack(boolean needPack) {
+        this.needPack = needPack;
+    }
+
     public String getPayId() {
         return payId;
     }
@@ -249,6 +300,11 @@ public class OrderEntity extends BaseInfo {
         info.setShippingPrice(new Amount(this.getCurrencyCode(),this.getShippingPrice()));
         info.setStoreName(this.getStoreName());
         info.setSubTotal(new Amount(this.currencyCode,this.getSubTotal()));
+        info.setConsigneeMobile(this.getConsigneeMobile());
+        info.setConsigneeAddress(this.getConsigneeAddress());
+        info.setConsigneeName(this.getConsigneeName());
+        info.setRejectReason(this.getRejectReason());
+        info.setNeedPack(this.isNeedPack());
         if(this.getOrderLines()!=null && this.getOrderLines().size()>0){
             this.getOrderLines().forEach(a->{
                 info.addOrderLine(a.toInfo());
@@ -276,6 +332,11 @@ public class OrderEntity extends BaseInfo {
         this.setSubTotal(info.getSubTotal().getValue());
         this.setUserId(info.getUserId());
         this.setNeedTime(info.getNeedTime());
+        this.setConsigneeMobile(info.getConsigneeMobile());
+        this.setConsigneeName(info.getConsigneeName());
+        this.setConsigneeAddress(info.getConsigneeAddress());
+        this.setRejectReason(info.getRejectReason());
+        this.setNeedPack(info.isNeedPack());
         if(info.getOrderLines().size()>0){
             info.getOrderLines().forEach(a->{
                 this.addOrderLine(new OrderLineEntity().parse(a));

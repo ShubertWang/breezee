@@ -13,6 +13,7 @@ $(function () {
             data : Dolphin.json2string(data),
             onSuccess : function (reData) {
                 alert("请查看邮件，并进行验证操作。");
+                Dolphin.goUrl("/account/myAccount");
                 //location.href = REQUEST_MAP.contextPath+REQUEST_MAP.viewPrefix+"/login/logout";
             }
         });

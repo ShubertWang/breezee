@@ -30,15 +30,15 @@
                    ref="otherRequestService" protocol="dubbo,rest" />
 
     <dubbo:reference interface="com.breezee.sysmgr.api.service.IOrganizationService"
-                     group="bre-sym" id="organizationService" protocol="dubbo" check="false" />
+                     id="organizationService" protocol="dubbo" check="false" />
     <dubbo:reference interface="com.breezee.sysmgr.api.service.IAccountService"
-                     group="bre-sym" id="accountService" protocol="dubbo" check="false" />
+                     id="accountService" protocol="dubbo" check="false" />
     <dubbo:reference interface="com.breezee.pcm.api.service.ICategoryService"
-                     group="bre-sym" id="categoryService" protocol="dubbo" check="false" />
+                     id="categoryService" protocol="dubbo" check="false" />
 
     <dubbo:reference interface="com.breezee.bpm.api.service.ITaskService" id="taskServiceImpl"
-                     group="bre-bpm" protocol="dubbo" check="false" />
+                     protocol="dubbo" check="false" />
     <dubbo:reference interface="com.breezee.bpm.api.service.IWorkflowService" id="workflowServiceImpl"
-                     group="bre-bpm" protocol="dubbo" check="false" />
+                     protocol="dubbo" check="false" />
 
 </beans>

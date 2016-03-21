@@ -38,6 +38,11 @@ public class OrderInfo extends BaseInfo {
     private Amount shippingPrice;
     private String shippingMethod;
 
+    /**
+     * 是否需要打包
+     */
+    private boolean needPack=true;
+
     private String storeName;
     /**
      * 总商品金额
@@ -61,13 +66,15 @@ public class OrderInfo extends BaseInfo {
 
     private boolean payNow;
 
-    protected String consigneeName;
+    private String consigneeName;
 
-    protected String consigneeAddress;
+    private String consigneeAddress;
 
-    protected String consigneeMobile;
+    private String consigneeMobile;
 
-    protected String payId;
+    private String payId;
+
+    private String rejectReason;
 
     public Date getIssueDate() {
         return issueDate;
@@ -194,6 +201,14 @@ public class OrderInfo extends BaseInfo {
         this.needTime = needTime;
     }
 
+    public boolean isNeedPack() {
+        return needPack;
+    }
+
+    public void setNeedPack(boolean needPack) {
+        this.needPack = needPack;
+    }
+
     public String getStatusName() {
         if(statusName==null)
             return ContextUtil.getMessage("order.status."+status);
@@ -273,5 +288,13 @@ public class OrderInfo extends BaseInfo {
 
     public void setConsigneeMobile(String consigneeMobile) {
         this.consigneeMobile = consigneeMobile;
+    }
+
+    public String getRejectReason() {
+        return rejectReason;
+    }
+
+    public void setRejectReason(String rejectReason) {
+        this.rejectReason = rejectReason;
     }
 }

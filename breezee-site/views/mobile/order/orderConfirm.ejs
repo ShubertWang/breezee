@@ -31,8 +31,10 @@ var i, totalPrice = 0;
         <li class="<%= body.address[i].defaultAddress ? "list-group-item_edit" : "list-group-item_edit_b" %> bh">
             <a href="<%= global.config.contextPath + global.config.viewPrefix %>/account/address?pickFlag=true&restId=<%= data.restId %>&userId=<%= data.userId %>">
                 <div class="bh">
-                    <div id="addressSel" addressId="<%= body.address[i].id %>"
-                         class="title_a_h"><%= body.address[i].consigneeName %></div>
+                    <div class="title_a_h" id="addressSel" addressId="<%= body.address[i].id %>"
+                         consigneeName="<%= body.address[i].consigneeName %>"
+                         consigneeMobile="<%= body.address[i].consigneeMobile %>"
+                         consigneeAddress="<%= body.address[i].consigneeAddress %>"><%= body.address[i].consigneeName %></div>
                     <div class="title_c_h"><%= body.address[i].consigneeMobile %></div>
                 </div>
                 <div class="mr"><%= body.address[i].consigneeAddress %></div>
@@ -43,8 +45,30 @@ var i, totalPrice = 0;
         <% } %>
     </ul>
 </div>
+<% } else { %>
+<div class="weui_cells">
+    <div class=" weui_cells_access">
+        <a class="weui_cell" href="javascript:;">
+            <div class="weui_cell_bd weui_cell_primary">
+                <p>联系人</p>
+            </div>
+            <div class="">
+                <input style="line-height: 2em;" class="form-control" placeholder="请输入联系人" name="consigneeName" id="consigneeName" />
+            </div>
+        </a>
+    </div>
+    <div class=" weui_cells_access">
+        <a class="weui_cell" href="javascript:;">
+            <div class="weui_cell_bd weui_cell_primary">
+                <p>联系方式</p>
+            </div>
+            <div class="">
+                <input style="line-height: 2em;" class="form-control" placeholder="请输入联系方式" name="consigneeMobile" id="consigneeMobile" />
+            </div>
+        </a>
+    </div>
+</div>
 <% } %>
-
 <div>
     <div class="weui_cells weui_cells_radio">
         <label class="weui_cell weui_check_label" for="x11"
@@ -108,6 +132,35 @@ var i, totalPrice = 0;
             </a>
         </div>
     </div>
+
+    <% if(cookie.orderType == "tc"){ %>
+    <div class=" weui_cells_form div_dw" style="background-color: #ffffff;">
+        <div class="weui_cell">
+            <div class="weui_cell_hd1"><label class="weui_label">是否打包</label></div>
+            <div class=" weui_cells_radio"style="width: 75%;">
+                <label class="weui_cell weui_check_label" for="s121">
+                    <div class="weui_cell_hd1">
+                        <input type="radio" name="needPack" value="true" class="weui_check" id="s121" checked="radio">
+                        <i class="weui_icon_checked"></i>
+                    </div>
+                    <div class="weui_cell_bd weui_cell_primary">
+                        <p>是</p>
+                    </div>
+                </label>
+                <label class="weui_cell weui_check_label" for="s111">
+                    <div class="weui_cell_hd1">
+                        <input type="radio" class="weui_check" name="needPack" value="false" id="s111" >
+                        <i class="weui_icon_checked"></i>
+                    </div>
+                    <div class="weui_cell_bd weui_cell_primary">
+                        <p>否</p>
+                    </div>
+                </label>
+            </div>
+        </div>
+    </div>
+    <% } %>
+
     <div class="weui_cells">
         <div class=" weui_cells_access">
             <a class="weui_cell" href="javascript:;">
@@ -170,6 +223,13 @@ var i, totalPrice = 0;
     });
 
     $(function () {
+        var date = new Date();
+        var min = date.getMinutes();
+        if(min>30){
+            date.setHours(date.getHours()+1,0,0,0);
+        } else {
+            date.setMinutes(30,0,0);
+        }
         var opt = {
             preset: 'datetime',
             dateFormat : 'yyyy-mm-dd',
@@ -177,8 +237,12 @@ var i, totalPrice = 0;
             mode: 'scroller',
             lang: 'zh',
             dateOrder : 'yymmdd', //面板中日期排列格式
-            theme: 'android-ics light',
-            display: 'modal'
+            display: 'modal',
+            startYear:date.getFullYear(),
+            endYear:date.getFullYear(),
+            stepMinute:30,
+            showNow:false,
+            minDate:date
         };
         $('#needTime').scroller(opt);
 
@@ -216,8 +280,21 @@ var i, totalPrice = 0;
         orderInfo.orderLines = orderLines;
         <% if(cookie.orderType == "wm"){ %>
         orderInfo.shippingAddressId = $("#addressSel").attr("addressId");
+        orderInfo.consigneeName = $("#addressSel").attr("consigneeName");
+        orderInfo.consigneeMobile = $("#addressSel").attr("consigneeMobile");
+        orderInfo.consigneeAddress = $("#addressSel").attr("consigneeAddress");
+        <% } else { %>
+        orderInfo.consigneeName = document.getElementById("consigneeName").value;
+        orderInfo.consigneeMobile = document.getElementById("consigneeMobile").value;
         <% } %>
+
         orderInfo.shippingMethod = "<%= cookie.orderType %>";
+        orderInfo.needPack=$("input[name='needPack']:checked").val();
+
+        if(!orderInfo.consigneeName || !orderInfo.consigneeMobile){
+            alert("联系人与联系方式不能为空");
+            return;
+        }
 
         if(orderInfo.paymentType=='popay') {
             orderInfo.payId = $("#payId").val();

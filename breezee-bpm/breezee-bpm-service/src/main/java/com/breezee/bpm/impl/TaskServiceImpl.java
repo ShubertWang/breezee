@@ -92,6 +92,7 @@ public class TaskServiceImpl implements ITaskService {
         Long orderId = Long.parseLong(variables.get("orderId").toString());
         Integer orderStatus = Integer.parseInt(variables.get("orderStatus").toString());
         String prcsDef = variables.get("prcsDef").toString();
+        Object orderCancel = variables.get("orderCancel");
         variables.remove("orderId");
         variables.remove("orderStatus");
         if(taskId.equals("-1")){
@@ -109,6 +110,11 @@ public class TaskServiceImpl implements ITaskService {
                 }
             }
         } else {
+            if(taskId.equals("0")){
+                List<Task> ll = taskService.createTaskQuery().processInstanceBusinessKey(orderId.toString()).active().orderByTaskCreateTime().desc().list();
+                if(ll.size()>0)
+                    taskId = ll.get(0).getId();
+            }
             if (variables.get("taskOwner") != null)
                 taskService.setOwner(taskId, variables.get("taskOwner").toString());
             if (variables.get("complete").toString().equals("true"))
@@ -117,6 +123,9 @@ public class TaskServiceImpl implements ITaskService {
         switch (prcsDef){
             case "orderProcess":
                 orderService.updateStatus(orderId, orderStatus);
+                if(orderCancel!=null && orderCancel.toString().equals("Y")){
+                    orderService.updateRejectReason(orderId,variables.get("rejectReason")+"");
+                }
                 break;
             case "seatProcess":
                 seatOrderService.updateStatusAndNo(orderId,orderStatus,
@@ -266,7 +275,14 @@ public class TaskServiceImpl implements ITaskService {
     public PageResult<TaskInfo> findUndoTasks(Map<String, Object> m, PageInfo pageInfo) {
         pageInfo = new PageInfo(m);
 //        TaskQuery taskQuery = taskService.createTaskQuery().taskCandidateUser(m.get("userId").toString()).active().orderByTaskCreateTime().desc();
-        TaskQuery taskQuery = taskService.createTaskQuery().taskCandidateGroup(m.get("userJob").toString()).active().orderByTaskCreateTime().desc();
+        TaskQuery taskQuery = taskService.createTaskQuery();
+        if(m.get("userJob")!=null){
+            String[] tmp = m.get("userJob").toString().split(",");
+            for (int i=0;i<tmp.length;i++){
+                taskQuery = taskQuery.or().taskCandidateGroup(tmp[i]);
+            }
+        }
+        taskQuery = taskQuery.active().orderByTaskCreateTime().desc();
         long count = taskQuery.count();
         List<Task> l = taskQuery.listPage(pageInfo.getPageNumber(), pageInfo.getPageSize());
         PageResult<TaskInfo> pageResult = convert(l, count, m.get("prcsId"));

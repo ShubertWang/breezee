@@ -6,7 +6,7 @@
 
     Dolphin.i18n = {};
     Dolphin.i18n.defaults = {
-        defaultLang : navigator.language,
+        defaultLang : navigator.language || "zh-CN",
         url : '/data/i18n/{id}'
     };
     Dolphin.i18n.addMessages = function(list, lang){
@@ -23,6 +23,9 @@
 
     Dolphin.i18n.get = function(key){
         var language = this.defaults.defaultLang;
+        if(!Dolphin.messages[language]){
+            return key;
+        }
         var template = Dolphin.messages[language][key],
             i;
 

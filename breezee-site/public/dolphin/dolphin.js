@@ -752,6 +752,9 @@
 		$('<div>').append(info).appendTo(opts.content);
 		inputPanel = $('<div>').appendTo(opts.content);
 		switch(opts.type){
+			case "textarea":
+				input = $('<textarea class="form-control" rows="2" />');
+				break;
 			default :
 				input = $('<input type="text" class="form-control" placeholder="'+opts.placeholder+'" value="'+opts.defaultValue+'">');
 		}
@@ -962,7 +965,7 @@
 
     Dolphin.i18n = {};
     Dolphin.i18n.defaults = {
-        defaultLang : navigator.language,
+        defaultLang : navigator.language || "zh-CN",
         url : '/data/i18n/{id}'
     };
     Dolphin.i18n.addMessages = function(list, lang){
@@ -979,6 +982,9 @@
 
     Dolphin.i18n.get = function(key){
         var language = this.defaults.defaultLang;
+        if(!Dolphin.messages[language]){
+            return key;
+        }
         var template = Dolphin.messages[language][key],
             i;
 
@@ -3147,7 +3153,8 @@
 					valueArr = column.code.split('.');
 					value = data;
 					for(level = 0; level < valueArr.length; level++){
-						value = value[valueArr[level]];
+						if(value)
+							value = value[valueArr[level]];
 					}
 				}else{
 					value = data[column.code];

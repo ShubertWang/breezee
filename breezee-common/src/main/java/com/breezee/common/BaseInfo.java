@@ -35,6 +35,8 @@ public class BaseInfo implements Serializable {
 
     protected String tenantId;
 
+    protected String locale;
+
     protected Map<String,Object> properties;
 
     public Long getId() {
@@ -115,6 +117,14 @@ public class BaseInfo implements Serializable {
 
     public void setRemark(String remark) {
         this.remark = remark;
+    }
+
+    public String getLocale() {
+        return locale;
+    }
+
+    public void setLocale(String locale) {
+        this.locale = locale;
     }
 
     public Map<String, Object> getProperties() {
