@@ -20,16 +20,16 @@
 
 
     <dubbo:reference interface="com.breezee.sysmgr.api.service.IAccountService"
-                     id="accountService" protocol="dubbo" check="false" />
+                     group="bre-sym" id="accountService" protocol="dubbo" check="false" />
     <dubbo:reference interface="com.breezee.sysmgr.api.service.IRoleService"
-                     id="roleService" protocol="dubbo" check="false" />
+                     group="bre-sym" id="roleService" protocol="dubbo" check="false" />
     <dubbo:reference interface="com.breezee.oms.api.service.IOrderService"
-                     id="orderService" protocol="dubbo" check="false" />
+                     group="bre-sym" id="orderService" protocol="dubbo" check="false" />
 
     <dubbo:reference interface="com.breezee.sodexo.api.service.ISeatOrderService"
-                     id="seatOrderService" protocol="dubbo" check="false" />
+                     group="bre-sdx" id="seatOrderService" protocol="dubbo" check="false" />
     <dubbo:reference interface="com.breezee.sodexo.api.service.IOtherRequestService"
-                     id="otherRequestService" protocol="dubbo" check="false" />
+                     group="bre-sdx" id="otherRequestService" protocol="dubbo" check="false" />
 
 
 </beans>

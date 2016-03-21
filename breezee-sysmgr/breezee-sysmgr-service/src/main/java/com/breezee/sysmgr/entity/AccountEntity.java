@@ -7,8 +7,6 @@ package com.breezee.sysmgr.entity;
 
 import com.breezee.common.BaseInfo;
 import com.breezee.sysmgr.api.domain.AccountInfo;
-import org.hibernate.annotations.NotFound;
-import org.hibernate.annotations.NotFoundAction;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -40,10 +38,8 @@ public class AccountEntity extends BaseInfo {
     private String wechat;
     private String qq;
     private String address;
-    /**
-     * 一个人只能属于一个部门
-     */
-    private OrganizationEntity organization;
+
+    private Set<OrganizationEntity> organization;
 
     /**
      * 一个人可以有多个角色
@@ -180,12 +176,11 @@ public class AccountEntity extends BaseInfo {
     @JoinTable(name = "SYM_TF_ACNT_ORG",
             joinColumns = @JoinColumn(name = "ACNT_ID", referencedColumnName = "ACNT_ID"),
             inverseJoinColumns = @JoinColumn(name = "ORG_ID", referencedColumnName = "ORG_ID"))
-    @NotFound(action= NotFoundAction.IGNORE)
-    public OrganizationEntity getOrganization() {
+    public Set<OrganizationEntity> getOrganization() {
         return organization;
     }
 
-    public void setOrganization(OrganizationEntity organization) {
+    public void setOrganization(Set<OrganizationEntity> organization) {
         this.organization = organization;
     }
 
@@ -222,10 +217,10 @@ public class AccountEntity extends BaseInfo {
         info.setSex(this.getSex());
         info.setType(this.getType());
         info.setWechat(this.getWechat());
-        if(this.getOrganization()!=null) {
-            info.setOrgId(this.getOrganization().getId());
-            info.setOrgName(this.getOrganization().getName());
-            info.setOrgCode(this.getOrganization().getCode());
+        if(this.getOrganization()!=null && this.getOrganization().size()>0){
+            this.getOrganization().forEach(a->{
+                info.addOrg(a.getId(),a.getCode(),a.getName());
+            });
         }
         if(this.getRoles()!=null && this.getRoles().size()>0){
             this.getRoles().forEach(a->{

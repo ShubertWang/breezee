@@ -15,16 +15,16 @@
                    protocol="dubbo,rest"/>
 
     <dubbo:reference interface="com.breezee.bpm.api.service.ITaskService" id="taskServiceImpl"
-                     protocol="dubbo" check="false" />
+                     group="bre-bpm" protocol="dubbo" check="false" />
     <dubbo:reference interface="com.breezee.bpm.api.service.IWorkflowService" id="workflowServiceImpl"
-                     protocol="dubbo" check="false" />
+                     group="bre-bpm" protocol="dubbo" check="false" />
 
     <dubbo:reference interface="com.breezee.pcm.api.service.IProductService" id="productService"
-                     protocol="dubbo" check="false" />
+                     group="bre-pcm" protocol="dubbo" check="false" />
 
     <dubbo:reference interface="com.breezee.crm.api.service.IUserService" id="userService"
-                     protocol="dubbo" check="false" />
+                     group="bre-crm" protocol="dubbo" check="false" />
 
     <dubbo:reference interface="com.breezee.sodexo.api.service.IFoodLineService" id="foodLineService"
-                     protocol="dubbo" check="false"/>
+                     group="bre-sdx" protocol="dubbo" check="false"/>
 </beans>

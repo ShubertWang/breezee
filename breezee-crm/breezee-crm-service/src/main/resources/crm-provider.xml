@@ -20,6 +20,6 @@
                    protocol="dubbo,rest"/>
 
     <dubbo:reference interface="com.breezee.sysmgr.api.service.IOrganizationService"
-                     id="organizationService" protocol="dubbo" check="false" />
+                     group="bre-sym" id="organizationService" protocol="dubbo" check="false" />
 
 </beans>

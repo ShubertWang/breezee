@@ -35,9 +35,7 @@ public class AccountInfo extends BaseInfo {
     private String qq;
     private String address;
 
-    private Long orgId;
-    private String orgName;
-    private String orgCode;
+    private List<OrganizationInfo> organizations = new ArrayList<>();
 
     private List<String> roles = new ArrayList<>();
 
@@ -121,14 +119,6 @@ public class AccountInfo extends BaseInfo {
         this.address = address;
     }
 
-    public Long getOrgId() {
-        return orgId;
-    }
-
-    public void setOrgId(Long orgId) {
-        this.orgId = orgId;
-    }
-
     public List<String> getRoles() {
         return roles;
     }
@@ -141,14 +131,6 @@ public class AccountInfo extends BaseInfo {
         this.roles.add(roleId);
     }
 
-    public String getOrgName() {
-        return orgName;
-    }
-
-    public void setOrgName(String orgName) {
-        this.orgName = orgName;
-    }
-
     public String getOldPassword() {
         return oldPassword;
     }
@@ -157,11 +139,19 @@ public class AccountInfo extends BaseInfo {
         this.oldPassword = oldPassword;
     }
 
-    public String getOrgCode() {
-        return orgCode;
+    public List<OrganizationInfo> getOrganizations() {
+        return organizations;
     }
 
-    public void setOrgCode(String orgCode) {
-        this.orgCode = orgCode;
+    public void setOrganizations(List<OrganizationInfo> organizations) {
+        this.organizations = organizations;
+    }
+
+    public void addOrg(Long orgId,String orgCode,String orgName){
+        OrganizationInfo info = new OrganizationInfo();
+        info.setId(orgId);
+        info.setCode(orgCode);
+        info.setName(orgName);
+        this.organizations.add(info);
     }
 }
