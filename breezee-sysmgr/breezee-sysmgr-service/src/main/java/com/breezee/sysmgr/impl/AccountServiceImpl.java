@@ -23,10 +23,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Created by Silence on 2016/2/12.
@@ -103,7 +100,7 @@ public class AccountServiceImpl implements IAccountService {
 
     @Override
     public PageResult<AccountInfo> findAccountsByOrgId(Long orgId, PageInfo pageInfo) {
-        Page<AccountEntity> page = accountRepository.findAccountsByOrg(organizationRepository.findOne(orgId), pageInfo);
+        Page<AccountEntity> page = accountRepository.findAccountsByOrg(Collections.singleton(organizationRepository.findOne(orgId)), pageInfo);
         return new PageResult<>(page, AccountInfo.class, (accountEntity, accountInfo) -> accountEntity.toInfo());
     }
 

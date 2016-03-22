@@ -15,6 +15,8 @@ import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.Set;
+
 /**
  * Created by Silence on 2016/2/11.
  */
@@ -23,10 +25,7 @@ public interface AccountRepository extends PagingAndSortingRepository<AccountEnt
         JpaSpecificationExecutor<AccountEntity>{
 
     @Query("select c from AccountEntity c where c.organization=:org")
-    Page<AccountEntity> findAccountsByOrg(@Param("org") OrganizationEntity org, Pageable page);
-
-    @Query("select c from AccountEntity c where c.organization!=:org")
-    Page<AccountEntity> findAccountsNotInOrg(@Param("org") OrganizationEntity org, Pageable page);
+    Page<AccountEntity> findAccountsByOrg(@Param("org") Set<OrganizationEntity> org, Pageable page);
 
     AccountEntity findByCode(String code);
 }
