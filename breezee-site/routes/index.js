@@ -7,6 +7,16 @@ router.get('/', function(req, res, next) {
     res.render('index', { title: 'Express' });
 });
 
+router.use('/test/i18n', function(req, res, next) {
+    var lang = req.headers['accept-language'];
+
+    res.locale = lang.substr(0, 2);
+
+    res.render('i18nTest', {
+        bodyData : {routerData : res.__('test1')}
+    });
+});
+
 router.use('/test/*', function(req, res, next) {
     var options, queryData, bodyData;
 

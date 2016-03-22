@@ -23,7 +23,8 @@ var config = {
     mockFlag : false,
     contextPath : '/',
     viewPrefix : 'view',
-    publicPath : ""
+    publicPath : "",
+    i18nPath : '/config/locales'
 };
 
 module.exports = config;

@@ -6,6 +6,7 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var session = require('express-session');
 var extend = require('extend');
+var i18n = require('i18n');
 
 var routes = require('./routes/index');
 var view = require('./routes/view');
@@ -45,6 +46,15 @@ app.use(session(extend(true, {}, {
 }, global.config.session)));
 
 app.use(express.static(path.join(__dirname, 'public')));
+
+//i18n
+i18n.configure({
+    // setup some locales - other locales default to en silently
+    locales: ['en', 'zh'],
+    directory: __dirname + global.config.i18nPath,
+    defaultLocale : 'zh'
+});
+app.use(i18n.init);
 
 app.use('/', routes);
 app.use('/view', view);
