@@ -24,8 +24,8 @@ import java.util.Set;
 public interface AccountRepository extends PagingAndSortingRepository<AccountEntity,Long>,
         JpaSpecificationExecutor<AccountEntity>{
 
-    @Query("select c from AccountEntity c where c.organization=:org")
-    Page<AccountEntity> findAccountsByOrg(@Param("org") Set<OrganizationEntity> org, Pageable page);
+    @Query("select c from AccountEntity c, OrganizationEntity o where o=:org and o in elements(c.organization)")
+    Page<AccountEntity> findAccountsByOrg(@Param("org") OrganizationEntity org, Pageable page);
 
     AccountEntity findByCode(String code);
 }

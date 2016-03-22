@@ -107,16 +107,21 @@ public class OrganizationServiceImpl implements IOrganizationService {
     public void updateOrganizationAccount(OrganizationInfo organizationInfo) {
         //这块因为需求改的比较乱，所以写的也比较乱，需要明确下来
         String delSqlAct = "delete from sym_tf_acnt_org where ORG_ID=? and ACNT_ID=?";
+        String delSqlActAll = "delete from sym_tf_acnt_org where ORG_ID="+organizationInfo.getId();
         String insertSql = "insert into sym_tf_acnt_org (ORG_ID,ACNT_ID) values(?,?)";
         List<Object[]> l = new ArrayList<>();
 
-        if (organizationInfo.getAccounts() != null)
+        if (organizationInfo.getAccounts() != null) {
             organizationInfo.getAccounts().forEach(a -> {
                 l.add(new Object[]{organizationInfo.getId(), a});
             });
+        }
+
         if(l.size()>0) {
             jdbcTemplate.batchUpdate(delSqlAct,l);
             jdbcTemplate.batchUpdate(insertSql, l);
+        } else {
+            jdbcTemplate.update(delSqlActAll);
         }
     }
 

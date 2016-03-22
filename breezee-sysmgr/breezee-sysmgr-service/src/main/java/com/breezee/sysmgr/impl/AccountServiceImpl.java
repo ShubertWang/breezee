@@ -100,7 +100,7 @@ public class AccountServiceImpl implements IAccountService {
 
     @Override
     public PageResult<AccountInfo> findAccountsByOrgId(Long orgId, PageInfo pageInfo) {
-        Page<AccountEntity> page = accountRepository.findAccountsByOrg(Collections.singleton(organizationRepository.findOne(orgId)), pageInfo);
+        Page<AccountEntity> page = accountRepository.findAccountsByOrg(organizationRepository.findOne(orgId), pageInfo);
         return new PageResult<>(page, AccountInfo.class, (accountEntity, accountInfo) -> accountEntity.toInfo());
     }
 
