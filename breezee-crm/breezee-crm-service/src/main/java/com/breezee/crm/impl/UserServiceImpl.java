@@ -216,8 +216,10 @@ public class UserServiceImpl implements IUserService {
             messageHelper.setFrom(this.templateMessage.getFrom());
             messageHelper.setSubject(this.templateMessage.getSubject());
             messageHelper.setTo(entity.getEmail());
-            messageHelper.setText("Dear " + entity.getName()+
-                    "<a href='http://weixin.sodexo-cn.com/portal/verify?id=" + entity.getId() + "&status=3'>点此链接</a>，验证您的员工身份！",true);
+            String text = this.templateMessage.getText();
+            text = text.replaceAll("\\{userName\\}",entity.getName());
+            text = text.replaceAll("\\{userId\\}",entity.getId().toString());
+            messageHelper.setText(text,true);
             javaMailSender.send(mimeMessage);
         } catch (MessagingException e) {
             e.printStackTrace();

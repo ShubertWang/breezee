@@ -1,15 +1,16 @@
 (function ($) {
-    $.mobiscroll.i18n.sv = $.extend($.mobiscroll.i18n.sv, {
+    $.mobiscroll.i18n.sv = {
         // Core
         setText: 'OK',
         cancelText: 'Avbryt',
         clearText: 'Klara',
-        selectedText: 'Vald',
+        selectedText: '{count} vald',
         // Datetime component
         dateFormat: 'yy-mm-dd',
         dateOrder: 'yymmdd',
         dayNames: ['Söndag', 'Måndag', 'Tisdag', 'Onsdag', 'Torsdag', 'Fredag', 'Lördag'],
         dayNamesShort: ['Sö', 'Må', 'Ti', 'On', 'To', 'Fr', 'Lö'],
+        dayNamesMin: ['S', 'M', 'T', 'O', 'T', 'F', 'L'],
         dayText: 'Dag',
         hourText: 'Timme',
         minuteText: 'Minut',
@@ -24,6 +25,7 @@
         pmText: 'pm',
         amText: 'am',
         // Calendar component
+        firstDay: 1,
         dateText: 'Datum',
         timeText: 'Tid',
         calendarText: 'Kalender',
@@ -43,6 +45,12 @@
         stopText: 'Stopp',
         resetText: 'Återställ',
         lapText: 'Varv',
-        hideText: 'Dölj'
-    });
+        hideText: 'Dölj',
+        // Listview
+        backText: 'Tillbaka',
+        undoText: 'Ångra',
+        // Form
+        offText: 'Av',
+        onText: 'På'
+    };
 })(jQuery);

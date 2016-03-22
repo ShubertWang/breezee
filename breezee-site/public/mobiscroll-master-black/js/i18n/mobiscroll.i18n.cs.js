@@ -1,15 +1,16 @@
 (function ($) {
-    $.mobiscroll.i18n.cs = $.extend($.mobiscroll.i18n.cs, {
+    $.mobiscroll.i18n.cs = {
         // Core
         setText: 'Zadej',
         cancelText: 'Storno',
         clearText: 'Vymazat',
-        selectedText: 'Označený',
+        selectedText: 'Označený: {count}',
         // Datetime component
         dateFormat: 'dd/mm/yy',
         dateOrder: 'ddmmy',
         dayNames: ['Neděle', 'Pondělí', 'Úterý', 'Středa', 'Čtvrtek', 'Pátek', 'Sobota'],
         dayNamesShort: ['Ne', 'Po', 'Út', 'St', 'Čt', 'Pá', 'So'],
+        dayNamesMin: ['N', 'P', 'Ú', 'S', 'Č', 'P', 'S'],
         dayText: 'Den',
         hourText: 'Hodiny',
         minuteText: 'Minuty',
@@ -24,6 +25,7 @@
         amText: 'am',
         pmText: 'pm',
         // Calendar component
+        firstDay: 1,
         dateText: 'Datum',
         timeText: 'Čas',
         calendarText: 'Kalendář',
@@ -43,6 +45,15 @@
         stopText: 'Stop',
         resetText: 'Resetovat',
         lapText: 'Etapa',
-        hideText: 'Schovat'
-    });
+        hideText: 'Schovat',
+        // Listview
+        backText: 'Zpět',
+        undoText: 'Rozlepit',
+        // Form
+        offText: 'O',
+        onText: 'I',
+        // Numpad
+        decimalSeparator: ',',
+        thousandsSeparator: ' '
+    };
 })(jQuery);

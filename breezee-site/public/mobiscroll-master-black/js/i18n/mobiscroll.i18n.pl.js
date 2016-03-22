@@ -1,15 +1,16 @@
 (function ($) {
-    $.mobiscroll.i18n.pl = $.extend($.mobiscroll.i18n.pl, {
-      // Core
+    $.mobiscroll.i18n.pl = {
+        // Core
         setText: 'Zestaw',
         cancelText: 'Anuluj',
         clearText: 'Oczyścić',
-        selectedText: 'Wybór',
+        selectedText: 'Wybór: {count}',
         // Datetime component
         dateFormat: 'yy-mm-dd',
         dateOrder: 'ddmmy',
         dayNames: ['Niedziela', 'Poniedziałek', 'Wtorek', 'Środa', 'Czwartek', 'Piątek', 'Sobota'],
         dayNamesShort: ['Niedz.', 'Pon.', 'Wt.', 'Śr.', 'Czw.', 'Pt.', 'Sob.'],
+        dayNamesMin: ['N', 'P', 'W', 'Ś', 'C', 'P', 'S'],
         dayText: 'Dzień',
         hourText: 'Godziny',
         minuteText: 'Minuty',
@@ -24,6 +25,7 @@
         amText: 'rano',
         pmText: 'po południu',
         // Calendar component
+        firstDay: 1,
         dateText: 'Data',
         timeText: 'Czas',
         calendarText: 'Kalendarz',
@@ -43,6 +45,15 @@
         stopText: 'Zatrzymać',
         resetText: 'Zresetować',
         lapText: 'Zakładka',
-        hideText: 'Ukryć'
-    });
+        hideText: 'Ukryć',
+        // Listview
+        backText: 'Z powrotem',
+        undoText: 'Cofnij',
+        // Form
+        offText: 'Wył',
+        onText: 'Wł',
+        // Numpad
+        decimalSeparator: ',',
+        thousandsSeparator: ' '
+    };
 })(jQuery);

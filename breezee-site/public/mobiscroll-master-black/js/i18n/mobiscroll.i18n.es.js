@@ -1,20 +1,22 @@
 (function ($) {
-    $.mobiscroll.i18n.es = $.extend($.mobiscroll.i18n.es, {
+    $.mobiscroll.i18n.es = {
         // Core
         setText: 'Aceptar',
         cancelText: 'Cancelar',
-        clearText: 'Claro',
-        selectedText: 'Seleccionado',
+        clearText: 'Borrar',
+        selectedText: '{count} seleccionado',
+        selectedPluralText: '{count} seleccionados',
         // Datetime component
         dateFormat: 'dd/mm/yy',
         dateOrder: 'ddmmyy',
-        dayNames: ['Domingo','Lunes','Martes','Mi&#xE9;rcoles','Jueves','Viernes','S&#xE1;bado'],
-        dayNamesShort: ['Do','Lu','Ma','Mi','Ju','Vi','S&#xE1;'],
+        dayNames: ['Domingo', 'Lunes', 'Martes', 'Mi&#xE9;rcoles', 'Jueves', 'Viernes', 'S&#xE1;bado'],
+        dayNamesShort: ['Do', 'Lu', 'Ma', 'Mi', 'Ju', 'Vi', 'S&#xE1;'],
+        dayNamesMin: ['D', 'L', 'M', 'M', 'J', 'V', 'S'],
         dayText: 'D&#237;a',
         hourText: 'Horas',
         minuteText: 'Minutos',
-        monthNames: ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'],
-        monthNamesShort: ['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'],
+        monthNames: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+        monthNamesShort: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
         monthText: 'Mes',
         secText: 'Segundos',
         timeFormat: 'HH:ii',
@@ -24,6 +26,7 @@
         pmText: 'pm',
         amText: 'am',
         // Calendar component
+        firstDay: 1,
         dateText: 'Fecha',
         timeText: 'Tiempo',
         calendarText: 'Calendario',
@@ -37,12 +40,21 @@
         unitText: 'Unidad',
         // Time / Timespan component
         labels: ['Años', 'Meses', 'Días', 'Horas', 'Minutos', 'Segundos', ''],
-        labelsShort: ['Yrs', 'Mths', 'Days', 'Hrs', 'Mins', 'Secs', ''],
+        labelsShort: ['Año', 'Mes', 'Día', 'Hora', 'Min', 'Seg', ''],
         // Timer component
         startText: 'Iniciar',
         stopText: 'Deténgase',
         resetText: 'Reinicializar',
         lapText: 'Lap',
-        hideText: 'Esconder'
-    });
+        hideText: 'Esconder',
+        // Listview
+        backText: 'Volver',
+        undoText: 'Deshacer',
+        // Form
+        offText: 'No',
+        onText: 'Sí',
+        // Numpad
+        decimalSeparator: ',',
+        thousandsSeparator: ' '
+    };
 })(jQuery);

@@ -1,15 +1,16 @@
 (function ($) {
-    $.mobiscroll.i18n.nl = $.extend($.mobiscroll.i18n.nl, {
+    $.mobiscroll.i18n.nl = {
         // Core
         setText: 'Instellen',
         cancelText: 'Annuleren',
         clearText: 'Duidelijk',
-        selectedText: 'Gekozen',
+        selectedText: '{count} gekozen',
         // Datetime component
         dateFormat: 'dd/mm/yy',
         dateOrder: 'ddmmyy',
         dayNames: ['zondag', 'maandag', 'Dinsdag', 'Woensdag', 'Donderdag', 'Vrijdag', 'Zaterdag'],
         dayNamesShort: ['zo', 'ma', 'di', 'wo', 'do', 'vr', 'za'],
+        dayNamesMin: ['z', 'm', 'd', 'w', 'd', 'v', 'z'],
         dayText: 'Dag',
         hourText: 'Uur',
         minuteText: 'Minuten',
@@ -18,12 +19,13 @@
         monthText: 'Maand',
         secText: 'Seconden',
         timeFormat: 'HH:ii',
-        timeWheels: 'hhii',
+        timeWheels: 'HHii',
         yearText: 'Jaar',
         nowText: 'Nu',
         pmText: 'pm',
         amText: 'am',
         // Calendar component
+        firstDay: 1,
         dateText: 'Datum',
         timeText: 'Tijd',
         calendarText: 'Kalender',
@@ -43,6 +45,15 @@
         stopText: 'Stop',
         resetText: 'Reset',
         lapText: 'Ronde',
-        hideText: 'Verbergen'
-    });
+        hideText: 'Verbergen',
+        // Listview
+        backText: 'Terug',
+        undoText: 'Onged. maken',
+        // Form
+        offText: 'Uit',
+        onText: 'Aan',
+        // Numpad
+        decimalSeparator: ',',
+        thousandsSeparator: ' '
+    };
 })(jQuery);

@@ -1,16 +1,19 @@
 (function ($) {
-    $.mobiscroll.i18n.ro = $.extend($.mobiscroll.i18n.ro, {
+    $.mobiscroll.i18n.ro = {
         // Core
         setText: 'Setare',
         cancelText: 'Anulare',
         clearText: 'Ştergere',
-        selectedText: 'Selectat',
+        selectedText: '{count} selectat',
+        selectedPluralText: '{count} selectate',
         // Datetime component
         dateFormat: 'dd.mm.yy',
         dateOrder: 'ddmmy',
         dayNames: ['Duminică', 'Luni', 'Marți', 'Miercuri', 'Joi', 'Vineri', 'Sâmbătă'],
         dayNamesShort: ['Du', 'Lu', 'Ma', 'Mi', 'Jo', 'Vi', 'Sâ'],
+        dayNamesMin: ['D', 'L', 'M', 'M', 'J', 'V', 'S'],
         dayText: ' Ziua',
+        delimiter: '.',
         hourText: ' Ore ',
         minuteText: 'Minute',
         monthNames: ['Ianuarie', 'Februarie', 'Martie', 'Aprilie', 'Mai', 'Iunie', 'Iulie', 'August', 'Septembrie', 'Octombrie', 'Noiembrie', 'Decembrie'],
@@ -24,6 +27,7 @@
         amText: 'am',
         pmText: 'pm',
         // Calendar component
+        firstDay: 1,
         dateText: 'Data',
         timeText: 'Ora',
         calendarText: 'Calendar',
@@ -43,6 +47,15 @@
         stopText: 'Stop',
         resetText: 'Resetare',
         lapText: 'Tură',
-        hideText: 'Ascundere'
-    });
+        hideText: 'Ascundere',
+        // Listview
+        backText: 'Înapoi',
+        undoText: 'Anulaţi',
+        // Form
+        offText: 'Nu',
+        onText: 'Da',
+        // Numpad
+        decimalSeparator: ',',
+        thousandsSeparator: ' '
+    };
 })(jQuery);

@@ -4,8 +4,13 @@
     <% include ../common/meta.ejs %>
     <title>订单详情</title>
     <% include ../common/public.ejs %>
+    <link href="<%= global.config.publicPath %>/mobiscroll-master-black/css/mobiscroll.animation.css" rel="stylesheet" type="text/css" />
     <link href="<%= global.config.publicPath %>/mobiscroll-master-black/css/mobiscroll.icons.css" rel="stylesheet" type="text/css" />
+    <link href="<%= global.config.publicPath %>/mobiscroll-master-black/css/mobiscroll.frame.css" rel="stylesheet" type="text/css" />
     <link href="<%= global.config.publicPath %>/mobiscroll-master-black/css/mobiscroll.scroller.css" rel="stylesheet" type="text/css" />
+    <link href="<%= global.config.publicPath %>/mobiscroll-master-black/css/mobiscroll.frame.ios.css" rel="stylesheet" type="text/css" />
+    <link href="<%= global.config.publicPath %>/mobiscroll-master-black/css/mobiscroll.scroller.ios.css" rel="stylesheet" type="text/css" />
+    <link href="<%= global.config.publicPath %>/mobiscroll-master-black/css/mobiscroll.android-holo-light.css" rel="stylesheet" type="text/css" />
     <style>
         .weui_cell:before {
             left: 0;
@@ -77,7 +82,7 @@ var i, totalPrice = 0;
                 <p>微信支付<span>仅支持微信4.2及上版本</span></p>
             </div>
             <div class="weui_cell_ft">
-                <input type="radio" class="weui_check" value="wepay"  onclick="setPoNo('a')"  name="payType" id="x11">
+                <input type="radio" class="weui_check" value="wepay"  onclick="setPoNo('wepay')"  name="payType" id="x11">
                 <span class="weui_icon_checked"></span>
             </div>
         </label>
@@ -88,7 +93,7 @@ var i, totalPrice = 0;
                 <p>员工卡支付<span>从员工卡中在线扣款</span></p>
             </div>
             <div class="weui_cell_ft">
-                <input type="radio" name="payType" class="weui_check"  onclick="setPoNo('a')"  value="cardpay" id="x12">
+                <input type="radio" name="payType" class="weui_check"  onclick="setPoNo('cardpay')"  value="cardpay" id="x12">
                 <span class="weui_icon_checked"></span>
             </div>
         </label>
@@ -99,23 +104,24 @@ var i, totalPrice = 0;
                 <p>就餐时支付<span>只支持持有员工卡的公司员工使用</span></p>
             </div>
             <div class="weui_cell_ft">
-                <input type="radio" name="payType" onclick="setPoNo('a')" value="cash" class="weui_check" id="x13">
+                <input type="radio" name="payType" onclick="setPoNo('cash')" value="cash" class="weui_check" id="x13">
                 <span class="weui_icon_checked"></span>
             </div>
         </label>
-        <label class="weui_cell weui_check_label" for="x14"
-               style="display: <%= body.payType.popay ? "block" : "none" %>;">
 
+        <label class="weui_cell weui_check_label " for="x14"
+               style="display: <%= body.payType.popay ? "block" : "none" %>;">
             <div class="weui_cell_bd weui_cell_primary">
                 <p>PO支付<span>使用PO号码支付</span></p>
             </div>
-            <div class="weui_cell_ft">
+            <div class="weui_cell_ft" style="width: 65%;">
+                <div class="weui_cell_bd weui_cell_primary bg_huang" style="float: left;display: none;" id="poNumInput">
+                    <input class="weui_input" style="width: 75%;float: left;height: 27px;font-size: 18px;" type="text" placeholder="请输入PO号">
+                </div>
                 <input type="radio" onclick="setPoNo('po')" name="payType" class="weui_check" value="popay" id="x14">
                 <span class="weui_icon_checked"></span>
             </div>
-            <div id="poNum" style="display: none;">
-                <input type="text" name="payId" style="line-height: 2em;" id="payId" placeholder="请输入PO号" class="form-control">
-            </div>
+
         </label>
     </div>
 
@@ -203,12 +209,33 @@ var i, totalPrice = 0;
     </div>
 
 </article>
+
+<article><!--BEGIN dialog1-->
+    <div style="display:none;" id="dialog1" class="weui_dialog_confirm">
+        <div class="weui_mask"></div>
+        <div class="weui_dialog">
+            <div class="weui_dialog_hd"><strong class="weui_dialog_title">微信支付退款说明</strong></div>
+            <div class="weui_dialog_bd">如果使用微信支付时发生退款，账款预计会在1周内退回支付账户，具体时间受银行间结算影响</div>
+            <div class="weui_dialog_ft">
+                <a class="weui_btn_dialog primary" href="javascript:$('#dialog1').hide();">确定</a>
+            </div>
+        </div>
+    </div>
+    <!--END dialog1-->
+</article>
+
 <% include ../common/footer.ejs %>
 <script src="<%= global.config.publicPath %>/mobiscroll-master-black/js/mobiscroll.core.js"></script>
+<script src="<%= global.config.publicPath %>/mobiscroll-master-black/js/mobiscroll.frame.js"></script>
 <script src="<%= global.config.publicPath %>/mobiscroll-master-black/js/mobiscroll.scroller.js" type="text/javascript"></script>
+<script src="<%= global.config.publicPath %>/mobiscroll-master-black/js/mobiscroll.util.datetime.js" type="text/javascript"></script>
+<script src="<%= global.config.publicPath %>/mobiscroll-master-black/js/mobiscroll.datetimebase.js" type="text/javascript"></script>
 <script src="<%= global.config.publicPath %>/mobiscroll-master-black/js/mobiscroll.datetime.js" type="text/javascript"></script>
+<script src="<%= global.config.publicPath %>/mobiscroll-master-black/js/mobiscroll.frame.ios.js" type="text/javascript"></script>
+<script src="<%= global.config.publicPath %>/mobiscroll-master-black/js/mobiscroll.android-holo-light.js" type="text/javascript"></script>
 
 <script src="<%= global.config.publicPath %>/mobiscroll-master-black/js/i18n/mobiscroll.i18n.zh.js" type="text/javascript"></script>
+<script src="<%= global.config.publicPath %>/mobiscroll-master-black/js/i18n/mobiscroll.i18n.es.js" type="text/javascript"></script>
 <script>
     $(document).ready(function () {
         var nicesx = $("#boxscroll").niceScroll("#boxscroll div", {
@@ -231,6 +258,7 @@ var i, totalPrice = 0;
             date.setMinutes(30,0,0);
         }
         var opt = {
+            theme:'ios',
             preset: 'datetime',
             dateFormat : 'yyyy-mm-dd',
             timeFormat : 'HH:ii',
@@ -244,15 +272,19 @@ var i, totalPrice = 0;
             showNow:false,
             minDate:date
         };
-        $('#needTime').scroller(opt);
+        $('#needTime').mobiscroll().datetime(opt);
 
     });
 
     function setPoNo(id){
-        if(id=='po')
-            $("#poNum").show();
-        else
-            $("#poNum").hide();
+        if(id=='po') {
+            $("#poNumInput").show();
+        } else {
+            $("#poNumInput").hide();
+        }
+        if(id=='wepay' && $("input[name='payType']:checked").val()=='wepay') {
+            $('#dialog1').show();
+        }
     }
 
     $("#confirmOrder").click(function () {

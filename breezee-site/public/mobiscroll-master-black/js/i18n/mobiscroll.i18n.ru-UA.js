@@ -1,16 +1,18 @@
 (function ($) {
-    $.mobiscroll.i18n['ru-UA'] = $.extend($.mobiscroll.i18n['ru-UA'], {
+    $.mobiscroll.i18n['ru-UA'] = {
         // Core
         setText: 'Установить',
         cancelText: 'Отменить',
         clearText: 'Очиститьr',
-        selectedText: 'Вібрать',
+        selectedText: '{count} Вібрать',
         // Datetime component
         dateFormat: 'dd.mm.yy',
         dateOrder: 'ddmmy',
         dayNames: ['воскресенье', 'понедельник', 'вторник', 'среда', 'четверг', 'пятница', 'суббота'],
         dayNamesShort: ['вс', 'пн', 'вт', 'ср', 'чт', 'пт', 'сб'],
+        dayNamesMin: ['в', 'п', 'в', 'с', 'ч', 'п', 'с'],
         dayText: 'День',
+        delimiter: '.',
         hourText: 'Часы',
         minuteText: 'Минуты',
         monthNames: ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'],
@@ -24,6 +26,7 @@
         amText: 'До полудня',
         pmText: 'После полудня',
         // Calendar component
+        firstDay: 1,
         dateText: 'Дата',
         timeText: 'Время',
         calendarText: 'Календарь',
@@ -43,6 +46,15 @@
         stopText: 'Стоп',
         resetText: ' Сброс ',
         lapText: ' Этап ',
-        hideText: ' Скрыть '
-    });
+        hideText: ' Скрыть ',
+        // Listview
+        backText: 'назад',
+        undoText: 'аннулировать',
+        // Form
+        offText: 'O',
+        onText: 'I',
+        // Numpad
+        decimalSeparator: ',',
+        thousandsSeparator: ' '
+    };
 })(jQuery);

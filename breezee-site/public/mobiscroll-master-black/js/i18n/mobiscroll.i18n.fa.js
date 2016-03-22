@@ -1,4 +1,4 @@
-﻿(function ($) {
+(function ($) {
 
     var JalaliDate = {
         gDaysInMonth: [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31],
@@ -51,7 +51,7 @@
             gDayNo = gDayNo % 365;
         }
 
-        for (i = 0; gDayNo >= JalaliDate.gDaysInMonth[i] + (i == 1 && leap) ; i++) {
+        for (i = 0; gDayNo >= JalaliDate.gDaysInMonth[i] + (i == 1 && leap); i++) {
             gDayNo -= JalaliDate.gDaysInMonth[i] + (i == 1 && leap);
         }
 
@@ -112,23 +112,23 @@
         return [jy, jm, jd];
     };
 
-    $.mobiscroll.i18n.fa = $.extend($.mobiscroll.i18n.fa, {
+    $.mobiscroll.i18n.fa = {
         // Core
         setText: 'تاييد',
         cancelText: 'انصراف',
         clearText: 'واضح ',
-        selectedText: 'منتخب',
+        selectedText: '{count} منتخب',
         // Datetime component
         dateFormat: 'yy/mm/dd',
         dateOrder: 'yymmdd',
         dayNames: ['يکشنبه', 'دوشنبه', 'سه‌شنبه', 'چهارشنبه', 'پنج‌شنبه', 'جمعه', 'شنبه'],
         dayNamesShort: ['ی', 'د', 'س', 'چ', 'پ', 'ج', 'ش'],
+        dayNamesMin: ['ی', 'د', 'س', 'چ', 'پ', 'ج', 'ش'],
         dayText: 'روز',
         hourText: 'ساعت',
         minuteText: 'دقيقه',
         monthNames: ['فروردين', 'ارديبهشت', 'خرداد', 'تير', 'مرداد', 'شهريور', 'مهر', 'آبان', 'آذر', 'دی', 'بهمن', 'اسفند'],
         monthNamesShort: ['فروردين', 'ارديبهشت', 'خرداد', 'تير', 'مرداد', 'شهريور', 'مهر', 'آبان', 'آذر', 'دی', 'بهمن', 'اسفند'],
-        //monthNamesShort: ['Farvardin', 'Ordibehesht', 'Khordad', 'Tir', 'Mordad', 'Shahrivar', 'Mehr', 'Aban', 'Azar', 'Dey', 'Bahman', 'Esfand'],
         monthText: 'ماه',
         secText: 'ثانيه',
         timeFormat: 'HH:ii',
@@ -146,7 +146,7 @@
         getDay: function (date) {
             return JalaliDate.gregorianToJalali(date.getFullYear(), (date.getMonth() + 1), date.getDate())[2];
         },
-        getDate: function (y, m, d, h, i, s) {
+        getDate: function (y, m, d, h, i, s, u) {
             if (m < 0) {
                 y += Math.floor(m / 12);
                 m = 12 + m % 12;
@@ -157,7 +157,7 @@
             }
             var gregorianDate = JalaliDate.jalaliToGregorian(y, +m + 1, d);
 
-            return new Date(gregorianDate[0], gregorianDate[1] - 1, gregorianDate[2], h || 0, i || 0, s || 0);
+            return new Date(gregorianDate[0], gregorianDate[1] - 1, gregorianDate[2], h || 0, i || 0, s || 0, u || 0);
         },
         getMaxDayOfMonth: function (y, m) {
             var maxdays = 31;
@@ -199,6 +199,9 @@
         stopText: 'پايان',
         resetText: 'تنظیم مجدد',
         lapText: 'Lap',
-        hideText: 'پنهان کردن'
-    });
+        hideText: 'پنهان کردن',
+        // Listview
+        backText: 'پشت',
+        undoText: 'واچیدن'
+    };
 })(jQuery);

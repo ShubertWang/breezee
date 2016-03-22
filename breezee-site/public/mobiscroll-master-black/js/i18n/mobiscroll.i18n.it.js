@@ -1,15 +1,17 @@
 (function ($) {
-    $.mobiscroll.i18n.it = $.extend($.mobiscroll.i18n.it, {
+    $.mobiscroll.i18n.it = {
         // Core
         setText: 'OK',
         cancelText: 'Annulla',
         clearText: 'Chiarire',
-        selectedText: 'Selezionato',
+        selectedText: '{count} selezionato',
+        selectedPluralText: '{count} selezionati',
         // Datetime component
         dateFormat: 'dd-mm-yyyy',
         dateOrder: 'ddmmyy',
-        dayNames: ['Domenica', 'Luned&Igrave;', 'Merted&Igrave;', 'Mercoled&Igrave;', 'Gioved&Igrave;', 'Venerd&Igrave;', 'Sabato'],
+        dayNames: ['Domenica', 'Lunedì', 'Mertedì', 'Mercoledì', 'Giovedì', 'Venerdì', 'Sabato'],
         dayNamesShort: ['Do', 'Lu', 'Ma', 'Me', 'Gi', 'Ve', 'Sa'],
+        dayNamesMin: ['D', 'L', 'M', 'M', 'G', 'V', 'S'],
         dayText: 'Giorno',
         hourText: 'Ore',
         minuteText: 'Minuti',
@@ -24,6 +26,7 @@
         pmText: 'pm',
         amText: 'am',
         // Calendar component
+        firstDay: 1,
         dateText: 'Data',
         timeText: 'Volta',
         calendarText: 'Calendario',
@@ -37,12 +40,21 @@
         unitText: 'Unità',
         // Time / Timespan component
         labels: ['Anni', 'Mesi', 'Giorni', 'Ore', 'Minuti', 'Secondi', ''],
-        labelsShort: ['Yrs', 'Mths', 'Days', 'Hrs', 'Mins', 'Secs', ''],
+        labelsShort: ['Anni', 'Mesi', 'Gio', 'Ore', 'Min', 'Sec', ''],
         // Timer component
         startText: 'Inizio',
         stopText: 'Arresto',
         resetText: 'Ripristina',
         lapText: 'Lap',
-        hideText: 'Nascondi'
-    });
+        hideText: 'Nascondi',
+        // Listview
+        backText: 'Indietro',
+        undoText: 'Annulla',
+        // Form
+        offText: 'Via',
+        onText: 'Su',
+        // Numpad
+        decimalSeparator: ',',
+        thousandsSeparator: ' '
+    };
 })(jQuery);
