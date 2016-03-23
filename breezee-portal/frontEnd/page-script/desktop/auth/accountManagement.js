@@ -21,16 +21,19 @@ $(function () {
             title: '姓名'
         }, {
             code: 'type',
-            title: '类型'
+            title: '类型',
+            formatter:function(val){
+                return val=='regular'?'正式':'临时';
+            }
         }, {
             code: 'sex',
-            title: '性别'
+            title: '性别',
+            formatter:function(val){
+                return val=='male'?'男':'女';
+            }
         }, {
             code: 'mobile',
             title: '联系手机'
-        }, {
-            code: 'orgName',
-            title: '所属组织'
         }, {
             code: 'roles',
             title: '角色'

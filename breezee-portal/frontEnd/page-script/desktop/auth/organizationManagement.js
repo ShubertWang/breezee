@@ -44,7 +44,7 @@ $(function () {
             code : 'type',
             title : '账号类型'
         }, {
-            code : 'set',
+            code : 'sex',
             title : '性别',
             width : '60px'
         }, {

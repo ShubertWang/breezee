@@ -49,16 +49,22 @@
                 });
             },
             complete: function (res) {
-                $("#errorMsg").html("支付成功!  5秒后跳转至我的订单！");
-                setTimeout(function () {
-                    Dolphin.goUrl("/order/myOrder");
-                }, 5000);
-            },
-            cancel: function (res) {
-                $("#errorMsg").html("支付已取消!  5秒后跳转至我的订单！");
-                setTimeout(function () {
-                    Dolphin.goUrl("/order/myOrder");
-                }, 5000);
+                if(res.errMsg.indexOf('ok')>-1){
+                    $("#errorMsg").html("支付成功!  5秒后跳转至我的订单！");
+                    setTimeout(function () {
+                        Dolphin.goUrl("/order/myOrder");
+                    }, 5000);
+                } else if(res.errMsg.indexOf('cancel')>-1){
+                    $("#errorMsg").html("支付已取消!  5秒后跳转至我的订单！");
+                    setTimeout(function () {
+                        Dolphin.goUrl("/order/myOrder");
+                    }, 5000);
+                } else {
+                    $("#errorMsg").html("支付失败!" + res.errMsg + "。  5秒后跳转至我的订单！");
+                    setTimeout(function () {
+                        Dolphin.goUrl("/order/myOrder");
+                    }, 5000);
+                }
             },
             fail: function (res) {
                 $("#errorMsg").html("支付失败!" + res.errMsg + "。  5秒后跳转至我的订单！");

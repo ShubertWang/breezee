@@ -278,9 +278,10 @@ public class TaskServiceImpl implements ITaskService {
         TaskQuery taskQuery = taskService.createTaskQuery();
         if(m.get("userJob")!=null){
             String[] tmp = m.get("userJob").toString().split(",");
-            for (int i=0;i<tmp.length;i++){
-                taskQuery = taskQuery.or().taskCandidateGroup(tmp[i]);
-            }
+//            for (int i=0;i<tmp.length;i++){
+//                taskQuery = taskQuery.or().taskCandidateGroup(tmp[i]);
+//            }
+            taskQuery.taskCandidateGroupIn(Arrays.asList(tmp));
         }
         taskQuery = taskQuery.active().orderByTaskCreateTime().desc();
         long count = taskQuery.count();
