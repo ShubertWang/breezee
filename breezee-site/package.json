@@ -21,6 +21,7 @@
     "sha1":"latest",
     "md5":"latest",
     "js2xmlparser":"latest",
+    "express-xml-bodyparser":"latest",
     "basic-xml2json":"latest"
   }
 }

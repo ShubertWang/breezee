@@ -4,6 +4,7 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
+var xmlparser = require('express-xml-bodyparser');
 var session = require('express-session');
 var extend = require('extend');
 var i18n = require('i18n');
@@ -36,6 +37,7 @@ app.set('view engine', 'ejs');
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
+app.use(xmlparser());
 app.use(cookieParser());
 app.use(session(extend(true, {}, {
     secret: '12345',
