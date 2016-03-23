@@ -297,6 +297,10 @@ var i, totalPrice = 0;
         orderInfo.paymentType = $("input[name='payType']:checked").val();
         orderInfo.needTime = document.getElementById("needTime").value;
         orderInfo.remark = document.getElementById("remark").value;
+        if(!orderInfo.paymentType){
+            alert("请选择支付方式。");
+            return;
+        }
 
         var orderLines = [];
         <% for(i = 0; i < body.foodList.length; i++){ %>
@@ -334,7 +338,7 @@ var i, totalPrice = 0;
                 return;
             }
         } else if(orderInfo.paymentType=='wepay'){
-            orderInfo.status = -1;
+            orderInfo.status = 0;
         }
 
         Dolphin.ajax({

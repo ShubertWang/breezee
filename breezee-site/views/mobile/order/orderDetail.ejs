@@ -132,7 +132,7 @@ var orderStatus = {
 <article>
     <div class=" tybtn_box">
         <% if(body.status == 0) { %>
-        <a href="/view/order/wepay?id=<%= body.id %>" class="weui_btn weui_btn_mini weui_btn_default1">立即支付</a>
+        <a href="javascript:void(0);" id="payNow" class="weui_btn weui_btn_mini weui_btn_default1">立即支付</a>
         <% }
         if(body.status != -1 && body.status < 3){  //已制作前都可以取消订单
         %>
@@ -165,6 +165,10 @@ var orderStatus = {
             usetransition: true,
             hwacceleration: true,
             autohidemode: "hidden"
+        });
+
+        $("#payNow").click(function(){
+            Dolphin.goUrl("/order/wepay?id=<%= body.id %>");
         });
     });
 

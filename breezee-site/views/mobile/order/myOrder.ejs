@@ -32,6 +32,10 @@
 <script>
     $(document).ready(function() {
         var nicesx = $("#boxscroll").niceScroll("#boxscroll div",{touchbehavior:true,cursorcolor:"#FF00FF",cursoropacitymax:0.6,cursorwidth:24,usetransition:true,hwacceleration:true,autohidemode:"hidden"});
+
+        $("#payNow").click(function(){
+            Dolphin.goUrl("/order/wepay?id="+$(this).attr("data-order-id"));
+        });
     });
 </script>
 </body>

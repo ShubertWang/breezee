@@ -42,7 +42,7 @@
                     onSuccess: function (reData) {
                         //发送通知消息
                         Dolphin.ajax({
-                            url: "orderMessage?orderId=" + reData.value.id + "&orderCode=" + reData.value.code + "&storeName=" + reData.value.storeName + "&taskId=" + reData.value.taskId
+                            url: Dolphin.path.contextPath+ Dolphin.defaults.url.viewPrefix+"/order/orderMessage?orderId=" + reData.value.id + "&orderCode=" + reData.value.code + "&storeName=" + reData.value.storeName + "&taskId=" + reData.value.taskId
                         });
 //                            Dolphin.goUrl("/order/orderMessage?orderId="+reData.value.id+"&orderCode="+reData.value.code+"&storeName="+reData.value.storeName+"&taskId="+reData.value.taskId);
                     }
