@@ -333,6 +333,8 @@ var i, totalPrice = 0;
                 alert("PO号码不能为空!")
                 return;
             }
+        } else if(orderInfo.paymentType=='wepay'){
+            orderInfo.status = -1;
         }
 
         Dolphin.ajax({

@@ -36,31 +36,41 @@
             signType: "<%= body.signType %>", // 签名方式，'MD5'
             paySign: "<%= body.paySign %>", // 支付签名
             success: function (res) {
-                if (res.err_msg.indexOf("ok") > -1) {
-                    // 使用以上方式判断前端返回,微信团队郑重提示：res.err_msg将在用户支付成功后返回ok，但并不保证它绝对可靠。
-                } else {
-                    $("#errorMsg").html(res.err_msg);
-                }
                 Dolphin.ajax({
                     url: '/data/oms/order/orderPay/<%= body.orderId %>/<%= body.package %>',
                     type: Dolphin.requestMethod.GET,
                     onSuccess: function (reData) {
                         //发送通知消息
-                        Dolphin.goUrl("/order/orderMessage?orderId="+reData.value.id+"&orderCode="+reData.value.code+"&storeName="+reData.value.storeName+"&taskId="+reData.value.taskId);
+                        Dolphin.ajax({
+                            url: "orderMessage?orderId=" + reData.value.id + "&orderCode=" + reData.value.code + "&storeName=" + reData.value.storeName + "&taskId=" + reData.value.taskId
+                        });
+//                            Dolphin.goUrl("/order/orderMessage?orderId="+reData.value.id+"&orderCode="+reData.value.code+"&storeName="+reData.value.storeName+"&taskId="+reData.value.taskId);
                     }
                 });
+            },
+            complete: function (res) {
+                $("#errorMsg").html("支付成功!  5秒后跳转至我的订单！");
+                setTimeout(function () {
+                    Dolphin.goUrl("/order/myOrder");
+                }, 5000);
+            },
+            cancel: function (res) {
+                $("#errorMsg").html("支付已取消!  5秒后跳转至我的订单！");
+                setTimeout(function () {
+                    Dolphin.goUrl("/order/myOrder");
+                }, 5000);
+            },
+            fail: function (res) {
+                $("#errorMsg").html("支付失败!" + res.errMsg + "。  5秒后跳转至我的订单！");
+                setTimeout(function () {
+                    Dolphin.goUrl("/order/myOrder");
+                }, 5000);
             }
         });
-
-
-        //监听错误事件 出现'invalid signature' AJAX刷新ticket,并刷新当前页面
-        wx.error(function (res) {
-//            if (res.errMsg.indexOf("invalid signature") > 0) {
-//
-//            }
-//            $("#errorMsg").html("支付成功，请返回");
-        });
     });
+    wx.error(function (res) {
+    });
+
 </script>
 </body>
 </html>

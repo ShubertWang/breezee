@@ -68,7 +68,7 @@ public class OrderServiceImpl implements IOrderService, InitializingBean {
             vars.put("orderId", entity.getId());
             ProcsInsInfo procsInsInfo = workflowServiceImpl.startProcessInstanceById(orderInfo.getProcDefId(), entity.getId().toString(), vars);
             orderInfo.setTaskId(Long.parseLong(procsInsInfo.getCode()));
-            //为什么要这样做，我也不记得了。。。Anjing，是为了给用户取消订单的时候用的吗？
+            //发送通知消息的时候可以进入任务，执行任务操作.同时也支持在任务取消时候取消任务。
             entity.setTaskId(orderInfo.getTaskId());
             orderRepository.save(entity);
         }
