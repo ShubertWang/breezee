@@ -25,6 +25,17 @@
 }
 /*============================ overwrite end ===================================*/
 
+.cancelIcon{
+    display: inline-block;
+    position: absolute;
+    width: 25px;
+    height: 25px;
+    top: 13px;
+    right: 6px;
+    background: url(/custom/images/cancel.png);
+    opacity: 0.8;
+}
+
 .evaluate_box {
     width:100%;
     text-align: center;
