@@ -25,6 +25,10 @@ $(function () {
                 $('#cartPanel').show();
             }
         });
+        $('span.cancelIcon').click(function (e) {
+            $(this).closest('.pagePanel').hide();
+            $('#order_food').show();
+        });
 
         $('div.foodDetail').click(function (e) {
             var food, foodId, number = 0,
