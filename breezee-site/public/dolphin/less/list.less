@@ -3,73 +3,94 @@
   width: 100%;
   overflow: auto;
 }
-.panel .list-table{
+
+.panel .list-table {
   margin-bottom: 0;
 }
-.list-table .table{
+
+.list-table .table {
   margin-bottom: 0px;
   max-width: none;
 }
-.list-table .checkboxTh,.list-table .rowIndexTh{
-  width : 30px;
+
+.list-table .checkboxTh, .list-table .rowIndexTh {
+  width: 30px;
 }
+
 .total_row {
-  .listGroupTotal{
-      margin : 0 40px 0 0;
+  .listGroupTotal {
+    margin: 0 40px 0 0;
   }
 }
-.table tbody tr td.hiddenCol,.table thead tr th.hiddenCol{
-  display : none;
+
+.dolphin_list > .table > thead > tr > th {
+  vertical-align: middle;
+  text-align: center;
 }
-.table .editButtonCol{
-  width:53px;
+
+.table tbody tr td.hiddenCol, .table thead tr th.hiddenCol {
+  display: none;
 }
-.table td.editButtonCol{
+
+.table .editButtonCol {
+  width: 53px;
+}
+
+.table td.editButtonCol {
   vertical-align: middle;
 }
-.table > tbody > tr.total_row{
-  background-color : #EEE;
+
+.table > tbody > tr.total_row {
+  background-color: #EEE;
   font-weight: 700;
 }
-.table th .iconButton{
+
+.table th .iconButton {
   cursor: pointer;
 }
-.table .centerHeader th{
+
+.table .centerHeader th {
   text-align: center;
   vertical-align: middle;
 }
 
-.listFooter{
+.listFooter {
   margin-top: 3px;
   margin-bottom: 3px;
 }
-.listFooter select{
+
+.listFooter select {
   padding: 0px;
   width: 50px;
   margin: -4px 0px 0;
   height: 22px;
 }
-.listFooter .pageInfo{
-  margin-left : 3px;
+
+.listFooter .pageInfo {
+  margin-left: 3px;
   line-height: 30px;
 }
-.listFooter .pageInfo .pageInfoNum{
+
+.listFooter .pageInfo .pageInfoNum {
   zoom: 1.1;
   font-weight: 700;
 }
-.listFooter .pagination{
+
+.listFooter .pagination {
   float: right;
   margin: 0px 2px 0 0;
 }
 
 //loading
-.dolphin_list{
+.dolphin_list {
   position: relative;
 }
-.dolphin_list .loading{
+
+.dolphin_list .loading {
   z-index: inherit;
 }
-.dolphin_list .loading > .progressPanel{
+
+.dolphin_list .loading > .progressPanel {
   top: 50%;
   margin-top: -28px;
 }

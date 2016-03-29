@@ -400,6 +400,10 @@ form div.form-inline .form-control {
 .total_row .listGroupTotal {
   margin: 0 40px 0 0;
 }
+.dolphin_list > .table > thead > tr > th {
+  vertical-align: middle;
+  text-align: center;
+}
 .table tbody tr td.hiddenCol,
 .table thead tr th.hiddenCol {
   display: none;

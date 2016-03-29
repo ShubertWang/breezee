@@ -11,7 +11,8 @@
 	LIST.defaults = {
 		id : null,											//随机id
 		panel : "#planList",								//生成区别，遵循jQuery选择器规则
-		columns : null,									//列属性，[{code:"", title:"", width:"", formatter:function(val, row, index){}}]
+		columns : null,									//列属性，[{code:"", title:"", width:"", formatter:function(val, row, index){}, orderFlag:boolean, groupFlag:boolean, rowSpan:number, children:[]}]
+		header : null,										//复杂列头
 		hideHeader : false,								//是否隐藏表头
 		striped : true,									//是否隔行变色
 		bordered : true,									//是否有边框
@@ -68,6 +69,8 @@
 		onLoad : null,										//列表加载完成时调用
 		onLoadSuccess : null,								//列表加载成功时调用
 		dataFilter : null,								//请求事件过滤
+		onAddRow : null,									//列表编辑，添加行时触发
+		onRemoveRow : null,								//列表编辑，删除行时触发
 
 		mockPathData : null,								//测试数据
 		loadingFlag : true,								//加载状态
@@ -75,11 +78,10 @@
 		__id__ : null										//虚拟id
 	};
 
-
-
 	LIST.prototype = {
 		/* ==================== property ================= */
 		constructor : LIST,
+		__columns : null,
 		data : null,
 		pagination : null,
 		tbody : null,
@@ -91,6 +93,7 @@
 			var thisList = this,
 				panel, panelHeader, panelTitle;
 			this.opts = $.extend({}, LIST.defaults, param);
+
 			$(this.opts.panel).data('dolphin', thisList);
 
 			if(!this.opts.id){
@@ -136,7 +139,6 @@
 				$(this.opts.panel).addClass('table-edit');
 				$(this.opts.panel).attr('tableName', this.opts.editListName);
 			}
-
 			//table-header
 			this.initTheader(table);
 
@@ -179,81 +181,133 @@
 		},
 		initTheader : function(tablePanel){
 			var table = tablePanel || $(this.opts.panel).find('table');
-			var thead = '', thisList = this;
-			thead += '<thead';
+			var thisList = this,
+				tHead, tr, checkAll,
+				button, orderButton, groupButton,
+				th, checkboxTh, rowIndexTh, editButtonTh,
+				header = [], maxLevel;
+			this.__columns = [];
+			maxLevel = initHeaderData(this.opts.columns, 0);
+
+			function initHeaderData(data, level){
+				var callee = arguments.callee,
+					maxLevel = 1;
+				header[level] = (header[level] || []).concat(data);
+
+				data.forEach(function (d, i) {
+					if(d.children){
+						maxLevel = Math.max(maxLevel, callee(d.children, level+1)+1);
+						d.maxLevel = maxLevel;
+						d.colspan = d.children.length;
+					}else{
+						thisList.__columns.push(d);
+					}
+				});
+
+				data.forEach(function (d, i) {
+					if(d.maxLevel){
+						d.rowspan = maxLevel - d.maxLevel + 1;
+					}else{
+						d.rowspan = maxLevel;
+					}
+				});
+
+				return maxLevel;
+			}
+
+			tHead = $('<thead>');
 			if(this.opts.hideHeader){
-				thead += ' style="display:none;"';
+				tHead.hide();
 			}
-			thead += '>';
-			thead += '	<tr>';
+			tr = $('<tr>').appendTo(tHead);
+
 			if(this.opts.checkbox){
-				thead += '	<th class="checkboxTh" >';
+				checkboxTh = $('<th class="checkboxTh" >').attr({
+					rowspan : maxLevel
+				}).appendTo(tr);
 				if(this.opts.multiple){
-					thead += '<input type="checkbox" class="checkAll" />';
+					checkAll = $( '<input type="checkbox" class="checkAll" />').appendTo(checkboxTh);
 				}
-				thead += '	</th>';
 			}
+
 			if(this.opts.rowIndex){
-				thead += '		<th class="rowIndexTh" >#</th>';
+				rowIndexTh = $('<th class="rowIndexTh" >').attr({
+					rowspan : maxLevel
+				}).html('#').appendTo(tr);
 			}
 
-			if(this.opts.columns){
-				for(var i = 0; i < this.opts.columns.length; i++){
-					thead += '		<th class="'+(this.opts.columns[i].hidden?'hiddenCol':'')+'" colCode="'+this.opts.columns[i].code+'" >';
-					thead += 		this.opts.columns[i].title;
-					if(this.opts.columns[i].orderFlag || this.opts.orderFlag){
-						thead += 		' <span class="glyphicon '+thisList.opts.orderIcon.no+' iconButton" aria-hidden="true" colOrderCode="'+this.opts.columns[i].code+'" ></span>';
-					}
-					if(this.opts.columns[i].groupFlag){
-						thead += 		' <span class="glyphicon '+thisList.opts.groupIcon.group+' iconButton" aria-hidden="true" colGroupCode="'+this.opts.columns[i].code+'" ></span>';
-					}
-					thead += '		</th>';
+			function renderTHeaderCol(column, i, panel){
+				th = $('<th>').attr({
+					'colCode': column.code,
+					'rowspan': column.rowspan,
+					'colspan': column.colspan
+				}).html(column.title).appendTo(panel);
+				if(column.hidden){
+					th.addClass('hiddenCol');
+				}
+				if(column.orderFlag || thisList.opts.orderFlag){
+					orderButton = $('<span class="glyphicon iconButton">').addClass(thisList.opts.orderIcon.no).attr({
+						'aria-hidden': true,
+						colOrderCode : column.code
+					}).bind('click', function(){
+						var style = $(this).hasClass(thisList.opts.orderIcon.asc) ? "asc" : ($(this).hasClass(thisList.opts.orderIcon.desc) ? "desc" : "no");
+						var code = $(this).attr('colOrderCode');
+						table.find('.'+thisList.opts.orderIcon.asc + "," + '.'+thisList.opts.orderIcon.desc)
+							.removeClass(thisList.opts.orderIcon.asc).removeClass(thisList.opts.orderIcon.desc);
+						switch (style){
+							case "no":
+								$(this).addClass(thisList.opts.orderIcon.asc);
+								thisList.sort(code, "asc");
+								break;
+							case "asc":
+								$(this).addClass(thisList.opts.orderIcon.desc);
+								thisList.sort(code, "desc");
+								break;
+							case "desc":
+								thisList.sort(null, null);
+								break;
+							default :
+								console.log("Error in order by " + code);
+						}
+					}).appendTo(th);
+				}
+				if(column.groupFlag){
+					groupButton = $('<span class="glyphicon iconButton">').addClass(thisList.opts.groupIcon.group).attr({
+						'aria-hidden': true,
+						colOrderCode : column.code
+					}).bind('click', function(){
+						if($(this).hasClass(thisList.opts.groupIcon.group)){
+							table.find('.'+thisList.opts.groupIcon.unGroup).removeClass(thisList.opts.groupIcon.unGroup).addClass(thisList.opts.groupIcon.group);
+							$(this).addClass(thisList.opts.groupIcon.unGroup).removeClass(thisList.opts.groupIcon.group);
+							thisList.group($(this).attr('colGroupCode'));
+						}else{
+							$(this).addClass(thisList.opts.groupIcon.group).removeClass(thisList.opts.groupIcon.unGroup);
+							thisList.group(null);
+						}
+					}).appendTo(th);
 				}
 			}
-
-			if(this.opts.editFlag){
-				//thead += '		<th class="editButtonCol" >'+'<button type="button" class="btn btn-default btn-minier addRow">增行</button>'+'</th>';
-				thead += '		<th class="editButtonCol" >'+'<button type="button" class="btn btn-success btn-xs addRow"><span class="glyphicon glyphicon-plus"></span></button>'+'</th>';
-			}
-			thead += '	</tr>';
-			thead += '</thead>';
-
-			table.append(thead);
-
-			//分组功能
-			table.find('[colGroupCode]').bind('click', function(){
-				if($(this).hasClass(thisList.opts.groupIcon.group)){
-					table.find('.'+thisList.opts.groupIcon.unGroup).removeClass(thisList.opts.groupIcon.unGroup).addClass(thisList.opts.groupIcon.group);
-					$(this).addClass(thisList.opts.groupIcon.unGroup).removeClass(thisList.opts.groupIcon.group);
-					thisList.group($(this).attr('colGroupCode'));
+			header.forEach(function (headers, i) {
+				var panel;
+				if(i == 0){
+					panel = tr;
 				}else{
-					$(this).addClass(thisList.opts.groupIcon.group).removeClass(thisList.opts.groupIcon.unGroup);
-					thisList.group(null);
+					panel = $('<tr>').appendTo(tHead);
 				}
+				headers.forEach(function (column, i) {
+					renderTHeaderCol(column, i, panel);
+				})
 			});
 
-			//排序功能
-			table.find('[colOrderCode]').bind('click', function(){
-				var style = $(this).hasClass(thisList.opts.orderIcon.asc) ? "asc" : ($(this).hasClass(thisList.opts.orderIcon.desc) ? "desc" : "no");
-				var code = $(this).attr('colOrderCode');
-				table.find('.'+thisList.opts.orderIcon.asc + "," + '.'+thisList.opts.orderIcon.desc)
-					.removeClass(thisList.opts.orderIcon.asc).removeClass(thisList.opts.orderIcon.desc);
-				switch (style){
-					case "no":
-						$(this).addClass(thisList.opts.orderIcon.asc);
-						thisList.sort(code, "asc");
-						break;
-					case "asc":
-						$(this).addClass(thisList.opts.orderIcon.desc);
-						thisList.sort(code, "desc");
-						break;
-					case "desc":
-						thisList.sort(null, null);
-						break;
-					default :
-						console.log("Error in order by " + code);
-				}
-			});
+			if(thisList.opts.editFlag){
+				editButtonTh = $('<th class="editButtonCol" >').attr({
+					rowspan : maxLevel
+				}).appendTo(tr);
+				button = $('<button type="button" class="btn btn-success btn-xs addRow">').appendTo(editButtonTh);
+				$('<span class="glyphicon glyphicon-plus"></span>').appendTo(button);
+			}
+
+			table.append(tHead);
 
 			return this;
 		},
@@ -288,11 +342,19 @@
 			this.data = newData;
 
 			if(typeof this.opts.dataFilter === 'function'){
-				this.data = this.opts.dataFilter.call(this, newData);
+				this.data = this.opts.dataFilter.call(this, newData) || this.data;
 			}
 
 			this.groupCount = 0;
 			this.groupCode = null;
+
+			if(this.opts.pagination){
+				this.pagination.initData({
+					total : newData.total,
+					pageSize : this.opts.pageSize,
+					pageNumber : this.opts.pageNumber
+				}).refresh();
+			}
 
 			this.initRows();
 
@@ -361,7 +423,7 @@
 					thisList.empty();
 
 					if(typeof thisList.opts.dataFilter === 'function'){
-						data = thisList.opts.dataFilter.call(thisList, data);
+						data = thisList.opts.dataFilter.call(thisList, data) || data;
 					}
 					thisList.data = data;
 					if(thisList.opts.pagination){
@@ -452,9 +514,6 @@
 				$(this.opts.panel).find('.checkAll')[0].checked = false;
 			}
 
-			if(this.opts.columns){
-
-			}
 			if(this.data && this.data.rows){
 				for(var i = 0; i < this.data.rows.length; i++){
 					this.addRow(this.data.rows[i], i+1);
@@ -473,8 +532,6 @@
 			}else{
 				return this.addDataRow(data, rowIndex);
 			}
-
-			return this;
 		},
 		addRowWithData : function (data, rowIndex) {
 			this.addRow(data, rowIndex);
@@ -493,12 +550,12 @@
 			if(this.opts.rowIndex){
 				colspan++;
 			}
-			for(var i = 0; i < this.opts.columns.length; i++){
-				if(!this.opts.columns[i].hidden){
+			for(var i = 0; i < this.__columns.length; i++){
+				if(!this.__columns[i].hidden){
 					colspan++;
 				}
-				if(this.opts.columns[i].code == data.__group_code){
-					colName = this.opts.columns[i].title;
+				if(this.__columns[i].code == data.__group_code){
+					colName = this.__columns[i].title;
 				}
 			}
 
@@ -531,7 +588,7 @@
 			if(this.opts.rowIndex){
 				$('<td scope="row">').html(rowIndex - this.groupCount).appendTo(row);
 			}
-			$.each(this.opts.columns, function (i, column) {
+			$.each(this.__columns, function (i, column) {
 				var value, valueArr, level, curLevelData;
 				col = $('<td>').attr('columnCode', column.code).appendTo(row);
 				if(column.width){
@@ -551,9 +608,8 @@
 					valueArr = column.code.split('.');
 					value = data;
 					for(level = 0; level < valueArr.length; level++){
-                        if(value)
-                            value = value[valueArr[level]];
-                    }
+						value = value[valueArr[level]];
+					}
 				}else{
 					value = data[column.code];
 				}
@@ -583,8 +639,8 @@
 						col.html(inputItem);
 
 						inputItem.attr({
-							"id" : thisList.opts.columns[i].code,
-							"listName" : thisList.opts.columns[i].code
+							"id" : column.code,
+							"listName" : column.code
 						});
 						if(column.readonly){
 							inputItem.attr('readonly', 'readonly');
@@ -620,8 +676,25 @@
 			});
 
 			if(this.opts.editFlag){
-				//$('<td class="editButtonCol">').html('<button type="button" class="btn btn-default btn-minier removeRow">删行</button>').appendTo(row);
-				$('<td class="editButtonCol">').html('<button type="button" class="btn btn-danger btn-xs removeRow"><span class="glyphicon glyphicon-trash"></span></button>').appendTo(row);
+				var deleteButton = $('<button type="button" class="btn btn-danger btn-xs removeRow">')
+					.html('<span class="glyphicon glyphicon-trash"></span>')
+					.click(function (e) {
+						if(typeof thisList.opts.onRemoveRow == 'function'){
+							if(thisList.opts.onRemoveRow.call(thisList, data, event, row) === false){
+
+							}else{
+								removeRow()
+							}
+						}else{
+							removeRow()
+						}
+
+						function removeRow(){
+							thisList.removeRow(data.__id__);
+						}
+					});
+				$('<td class="editButtonCol">').html(deleteButton).appendTo(row);
+
 			}
 
 			$(thisList.tbody).append(row);
@@ -668,23 +741,6 @@
 				row.bind('click', function(event){
 					if(!$(event.target).hasClass('selectedItem') && !$(event.target).hasClass('btn')){
 						thisList.opts.onClick.call(thisList, data, row, event);
-					}
-				});
-			}
-			if(this.opts.editFlag){
-				row.find('.editButtonCol .removeRow').bind('click', function(event){
-					if(thisList.opts.onRemoveRow){
-						if(thisList.opts.onRemoveRow.call(thisList, data, event, row) === false){
-
-						}else{
-							removeRow()
-						}
-					}else{
-						removeRow()
-					}
-
-					function removeRow(){
-						thisList.removeRow(data.__id__);
 					}
 				});
 			}
@@ -774,6 +830,9 @@
 
 				return returnData;
 			}
+		},
+		length : function () {
+			return this.data.rows.length;
 		},
 		getName : function(data){
 			var name;
